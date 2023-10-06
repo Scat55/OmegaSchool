@@ -10,7 +10,10 @@
             главным
             приоритетом. У нас вы найдете сочетание проверенных временем методов и современных технологий, чтобы учиться с
             удовольствием и эффективностью. Присоединяйтесь к команде передовых мыслителей!</p>
-          <button class="robot__btn">Начать заниматься</button>
+          <button
+            class="robot__btn"
+            @click="changeStatusOnTrue()"
+          >Начать заниматься</button>
         </div>
         <img
           src="../assets/images/robot/myRobot.png"
@@ -27,6 +30,15 @@ export default {
     return {
 
     }
+  },
+
+  methods: {
+    changeStatusOnTrue() {
+      const body = document.querySelector('body')
+      this.$store.state.status = true
+      body.style.overflow = "hidden"
+      console.log(this.STATUS)
+    },
   },
 }
 

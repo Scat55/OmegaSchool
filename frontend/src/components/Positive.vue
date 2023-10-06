@@ -6,7 +6,7 @@
       <div class="positive__content">
         <div
           class="positive__content-item"
-          v-for="plus in    positive   "
+          v-for="plus in positive"
         >
 
           <div class="positive__content-text">
