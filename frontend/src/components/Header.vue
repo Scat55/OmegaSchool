@@ -44,17 +44,18 @@
 export default {
   data() {
     return {
-      status: false
+
     }
   },
 
   methods: {
     changeStatusOnTrue() {
       const body = document.querySelector('body')
-      this.status = !this.status
+      this.$store.state.status = true
       body.style.overflow = "hidden"
-      console.log(this.status)
-    }
+      console.log(this.STATUS)
+    },
+
   },
 
 }
