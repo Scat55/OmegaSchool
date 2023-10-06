@@ -8,23 +8,25 @@
 
       <div class="footer__logo">
         <div class="footer__logo-omega">
-          <a href="#">
-            <img
-              src="../assets/images/Logo_px (2).png"
-              alt="Logo"
-              class="footer__logo-img"
-            >
-          </a>
+
+          <img
+            src="../assets/images/Logo_px (2).png"
+            alt="Logo"
+            class="footer__logo-img"
+            @click="goToTopPage()"
+          >
+
           <p class="footer__omega-title">Омега класс</p>
         </div>
         <div class="footer__universitet">
-          <a href="#">
-            <img
-              src="../assets/images/logoUni.jpg"
-              alt="LogoUniversitet"
-              class="footer__logo-img"
-            >
-          </a>
+
+          <img
+            src="../assets/images/logoUni.jpg"
+            alt="LogoUniversitet"
+            class="footer__logo-img"
+            @click="goToTopPage()"
+          >
+
           <p class="footer__logo-title">Липецкий Государственный Педагогический Университет имени П.П.
             Семенова-Тян-Шанского</p>
         </div>
@@ -33,6 +35,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  methods: {
+    goToTopPage() {
+      window.scrollTo(0, 0);
+    }
+  },
+}
+</script>
 
 
 <style lang="scss" scoped>
@@ -61,7 +72,7 @@
     &-img {
       width: 5.3rem;
       margin-top: .625rem;
-
+      cursor: pointer;
     }
 
     &-title {

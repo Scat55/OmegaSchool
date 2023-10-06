@@ -15,10 +15,10 @@
             единомышленников, готовых поделиться своими знаниями, ответить на ваши вопросы и помочь в решении сложных
             задач.
           </p>
-          <a
-            href="#"
+          <p
             class="big__content-btn"
-          >Войти</a>
+            @click="changeStatusOnTrue()"
+          >Войти</p>
         </div>
         <img
           src="../assets/images/spaceMan.png"
@@ -31,18 +31,27 @@
   </div>
 </template>
 
-<!-- <script setup>
-import { useCounterStore } from '../stores/counter';
+<script>
 
-const status = useCounterStore();
+export default {
+  data() {
+    return {
 
-const body = document.querySelector('body')
+    }
+  },
 
-const changeStatusOnTrue = () => {
-  status.statusForm = true
-  body.style.overflow = "hidden"
+  methods: {
+    changeStatusOnTrue() {
+      window.scrollTo(0, 0);
+      const body = document.querySelector('body')
+      this.$store.state.status = true
+      body.style.overflow = "hidden"
+      console.log(this.STATUS)
+    },
+  },
 }
-</script> -->
+
+</script>
 
 
 <style lang="scss" scoped>

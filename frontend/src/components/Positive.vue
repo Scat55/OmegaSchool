@@ -10,12 +10,16 @@
         >
 
           <div class="positive__content-text">
-            <p class="positive__item-title"> {{ plus.title }}</p>
+            <p
+              class="positive__item-title"
+              @click="show()"
+            > {{ plus.title }}</p>
             <p class="positive__item-title"> {{ plus.subtitle }}</p>
+
           </div>
 
           <img
-            :src='plus.img'
+            :src="require('../assets/images/positive/' + plus.img)"
             alt="InfoImg"
             class="positive__item-img"
           >
@@ -35,11 +39,11 @@ export default {
         {
           title: 'Не стандартные',
           subtitle: 'задачи',
-          img: "../assets/images/comp.png"
+          img: "comp.png"
         },
         {
           title: 'Задания проверенные экспертами',
-          img: 'grup.png'
+          img: 'grup.png',
         },
         {
           title: 'Система достиений',
@@ -51,6 +55,12 @@ export default {
           img: 'materials.png'
         }
       ]
+    }
+  },
+
+  methods: {
+    show() {
+      console.log(this.positive)
     }
   },
 }
