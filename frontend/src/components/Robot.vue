@@ -41,19 +41,6 @@ export default {
     },
   },
 }
-
-
-// import { useCounterStore } from '../stores/counter';
-
-// const status = useCounterStore();
-
-// const body = document.querySelector('body')
-
-// const changeStatusOnTrue = () => {
-//   status.statusForm = true
-//   body.style.overflow = "hidden"
-// }
-
 </script>
 
 <style lang="scss" scoped>
