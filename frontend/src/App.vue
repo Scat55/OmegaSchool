@@ -5,15 +5,20 @@
       <Header />
     </header>
     <router-view></router-view>
+    <footer>
+      <Footer/>
+    </footer>
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
 import RegForm from './components/RegForm.vue'
+import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
+    Footer,
     Header,
     RegForm,
 
