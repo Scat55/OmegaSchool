@@ -1,7 +1,6 @@
 
 <template>
   <div>
-    <Header />
     <div class="container">
       <div class="window">
         <div class="left_div">
@@ -35,17 +34,17 @@
         </div>
       </div>
     </div>
-    <Footer />
   </div>
 </template>
 
 <script>
-// import Header from "@/components/Header.vue";
-// import Profile from "@/components/Profile/Profile.vue";
-// import Footer from "@/components/Footer.vue";
+import Profile from "@/components/Profile/Profile.vue";
 // import AchivmentStudent from "@/components/Profile/AchivmentStudent.vue";
 // import RatingTeacher from "@/components/Profile/RatingTeacher.vue";
 export default {
+  components: {
+    Profile,
+  },
   data() {
     return {
       person: {

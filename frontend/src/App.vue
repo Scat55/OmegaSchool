@@ -29,7 +29,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Visitor;
+  font-family: Visitor,serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
