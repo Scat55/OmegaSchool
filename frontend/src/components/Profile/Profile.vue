@@ -28,21 +28,39 @@ export default {
 </script>
 
 <template>
-
   <div class="main">
     <div class="avatar">
-      <img src="../../assets/images/Avatar/boy.png" alt="Аватарка">
+      <img
+        src="../../assets/images/Avatar/boy.png"
+        alt="Аватарка"
+      >
     </div>
     <div class="date_person_fio">
       <div class="name"><label>Имя:</label>&nbsp;
-        <input type="text" :class="{'InputChangeNO': !edit, 'InputChange' : edit}" v-bind:value="person.name" :disabled="!edit"></div>
+        <input
+          type="text"
+          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+          v-bind:value="person.name"
+          :disabled="!edit"
+        >
+      </div>
       <div class="lastName">
         <label>Фамилия:</label>&nbsp;
-        <input type="text" :class="{'InputChangeNO': !edit, 'InputChange' : edit}" v-bind:value="person.lastname" :disabled="!edit">
+        <input
+          type="text"
+          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+          v-bind:value="person.lastname"
+          :disabled="!edit"
+        >
       </div>
       <div class="patronymic">
         <label>Отчество:</label>&nbsp;
-        <input type="text" :class="{'InputChangeNO': !edit, 'InputChange' : edit}" v-bind:value="person.patronymic" :disabled="!edit">
+        <input
+          type="text"
+          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+          v-bind:value="person.patronymic"
+          :disabled="!edit"
+        >
       </div>
     </div>
 
@@ -55,17 +73,21 @@ export default {
     <div class="date_person_class">
       <div v-if="person.student === true">
         <label>Класс</label>&nbsp;
-        <input :class="{'InputChangeNO': !edit, 'InputChange' : edit}"
-               type="text"
-               :disabled="!edit"
-               :value="person.class">
+        <input
+          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+          type="text"
+          :disabled="!edit"
+          :value="person.class"
+        >
       </div>
       <div v-if="person.student === false">
         <label>Учитель по</label>&nbsp;
-        <input :class="{'InputChangeNO': !edit, 'InputChange' : edit}"
-               type="text"
-               :disabled="!edit"
-               :value="person.item">
+        <input
+          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+          type="text"
+          :disabled="!edit"
+          :value="person.item"
+        >
       </div>
     </div>
 
@@ -74,30 +96,52 @@ export default {
     </div>
 
     <div class="change_profile">
-      <div class="change_password" v-if="edit === false">
-        <button v-if="changeDate.changePass === false" @click="changeDate.changePass = true" class="editBtn">Изменить пароль</button>
+      <div
+        class="change_password"
+        v-if="edit === false"
+      >
+        <button
+          v-if="changeDate.changePass === false"
+          @click="changeDate.changePass = true"
+          class="editBtn"
+        >Изменить пароль</button>
         <div v-if="changeDate.changePass === true">
           <label>Введите пароль</label><input type="password"><br>
           <label>Введите новый</label><input type="password"><br>
           <label>повторите новый пароль</label><input type="password"><br>
           <button class="editBtn">Подтвердить изменение</button>
-          <button @click="changeDate.changePass = false" class="editBtn">Отмена</button>
+          <button
+            @click="changeDate.changePass = false"
+            class="editBtn"
+          >Отмена</button>
         </div>
       </div>
-      <div class="edit_profile" v-if="changeDate.changePass === false">
-        <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
-        <button v-show="edit === true" @click="edit = false" class="editBtn">Подтвердить изменения</button>
-        <button v-show="edit === true" @click="edit = false" class="editBtn">Отмена изменения</button>
+      <div
+        class="edit_profile"
+        v-if="changeDate.changePass === false"
+      >
+        <button
+          @click="edit = true"
+          v-if="edit === false"
+          class="editBtn"
+        >Изменить профиль</button>
+        <button
+          v-show="edit === true"
+          @click="edit = false"
+          class="editBtn"
+        >Подтвердить изменения</button>
+        <button
+          v-show="edit === true"
+          @click="edit = false"
+          class="editBtn"
+        >Отмена изменения</button>
       </div>
     </div>
 
   </div>
-
 </template>
 
 <style scoped lang="scss">
-
-
 .main {
   font-size: 2rem;
   width: 100%;
@@ -112,7 +156,7 @@ export default {
   background: none;
   border: none;
   font-size: 2rem;
-  font-family: Visitor,sans-serif;
+  font-family: Visitor, sans-serif;
 }
 
 .InputChange {
@@ -120,7 +164,7 @@ export default {
   background: none;
   border: none;
   font-size: 2rem;
-  font-family: Visitor,sans-serif;
+  font-family: Visitor, sans-serif;
   border-bottom: 1px solid black;
 }
 
@@ -142,5 +186,4 @@ export default {
   border-radius: 1.5rem;
   border: 2px solid black;
   box-shadow: 2px 2px 4px black;
-}
-</style>
+}</style>
