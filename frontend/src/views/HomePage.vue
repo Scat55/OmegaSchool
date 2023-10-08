@@ -32,6 +32,7 @@ import LastInfo from '../components/LastInfo.vue'
 // import Header from './components/Header'
 import Footer from '../components/Footer'
 import { mapGetters } from 'vuex';
+import axios from 'axios'
 export default {
   components: {
     Header,
@@ -68,13 +69,9 @@ export default {
   },
 
   mounted() {
-    fetch('/userlist')
-      .then(response => response.json())
-      .then(response => {
-        this.message = response.message;
-        console.log(JSON.parse(response))
-        this.users = JSON.parse(response)
-      })
+    axios.get('/userlist').then((resp) => {
+      console.log(JSON.parse(resp.data));
+    });
   },
 }
 </script>

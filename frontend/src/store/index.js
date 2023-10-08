@@ -1,17 +1,25 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    status: false,
+    users: [],
   },
   getters: {
-    STATUS(state) {
-      return state.status;
+    USERS(state) {
+      return state.users;
     },
   },
   mutations: {},
-  actions: {},
+  actions: {
+    // Получаем всех пользователей
+    SET_USERS_FROM_API: () => {
+      axios.get('/userlist').then((resp) => {
+        console.log(resp.data);
+      });
+    },
+  },
 });
