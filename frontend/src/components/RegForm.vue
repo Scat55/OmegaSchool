@@ -129,7 +129,7 @@ export default {
         this.$v.$touch()
         return
       } else {
-
+        
       }
       console.log(`${this.fullName}, ${this.pass}, ${this.gender.name} ,${this.proffesion.name}`)
     }
