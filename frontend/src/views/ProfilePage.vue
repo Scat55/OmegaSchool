@@ -29,6 +29,12 @@
             </div>
             <div
                 class="tab"
+                v-if="person.student === false"
+                @click="switchTab('AddTask')"
+            >Добавить задачу
+            </div>
+            <div
+                class="tab"
                 v-if="person.student === true"
                 @click="switchTab('AchivStud')"
             >Достижения
@@ -52,6 +58,7 @@
               v-show="isActiveComponents.Profile === true"
               :person="person"
           />
+          <AddTask v-show="isActiveComponents.AddTask === true"/>
           <TaskToCheckStudent v-show="isActiveComponents.TaskToCheckStudent === true"/>
           <TaskToCheckTeacher v-show="isActiveComponents.TaskToCheckTeacher === true"/>
           <MySolvedTask v-show="isActiveComponents.MySolvedTask === true"/>
@@ -72,9 +79,11 @@ import MyAddTask from "@/components/Profile/MyAddTask.vue";
 import MySolvedTask from "@/components/Profile/MySolvedTask.vue";
 import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
 import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
+import AddTask from "@/components/Profile/AddTask.vue";
 
 export default {
   components: {
+    AddTask,
     TaskToCheckTeacher,
     TaskToCheckStudent,
     MySolvedTask,
@@ -92,7 +101,7 @@ export default {
         patronymic: 'Segeevich',
         birthday: '14.03.2002',
         gender: "Мужской",
-        student: true, // переключатель вкладок
+        student: false, // переключатель вкладок
         class: '11',
         item: 'Математика',
         email: 'a1exa2@adsaw.ry',
@@ -105,7 +114,8 @@ export default {
         AchivStud: false,
         RatingTeach: false,
         MyAddTask: false,
-        MySolvedTask: false
+        MySolvedTask: false,
+        AddTask: false,
       },
     }
   },
