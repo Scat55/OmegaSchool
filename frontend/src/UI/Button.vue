@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/styles/styles.scss';
+@import '../assets/styles/vars.scss';
 
 button {
   font-size: 0.96rem;
@@ -30,7 +30,7 @@ button {
   border: 1px solid #018bd3;
   background: none;
   border-radius: 1rem;
-  font-family: Visitor;
+  font-family: Visitor, sans-serif;
 }
 
 button.active {

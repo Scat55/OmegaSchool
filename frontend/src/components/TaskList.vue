@@ -19,7 +19,8 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/styles/styles.scss';
+@import '../assets/styles/vars.scss';
+
 
 .task {
   border: 2px solid $lightBlueColor;

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
     <div class="main">
 
       <div class="window">
@@ -12,14 +11,16 @@
 
         <div class="div2">
           <div>
-            <FilterItems />
-            <ComplexityTasks />
-            <filter-items>
-              <FilterItems />
-            </filter-items>
-            <complexity-tasks>
-              <ComplexityTasks />
-            </complexity-tasks>
+            <FilterItems/>
+            <div class="complexity">
+              <p>Уровень сложности заданий:</p>
+              <input type="checkbox" id="checkbox1" name="checkboxGroup" value="Пункт 1">
+              <label for="checkbox1">Легкие</label><br>
+              <input type="checkbox" id="checkbox1" name="checkboxGroup" value="Пункт 1">
+              <label for="checkbox1">Средние</label><br>
+              <input type="checkbox" id="checkbox1" name="checkboxGroup" value="Пункт 1">
+              <label for="checkbox1">Тяжелые</label><br>
+            </div>
           </div>
 
           <button class="btn_filter">Применить фильтр</button>
@@ -28,28 +29,26 @@
 
         <div class="div3">
           <div v-for="task in zadania">
-            <Task :task="task" />
+            <TaskList :task="task"/>
           </div>
         </div>
 
       </div>
 
     </div>
-    <Footer />
   </div>
 </template>
 
+
 <script>
-// import Button from "@/UI/Button.vue";
 import FilterItems from "@/components/FilterItems.vue";
-import ComplexityTasks from "@/components/ComplexityTasks.vue";
-import Task from "@/components/Task.vue";
+import Task from "@/components/TaskList.vue";
+import TaskList from "@/components/TaskList.vue";
 
 export default {
   components: {
-    ComplexityTasks,
+    TaskList,
     FilterItems,
-    Task
   },
   data() {
     return {
@@ -115,6 +114,10 @@ export default {
   padding: 10px;
 }
 
+.complexity p {
+    margin: 15px 0 5px 0;
+}
+
 .window {
   width: 1270px;
   //margin: 0 5% 0 5%;
@@ -156,4 +159,3 @@ export default {
   overflow-y: auto;
 }
 </style>
-
