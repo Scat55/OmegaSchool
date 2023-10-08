@@ -53,7 +53,7 @@ export default {
       const body = document.querySelector('body')
       this.$store.state.status = true
       body.style.overflow = "hidden"
-      console.log(this.STATUS)
+
     },
 
   },
