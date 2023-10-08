@@ -39,11 +39,13 @@
 
 <script>
 import Profile from "@/components/Profile/Profile.vue";
-// import AchivmentStudent from "@/components/Profile/AchivmentStudent.vue";
-// import RatingTeacher from "@/components/Profile/RatingTeacher.vue";
+import AchivmentStudent from "@/components/Profile/AchivmentStudent.vue";
+import RatingTeacher from "@/components/Profile/RatingTeacher.vue";
 export default {
   components: {
     Profile,
+    AchivmentStudent,
+    RatingTeacher
   },
   data() {
     return {

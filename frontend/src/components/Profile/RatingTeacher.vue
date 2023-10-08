@@ -3,9 +3,7 @@
 </script>
 
 <template>
-<h>Teacher</h>
+  <h3>Teacher</h3>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
