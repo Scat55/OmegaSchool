@@ -12,8 +12,11 @@
 
         <div class="div2">
           <div>
+<<<<<<< HEAD
             <FilterItems />
             <ComplexityTasks />
+=======
+>>>>>>> c92b2dce59f1bacbf7aa110bc790f5c366337143
             <filter-items>
               <FilterItems />
             </filter-items>
@@ -40,11 +43,9 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Button from "@/UI/Button.vue";
+// import Button from "@/UI/Button.vue";
 import FilterItems from "@/components/FilterItems.vue";
 import ComplexityTasks from "@/components/ComplexityTasks.vue";
-import Footer from "@/components/Footer.vue";
 import Task from "@/components/Task.vue";
 
 export default {

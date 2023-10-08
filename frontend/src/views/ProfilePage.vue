@@ -91,15 +91,16 @@ export default {
 .container {
   margin-top: 80px;
   height: 80vh;
-  //width: 100%;
-  //padding: 10px;
   justify-content: center;
 }
 
 .window {
   column-gap: 10px;
   margin: 0 auto;
+<<<<<<< Updated upstream
+=======
   //width: 79.375rem;
+>>>>>>> Stashed changes
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -112,10 +113,7 @@ export default {
   grid-column: 1 / span 1;
   grid-row: 1 / span 1;
   height: 350px;
-  //display: grid;
   padding: 10px 3px 0 3px;
-  //grid-template-columns: 1fr;
-  //grid-template-rows: repeat(6, 1fr);
 }
 
 .tabs {
