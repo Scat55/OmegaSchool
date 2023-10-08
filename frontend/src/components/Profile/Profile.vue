@@ -132,6 +132,7 @@ export default {
 
 .change_profile {
   margin-top: 15rem;
+  display: flex;
 }
 
 .editBtn {
