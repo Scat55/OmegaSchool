@@ -1,14 +1,11 @@
 <template>
   <div class="reg ">
-
     <div class="container">
-
       <form
         action="#"
         class="reg__form no-scroll"
         @submit.prevent="handler()"
       >
-
         <p class="reg__form-title">Регистрация</p>
         <img
           src="../assets/images/closeForm.png"
@@ -22,25 +19,30 @@
           <input
             type="text"
             class="reg__input name"
+            v-model="fullName"
           >
-
         </div>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
           <input
             type="password"
             class="reg__input"
+            v-model="pass"
           >
         </div>
-        <small> TExt</small>
+        <small :class="{ activeClass: activeClass }">Пароль должен быть не меньше 8 символов</small>
 
         <select
           name="gender"
           id="gender"
           class="reg__form-prof"
         >
-          <option class="reg__from-option">
-            Text
+          <option
+            class="reg__from-option"
+            v-for="gender in gender"
+            :value="gender.name"
+          >
+            {{ gender.name }}
           </option>
         </select>
 
@@ -49,8 +51,12 @@
           id="proffesion"
           class="reg__form-prof"
         >
-          <option class="reg__from-option">
-
+          <option
+            class="reg__from-option"
+            v-for="prof in proffesion"
+            :value="prof.name"
+          >
+            {{ prof.name }}
           </option>
         </select>
 
@@ -120,7 +126,11 @@
 export default {
   data() {
     return {
-
+      fullName: '',
+      pass: '',
+      proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
+      gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }],
+      activeClass: true
     }
   },
 
@@ -130,6 +140,11 @@ export default {
       this.$store.state.status = false
       body.style.overflow = ""
       console.log(this.STATUS)
+    },
+    handler() {
+      // this.$router.push('/profile')
+      // this.$store.state.status = false
+      console.log()
     }
   },
 }
@@ -146,7 +161,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 125vh;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
 
 
@@ -234,6 +249,10 @@ export default {
   &__auth {
     cursor: pointer;
     color: $accentColor;
+  }
+
+  small {
+    font-size: 0.65rem;
   }
 }
 

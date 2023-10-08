@@ -1,12 +1,11 @@
 const express = require('express');
-const sqlite3 = require("sqlite3").verbose();
-
+const sqlite3 = require('sqlite3').verbose();
 
 const PORT = process.env.PORT || 8070;
 
 const app = express();
 
-const filepath = "./New_database.db";
+const filepath = './New_database.db';
 
 const db = new sqlite3.Database('./New_database.db', (err) => {
   if (err) {
@@ -20,10 +19,7 @@ app.listen(PORT, () => {
   console.log(`Server starting on ${PORT} port`);
 });
 
-
 console.log('Подключение к базе данных установлено');
-
-
 
 // отправка на фронт данный из таблицы users
 app.get('/userlist', (req, res) => {
@@ -44,8 +40,6 @@ app.get('/userlist', (req, res) => {
   });
 });
 
-
-
 // Используйте express.json() для обработки JSON-тела запроса
 app.use(express.json());
 
@@ -55,11 +49,11 @@ app.post('/checkUser', (req, res) => {
 
   // Получение логина и пароля из JSON-тела запроса
   const { user_name, password } = req.body;
-  console.log(req.body)
+  console.log(req.body);
   // SQL-запрос для проверки наличия пользователя
   const query = 'SELECT * FROM users WHERE user_name = ? AND password = ?';
   const values = [user_name, password];
-  console.log(req.body)
+  console.log(req.body);
   db.get(query, values, (err, row) => {
     if (err) {
       console.error('Ошибка при выполнении SQL-запроса:', err.message);
@@ -76,8 +70,6 @@ app.post('/checkUser', (req, res) => {
     }
   });
 });
-
-
 
 //добавление пользователя
 
@@ -102,4 +94,3 @@ app.post('/addUser', (req, res) => {
     res.json({ message: 'Пользователь успешно добавлен' });
   });
 });
-

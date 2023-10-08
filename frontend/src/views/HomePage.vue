@@ -1,7 +1,10 @@
 <template>
   <div class="home">
 
+    <div @click="showKolya()">
+      Click {{ message }}
 
+    </div>
     <main>
       <Robot />
       <Computer />
@@ -10,11 +13,7 @@
       <LastInfo />
     </main>
 
-    <footer>
-      <!-- {{ message }} -->
-      <Footer />
-    </footer>
-    <!-- <router-view></router-view> -->
+
 
 
   </div>
@@ -48,16 +47,33 @@ export default {
   },
   data() {
     return {
-      message: ''
+      message: '',
+      users: [],
+      nik: 'Nikolya'
     }
   },
 
+  methods: {
+    // Тестовая проверка на присутсвие юзера в массиве
+    // showKolya() {
+    //   // const users = Object.values(this.users)
+    //   // console.log(users)
+    //   const newArr = this.users.map(el => {
+    //     const test = Object.values(el)
+    //     if (test.includes(this.nik)) {
+    //       this.message = 'Yes'
+    //     }
+    //   })
+    // }
+  },
+
   mounted() {
-    fetch('/api')
+    fetch('/userlist')
       .then(response => response.json())
       .then(response => {
         this.message = response.message;
-        console.log(response)
+        console.log(JSON.parse(response))
+        this.users = JSON.parse(response)
       })
   },
 }
