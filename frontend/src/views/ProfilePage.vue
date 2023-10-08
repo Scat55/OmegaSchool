@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="container">
@@ -6,31 +5,34 @@
         <div class="left_div">
           <div class="tabs">
             <div
-              class="tab"
-              @click="switchTab('profile')"
-            >Профиль</div>
+                class="tab"
+                @click="switchTab('profile')"
+            >Профиль
+            </div>
             <div class="tab">Мои добавленные задачи</div>
             <div
-              class="tab"
-              v-if="person.student === true"
-              @click="switchTab('achivStud')"
-            >Достижения</div>
+                class="tab"
+                v-if="person.student === true"
+                @click="switchTab('achivStud')"
+            >Достижения
+            </div>
             <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('ratingTeach')"
-            >Рейтинг</div>
+                class="tab"
+                v-if="person.student === false"
+                @click="switchTab('ratingTeach')"
+            >Рейтинг
+            </div>
             <div class="tab">Мои решенные задачи</div>
             <div class="tab">Задачи на проверку</div>
           </div>
         </div>
         <div class="right_div">
           <Profile
-            v-show="isActiveComponents.profile === true"
-            :person="person"
+              v-show="isActiveComponents.profile === true"
+              :person="person"
           />
-          <AchivmentStudent v-show="isActiveComponents.achivStud === true" />
-          <RatingTeacher v-show="isActiveComponents.ratingTeach === true" />
+          <AchivmentStudent v-show="isActiveComponents.achivStud === true"/>
+          <RatingTeacher v-show="isActiveComponents.ratingTeach === true"/>
         </div>
       </div>
     </div>
@@ -50,19 +52,20 @@ export default {
   data() {
     return {
       person: {
+        // avatar: '',
         name: 'Sasha',
         lastname: 'Volkov',
         patronymic: 'Segeevich',
         birthday: '14.03.2002',
-        gender: "Мальчик",
-        student: false,
+        gender: "Мужской",
+        student: true,
         class: '11',
         item: 'Математика',
         email: 'a1exa2@adsaw.ry',
         expert: false
       },
       isActiveComponents: {
-        profile: false,
+        profile: true,
         achivStud: false,
         ratingTeach: false,
       },
@@ -88,18 +91,22 @@ export default {
 .container {
   margin-top: 80px;
   height: 80vh;
-  width: 100%;
+  //width: 100%;
   //padding: 10px;
+  justify-content: center;
 }
 
 .window {
   column-gap: 10px;
   margin: 0 auto;
+<<<<<<< Updated upstream
+=======
+  //width: 79.375rem;
+>>>>>>> Stashed changes
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr 1fr;
-
 }
 
 
@@ -134,6 +141,7 @@ export default {
   background: $lightBlueColor;
   grid-column: 2 / span 3;
   grid-row: 1 / span 2;
+  overflow-y: auto;
 }
 
 .left_div,
