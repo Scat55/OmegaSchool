@@ -34,10 +34,11 @@ export default {
 
   methods: {
     changeStatusOnTrue() {
+      window.scrollTo(0, 0);
       const body = document.querySelector('body')
       this.$store.state.status = true
       body.style.overflow = "hidden"
-      console.log(this.STATUS)
+
     },
   },
 }
