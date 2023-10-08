@@ -97,10 +97,7 @@ export default {
 .window {
   column-gap: 10px;
   margin: 0 auto;
-<<<<<<< Updated upstream
-=======
-  //width: 79.375rem;
->>>>>>> Stashed changes
+
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
