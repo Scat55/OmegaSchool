@@ -95,7 +95,6 @@ export default {
 .window {
   column-gap: 10px;
   margin: 0 auto;
-  width: 79.375rem;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
