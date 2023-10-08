@@ -5,6 +5,7 @@ import ProfilePage from '../views/ProfilePage.vue';
 import AuthPage from '../views/AuthPage.vue';
 import HomePage from '../views/HomePage.vue';
 import TaskPage from "../views/TaskPage.vue";
+import TaskDetail from "@/components/TaskDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -25,9 +26,14 @@ const routes = [
     component: AuthPage,
   },
   {
-    path: '/tasks',
-    name: 'tasks',
+    path: '/task',
+    name: 'task',
     component: TaskPage,
+  },
+  {
+    path: '/task/:id',
+    component: TaskDetail,
+    name: 'taskDetail'
   }
 ];
 

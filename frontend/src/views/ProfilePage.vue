@@ -5,34 +5,59 @@
         <div class="left_div">
           <div class="tabs">
             <div
-              class="tab"
-              @click="switchTab('profile')"
+                class="tab"
+                @click="switchTab('Profile')"
             >Профиль
             </div>
-            <div class="tab">Мои добавленные задачи</div>
             <div
-              class="tab"
-              v-if="person.student === true"
-              @click="switchTab('achivStud')"
+                class="tab"
+                v-if="person.student === false"
+                @click="switchTab('TaskToCheckStudent')"
+            >Задачи на проверку ( от учеников )
+            </div>
+            <div
+                class="tab"
+                v-if="(person.student === false) && person.expert === true"
+                @click="switchTab('TaskToCheckTeacher')"
+            >Задачи на проверку ( от учителей )
+            </div>
+            <div
+                class="tab"
+                v-if="person.student === false"
+                @click="switchTab('MyAddTask')"
+            >Мои добавленные задачи
+            </div>
+            <div
+                class="tab"
+                v-if="person.student === true"
+                @click="switchTab('AchivStud')"
             >Достижения
             </div>
             <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('ratingTeach')"
+                class="tab"
+                v-if="person.student === false"
+                @click="switchTab('RatingTeach')"
             >Рейтинг
             </div>
-            <div class="tab">Мои решенные задачи</div>
-            <div class="tab">Задачи на проверку</div>
+            <div
+                class="tab"
+                v-if="person.student === true"
+                @click="switchTab('MySolvedTask')"
+            >Мои решенные задачи
+            </div>
           </div>
         </div>
         <div class="right_div">
           <Profile
-            v-show="isActiveComponents.profile === true"
-            :person="person"
+              v-show="isActiveComponents.Profile === true"
+              :person="person"
           />
-          <AchivmentStudent v-show="isActiveComponents.achivStud === true" />
-          <RatingTeacher v-show="isActiveComponents.ratingTeach === true" />
+          <TaskToCheckStudent v-show="isActiveComponents.TaskToCheckStudent === true"/>
+          <TaskToCheckTeacher v-show="isActiveComponents.TaskToCheckTeacher === true"/>
+          <MySolvedTask v-show="isActiveComponents.MySolvedTask === true"/>
+          <MyAddTask v-show="isActiveComponents.MyAddTask === true"/>
+          <AchivmentStudent v-show="isActiveComponents.AchivStud === true"/>
+          <RatingTeacher v-show="isActiveComponents.RatingTeach === true"/>
         </div>
       </div>
     </div>
@@ -43,8 +68,17 @@
 import Profile from "@/components/Profile/Profile.vue";
 import AchivmentStudent from "@/components/Profile/AchivmentStudent.vue";
 import RatingTeacher from "@/components/Profile/RatingTeacher.vue";
+import MyAddTask from "@/components/Profile/MyAddTask.vue";
+import MySolvedTask from "@/components/Profile/MySolvedTask.vue";
+import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
+import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
+
 export default {
   components: {
+    TaskToCheckTeacher,
+    TaskToCheckStudent,
+    MySolvedTask,
+    MyAddTask,
     Profile,
     AchivmentStudent,
     RatingTeacher
@@ -58,16 +92,20 @@ export default {
         patronymic: 'Segeevich',
         birthday: '14.03.2002',
         gender: "Мужской",
-        student: true,
+        student: true, // переключатель вкладок
         class: '11',
         item: 'Математика',
         email: 'a1exa2@adsaw.ry',
         expert: false
       },
       isActiveComponents: {
-        profile: true,
-        achivStud: false,
-        ratingTeach: false,
+        Profile: true,
+        TaskToCheckStudent: false,
+        TaskToCheckTeacher: false,
+        AchivStud: false,
+        RatingTeach: false,
+        MyAddTask: false,
+        MySolvedTask: false
       },
     }
   },

@@ -11,10 +11,11 @@ export default {
 
 <template>
   <div class="task">
-    <div class="title">{{task.title}}</div>
+    <router-link :to="'/task/' + task.id" class="title">{{ task.title }}
+    </router-link>
     <div class="topic">Предмет: {{task.topic}}</div>
-    <div class="complexity">{{task.complexity}}</div>
-    <div class="bodyTask">Краткое описание: {{task.bodyTask}}</div>
+    <div class="complexity">Уровень задания: {{task.complexity}}</div>
+    <div class="bodyTask">{{task.bodyTask}}</div>
   </div>
 </template>
 
@@ -42,7 +43,6 @@ export default {
   grid-column: 1 / span 4;
   grid-row: 1 / span 1;
   font-size: 20px;
-  //border-radius: 1rem;
   border-bottom: 1px solid $lightBlueColor;
   background: $lightBlueColor;
 }

@@ -53,44 +53,52 @@ export default {
   data() {
     return {
       zadania: [{
+        id: 1,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd"
       }, {
+        id: 2,
         title: "sdrgrsdgsdrgxdrgxrtdht",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       }, {
+        id: 3,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       }, {
+        id: 4,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       }, {
+        id: 5,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       }, {
+        id: 6,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       }, {
+        id: 7,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       }, {
+        id: 8,
         title: "Сложение двух числе",
         topic: "Математика",
-        complexity: "Уровень сложности: Тяжелые",
+        complexity: "1",
         bodyTask: "Нужно будет сложить два числа"
       },]
     }
