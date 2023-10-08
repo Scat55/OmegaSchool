@@ -14,23 +14,44 @@
           @click="changeStatusOnFalse()"
         >
 
-        <div class="reg__info">
+        <div
+          class="reg__info"
+          :class="{ invalid: ($v.fullName.$dirty && !$v.fullName.required) }"
+        >
           <span class="reg__info-name ">Имя, фамилия</span>
           <input
             type="text"
             class="reg__input name"
-            v-model="fullName"
+            v-model.trim="fullName"
           >
         </div>
-        <div class="reg__info">
+        <small
+          v-if="$v.fullName.$dirty && !$v.fullName.required"
+          class="activeClass"
+        >Поле не должно быть пустым</small>
+        <small
+          v-if="activeClass"
+          :class="{ activeClass: activeClass }"
+        >Введите ваше имя и фамилию</small>
+        <div
+          class="reg__info"
+          :class="{ invalid: ($v.pass.$dirty && !$v.pass.required) || ($v.pass.$dirty && !$v.pass.minLength) }"
+        >
           <span class="reg__info-name">Пароль</span>
           <input
             type="password"
             class="reg__input"
-            v-model="pass"
+            v-model.trim="pass"
           >
         </div>
-        <small :class="{ activeClass: activeClass }">Пароль должен быть не меньше 8 символов</small>
+        <small
+          v-if="$v.pass.$dirty && !$v.pass.required"
+          class="activeClass"
+        >Введите пароль</small>
+        <small
+          v-else-if="$v.pass.$dirty && !$v.pass.minLength"
+          class="activeClass"
+        >Пароль должен быть не меньше 8 символов</small>
 
         <select
           name="gender"
@@ -65,10 +86,6 @@
           type="submit"
         >Зарегестрироваться</button>
         <p>Есть аккаут? <span class="reg__auth"> Войти</span> </p>
-
-        <small>
-          Text
-        </small>
       </form>
 
 
@@ -77,60 +94,21 @@
 </template>
 
 <script>
-// import { ref, reactive } from 'vue';
-// import { useRouter } from 'vue-router';
-// import { useVuelidate } from '@vuelidate/core';
-// import { required, minLength } from '@vuelidate/validators';
-// import { useCounterStore } from '../stores/counter';
-
-// const status = useCounterStore();
-// const router = useRouter();
-// const userProf = ref({})
-// const activeClass = ref(true)
-
-// const state = reactive({
-//   fullName: '',
-//   password: '',
-//   proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
-//   gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }]
-// })
-
-// const rules = {
-//   fullName: { required },
-//   password: { required, minLength: minLength(8) },
-//   proffesion: { required },
-//   gender: { required }
-// }
-
-// const v$ = useVuelidate(rules, state)
-// // Валидация формы
-// const handler = async () => {
-//   const result = await v$.value.$validate();
-//   if (result) {
-//     router.push('/profile')
-//     // console.log(`${state.fullName}, ${state.password}, ${state.proffesion.name}, ${state.gender.name}`)
-//   } else {
-//     alert('Есть ошибки в форме')
-//   }
-
-// }
-
-// // Появлени формы и отключение скролла
-// const body = document.querySelector('body')
-
-// const changeStatusOnFalse = () => {
-//   status.statusForm = false
-//   body.style.overflow = ""
-// }
+import { minLength, required } from 'vuelidate/lib/validators';
 
 export default {
+  validations: {
+    fullName: { required },
+    pass: { required, minLength: minLength(8) }
+  },
   data() {
+
     return {
       fullName: '',
       pass: '',
       proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
       gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }],
-      activeClass: true
+      activeClass: false
     }
   },
 
@@ -139,12 +117,16 @@ export default {
       const body = document.querySelector('body')
       this.$store.state.status = false
       body.style.overflow = ""
-      console.log(this.STATUS)
     },
     handler() {
-      // this.$router.push('/profile')
-      // this.$store.state.status = false
-      console.log()
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      } else {
+        alert('Good')
+        alert(this.pass)
+        this.fullName = this.pass = ''
+      }
     }
   },
 }
@@ -263,5 +245,9 @@ export default {
 
 .activeClass {
   color: red;
+}
+
+.invalid {
+  border: 1px solid red;
 }
 </style>
