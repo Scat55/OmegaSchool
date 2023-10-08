@@ -53,10 +53,12 @@
           class="activeClass"
         >Пароль должен быть не меньше 8 символов</small>
 
+        <span>Пол</span>
         <select
           name="gender"
           id="gender"
           class="reg__form-prof"
+          v-model="gender.name"
         >
           <option
             class="reg__from-option"
@@ -67,10 +69,13 @@
           </option>
         </select>
 
+
+        <span>Учитель / Ученик</span>
         <select
           name="proffesion"
           id="proffesion"
           class="reg__form-prof"
+          v-model="proffesion.name"
         >
           <option
             class="reg__from-option"
@@ -99,7 +104,8 @@ import { minLength, required } from 'vuelidate/lib/validators';
 export default {
   validations: {
     fullName: { required },
-    pass: { required, minLength: minLength(8) }
+    pass: { required, minLength: minLength(8) },
+
   },
   data() {
 
@@ -123,10 +129,9 @@ export default {
         this.$v.$touch()
         return
       } else {
-        alert('Good')
-        alert(this.pass)
-        this.fullName = this.pass = ''
+
       }
+      console.log(`${this.fullName}, ${this.pass}, ${this.gender.name} ,${this.proffesion.name}`)
     }
   },
 }
