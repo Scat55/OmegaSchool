@@ -14,10 +14,7 @@
           @click="changeStatusOnFalse()"
         >
 
-        <div
-          class="reg__info"
-          :class="{ invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email) }"
-        >
+        <div class="reg__info">
           <span class="reg__info-name ">Почта</span>
           <input
             type="email"
@@ -26,17 +23,10 @@
           >
         </div>
         <small
-          v-if="$v.email.$dirty && !$v.email.required"
+          v-if="activeClass"
           class="activeClass"
         >Поле не должно быть пустым</small>
-        <small
-          v-else-if="$v.email.$dirty && !$v.email.email"
-          class="activeClass"
-        >Введите валидную почту</small>
-        <div
-          class="reg__info"
-          :class="{ invalid: ($v.pass.$dirty && !$v.pass.required) || ($v.pass.$dirty && !$v.pass.minLength) }"
-        >
+        <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
           <input
             type="password"
@@ -45,15 +35,11 @@
           >
         </div>
         <small
-          v-if="$v.pass.$dirty && !$v.pass.required"
-          class="activeClass"
-        >Введите пароль</small>
-        <small
-          v-else-if="$v.pass.$dirty && !$v.pass.minLength"
+          v-if="activeClass"
           class="activeClass"
         >Пароль должен быть не меньше 8 символов</small>
 
-        <span>Пол</span>
+        <span class="gender">Пол</span>
         <select
           name="gender"
           id="gender"
@@ -70,7 +56,7 @@
         </select>
 
 
-        <span>Учитель / Ученик</span>
+        <span class="proffesion">Учитель / Ученик</span>
         <select
           name="proffesion"
           id="proffesion"
@@ -99,16 +85,11 @@
 </template>
 
 <script>
-import { email, minLength, required } from 'vuelidate/lib/validators';
+
 import axios from 'axios';
 
 export default {
-  validations: {
 
-    pass: { required, minLength: minLength(8) },
-    email: { email, required }
-
-  },
   data() {
 
     return {
@@ -129,7 +110,6 @@ export default {
     changeUserList() {
       const email = this.email
       const pass = this.pass
-      // console.log(email)
       axios.post('/checkUser', {
         email: email,
         password: pass
@@ -138,30 +118,20 @@ export default {
         .then(function (response) {
           console.log(email, pass)
           alert(response.data.message);
-          if (email && pass) {
-            return true
-          }
-          else {
-            return false
-          }
         })
         .catch(function (error) {
           console.log(error);
         });
     },
     handler() {
-      // if (this.$v.$invalid) {
-
-      //   this.$v.$touch()
-
-      //   return
-      // } else {
-
-      // }
-
-      this.changeUserList()
-
-      // console.log(typeof this.email)
+      if (this.pass === '' || this.pass.length < 8 || this.email === '') {
+        this.activeClass = true
+        return false
+      }
+      else {
+        this.activeClass = false
+        this.changeUserList()
+      }
     }
   },
 }
@@ -220,7 +190,7 @@ export default {
       width: 18rem;
       border: 1px solid $accentColor;
       border-radius: 0.5rem;
-      padding: .625rem 1.25rem;
+      padding: .625rem;
       font-family: Visitor;
       font-size: 1rem;
       outline: none;
@@ -280,9 +250,22 @@ export default {
 
 .activeClass {
   color: red;
+  padding: 0;
 }
 
 .invalid {
   border: 1px solid red;
+}
+
+.gender {
+  align-self: start;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+.proffesion {
+  align-self: start;
+  font-size: 0.8rem;
+  padding: 0;
 }
 </style>
