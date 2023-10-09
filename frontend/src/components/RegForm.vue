@@ -107,7 +107,7 @@ export default {
       this.$store.state.status = false
       body.style.overflow = ""
     },
-
+    // Проверка и добавление пользователя
     changeUserList() {
       const email = this.email
       const pass = this.pass
@@ -140,6 +140,7 @@ export default {
       this.$router.push('/profile')
       this.$store.state.status = false
     },
+    // Обработка формы
     handler() {
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
         this.activeClass = true
