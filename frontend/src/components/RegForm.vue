@@ -16,23 +16,23 @@
 
         <div
           class="reg__info"
-          :class="{ invalid: ($v.fullName.$dirty && !$v.fullName.required) }"
+          :class="{ invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email) }"
         >
-          <span class="reg__info-name ">Имя, фамилия</span>
+          <span class="reg__info-name ">Почта</span>
           <input
-            type="text"
+            type="email"
             class="reg__input name"
-            v-model.trim="fullName"
+            v-model.trim="email"
           >
         </div>
         <small
-          v-if="$v.fullName.$dirty && !$v.fullName.required"
+          v-if="$v.email.$dirty && !$v.email.required"
           class="activeClass"
         >Поле не должно быть пустым</small>
         <small
-          v-if="activeClass"
-          :class="{ activeClass: activeClass }"
-        >Введите ваше имя и фамилию</small>
+          v-else-if="$v.email.$dirty && !$v.email.email"
+          class="activeClass"
+        >Введите валидную почту</small>
         <div
           class="reg__info"
           :class="{ invalid: ($v.pass.$dirty && !$v.pass.required) || ($v.pass.$dirty && !$v.pass.minLength) }"
@@ -99,19 +99,20 @@
 </template>
 
 <script>
-import { minLength, required } from 'vuelidate/lib/validators';
+import { email, minLength, required } from 'vuelidate/lib/validators';
 
 export default {
   validations: {
-    fullName: { required },
+
     pass: { required, minLength: minLength(8) },
+    email: { email, required }
 
   },
   data() {
 
     return {
-      fullName: '',
       pass: '',
+      email: '',
       proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
       gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }],
       activeClass: false
@@ -129,9 +130,9 @@ export default {
         this.$v.$touch()
         return
       } else {
-        
+
       }
-      console.log(`${this.fullName}, ${this.pass}, ${this.gender.name} ,${this.proffesion.name}`)
+      console.log(`${this.email}, ${this.pass}, ${this.gender.name} ,${this.proffesion.name}`)
     }
   },
 }
