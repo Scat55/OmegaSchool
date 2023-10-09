@@ -88,7 +88,7 @@ app.post('/addUser', [
   console.log('Запрос на добавление пользователя получен');
 
   // Проверяем наличие ошибок валидации
-  const errors = validationResult(req);ы
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ message: 'Ошибка валидации' });
   }
