@@ -2,6 +2,7 @@
   <div class="home">
 
     <main>
+
       <Robot />
       <Computer />
       <Positive />
@@ -27,6 +28,7 @@ import LastInfo from '../components/LastInfo.vue'
 // import Header from './components/Header'
 // import Header from './components/Header'
 import Footer from '../components/Footer'
+import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex';
 export default {
   components: {
@@ -54,6 +56,7 @@ export default {
   },
   mounted() {
     this.GET_USERS_FROM_API()
+
   },
 }
 </script>
