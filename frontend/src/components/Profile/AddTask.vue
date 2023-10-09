@@ -1,8 +1,11 @@
 <script>
 import TwoLVL from "@/components/AddTask/TwoLVL.vue";
+import FirstLVL from "@/components/AddTask/FirstLVL.vue";
 
 export default {
-  components: {TwoLVL},
+  components: {
+    FirstLVL,
+    TwoLVL},
   data() {
     return {
       selectedValue: '',
@@ -20,7 +23,7 @@ export default {
           this.rules = 'За задание дается максимум 3 балла. Предполагается вопрос с развернутым ответом, где ответ проверяет учитель.'
           break;
         case ('threeLVL'):
-          this.rules = 'Это тест. Здесь может быть неограниченное кол-во заданий 1 уровня и 2 уровня.'
+          this.rules = 'Проектная работа. Дается только тема и необходимые материалы.'
           break;
         default:
           this.rules = 'у вас не выбран уровень задания.'
@@ -42,6 +45,7 @@ export default {
       </select>
       <p>{{ rules }}</p>
     </div>
+    <FirstLVL v-show="selectedValue === 'oneLVL'"/>
     <TwoLVL  v-show="selectedValue === 'twoLVL'" />
   </div>
 </template>
