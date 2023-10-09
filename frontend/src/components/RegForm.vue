@@ -124,17 +124,21 @@ export default {
           if (response.data.message === 'Пользователь не найден') {
             // this.addedUser()
             // this.$router.push('/profile')
-            axios.post('/addUser', JSON.stringify({
+            axios.post('/addUser', {
               email: email,
               password: pass,
               gender: gender,
               type_user: type_user
-            }))
+            }).json()
+
           }
         })
         .catch(function (error) {
           console.log(error);
         });
+
+      this.$router.push('/profile')
+      this.$store.state.status = false
     },
     handler() {
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
