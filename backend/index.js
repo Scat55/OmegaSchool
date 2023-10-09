@@ -110,6 +110,7 @@ app.post(
       }
 
       // Если найден пользователь с таким email, вернуть ошибку
+      // TODO: Коль, можешь убрать статус 400 и просто возвращать сообщение
       if (row) {
         console.log(`Пользователь с email ${email} уже существует`);
         res.status(400).json({ message: 'Пользователь с таким email уже существует' });
@@ -180,7 +181,6 @@ app.get('/getUser/:user_id', (req, res) => {
       console.log(`Пользователь с ID ${user_id} не найден`);
       res.status(404).json({ message: 'Пользователь не найден' });
     }
-<<<<<<< HEAD
 
     // Выполните запрос для получения данных об достижениях
     db.get(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
@@ -209,8 +209,6 @@ app.get('/getUser/:user_id', (req, res) => {
         res.json(userData);
       });
     });
-=======
->>>>>>> ae8cf975054a367449a415cd7f13565c91d4743b
   });
 });
 

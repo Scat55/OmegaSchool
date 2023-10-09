@@ -87,7 +87,7 @@
 <script>
 
 import axios from 'axios';
-
+import router from 'vue-router';
 export default {
 
   data() {
@@ -126,15 +126,20 @@ export default {
               gender: gender,
               type_user: type_user
             }).json()
+            router.push('/profile')
+          }
+          else {
+            alert('Такой пользователь уже есть')
+            this.$router.push('/auth')
           }
         })
         .catch(function (error) {
           console.log(error);
         });
-
-      this.$router.push('/profile')
-      this.$store.state.status = false
-      body.style.overflow = ""
+      // const body = document.querySelector('body')
+      // this.$router.push('/profile')
+      // this.$store.state.status = false
+      // body.style.overflow = ""
     },
     // Обработка формы
     handler() {
