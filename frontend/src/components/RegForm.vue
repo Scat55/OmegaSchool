@@ -119,18 +119,13 @@ export default {
         password: pass,
       })
         .then(function (response) {
-          // console.log(email, pass)
-          // alert(response.data.message);
           if (response.data.message === 'Пользователь не найден') {
-            // this.addedUser()
-            // this.$router.push('/profile')
             axios.post('/addUser', {
               email: email,
               password: pass,
               gender: gender,
               type_user: type_user
             }).json()
-
           }
         })
         .catch(function (error) {
