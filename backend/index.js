@@ -179,7 +179,7 @@ app.get('/getUser/:user_id', (req, res) => {
       return;
     }
 
-    // Выполните второй запрос для получения данных об достижениях
+    // Выполните запрос для получения данных об достижениях
     db.get(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
       if (achievementsErr) {
         console.error('Ошибка при выполнении SQL-запроса для достижений:', achievementsErr.message);
@@ -187,14 +187,24 @@ app.get('/getUser/:user_id', (req, res) => {
         return;
       }
 
-      // Соедините результаты обоих запросов в один объект
-      const userData = {
-        user: userRow,
-        achievements: achievementsRow,
-      };
+      // Выполните запрос для получения данных оценок пользователя (используя db.all)
+      db.all(gradesSql, [user_id], (gradesErr, gradesRows) => {
+        if (gradesErr) {
+          console.error('Ошибка при выполнении SQL-запроса для оценок:', gradesErr.message);
+          res.status(500).json({ error: 'Ошибка на сервере' });
+          return;
+        }
 
-      console.log(`Данные для пользователя с ID ${user_id} найдены`);
-      res.json(userData);
+        // Соедините результаты обоих запросов в один объект
+        const userData = {
+          user: userRow,
+          achievements: achievementsRow,
+          grades: gradesRows, // Используйте gradesRows для всех оценок
+        };
+
+        console.log(`Данные для пользователя с ID ${user_id} найдены`);
+        res.json(userData);
+      });
     });
   });
 });
