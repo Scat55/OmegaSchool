@@ -50,6 +50,7 @@ app.post('/checkUser', (req, res) => {
   // Получение логина и пароля из JSON-тела запроса
   const { user_name, password } = req.body;
   console.log(req.body);
+
   // SQL-запрос для проверки наличия пользователя
   const query = 'SELECT * FROM users WHERE user_name = ? AND password = ?';
   const values = [user_name, password];
@@ -78,11 +79,10 @@ app.post('/addUser', (req, res) => {
 
   // Получение данных пользователя из JSON-тела запроса
   const { user_name, password } = req.body;
-
   // SQL-запрос для добавления пользователя
   const query = 'INSERT INTO users (user_name, password) VALUES (?, ?)';
   const values = [user_name, password];
-
+  console.log(values)
   db.run(query, values, function (err) {
     if (err) {
       console.error('Ошибка при выполнении SQL-запроса:', err.message);
