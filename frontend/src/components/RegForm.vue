@@ -139,6 +139,7 @@ export default {
 
       this.$router.push('/profile')
       this.$store.state.status = false
+      body.style.overflow = ""
     },
     // Обработка формы
     handler() {
