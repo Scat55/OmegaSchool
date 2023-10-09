@@ -61,7 +61,7 @@
           name="proffesion"
           id="proffesion"
           class="reg__form-prof"
-          v-model="proffesion.id"
+          v-model="proffesion.name"
         >
           <option
             class="reg__from-option"
@@ -107,19 +107,30 @@ export default {
       this.$store.state.status = false
       body.style.overflow = ""
     },
+
     changeUserList() {
       const email = this.email
       const pass = this.pass
       const gender = this.gender.name
       const type_user = this.proffesion.name
+
       axios.post('/checkUser', {
         email: email,
         password: pass,
-
       })
         .then(function (response) {
-          console.log(email, pass)
-          alert(response.data.message);
+          // console.log(email, pass)
+          // alert(response.data.message);
+          if (response.data.message === 'Пользователь не найден') {
+            // this.addedUser()
+            // this.$router.push('/profile')
+            axios.post('/addUser', JSON.stringify({
+              email: email,
+              password: pass,
+              gender: gender,
+              type_user: type_user
+            }))
+          }
         })
         .catch(function (error) {
           console.log(error);
