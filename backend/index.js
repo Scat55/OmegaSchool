@@ -82,8 +82,8 @@ app.post('/addUser', [
   // Валидация пола
   body('gender').isIn(['Женский', 'Мужской']),
   // Валидация типа пользователя
-  body('type_user').isIn(['Ученик', 'Учитель', 'Эксперт']),
-],(req, res) => {
+  body('type_user').isIn(['Студент', 'Учитель', 'Эксперт']),
+], (req, res) => {
 
   console.log('Запрос на добавление пользователя получен');
 
@@ -93,24 +93,94 @@ app.post('/addUser', [
     return res.status(400).json({ message: 'Ошибка валидации' });
   }
 
-
   // Получение данных пользователя из JSON-тела запроса
   const { email, password, gender, type_user } = req.body;
-  // SQL-запрос для добавления пользователя
-  const query = 'INSERT INTO users (email, password, gender,type_user) VALUES (?, ?,?,?)';
-  const values = [email, password, gender ,type_user];
-  console.log(values)
-  db.run(query, values, function (err) {
+
+  // SQL-запрос для проверки уникальности email
+  const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
+  const checkEmailValues = [email];
+
+  // Проверка, существует ли пользователь с таким email
+  db.get(checkEmailQuery, checkEmailValues, (err, row) => {
     if (err) {
       console.error('Ошибка при выполнении SQL-запроса:', err.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
       return;
     }
 
-    console.log(`Пользователь ${email} успешно добавлен`);
-    res.json({ message: 'Пользователь успешно добавлен' });
+    // Если найден пользователь с таким email, вернуть ошибку
+    if (row) {
+      console.log(`Пользователь с email ${email} уже существует`);
+      res.status(400).json({ message: 'Пользователь с таким email уже существует' });
+      return;
+    }
+
+    // Если email уникален, выполнить добавление пользователя
+    const insertUserQuery = 'INSERT INTO users (email, password, gender, type_user) VALUES (?, ?, ?, ?)';
+    const insertUserValues = [email, password, gender, type_user];
+
+    db.run(insertUserQuery, insertUserValues, function (err) {
+      if (err) {
+        console.error('Ошибка при выполнении SQL-запроса:', err.message);
+        res.status(500).json({ error: 'Ошибка на сервере' });
+        return;
+      }
+
+      console.log(`Пользователь ${email} успешно добавлен`);
+      res.json({ message: 'Пользователь успешно добавлен'});
+    });
   });
 });
+
+//TODO: hjhhjhhj
+
+app.get('/getUserID/:email', (req, res) => {
+  const email = req.params.email;
+
+  // SQL-запрос для получения user_id по адресу электронной почты
+  const sql = 'SELECT user_id FROM users WHERE email = ?';
+
+  db.get(sql, [email], (err, row) => {
+    if (err) {
+      console.error('Ошибка при выполнении SQL-запроса:', err.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+      return;
+    }
+
+    if (row && row.user_id) {
+      console.log(`User ID для пользователя с email ${email} найден: ${row.user_id}`);
+      res.json({ user_id: row.user_id });
+    } else {
+      console.log(`User ID для пользователя с email ${email} не найден`);
+      res.status(404).json({ message: 'User ID не найден' });
+    }
+  });
+});
+
+
+app.get('/getUser/:user_id', (req, res) => {
+  const user_id = req.params.user_id;
+
+  // SQL-запрос для получения данных пользователя по ID
+  const sql = 'SELECT * FROM users WHERE user_id = ?';
+
+  db.get(sql, [user_id], (err, row) => {
+    if (err) {
+      console.error('Ошибка при выполнении SQL-запроса:', err.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+      return;
+    }
+
+    if (row) {
+      console.log(`Пользователь с ID ${user_id} найден`);
+      res.json({ user: row });
+    } else {
+      console.log(`Пользователь с ID ${user_id} не найден`);
+      res.status(404).json({ message: 'Пользователь не найден' });
+    }
+  });
+});
+
 
 
 // Маршрут для вставки дополнительных данных пользователя
