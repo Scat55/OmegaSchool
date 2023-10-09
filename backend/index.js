@@ -162,22 +162,40 @@ app.get('/getUser/:user_id', (req, res) => {
   const user_id = req.params.user_id;
 
   // SQL-запрос для получения данных пользователя по ID
-  const sql = 'SELECT * FROM users WHERE user_id = ?';
+  const userSql = 'SELECT * FROM users WHERE user_id = ?';
+  const gradesSql = 'SELECT * FROM student_grades WHERE user_id = ?';
+  const achievementsSql = 'SELECT * FROM achievements  WHERE user_id = ?';
 
-  db.get(sql, [user_id], (err, row) => {
+  db.get(userSql, [user_id], (err, userRow) => {
     if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
+      console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
       return;
     }
 
-    if (row) {
-      console.log(`Пользователь с ID ${user_id} найден`);
-      res.json({ user: row });
-    } else {
+    if (!userRow) {
       console.log(`Пользователь с ID ${user_id} не найден`);
       res.status(404).json({ message: 'Пользователь не найден' });
+      return;
     }
+
+    // Выполните второй запрос для получения данных об достижениях
+    db.get(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
+      if (achievementsErr) {
+        console.error('Ошибка при выполнении SQL-запроса для достижений:', achievementsErr.message);
+        res.status(500).json({ error: 'Ошибка на сервере' });
+        return;
+      }
+
+      // Соедините результаты обоих запросов в один объект
+      const userData = {
+        user: userRow,
+        achievements: achievementsRow,
+      };
+
+      console.log(`Данные для пользователя с ID ${user_id} найдены`);
+      res.json(userData);
+    });
   });
 });
 
