@@ -61,7 +61,7 @@
           name="proffesion"
           id="proffesion"
           class="reg__form-prof"
-          v-model="proffesion.name"
+          v-model="proffesion.id"
         >
           <option
             class="reg__from-option"
@@ -110,9 +110,11 @@ export default {
     changeUserList() {
       const email = this.email
       const pass = this.pass
+      const gender = this.gender.name
+      const type_user = this.proffesion.name
       axios.post('/checkUser', {
         email: email,
-        password: pass
+        password: pass,
 
       })
         .then(function (response) {
