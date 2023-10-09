@@ -100,14 +100,14 @@ app.post('/addUser', (req, res) => {
 // Маршрут для вставки дополнительных данных пользователя
 app.post('/additionalData', (req, res) => {
   // Получите данные из тела запроса
-  const { user_id, first_name, last_name, patronymic, birthdate } = req.body;
-
+  const { user_id, first_name, last_name, patronymic, birthdate, classes } = req.body;
+  console.log(req.body)
   // Вставка данных в таблицу users
   const sql = `UPDATE users 
-               SET first_name = ?, last_name = ?, patronymic = ?, birthdate = ? 
-               WHERE user_id = ?`;
+               SET first_name = ?, last_name = ?, patronymic = ?, birthdate = ? ,classes = ?
+               WHERE user_id = ?; s`;
 
-  db.run(sql, [first_name, last_name, patronymic, birthdate, user_id], function (err) {
+  db.run(sql, [first_name, last_name, patronymic, birthdate, classes, user_id], function (err) {
     if (err) {
       console.error('Ошибка при вставке данных:', err.message);
       res.status(500).json({ message: 'Произошла ошибка при вставке данных' });

@@ -100,6 +100,7 @@
 
 <script>
 import { email, minLength, required } from 'vuelidate/lib/validators';
+import axios from 'axios';
 
 export default {
   validations: {
@@ -125,14 +126,42 @@ export default {
       this.$store.state.status = false
       body.style.overflow = ""
     },
-    handler() {
-      if (this.$v.$invalid) {
-        this.$v.$touch()
-        return
-      } else {
+    changeUserList() {
+      const email = this.email
+      const pass = this.pass
+      // console.log(email)
+      axios.post('/checkUser', {
+        email: email,
+        password: pass
 
-      }
-      console.log(`${this.email}, ${this.pass}, ${this.gender.name} ,${this.proffesion.name}`)
+      })
+        .then(function (response) {
+          console.log(email, pass)
+          alert(response.data.message);
+          if (email && pass) {
+            return true
+          }
+          else {
+            return false
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    handler() {
+      // if (this.$v.$invalid) {
+
+      //   this.$v.$touch()
+
+      //   return
+      // } else {
+
+      // }
+
+      this.changeUserList()
+
+      // console.log(typeof this.email)
     }
   },
 }
