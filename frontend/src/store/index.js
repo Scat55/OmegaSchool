@@ -14,13 +14,30 @@ export default new Vuex.Store({
       return state.users;
     },
   },
-  mutations: {},
+  mutations: {
+    // Создаем функцию добавления пользователей в state
+    SET_USERS_TO_STATE: (state, users) => {
+      state.users = users;
+    },
+  },
   actions: {
     // Получаем всех пользователей
-    SET_USERS_FROM_API: () => {
-      axios.get('/userlist').then((resp) => {
-        console.log(resp.data);
-      });
+    GET_USERS_FROM_API({ commit }) {
+      return (
+        axios('/userlist', {
+          method: 'GET',
+        })
+          // Описываем мутацию добавления пользователей в state
+          .then((users) => {
+            commit('SET_USERS_TO_STATE', JSON.parse(users.data));
+            return users;
+          })
+          // Обрабатываем ошибки
+          .catch((error) => {
+            console.log(error);
+            return error;
+          })
+      );
     },
   },
 });

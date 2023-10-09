@@ -2,6 +2,7 @@
   <div class="home">
 
     <main>
+
       <Robot />
       <Computer />
       <Positive />
@@ -27,8 +28,8 @@ import LastInfo from '../components/LastInfo.vue'
 // import Header from './components/Header'
 // import Header from './components/Header'
 import Footer from '../components/Footer'
-import { mapGetters } from 'vuex';
-import axios from 'axios'
+import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   components: {
     Header,
@@ -44,16 +45,18 @@ export default {
   },
   data() {
     return {
-      message: '',
-      users: [],
-      nik: 'Nikolya'
+
     }
   },
-
+  component: {
+    ...mapGetters(['USERS'])
+  },
+  methods: {
+    ...mapActions(['GET_USERS_FROM_API'])
+  },
   mounted() {
-    axios.get('/userlist').then((resp) => {
-      console.log(JSON.parse(resp.data));
-    });
+    this.GET_USERS_FROM_API()
+
   },
 }
 </script>
