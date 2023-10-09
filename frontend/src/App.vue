@@ -6,7 +6,7 @@
     </header>
     <router-view></router-view>
     <footer>
-      <Footer/>
+      <Footer />
     </footer>
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Visitor,serif;
+  font-family: Visitor, serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
