@@ -1,6 +1,6 @@
 const express = require('express');
+const { body, validationResult } = require('express-validator');
 const sqlite3 = require('sqlite3').verbose();
-
 const PORT = process.env.PORT || 8070;
 
 const app = express();
@@ -55,7 +55,6 @@ app.post('/checkUser', (req, res) => {
   // SQL-запрос для проверки наличия пользователя
   const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
   const values = [email, password];
-  console.log(req.body);
   db.get(query, values, (err, row) => {
     if (err) {
       console.error('Ошибка при выполнении SQL-запроса:', err.message);
@@ -75,8 +74,25 @@ app.post('/checkUser', (req, res) => {
 
 //добавление пользователя
 
-app.post('/addUser', (req, res) => {
+app.post('/addUser', [
+  // Валидация email
+  body('email').isEmail(),
+  // Валидация пароля
+  body('password').isLength({ min: 8, max: 30 }),
+  // Валидация пола
+  body('gender').isIn(['Женский', 'Мужской']),
+  // Валидация типа пользователя
+  body('type_user').isIn(['Студент', 'Учитель', 'Эксперт']),
+],(req, res) => {
+
   console.log('Запрос на добавление пользователя получен');
+
+  // Проверяем наличие ошибок валидации
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: 'Ошибка валидации' });
+  }
+
 
   // Получение данных пользователя из JSON-тела запроса
   const { email, password, gender, type_user } = req.body;
