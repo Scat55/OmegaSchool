@@ -5,66 +5,66 @@
         <div class="left_div">
           <div class="tabs">
             <div
-                class="tab"
-                @click="switchTab('Profile')"
+              class="tab"
+              @click="switchTab('Profile')"
             >Профиль
             </div>
             <div
-                class="tab"
-                v-if="person.student === false"
-                @click="switchTab('TaskToCheckStudent')"
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('TaskToCheckStudent')"
             >Задачи на проверку ( от учеников )
             </div>
             <div
-                class="tab"
-                v-if="(person.student === false) && person.expert === true"
-                @click="switchTab('TaskToCheckTeacher')"
+              class="tab"
+              v-if="(person.student === false) && person.expert === true"
+              @click="switchTab('TaskToCheckTeacher')"
             >Задачи на проверку ( от учителей )
             </div>
             <div
-                class="tab"
-                v-if="person.student === false"
-                @click="switchTab('MyAddTask')"
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('MyAddTask')"
             >Мои добавленные задачи
             </div>
             <div
-                class="tab"
-                v-if="person.student === false"
-                @click="switchTab('AddTask')"
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('AddTask')"
             >Добавить задачу
             </div>
             <div
-                class="tab"
-                v-if="person.student === true"
-                @click="switchTab('AchivStud')"
+              class="tab"
+              v-if="person.student === true"
+              @click="switchTab('AchivStud')"
             >Достижения
             </div>
             <div
-                class="tab"
-                v-if="person.student === false"
-                @click="switchTab('RatingTeach')"
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('RatingTeach')"
             >Рейтинг
             </div>
             <div
-                class="tab"
-                v-if="person.student === true"
-                @click="switchTab('MySolvedTask')"
+              class="tab"
+              v-if="person.student === true"
+              @click="switchTab('MySolvedTask')"
             >Мои решенные задачи
             </div>
           </div>
         </div>
         <div class="right_div">
           <Profile
-              v-show="isActiveComponents.Profile === true"
-              :person="person"
+            v-show="isActiveComponents.Profile === true"
+            :person="person"
           />
-          <AddTask v-show="isActiveComponents.AddTask === true"/>
-          <TaskToCheckStudent v-show="isActiveComponents.TaskToCheckStudent === true"/>
-          <TaskToCheckTeacher v-show="isActiveComponents.TaskToCheckTeacher === true"/>
-          <MySolvedTask v-show="isActiveComponents.MySolvedTask === true"/>
-          <MyAddTask v-show="isActiveComponents.MyAddTask === true"/>
-          <AchivmentStudent v-show="isActiveComponents.AchivStud === true"/>
-          <RatingTeacher v-show="isActiveComponents.RatingTeach === true"/>
+          <AddTask v-show="isActiveComponents.AddTask === true" />
+          <TaskToCheckStudent v-show="isActiveComponents.TaskToCheckStudent === true" />
+          <TaskToCheckTeacher v-show="isActiveComponents.TaskToCheckTeacher === true" />
+          <MySolvedTask v-show="isActiveComponents.MySolvedTask === true" />
+          <MyAddTask v-show="isActiveComponents.MyAddTask === true" />
+          <AchivmentStudent v-show="isActiveComponents.AchivStud === true" />
+          <RatingTeacher v-show="isActiveComponents.RatingTeach === true" />
         </div>
       </div>
     </div>
