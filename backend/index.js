@@ -82,13 +82,13 @@ app.post('/addUser', [
   // Валидация пола
   body('gender').isIn(['Женский', 'Мужской']),
   // Валидация типа пользователя
-  body('type_user').isIn(['Студент', 'Учитель', 'Эксперт']),
+  body('type_user').isIn(['Ученик', 'Учитель', 'Эксперт']),
 ], (req, res) => {
 
   console.log('Запрос на добавление пользователя получен');
 
   // Проверяем наличие ошибок валидации
-  const errors = validationResult(req);
+  const errors = validationResult(req);ы
   if (!errors.isEmpty()) {
     return res.status(400).json({ message: 'Ошибка валидации' });
   }
