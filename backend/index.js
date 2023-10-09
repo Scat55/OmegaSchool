@@ -73,18 +73,20 @@ app.post('/checkUser', (req, res) => {
 
 //добавление пользователя
 
-app.post('/addUser', [
-  // Валидация email
-  body('email').isEmail(),
-  // Валидация пароля
-  body('password').isLength({ min: 8, max: 30 }),
-  // Валидация пола
-  body('gender').isIn(['Женский', 'Мужской']),
-  // Валидация типа пользователя
-  body('type_user').isIn(['Студент', 'Учитель', 'Эксперт']),
-], (req, res) => {
-
-  console.log('Запрос на добавление пользователя получен');
+app.post(
+  '/addUser',
+  [
+    // Валидация email
+    body('email').isEmail(),
+    // Валидация пароля
+    body('password').isLength({ min: 8, max: 30 }),
+    // Валидация пола
+    body('gender').isIn(['Женский', 'Мужской']),
+    // Валидация типа пользователя
+    body('type_user').isIn(['Ученик', 'Учитель', 'Эксперт']),
+  ],
+  (req, res) => {
+    console.log('Запрос на добавление пользователя получен');
 
     // Проверяем наличие ошибок валидации
     const errors = validationResult(req);
