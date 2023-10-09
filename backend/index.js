@@ -43,17 +43,18 @@ app.get('/userlist', (req, res) => {
 // Используйте express.json() для обработки JSON-тела запроса
 app.use(express.json());
 
+
 // Обработчик POST-запроса для проверки пользователя в базе данных
 app.post('/checkUser', (req, res) => {
   console.log('Запрос получен');
 
   // Получение логина и пароля из JSON-тела запроса
-  const { user_name, password } = req.body;
+  const { email, password } = req.body;
   console.log(req.body);
 
   // SQL-запрос для проверки наличия пользователя
-  const query = 'SELECT * FROM users WHERE user_name = ? AND password = ?';
-  const values = [user_name, password];
+  const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+  const values = [email, password];
   console.log(req.body);
   db.get(query, values, (err, row) => {
     if (err) {
@@ -63,10 +64,10 @@ app.post('/checkUser', (req, res) => {
     }
 
     if (row) {
-      console.log(`Пользователь ${user_name} найден в базе данных`);
+      console.log(`Пользователь ${email} найден в базе данных`);
       res.json({ message: 'Пользователь найден' });
     } else {
-      console.log(`Пользователь ${user_name} не найден в базе данных`);
+      console.log(`Пользователь ${email} не найден в базе данных`);
       res.json({ message: 'Пользователь не найден' });
     }
   });
@@ -78,10 +79,10 @@ app.post('/addUser', (req, res) => {
   console.log('Запрос на добавление пользователя получен');
 
   // Получение данных пользователя из JSON-тела запроса
-  const { user_name, password } = req.body;
+  const { email, password, gender, type_user } = req.body;
   // SQL-запрос для добавления пользователя
-  const query = 'INSERT INTO users (user_name, password) VALUES (?, ?)';
-  const values = [user_name, password];
+  const query = 'INSERT INTO users (email, password, gender,type_user) VALUES (?, ?,?,?)';
+  const values = [email, password, gender ,type_user];
   console.log(values)
   db.run(query, values, function (err) {
     if (err) {
@@ -90,7 +91,34 @@ app.post('/addUser', (req, res) => {
       return;
     }
 
-    console.log(`Пользователь ${user_name} успешно добавлен`);
+    console.log(`Пользователь ${email} успешно добавлен`);
     res.json({ message: 'Пользователь успешно добавлен' });
   });
 });
+
+
+// Маршрут для вставки дополнительных данных пользователя
+app.post('/additionalData', (req, res) => {
+  // Получите данные из тела запроса
+  const { user_id, first_name, last_name, patronymic, birthdate } = req.body;
+
+  // Вставка данных в таблицу users
+  const sql = `UPDATE users 
+               SET first_name = ?, last_name = ?, patronymic = ?, birthdate = ? 
+               WHERE user_id = ?`;
+
+  db.run(sql, [first_name, last_name, patronymic, birthdate, user_id], function (err) {
+    if (err) {
+      console.error('Ошибка при вставке данных:', err.message);
+      res.status(500).json({ message: 'Произошла ошибка при вставке данных' });
+    } else {
+      console.log('Дополнительные данные успешно вставлены');
+      res.status(200).json({ message: 'Дополнительные данные успешно добавлены' });
+    }
+  });
+});
+
+
+
+
+
