@@ -114,32 +114,30 @@ export default {
       const gender = this.gender.name
       const type_user = this.proffesion.name
 
-      axios.post('/checkUser', {
+      axios.post('/addUser', {
         email: email,
         password: pass,
+        gender: gender,
+        type_user: type_user
+      }).then(response => {
+        if (response.data.masage) {
+          const body = document.querySelector('body')
+          this.$store.state.status = false
+          body.style.overflow = ""
+          this.$router.push('/auth')
+          alert('Пользователь с таким email уже существует')
+        } else {
+          const body = document.querySelector('body')
+          this.$store.state.status = false
+          body.style.overflow = ""
+          this.$router.push('/profile')
+        }
       })
-        .then(function (response) {
-          if (response.data.message === 'Пользователь не найден') {
-            axios.post('/addUser', {
-              email: email,
-              password: pass,
-              gender: gender,
-              type_user: type_user
-            }).json()
-            router.push('/profile')
-          }
-          else {
-            alert('Такой пользователь уже есть')
-            this.$router.push('/auth')
-          }
-        })
+
         .catch(function (error) {
           console.log(error);
         });
-      // const body = document.querySelector('body')
-      // this.$router.push('/profile')
-      // this.$store.state.status = false
-      // body.style.overflow = ""
+
     },
     // Обработка формы
     handler() {
