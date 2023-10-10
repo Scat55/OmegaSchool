@@ -62,7 +62,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #ffffff;
+  background-color: #C7FDFF;
 
   &__form {
     display: flex;
@@ -72,10 +72,12 @@ export default {
     gap: 1.25rem;
     width: 25.5rem;
     height: 32.5rem;
+    margin-top: 4rem;
     border: 2px solid $lightBlueColor;
     border-radius: 1rem;
     padding: 5.75rem;
     box-shadow: 0 0 20px 0px $accentColor;
+    background-color: #fff;
 
     &-title {
       font-weight: bold;
