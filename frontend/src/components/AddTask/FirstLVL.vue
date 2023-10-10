@@ -84,12 +84,12 @@ export default {
   &__description_task {
 
 
-    &>p {
+    & > p {
       margin: 0 0 10px 0;
       text-align: center;
     }
 
-    &>textarea {
+    & > textarea {
       width: 100%;
       height: 200px;
       resize: none;
@@ -97,6 +97,14 @@ export default {
       padding: 8px;
       border-radius: 1rem;
     }
+  }
+
+  &__window {
+
+    & > button {
+     width: 100%;
+    }
+
   }
 
 
