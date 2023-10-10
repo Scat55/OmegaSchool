@@ -169,14 +169,14 @@ app.post(
 // });
 
 app.get('/getUser/:email', (req, res) => {
-  const user_id = req.params.user_id;
+  const email = req.params.email;
 
-  // SQL-запрос для получения данных пользователя по ID
+  // SQL-запрос для получения данных пользователя по email
   const userSql = 'SELECT * FROM users WHERE email = ?';
-  const gradesSql = 'SELECT * FROM student_grades WHERE email = ?';
-  const achievementsSql = 'SELECT * FROM achievements  WHERE email = ?';
+  const achievementsSql = 'SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = ?)';
+  const gradesSql = 'SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = ?)';
 
-  db.get(userSql, [user_id], (err, userRow) => {
+  db.get(userSql, [email], (err, userRow) => {
     if (err) {
       console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
@@ -184,13 +184,13 @@ app.get('/getUser/:email', (req, res) => {
     }
 
     if (!userRow) {
-      console.log(`Пользователь с ID ${user_id} не найден`);
+      console.log(`Пользователь с email ${email} не найден`);
       res.status(404).json({ message: 'Пользователь не найден' });
       return;
     }
 
     // Выполните запрос для получения данных об достижениях
-    db.get(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
+    db.get(achievementsSql, [email], (achievementsErr, achievementsRow) => {
       if (achievementsErr) {
         console.error('Ошибка при выполнении SQL-запроса для достижений:', achievementsErr.message);
         res.status(500).json({ error: 'Ошибка на сервере' });
@@ -198,7 +198,7 @@ app.get('/getUser/:email', (req, res) => {
       }
 
       // Выполните запрос для получения данных оценок пользователя (используя db.all)
-      db.all(gradesSql, [user_id], (gradesErr, gradesRows) => {
+      db.all(gradesSql, [email], (gradesErr, gradesRows) => {
         if (gradesErr) {
           console.error('Ошибка при выполнении SQL-запроса для оценок:', gradesErr.message);
           res.status(500).json({ error: 'Ошибка на сервере' });
@@ -208,16 +208,17 @@ app.get('/getUser/:email', (req, res) => {
         // Соедините результаты обоих запросов в один объект
         const userData = {
           user: userRow,
+          grades: gradesRows,
           achievements: achievementsRow,
-          grades: gradesRows, // Используйте gradesRows для всех оценок
         };
 
-        console.log(`Данные для пользователя с ID ${user_id} найдены`);
+        console.log(`Данные для пользователя с email ${email} найдены`);
         res.json(userData);
       });
     });
   });
 });
+
 
 
 // Маршрут для вставки дополнительных данных пользователя
@@ -240,63 +241,6 @@ app.post('/additionalData', (req, res) => {
     }
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Настройка местоположения для сохранения загруженных файлов
