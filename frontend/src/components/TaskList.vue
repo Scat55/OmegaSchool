@@ -52,6 +52,8 @@ export default {
 }
 
 .title {
+  color: white;
+  text-decoration: none;
   padding: 10px 0;
   //grid-column: 1 / span 4;
   //grid-row: 1 / span 1;

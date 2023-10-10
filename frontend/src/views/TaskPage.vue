@@ -11,28 +11,28 @@
 
         <div class="div2">
           <div>
-            <FilterItems />
+            <FilterItems/>
             <div class="complexity">
               <p>Уровень сложности заданий:</p>
               <input
-                type="checkbox"
-                id="checkbox1"
-                name="checkboxGroup"
-                value="Пункт 1"
+                  type="checkbox"
+                  id="checkbox1"
+                  name="checkboxGroup"
+                  value="Пункт 1"
               >
               <label for="checkbox1">Легкие</label><br>
               <input
-                type="checkbox"
-                id="checkbox1"
-                name="checkboxGroup"
-                value="Пункт 1"
+                  type="checkbox"
+                  id="checkbox1"
+                  name="checkboxGroup"
+                  value="Пункт 1"
               >
               <label for="checkbox1">Средние</label><br>
               <input
-                type="checkbox"
-                id="checkbox1"
-                name="checkboxGroup"
-                value="Пункт 1"
+                  type="checkbox"
+                  id="checkbox1"
+                  name="checkboxGroup"
+                  value="Пункт 1"
               >
               <label for="checkbox1">Тяжелые</label><br>
             </div>
@@ -44,7 +44,7 @@
 
         <div class="div3">
           <div v-for="task in zadania">
-            <TaskList :task="task" />
+            <TaskList :task="task"/>
           </div>
         </div>
 
@@ -188,4 +188,7 @@ export default {
   border: none;
   overflow-x: hidden;
   overflow-y: auto;
-}</style>
+  scrollbar-width: thin;
+  scrollbar-color: $lightBlueColor white;
+}
+</style>
