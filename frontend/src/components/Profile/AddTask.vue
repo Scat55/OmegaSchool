@@ -1,9 +1,11 @@
 <script>
 import TwoLVL from "@/components/AddTask/TwoLVL.vue";
 import FirstLVL from "@/components/AddTask/FirstLVL.vue";
+import ThreeLVL from "@/components/AddTask/ThreeLVL.vue";
 
 export default {
   components: {
+    ThreeLVL,
     FirstLVL,
     TwoLVL},
   data() {
@@ -47,6 +49,7 @@ export default {
     </div>
     <FirstLVL v-show="selectedValue === 'oneLVL'"/>
     <TwoLVL  v-show="selectedValue === 'twoLVL'" />
+    <ThreeLVL v-show="selectedValue === 'threeLVL'"/>
   </div>
 </template>
 

@@ -21,6 +21,10 @@ export default {
 
 <template>
   <div class="shablonZadaniaTwo">
+    <div class="name_task">
+      <h3>Название задания:</h3>
+      <input type="text" placeholder="Введите название задания">
+    </div>
     <div class="block">
       <p>Введите условие задания:</p>
       <textarea id="textAreaUsl" v-model="condition"></textarea>
@@ -85,6 +89,7 @@ export default {
   border: 2px solid white;
   border-radius: 1rem;
   padding: 15px;
+  order: 1;
 }
 
 #send:hover, #clear:hover {
@@ -92,6 +97,7 @@ export default {
 }
 
 #clear {
+  order: 0;
   background: indianred;
   border: 2px solid white;
   border-radius: 1rem;
