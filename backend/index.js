@@ -144,36 +144,37 @@ app.post(
 
 //TODO: hjhhjhhj
 
-app.get('/getUserID/:email', (req, res) => {
-  const email = req.params.email;
 
-  // SQL-запрос для получения user_id по адресу электронной почты
-  const sql = 'SELECT user_id FROM users WHERE email = ?';
+// app.get('/getUserID/:email', (req, res) => {
+//   const email = req.params.email;
+//
+//   // SQL-запрос для получения user_id по адресу электронной почты
+//   const sql = 'SELECT user_id FROM users WHERE email = ?';
+//
+//   db.get(sql, [email], (err, row) => {
+//     if (err) {
+//       console.error('Ошибка при выполнении SQL-запроса:', err.message);
+//       res.status(500).json({ error: 'Ошибка на сервере' });
+//       return;
+//     }
+//
+//     if (row && row.user_id) {
+//       console.log(`User ID для пользователя с email ${email} найден: ${row.user_id}`);
+//       res.json({ user_id: row.user_id });
+//     } else {
+//       console.log(`User ID для пользователя с email ${email} не найден`);
+//       res.status(404).json({ message: 'User ID не найден' });
+//     }
+//   });
+// });
 
-  db.get(sql, [email], (err, row) => {
-    if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
-      return;
-    }
-
-    if (row && row.user_id) {
-      console.log(`User ID для пользователя с email ${email} найден: ${row.user_id}`);
-      res.json({ user_id: row.user_id });
-    } else {
-      console.log(`User ID для пользователя с email ${email} не найден`);
-      res.status(404).json({ message: 'User ID не найден' });
-    }
-  });
-});
-
-app.get('/getUser/:user_id', (req, res) => {
+app.get('/getUser/:email', (req, res) => {
   const user_id = req.params.user_id;
 
   // SQL-запрос для получения данных пользователя по ID
-  const userSql = 'SELECT * FROM users WHERE user_id = ?';
-  const gradesSql = 'SELECT * FROM student_grades WHERE user_id = ?';
-  const achievementsSql = 'SELECT * FROM achievements  WHERE user_id = ?';
+  const userSql = 'SELECT * FROM users WHERE email = ?';
+  const gradesSql = 'SELECT * FROM student_grades WHERE email = ?';
+  const achievementsSql = 'SELECT * FROM achievements  WHERE email = ?';
 
   db.get(userSql, [user_id], (err, userRow) => {
     if (err) {
@@ -239,6 +240,63 @@ app.post('/additionalData', (req, res) => {
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Настройка местоположения для сохранения загруженных файлов
