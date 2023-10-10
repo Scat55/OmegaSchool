@@ -10,7 +10,7 @@ export default {
     TwoLVL},
   data() {
     return {
-      selectedValue: '',
+      selectedValue: 'oneLVL',
       rules: '',
     }
   },

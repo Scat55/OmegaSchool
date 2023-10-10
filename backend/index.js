@@ -1,4 +1,10 @@
 const express = require('express');
+
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
+
 const { body, validationResult } = require('express-validator');
 const sqlite3 = require('sqlite3').verbose();
 const PORT = process.env.PORT || 8070;
@@ -113,7 +119,7 @@ app.post(
       // TODO: Коль, можешь убрать статус 400 и просто возвращать сообщение // сделано
       if (row) {
         console.log(`Пользователь с email ${email} уже существует`);
-        res.json({ masage : 'Пользователь с email уже существует' });
+        res.json({ masage: 'Пользователь с email уже существует' });
         return;
       }
 
@@ -165,21 +171,21 @@ app.get('/getUser/:user_id', (req, res) => {
   const user_id = req.params.user_id;
 
   // SQL-запрос для получения данных пользователя по ID
-  const sql = 'SELECT * FROM users WHERE user_id = ?';
+  const userSql = 'SELECT * FROM users WHERE user_id = ?';
+  const gradesSql = 'SELECT * FROM student_grades WHERE user_id = ?';
+  const achievementsSql = 'SELECT * FROM achievements  WHERE user_id = ?';
 
-  db.get(sql, [user_id], (err, row) => {
+  db.get(userSql, [user_id], (err, userRow) => {
     if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
+      console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
       return;
     }
 
-    if (row) {
-      console.log(`Пользователь с ID ${user_id} найден`);
-      res.json({ user: row });
-    } else {
+    if (!userRow) {
       console.log(`Пользователь с ID ${user_id} не найден`);
       res.status(404).json({ message: 'Пользователь не найден' });
+      return;
     }
 
     // Выполните запрос для получения данных об достижениях
@@ -212,6 +218,7 @@ app.get('/getUser/:user_id', (req, res) => {
   });
 });
 
+
 // Маршрут для вставки дополнительных данных пользователя
 app.post('/additionalData', (req, res) => {
   // Получите данные из тела запроса
@@ -229,6 +236,79 @@ app.post('/additionalData', (req, res) => {
     } else {
       console.log('Дополнительные данные успешно вставлены');
       res.status(200).json({ message: 'Дополнительные данные успешно добавлены' });
+    }
+  });
+});
+
+
+// Настройка местоположения для сохранения загруженных файлов
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Укажите путь к каталогу для хранения файлов
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    // Генерируйте уникальное имя файла
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+// Обработка загрузки файлов
+app.post('/upload', upload.single('file'), (req, res) => {
+  // В этой функции вы можете обработать загруженный файл
+  res.send('Файл успешно загружен.');
+});
+app.get('/upload', upload.single('file'), (req, res) => {
+  // В этой функции вы можете обработать загруженный файл
+  res.send('Файл успешно загружен.');
+});
+
+// Устанавливаем путь к директории, в которой хранятся файлы
+const fileDirectory = 'uploads/';
+
+app.get('/download/:filename', (req, res) => {
+  // Получаем имя файла из параметра URL
+  const requestedFilename = req.params.filename;
+
+  // Проверяем, есть ли файл с полным или частичным именем
+  fs.readdir(fileDirectory, (err, files) => {
+    if (err) {
+      return res.status(500).send('Ошибка сервера');
+    }
+
+    // Ищем файл с частичным совпадением имени
+    const foundFile = files.find((file) => file.includes(requestedFilename));
+
+    if (foundFile) {
+      // Формируем полный путь к найденному файлу
+      const filePath = path.join(fileDirectory, foundFile);
+
+      // Проверяем расширение файла
+      const fileExtension = path.extname(filePath).toLowerCase();
+
+      if (fileExtension === '.txt') {
+        // Если расширение .txt, отправляем его содержимое как текст
+        fs.readFile(filePath, 'utf8', (err, data) => {
+          if (err) {
+            res.status(500).send('Ошибка при чтении файла');
+          } else {
+            res.header('Content-Type', 'text/plain');
+            res.send(data);
+          }
+        });
+      } else {
+        // Иначе отправляем файл для скачивания
+        res.download(filePath, (err) => {
+          if (err) {
+            // Если произошла ошибка при отправке файла, обрабатываем её
+            res.status(404).send('Файл не найден');
+          }
+        });
+      }
+    } else {
+      res.status(404).send('Файл не найден');
     }
   });
 });

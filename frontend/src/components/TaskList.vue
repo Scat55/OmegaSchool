@@ -18,7 +18,7 @@ export default {
       <div class="status">Статус: {{task.status === false ? 'Не решено' : 'Решено'}}</div>
       <div class="complexity">Уровень задания: {{task.complexity}}</div>
     </div>
-<!--    <div class="bodyTask">{{task.bodyTask}}</div>-->
+<!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
   </div>
 </template>
 
@@ -32,9 +32,6 @@ export default {
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  //display: grid;
-  //grid-template-columns: 1fr 1fr;
-  //grid-template-rows: repeat(3, 1fr);
   background: white;
   overflow: hidden;
 }
@@ -52,33 +49,21 @@ export default {
 }
 
 .title {
+
   color: white;
   text-decoration: none;
-  padding: 10px 0;
-  //grid-column: 1 / span 4;
-  //grid-row: 1 / span 1;
+  padding: 10px 5px;
   font-size: 20px;
-  //border-bottom: 1px solid $lightBlueColor;
   background: $lightBlueColor;
 }
 
 
 .topic {
-  //grid-column: 1 / span 1;
-  //grid-row: 2 / span 1;
   text-align: left;
 }
 
 .complexity {
-  //grid-column: 2 / span 1;
-  //grid-row: 2 / span 1;
+
   text-align: right;
 }
-
-//.bodyTask {
-  //grid-column: 1 / span 4;
-  //grid-row: 3 / span 1;
-  //text-align: left;
-  //margin: 0 20px 10px 20px;
-//}
 </style>
