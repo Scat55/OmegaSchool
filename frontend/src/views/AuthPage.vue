@@ -95,7 +95,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  // height: 100vh;
   background-color: #C7FDFF;
 
   &__form {
@@ -106,7 +106,7 @@ export default {
     gap: 1.25rem;
     width: 25.5rem;
     height: 32.5rem;
-    margin-top: 4rem;
+    margin-top: 2rem;
     border: 2px solid $lightBlueColor;
     border-radius: 1rem;
     padding: 5.75rem;

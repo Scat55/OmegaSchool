@@ -15,6 +15,13 @@ export default {
     toggleWindow() {
       this.isWindowOpen = !this.isWindowOpen;
     },
+    removeCheckbox(index) {
+      this.checkboxes--;
+      this.checkboxText.splice(index, 1);
+    },
+    sendTest() {
+      console.log(this.checkboxText, this.checkboxes)
+    }
   },
 };
 
@@ -42,15 +49,15 @@ export default {
       <button @click="addCheckbox">Добавить чекбокс</button>
       <div v-for="index in checkboxes" :key="index">
         <div class="shablonZadaniaFirst__checkbox-item">
-          <input type="checkbox" :id="'checkbox-' + index"/>
-          <input type="text" v-model="checkboxText[index]"/>
-          <button >X</button>
-<!--          <label :for="'checkbox-' + index">Введите текст</label>-->
+          <input type="checkbox" :id="'checkbox-' + (index)"/>
+          <input type="text" v-model="checkboxText[index-1]"/>
+          <button @click="removeCheckbox(index-1)">X</button>
+          <!--          <label :for="'checkbox-' + index">Введите текст</label>-->
         </div>
       </div>
     </div>
     <div class="shablonZadaniaFirst__btn_send">
-      <button id="send">Отправить задание на проверку эксперту!</button>
+      <button id="send" @click="sendTest">Отправить задание на проверку эксперту!</button>
       <button id="clear">Удалить все!</button>
     </div>
   </div>
