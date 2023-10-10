@@ -52,9 +52,10 @@ export default {
 }
 
 .title {
+
   color: white;
   text-decoration: none;
-  padding: 10px 0;
+  padding: 10px 5px;
   //grid-column: 1 / span 4;
   //grid-row: 1 / span 1;
   font-size: 20px;

@@ -17,7 +17,7 @@ export default {
     <div class="block">
       <p>Введите условие задания:</p>
       <textarea id="textAreaUsl" v-model="condition"></textarea>
-      <div>
+      <div class="block">
         <p>Дополнительные материалы:</p>
         <input type="file" id="fileInput">
       </div>
@@ -30,6 +30,12 @@ export default {
 </template>
 
 <style scoped lang="scss">
+.block, .shablonZadaniaThree {
+  margin: 15px 0;
+}
+
+
+
 .btn-send {
   width: 100%;
   padding: 15px;
