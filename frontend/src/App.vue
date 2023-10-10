@@ -4,8 +4,10 @@
     <header>
       <Header />
     </header>
-    <main></main>
-    <router-view></router-view>
+    <main>
+      <router-view></router-view>
+    </main>
+
     <footer>
       <Footer />
     </footer>

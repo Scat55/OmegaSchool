@@ -66,7 +66,7 @@ export default {
             alert(response.data.message)
             this.email = this.pass = ''
           } else {
-            this.$router.push('/profile')
+            this.$router.push('/testProfile/' + this.email)
           }
 
 
