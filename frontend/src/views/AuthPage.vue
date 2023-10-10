@@ -66,9 +66,9 @@ export default {
             alert(response.data.message)
             this.email = this.pass = ''
           } else {
-            axios.get(`/getUser/${this.email}`).then(response => {
-              // console.log()
-              this.$router.push(`/testProfile/${response.data.user.user_id}`)
+            axios.get(`/getUserIdForMail/${this.email}`).then(response => {
+              console.log(response.data.user_id)
+              this.$router.push(`/testProfile/${response.data.user_id}`)
             })
           }
 
