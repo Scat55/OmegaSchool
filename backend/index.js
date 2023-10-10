@@ -113,7 +113,7 @@ app.post(
       // TODO: Коль, можешь убрать статус 400 и просто возвращать сообщение // сделано
       if (row) {
         console.log(`Пользователь с email ${email} уже существует`);
-        res.json({ masage : 'Пользователь с email уже существует' });
+        res.json({ masage: 'Пользователь с email уже существует' });
         return;
       }
 
@@ -165,21 +165,21 @@ app.get('/getUser/:user_id', (req, res) => {
   const user_id = req.params.user_id;
 
   // SQL-запрос для получения данных пользователя по ID
-  const sql = 'SELECT * FROM users WHERE user_id = ?';
+  const userSql = 'SELECT * FROM users WHERE user_id = ?';
+  const gradesSql = 'SELECT * FROM student_grades WHERE user_id = ?';
+  const achievementsSql = 'SELECT * FROM achievements  WHERE user_id = ?';
 
-  db.get(sql, [user_id], (err, row) => {
+  db.get(userSql, [user_id], (err, userRow) => {
     if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
+      console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
       return;
     }
 
-    if (row) {
-      console.log(`Пользователь с ID ${user_id} найден`);
-      res.json({ user: row });
-    } else {
+    if (!userRow) {
       console.log(`Пользователь с ID ${user_id} не найден`);
       res.status(404).json({ message: 'Пользователь не найден' });
+      return;
     }
 
     // Выполните запрос для получения данных об достижениях
@@ -212,6 +212,7 @@ app.get('/getUser/:user_id', (req, res) => {
   });
 });
 
+
 // Маршрут для вставки дополнительных данных пользователя
 app.post('/additionalData', (req, res) => {
   // Получите данные из тела запроса
@@ -232,3 +233,7 @@ app.post('/additionalData', (req, res) => {
     }
   });
 });
+
+
+
+
