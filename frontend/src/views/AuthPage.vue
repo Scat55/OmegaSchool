@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios';
-
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -47,7 +47,12 @@ export default {
       pass: '',
     }
   },
+  computed: {
+    ...mapGetters(['USERS'])
+  },
   methods: {
+    ...mapActions(['GET_USERS_FROM_API']),
+    // Проверка на наличие пользователя и вход
     chekUsers() {
       const email = this.email;
       const password = this.pass;
@@ -68,15 +73,16 @@ export default {
           // console.log(response.data.message)
         })
     },
+    // Обработка формы
     handler() {
       // console.log(`${this.email}, ${this.pass}`)
       this.chekUsers()
     }
   },
   mounted() {
-    axios.get('/userlist').then(response => {
-      console.log(JSON.parse(response.data))
-    })
+
+    this.GET_USERS_FROM_API()
+
   },
 }
 
