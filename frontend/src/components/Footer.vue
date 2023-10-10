@@ -53,7 +53,7 @@ export default {
   background-color: $accentColor;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
-  margin-top: 5rem;
+  margin-top: 2rem;
   padding-bottom: 1rem;
 
   &__logo {
