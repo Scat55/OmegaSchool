@@ -35,11 +35,38 @@ export default {
       </div>
       <button @click="addCheckbox">Добавить чекбокс</button>
     </div>
+    <div class="btn-send">
+      <button id="send">Отправить задание на проверку эксперту!</button>
+      <button id="clear">Удалить все!</button>
+    </div>
   </div>
 </template>
 
 
 
 <style scoped lang="scss">
+.btn-send {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
 
+#send {
+  background: #00DFCC;
+  border: 2px solid white;
+  border-radius: 1rem;
+  padding: 15px;
+}
+
+#send:hover, #clear:hover {
+  font-size: 1.1rem;
+}
+
+#clear {
+  background: indianred;
+  border: 2px solid white;
+  border-radius: 1rem;
+  padding: 15px;
+}
 </style>
