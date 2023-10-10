@@ -9,11 +9,11 @@
       >
         <p class="reg__form-title">Вход</p>
         <div class="reg__info">
-          <span class="reg__info-name ">Имя, фамилия</span>
+          <span class="reg__info-name ">Почта</span>
           <input
-            type="text"
+            type="email"
             class="reg__input name"
-            v-model="userName"
+            v-model="email"
           >
         </div>
         <div class="reg__info">
@@ -21,7 +21,7 @@
           <input
             type="password"
             class="reg__input"
-            v-model="userPass"
+            v-model="pass"
           >
         </div>
 
@@ -38,17 +38,51 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      userName: '',
-      userPass: '',
+      email: '',
+      pass: '',
     }
   },
+  computed: {
+    ...mapGetters(['USERS'])
+  },
   methods: {
+    ...mapActions(['GET_USERS_FROM_API']),
+    // Проверка на наличие пользователя и вход
+    chekUsers() {
+      const email = this.email;
+      const password = this.pass;
+
+      axios.post('/checkUser', {
+        email: email,
+        password: password
+      })
+        .then(response => {
+          if (response.data.message === 'Пользователь не найден') {
+            alert(response.data.message)
+            this.email = this.pass = ''
+          } else {
+            this.$router.push('/profile')
+          }
+
+
+          // console.log(response.data.message)
+        })
+    },
+    // Обработка формы
     handler() {
-      console.log(`${userName.value}, ${userPass.value}`)
+      // console.log(`${this.email}, ${this.pass}`)
+      this.chekUsers()
     }
+  },
+  mounted() {
+
+    this.GET_USERS_FROM_API()
+
   },
 }
 

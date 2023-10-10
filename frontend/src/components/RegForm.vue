@@ -130,7 +130,7 @@ export default {
           const body = document.querySelector('body')
           this.$store.state.status = false
           body.style.overflow = ""
-          this.$router.push('/profile')
+          this.$router.push('/auth')
         }
       })
 
