@@ -22,22 +22,25 @@ export default {
 
 <template>
   <div class="shablonZadaniaFirst">
-    <div class="name_task">
+    <div class="shablonZadaniaFirst__name_task">
       <h3>Название задания:</h3>
       <input type="text" placeholder="Введите название задания">
     </div>
-    <div class="description_task">
+    <div class="shablonZadaniaFirst__description_task">
+      <p>Описании задачи / Условие</p>
       <textarea></textarea>
     </div>
     <div>
-      <button @click="toggleWindow">{{isWindowOpen === false ? 'Показать инструкцию' : 'Скрыть инструкцию'}}</button>
-      <div class="window" v-if="isWindowOpen">
-        <p>Тут будет инструкци как использовать чекбоксы. Нажать на кнопку "добавить чекбокс" добавит один чекбокс в инпут надо будет ввести значение. Те которые правильные варианты ответа нужно будет ответить нажам на чекбокс</p>
+      <button @click="toggleWindow">{{ isWindowOpen === false ? 'Показать инструкцию' : 'Скрыть инструкцию' }}</button>
+      <div class="shablonZadaniaFirst__window" v-if="isWindowOpen">
+        <p>Тут будет инструкци как использовать чекбоксы. Нажать на кнопку "добавить чекбокс" добавит один чекбокс в
+          инпут надо будет ввести значение. Те которые правильные варианты ответа нужно будет ответить нажам на
+          чекбокс</p>
       </div>
     </div>
-    <div class="option_answers">
+    <div class="shablonZadaniaFirst__option_answers">
       <div v-for="index in checkboxes" :key="index">
-        <div class="checkbox-item">
+        <div class="shablonZadaniaFirst__checkbox-item">
           <input type="checkbox" :id="'checkbox-' + index"/>
           <input type="text" v-model="checkboxText[index]"/>
           <label :for="'checkbox-' + index">Введите текст</label>
@@ -45,7 +48,7 @@ export default {
       </div>
       <button @click="addCheckbox">Добавить чекбокс</button>
     </div>
-    <div class="btn-send">
+    <div class="shablonZadaniaFirst__btn_send">
       <button id="send">Отправить задание на проверку эксперту!</button>
       <button id="clear">Удалить все!</button>
     </div>
@@ -54,12 +57,59 @@ export default {
 
 
 <style scoped lang="scss">
-.btn-send {
-  width: 100%;
-  padding: 15px;
+
+.shablonZadaniaFirst {
+
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  &__name_task {
+    width: 100%;
+
+    & > h3 {
+      text-align: center;
+    }
+
+    & > input {
+      margin: 10px 0;
+      width: 100%;
+      height: 25px;
+      border-radius: 1rem;
+      border: none;
+      padding: 8px;
+    }
+  }
+
+  &__description_task {
+
+
+    &>p {
+      margin: 0 0 10px 0;
+      text-align: center;
+    }
+
+    &>textarea {
+      width: 100%;
+      height: 200px;
+      resize: none;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 1rem;
+    }
+  }
+
+
+  &__btn_send {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+
 }
+
 
 #send {
   background: #00DFCC;
@@ -79,15 +129,5 @@ export default {
   border: 2px solid white;
   border-radius: 1rem;
   padding: 15px;
-}
-
-.window {
-  //display: none;
-  /* Добавьте CSS для стилизации вашего окошка */
-  transition: all 0.3s; /* Добавьте анимацию, например, сглаженное появление */
-}
-
-.window.show {
-  display: block;
 }
 </style>
