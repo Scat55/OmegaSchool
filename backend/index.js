@@ -145,30 +145,29 @@ app.post(
 //TODO: hjhhjhhj
 
 
-// app.get('/getUserID/:email', (req, res) => {
-//   const email = req.params.email;
-//
-//   // SQL-запрос для получения user_id по адресу электронной почты
-//   const sql = 'SELECT user_id FROM users WHERE email = ?';
-//
-//   db.get(sql, [email], (err, row) => {
-//     if (err) {
-//       console.error('Ошибка при выполнении SQL-запроса:', err.message);
-//       res.status(500).json({ error: 'Ошибка на сервере' });
-//       return;
-//     }
-//
-//     if (row && row.user_id) {
-//       console.log(`User ID для пользователя с email ${email} найден: ${row.user_id}`);
-//       res.json({ user_id: row.user_id });
-//     } else {
-//       console.log(`User ID для пользователя с email ${email} не найден`);
-//       res.status(404).json({ message: 'User ID не найден' });
-//     }
-//   });
-// });
+app.get('/getUserIdForMail/:email', (req, res) => {
+  const email = req.params.email;
 
-app.get('/getUser/:email', (req, res) => {
+  // SQL-запрос для получения user_id по адресу электронной почты
+  const sql = 'SELECT user_id FROM users WHERE email = ?';
+  db.get(sql, [email], (err, row) => {
+    if (err) {
+      console.error('Ошибка при выполнении SQL-запроса:', err.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+      return;
+    }
+
+    if (row && row.user_id) {
+      console.log(`User ID для пользователя с email ${email} найден: ${row.user_id}`);
+      res.json({ user_id: row.user_id }); // Отправить user_id в формате JSON
+    } else {
+      console.log(`User ID для пользователя с email ${email} не найден`);
+      res.status(404).json({ message: 'User ID не найден' });
+    }
+  });
+});
+
+app.get('/getUserEmail/:email', (req, res) => {
   const email = req.params.email;
 
   // SQL-запрос для получения данных пользователя по email
@@ -213,6 +212,58 @@ app.get('/getUser/:email', (req, res) => {
         };
 
         console.log(`Данные для пользователя с email ${email} найдены`);
+        res.json(userData);
+      });
+    });
+  });
+});
+
+
+app.get('/getUserIdForInf/:user_id', (req, res) => {
+  const user_id = req.params.user_id;
+
+  // SQL-запрос для получения данных пользователя по ID
+  const userSql = 'SELECT * FROM users WHERE user_id = ?';
+  const gradesSql = 'SELECT * FROM student_grades WHERE user_id = ?';
+  const achievementsSql = 'SELECT * FROM achievements WHERE user_id = ?';
+
+  db.get(userSql, [user_id], (err, userRow) => {
+    if (err) {
+      console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+      return;
+    }
+
+    if (!userRow) {
+      console.log(`Пользователь с ID ${user_id} не найден`);
+      res.status(404).json({ message: 'Пользователь не найден' });
+      return;
+    }
+
+    // Выполните запрос для получения данных об достижениях
+    db.get(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
+      if (achievementsErr) {
+        console.error('Ошибка при выполнении SQL-запроса для достижений:', achievementsErr.message);
+        res.status(500).json({ error: 'Ошибка на сервере' });
+        return;
+      }
+
+      // Выполните запрос для получения данных оценок пользователя (используя db.all)
+      db.all(gradesSql, [user_id], (gradesErr, gradesRows) => {
+        if (gradesErr) {
+          console.error('Ошибка при выполнении SQL-запроса для оценок:', gradesErr.message);
+          res.status(500).json({ error: 'Ошибка на сервере' });
+          return;
+        }
+
+        // Соедините результаты обоих запросов в один объект
+        const userData = {
+          user: userRow,
+          grades: gradesRows,
+          achievements: achievementsRow,
+        };
+
+        console.log(`Данные для пользователя с ID ${user_id} найдены`);
         res.json(userData);
       });
     });
