@@ -208,8 +208,8 @@ app.get('/getUser/:email', (req, res) => {
         // Соедините результаты обоих запросов в один объект
         const userData = {
           user: userRow,
-          achievements: achievementsRow,
           grades: gradesRows,
+          achievements: achievementsRow,
         };
 
         console.log(`Данные для пользователя с email ${email} найдены`);
@@ -241,63 +241,6 @@ app.post('/additionalData', (req, res) => {
     }
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Настройка местоположения для сохранения загруженных файлов
