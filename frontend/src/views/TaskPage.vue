@@ -72,49 +72,57 @@ export default {
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd"
+        bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd",
+        status: false,
       }, {
         id: 2,
         title: "sdrgrsdgsdrgxdrgxrtdht",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       }, {
         id: 3,
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       }, {
         id: 4,
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       }, {
         id: 5,
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       }, {
         id: 6,
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       }, {
         id: 7,
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       }, {
         id: 8,
         title: "Сложение двух числе",
         topic: "Математика",
         complexity: "1",
-        bodyTask: "Нужно будет сложить два числа"
+        bodyTask: "Нужно будет сложить два числа",
+        status: false,
       },]
     }
   }
