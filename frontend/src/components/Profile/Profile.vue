@@ -23,6 +23,11 @@ export default {
         changePass: false,
       }
     }
+  },
+  computed: {
+    htmlContent() {
+      return this.edit === false ? this.person.name : 'World';
+    }
   }
 }
 </script>
@@ -37,12 +42,13 @@ export default {
     </div>
     <div class="date_person_fio">
       <div class="name"><label>Имя:</label>&nbsp;
-        <input
-          type="text"
-          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          v-bind:value="person.name"
-          :disabled="!edit"
-        >
+        <div v-html="htmlContent"></div>
+<!--        <input-->
+<!--          type="text"-->
+<!--          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"-->
+<!--          v-bind:value="person.name"-->
+<!--          :disabled="!edit"-->
+<!--        >-->
       </div>
       <div class="lastName">
         <label>Фамилия:</label>&nbsp;
@@ -66,7 +72,7 @@ export default {
 
 
     <div class="date_person_birthday_gender">
-      <p>Дата рождения {{ person.birthday }}</p>
+<!--      <p>Дата рождения {{ person.birthday }}</p>-->
       <p>Пол: {{ person.gender }}</p>
     </div>
 
@@ -142,6 +148,11 @@ export default {
 </template>
 
 <style scoped lang="scss">
+
+.flexDiv {
+  display: flex;
+}
+
 .main {
   font-size: 2rem;
   width: 100%;
@@ -168,8 +179,12 @@ export default {
   border-bottom: 1px solid black;
 }
 
+.avatar {
+  height: 30%;
+}
+
 .avatar img {
-  height: 15rem;
+  height: 100%;
   border: 2px solid white;
   border-radius: 1rem;
 }
