@@ -50,3 +50,45 @@ const router = new VueRouter({
 });
 
 export default router;
+
+// const router = new VueRouter({
+//   mode: 'history',
+//   base: process.env.BASE_URL,
+//   routes: [
+//     {
+//       path: '/',
+//       name: 'home',
+//       component: HomePage,
+//     },
+//     {
+//       path: '/profile',
+//       name: 'profile',
+//       component: ProfilePage,
+//     },
+//     {
+//       path: '/testProfile/:id',
+//       name: 'testProfile',
+//       meta: { auth: true },
+//       component: testProfile,
+//     },
+//     {
+//       path: '/auth',
+//       name: 'auth',
+//       component: AuthPage,
+//     },
+//     {
+//       path: '/task',
+//       name: 'task',
+//       component: TaskPage,
+//     },
+//     {
+//       path: '/task/:id',
+//       component: TaskDetail,
+//       name: 'taskDetail',
+//     },
+//   ],
+// });
+
+// router.beforeEach((to, from, next) => {});
+
+// export default router;
