@@ -96,16 +96,16 @@ export default {
     return {
       person: {
         // avatar: '',
-        name: 'Sasha',
+        name: 'Sasdasdha',
         lastname: 'Volkov',
         patronymic: 'Segeevich',
-        birthday: '14.03.2002',
+        // birthday: '14.03.2002',
         gender: "Мужской",
         student: false, // переключатель вкладок
         class: '11',
         item: 'Математика',
         email: 'a1exa2@adsaw.ry',
-        expert: false
+        expert: false,
       },
       isActiveComponents: {
         Profile: true,

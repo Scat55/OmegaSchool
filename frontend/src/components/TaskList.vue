@@ -45,7 +45,7 @@ export default {
 }
 
 .task:hover {
-  border: 3px solid $lightBlueColor;
+  border: 3px solid #151280;
 }
 
 .title {

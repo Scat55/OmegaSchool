@@ -188,6 +188,8 @@ export default {
   border: none;
   overflow-x: hidden;
   overflow-y: auto;
+
+  // scroll пока работает на firefox
   scrollbar-width: thin;
   scrollbar-color: $lightBlueColor white;
 }
