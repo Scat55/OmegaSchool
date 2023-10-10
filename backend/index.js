@@ -1,4 +1,10 @@
 const express = require('express');
+
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
+
 const { body, validationResult } = require('express-validator');
 const sqlite3 = require('sqlite3').verbose();
 const PORT = process.env.PORT || 8070;
@@ -229,6 +235,78 @@ app.post('/additionalData', (req, res) => {
     } else {
       console.log('Дополнительные данные успешно вставлены');
       res.status(200).json({ message: 'Дополнительные данные успешно добавлены' });
+    }
+  });
+});
+
+// Настройка местоположения для сохранения загруженных файлов
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Укажите путь к каталогу для хранения файлов
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    // Генерируйте уникальное имя файла
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+// Обработка загрузки файлов
+app.post('/upload', upload.single('file'), (req, res) => {
+  // В этой функции вы можете обработать загруженный файл
+  res.send('Файл успешно загружен.');
+});
+app.get('/upload', upload.single('file'), (req, res) => {
+  // В этой функции вы можете обработать загруженный файл
+  res.send('Файл успешно загружен.');
+});
+
+// Устанавливаем путь к директории, в которой хранятся файлы
+const fileDirectory = 'uploads/';
+
+app.get('/download/:filename', (req, res) => {
+  // Получаем имя файла из параметра URL
+  const requestedFilename = req.params.filename;
+
+  // Проверяем, есть ли файл с полным или частичным именем
+  fs.readdir(fileDirectory, (err, files) => {
+    if (err) {
+      return res.status(500).send('Ошибка сервера');
+    }
+
+    // Ищем файл с частичным совпадением имени
+    const foundFile = files.find((file) => file.includes(requestedFilename));
+
+    if (foundFile) {
+      // Формируем полный путь к найденному файлу
+      const filePath = path.join(fileDirectory, foundFile);
+
+      // Проверяем расширение файла
+      const fileExtension = path.extname(filePath).toLowerCase();
+
+      if (fileExtension === '.txt') {
+        // Если расширение .txt, отправляем его содержимое как текст
+        fs.readFile(filePath, 'utf8', (err, data) => {
+          if (err) {
+            res.status(500).send('Ошибка при чтении файла');
+          } else {
+            res.header('Content-Type', 'text/plain');
+            res.send(data);
+          }
+        });
+      } else {
+        // Иначе отправляем файл для скачивания
+        res.download(filePath, (err) => {
+          if (err) {
+            // Если произошла ошибка при отправке файла, обрабатываем её
+            res.status(404).send('Файл не найден');
+          }
+        });
+      }
+    } else {
+      res.status(404).send('Файл не найден');
     }
   });
 });
