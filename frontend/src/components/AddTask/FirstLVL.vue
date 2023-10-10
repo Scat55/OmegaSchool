@@ -30,23 +30,24 @@ export default {
       <p>Описании задачи / Условие</p>
       <textarea></textarea>
     </div>
-    <div>
+    <div class="shablonZadaniaFirst__window">
       <button @click="toggleWindow">{{ isWindowOpen === false ? 'Показать инструкцию' : 'Скрыть инструкцию' }}</button>
-      <div class="shablonZadaniaFirst__window" v-if="isWindowOpen">
+      <div v-if="isWindowOpen">
         <p>Тут будет инструкци как использовать чекбоксы. Нажать на кнопку "добавить чекбокс" добавит один чекбокс в
           инпут надо будет ввести значение. Те которые правильные варианты ответа нужно будет ответить нажам на
           чекбокс</p>
       </div>
     </div>
     <div class="shablonZadaniaFirst__option_answers">
+      <button @click="addCheckbox">Добавить чекбокс</button>
       <div v-for="index in checkboxes" :key="index">
         <div class="shablonZadaniaFirst__checkbox-item">
           <input type="checkbox" :id="'checkbox-' + index"/>
           <input type="text" v-model="checkboxText[index]"/>
-          <label :for="'checkbox-' + index">Введите текст</label>
+          <button >X</button>
+<!--          <label :for="'checkbox-' + index">Введите текст</label>-->
         </div>
       </div>
-      <button @click="addCheckbox">Добавить чекбокс</button>
     </div>
     <div class="shablonZadaniaFirst__btn_send">
       <button id="send">Отправить задание на проверку эксперту!</button>
@@ -102,8 +103,39 @@ export default {
   &__window {
 
     & > button {
-     width: 100%;
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 1rem;
+      border: none
     }
+
+    & > div {
+      margin-bottom: 10px;
+    }
+
+    & > div > p {
+      background: white;
+      padding: 5px;
+      border-radius: 1rem;
+    }
+
+  }
+
+
+  &__option_answers {
+
+
+    & > button {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 1rem;
+      border: none
+    }
+  }
+
+  &__checkbox-item {
 
   }
 
