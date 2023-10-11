@@ -47,6 +47,7 @@
             v-model="gender.name"
         >
           <option
+              selected="selected"
               disabled
               class="reg__from-option">
             Ваш пол
@@ -68,7 +69,7 @@
             class="reg__form-prof"
             v-model="proffesion.name"
         >
-          <option disabled>
+          <option selected="selected" disabled>
             Ваш статус
           </option>
           <option>
@@ -187,6 +188,12 @@ export default {
 <!--    //     this.changeUserList()-->
 <!--    //   }-->
 <!--    // }-->
+=======
+  },
+  mounted() {
+    const selectGender = document.querySelector('#gender');
+    selectGender.selectedIndex = 0;
+>>>>>>> ce5a6b798c04730b23aeef0276c083c90d1febff
 
 <!--  }-->
 <!--  mounted() {-->
@@ -196,6 +203,7 @@ export default {
 <!--    const selectProffesion = document.querySelector('#proffesion');-->
 <!--    selectProffesion.selectedIndex = 0;-->
 <!--  }-->
+
 
 
 <style lang="scss" scoped>
