@@ -104,8 +104,8 @@ export default {
     return {
       pass: '',
       email: '',
-      proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
-      gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }],
+      proffesion: [{id: 0, name: 'Ученик'}, {id: 1, name: 'Учитель'}],
+      gender: [{id: 0, name: 'Мужской'}, {id: 1, name: 'Женский'}],
       activeClass: false
     }
   },
@@ -151,19 +151,17 @@ export default {
     // Обработка формы
     handler() {
       console.log(`${this.email}, ${this.pass}, ${this.proffesion.name}, ${this.gender.name}`)
-    }
-      //   if (this.pass === '' || this.pass.length < 8 || this.email === '') {
-      //     this.activeClass = true
-      //     return false
-      //   }
-      //   else {
-      //     this.activeClass = false
-      //     this.changeUserList()
-      //   }
-      // }
 
+      if (this.pass === '' || this.pass.length < 8 || this.email === '') {
+        this.activeClass = true
+        return false
+      } else {
+        this.activeClass = false
+        this.changeUserList()
+      }
     }
   }
+}
 </script> 
 
 <style lang="scss" scoped>

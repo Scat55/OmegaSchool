@@ -71,6 +71,7 @@ export default {
 
   &__subtitle {
     color: $whiteColor;
+    margin-top: 1rem;
 
   }
 
@@ -99,10 +100,10 @@ export default {
       cursor: pointer;
       color: $whiteColor;
       text-decoration: none;
-      box-shadow: 0 0 10px 10px #2a7afc;
       transition: all .3s;
 
       &:hover {
+        box-shadow: 0 0 10px 10px #2a7afc;
         transform: scale(1.1);
       }
     }
@@ -110,6 +111,7 @@ export default {
     &-text {
       color: $whiteColor;
       font-size: 1.2rem;
+      line-height: 140%;
       margin-top: 3rem;
     }
   }

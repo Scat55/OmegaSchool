@@ -21,6 +21,7 @@
             <li
               class="header__logo-item login"
               @click="changeStatusOnTrue()"
+              v-if="!this.$store.state.isAuth"
             >
               <img
                 src="../assets/images/userLog.png"
@@ -29,7 +30,11 @@
               >
               Войти
             </li>
-
+            <li
+              class="header__logo-item login"
+              v-else>
+              Выйти
+            </li>
           </ul>
         </div>
 
