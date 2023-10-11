@@ -19,6 +19,16 @@ const routes = [
     path: '/profile/:id',
     name: 'profile',
     component: ProfilePage,
+    beforeEnter(to, from ,next){
+      console.log('before')
+
+      if (this.$store.state.isAuth) {
+        next(true)
+      } else {
+        alert('Вы не вошли в аккаунт')
+        next(false)
+      }
+    }
   },
   {
     path: '/auth',
