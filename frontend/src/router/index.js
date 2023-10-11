@@ -6,7 +6,6 @@ import AuthPage from '../views/AuthPage.vue';
 import HomePage from '../views/HomePage.vue';
 import TaskPage from '../views/TaskPage.vue';
 import TaskDetail from '@/components/TaskDetail.vue';
-import testProfile from '@/views/testProfile.vue';
 
 Vue.use(VueRouter);
 
@@ -17,14 +16,9 @@ const routes = [
     component: HomePage,
   },
   {
-    path: '/profile',
+    path: '/profile/:id',
     name: 'profile',
     component: ProfilePage,
-  },
-  {
-    path: '/testProfile/:id',
-    name: 'testProfile',
-    component: testProfile,
   },
   {
     path: '/auth',

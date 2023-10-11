@@ -42,13 +42,13 @@ export default {
     </div>
     <div class="date_person_fio">
       <div class="name"><label>Имя:</label>&nbsp;
-        <div v-html="htmlContent"></div>
-<!--        <input-->
-<!--          type="text"-->
-<!--          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"-->
-<!--          v-bind:value="person.name"-->
-<!--          :disabled="!edit"-->
-<!--        >-->
+        <!-- <div v-html="htmlContent"></div> -->
+        <input
+          type="text"
+          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+          v-bind:value="person.name"
+          :disabled="!edit"
+        >
       </div>
       <div class="lastName">
         <label>Фамилия:</label>&nbsp;
@@ -72,7 +72,7 @@ export default {
 
 
     <div class="date_person_birthday_gender">
-<!--      <p>Дата рождения {{ person.birthday }}</p>-->
+      <!--      <p>Дата рождения {{ person.birthday }}</p>-->
       <p>Пол: {{ person.gender }}</p>
     </div>
 
@@ -148,7 +148,6 @@ export default {
 </template>
 
 <style scoped lang="scss">
-
 .flexDiv {
   display: flex;
 }
@@ -201,4 +200,5 @@ export default {
   border-radius: 1.5rem;
   border: 2px solid black;
   box-shadow: 2px 2px 4px black;
-}</style>
+}
+</style>

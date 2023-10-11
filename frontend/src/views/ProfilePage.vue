@@ -1,8 +1,10 @@
 <template>
   <div>
     <div class="container">
+      {{ id }}
       <div class="window">
         <div class="left_div">
+
           <div class="tabs">
             <div
               class="tab"
@@ -80,7 +82,7 @@ import MySolvedTask from "@/components/Profile/MySolvedTask.vue";
 import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
 import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
 import AddTask from "@/components/Profile/AddTask.vue";
-
+import axios from 'axios'
 export default {
   components: {
     AddTask,
@@ -96,7 +98,7 @@ export default {
     return {
       person: {
         // avatar: '',
-        name: 'Sasdasdha',
+        name: '',
         lastname: 'Volkov',
         patronymic: 'Segeevich',
         // birthday: '14.03.2002',
@@ -117,6 +119,7 @@ export default {
         MySolvedTask: false,
         AddTask: false,
       },
+      id: this.$router.currentRoute.params['id'],
     }
   },
   methods: {
@@ -129,7 +132,15 @@ export default {
         }
       }
     }
-  }
+  },
+  mounted() {
+    axios.get(`/getUserIdForInf/${this.id}`).then(response => {
+      console.log(response.data)
+      // this.email = response.data.user.email
+      this.person.name = response.data.user.email
+    })
+    console.log(this.person)
+  },
 }
 </script>
 
