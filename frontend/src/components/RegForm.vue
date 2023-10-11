@@ -2,74 +2,73 @@
   <div class="reg ">
     <div class="container">
       <form
-        action="#"
-        class="reg__form no-scroll"
-        @submit.prevent="handler()"
+          action="#"
+          class="reg__form no-scroll"
+          @submit.prevent="handler()"
       >
         <p class="reg__form-title">Регистрация</p>
         <img
-          src="../assets/images/closeForm.png"
-          alt="CloseForm"
-          class="reg__form-img"
-          @click="changeStatusOnFalse()"
+            src="../assets/images/closeForm.png"
+            alt="CloseForm"
+            class="reg__form-img"
+            @click="changeStatusOnFalse()"
         >
 
         <div class="reg__info">
           <span class="reg__info-name ">Почта</span>
           <input
-            type="email"
-            class="reg__input name"
-            v-model.trim="email"
+              type="email"
+              class="reg__input name"
+              v-model.trim="email"
           >
         </div>
         <small
-          v-if="activeClass"
-          class="activeClass"
+            v-if="activeClass"
+            class="activeClass"
         >Поле не должно быть пустым</small>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
           <input
-            type="password"
-            class="reg__input"
-            v-model.trim="pass"
+              type="password"
+              class="reg__input"
+              v-model.trim="pass"
           >
         </div>
         <small
-          v-if="activeClass"
-          class="activeClass"
+            v-if="activeClass"
+            class="activeClass"
         >Пароль должен быть не меньше 8 символов</small>
 
         <!--TODO: вот недоделанные селекты-->
         <select
-          name="gender"
-          id="gender"
-          class="reg__form-prof"
-          v-model="gender.name"
+            name="gender"
+            id="gender"
+            class="reg__form-prof"
+            v-model="gender.name"
         >
           <option
-            selected="selected"
-            disabled
-            class="reg__from-option">
+              disabled
+              class="reg__from-option">
             Ваш пол
           </option>
 
           <option
-            class="reg__from-option">
+              class="reg__from-option">
             Мужской
           </option>
           <option
-            class="reg__from-option">
+              class="reg__from-option">
             Женский
           </option>
         </select>
 
         <select
-          name="proffesion"
-          id="proffesion"
-          class="reg__form-prof"
-          v-model="proffesion.name"
+            name="proffesion"
+            id="proffesion"
+            class="reg__form-prof"
+            v-model="proffesion.name"
         >
-          <option selected="selected" disabled>
+          <option disabled>
             Ваш статус
           </option>
           <option>
@@ -82,10 +81,11 @@
         </select>
 
         <button
-          class="reg__form-btn"
-          type="submit"
-        >Зарегестрироваться</button>
-        <p>Есть аккаут? <span class="reg__auth"> Войти</span> </p>
+            class="reg__form-btn"
+            type="submit"
+        >Зарегестрироваться
+        </button>
+        <p>Есть аккаут? <span class="reg__auth"> Войти</span></p>
       </form>
 
 
@@ -143,14 +143,15 @@ export default {
         }
       })
 
-        .catch(function (error) {
-          console.log(error);
-        });
+          .catch(function (error) {
+            console.log(error);
+          });
 
     },
     // Обработка формы
     handler() {
       console.log(`${this.email}, ${this.pass}, ${this.proffesion.name}, ${this.gender.name}`)
+<<<<<<< Updated upstream
 
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
         this.activeClass = true
@@ -163,6 +164,31 @@ export default {
   }
 }
 </script> 
+=======
+    }
+    //   if (this.pass === '' || this.pass.length < 8 || this.email === '') {
+    //     this.activeClass = true
+    //     return false
+    //   }
+    //   else {
+    //     this.activeClass = false
+    //     this.changeUserList()
+    //   }
+    // }
+
+  }
+  ,mounted() {
+    const selectGender = document.querySelector('#gender');
+    selectGender.selectedIndex = 0;
+
+    const selectProffesion = document.querySelector('#proffesion');
+    selectProffesion.selectedIndex = 0;
+
+
+  }
+}
+</script>
+>>>>>>> Stashed changes
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
@@ -193,7 +219,6 @@ export default {
     padding: 5.75rem;
     box-shadow: 0 0 20px 0px $accentColor;
     background-color: #fff;
-
 
 
     &-title {
