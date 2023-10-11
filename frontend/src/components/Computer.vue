@@ -15,7 +15,7 @@
         <p class="computer__title">Дистанционное обучение открывает перед вами новые горизонты. Благодаря нашим вебинарам
           и видеоурокам, вы можете учиться у лучших специалистов, не выходя из дома. Доступ к знаниям 24/7 в любой точке
           мира.<span class="computer__subtitle">Смотреть
-            задания -></span></p>
+            задания &#8594</span></p>
 
       </div>
     </div>
@@ -42,13 +42,13 @@
   }
 
   &__title {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   &__subtitle {
     display: block;
     padding-top: 1rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all .3s;
 

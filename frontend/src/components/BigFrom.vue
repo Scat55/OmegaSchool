@@ -109,7 +109,7 @@ export default {
 
     &-text {
       color: $whiteColor;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       margin-top: 3rem;
     }
   }
