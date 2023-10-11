@@ -39,7 +39,6 @@
           class="activeClass"
         >Пароль должен быть не меньше 8 символов</small>
 
-        <span class="gender">Пол</span>
         <select
           name="gender"
           id="gender"
@@ -47,28 +46,37 @@
           v-model="gender.name"
         >
           <option
-            class="reg__from-option"
-            v-for="gender in gender"
-            :value="gender.name"
-          >
-            {{ gender.name }}
+            selected="selected"
+            disabled
+            class="reg__from-option">
+            Ваш пол
+          </option>
+
+          <option
+            class="reg__from-option">
+            Мужской
+          </option>
+          <option
+            class="reg__from-option">
+            Женский
           </option>
         </select>
 
-
-        <span class="proffesion">Учитель / Ученик</span>
         <select
           name="proffesion"
           id="proffesion"
           class="reg__form-prof"
           v-model="proffesion.name"
         >
-          <option
-            class="reg__from-option"
-            v-for="prof in proffesion"
-            :value="prof.name"
-          >
-            {{ prof.name }}
+          <option selected="selected" disabled>
+            Ваш статус
+          </option>
+          <option>
+            Ученик
+          </option>
+
+          <option>
+            Учитель
           </option>
         </select>
 
@@ -87,7 +95,7 @@
 <script>
 
 import axios from 'axios';
-import router from 'vue-router';
+
 export default {
 
   data() {
@@ -141,17 +149,20 @@ export default {
     },
     // Обработка формы
     handler() {
-      if (this.pass === '' || this.pass.length < 8 || this.email === '') {
-        this.activeClass = true
-        return false
-      }
-      else {
-        this.activeClass = false
-        this.changeUserList()
-      }
+      console.log(`${this.email}, ${this.pass}, ${this.proffesion.name}, ${this.gender.name}`)
     }
-  },
-}
+      //   if (this.pass === '' || this.pass.length < 8 || this.email === '') {
+      //     this.activeClass = true
+      //     return false
+      //   }
+      //   else {
+      //     this.activeClass = false
+      //     this.changeUserList()
+      //   }
+      // }
+
+    }
+  }
 </script> 
 
 <style lang="scss" scoped>
