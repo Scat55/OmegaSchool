@@ -69,7 +69,7 @@ export default {
             axios.get(`/getUserIdForMail/${this.email}`).then(response => {
               console.log(response.data.user_id)
               this.$router.push(`/profile/${response.data.user_id}`)
-              this.$store.state.isAuth = true
+              this.$store.state.isAuth = !this.$store.state.isAuth
             })
           }
 

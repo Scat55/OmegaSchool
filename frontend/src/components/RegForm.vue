@@ -85,7 +85,7 @@
           class="reg__form-btn"
           type="submit"
         >Зарегестрироваться</button>
-        <p>Есть аккаут? <span class="reg__auth"> Войти</span> </p>
+        <p>Есть аккаут? <span class="reg__auth" @click="goToAuth()">Войти</span> </p>
       </form>
 
 
@@ -100,7 +100,6 @@ import axios from 'axios';
 export default {
 
   data() {
-
     return {
       pass: '',
       email: '',
@@ -111,6 +110,12 @@ export default {
   },
 
   methods: {
+    goToAuth(){
+      const body = document.querySelector('body')
+      this.$store.state.status = false
+      body.style.overflow = ""
+      this.$router.push('/auth')
+    },
     changeStatusOnFalse() {
       const body = document.querySelector('body')
       this.$store.state.status = false

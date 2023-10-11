@@ -38,9 +38,7 @@
             </li>
           </ul>
         </div>
-
       </div>
-
     </div>
   </div>
 </template>
@@ -61,8 +59,8 @@ export default {
       body.style.overflow = "hidden"
     },
     logout(){
+      this.$store.state.isAuth = false
       this.$router.push('/')
-      this.$store.state.logout = false
     }
 
   },
