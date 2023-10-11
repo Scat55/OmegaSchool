@@ -27,7 +27,7 @@ const routes = [
     //   } else {
     //     next(false);
     //     alert('Войдите в аккаунт');
-    //     router.push('/');
+    //     router.push('/'); // next({path: '/'});
     //   }
     // },
   },
