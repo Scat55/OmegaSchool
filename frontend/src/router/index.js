@@ -6,7 +6,7 @@ import AuthPage from '../views/AuthPage.vue';
 import HomePage from '../views/HomePage.vue';
 import TaskPage from '../views/TaskPage.vue';
 import TaskDetail from '@/components/TaskDetail.vue';
-
+import { isAuth } from '../store/index';
 Vue.use(VueRouter);
 
 const routes = [
@@ -19,16 +19,16 @@ const routes = [
     path: '/profile/:id',
     name: 'profile',
     component: ProfilePage,
-    beforeEnter(to, from ,next){
-      console.log('before')
-
-      if (this.$store.state.isAuth) {
-        next(true)
+    beforeEnter(to, from, next) {
+      console.log('before');
+      if (isAuth) {
+        next(true);
       } else {
-        alert('Вы не вошли в аккаунт')
-        next(false)
+        next(false);
+        alert('Войдите в аккаунт');
+        router.push('/');
       }
-    }
+    },
   },
   {
     path: '/auth',

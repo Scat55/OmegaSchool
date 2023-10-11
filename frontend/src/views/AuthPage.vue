@@ -40,6 +40,7 @@
 <script>
 import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex'
+import { isAuth } from '../store/index';
 export default {
   data() {
     return {
@@ -68,8 +69,8 @@ export default {
           } else {
             axios.get(`/getUserIdForMail/${this.email}`).then(response => {
               console.log(response.data.user_id)
+              isAuth = true
               this.$router.push(`/profile/${response.data.user_id}`)
-              this.$store.state.isAuth = !this.$store.state.isAuth
             })
           }
 
