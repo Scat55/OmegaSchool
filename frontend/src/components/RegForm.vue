@@ -39,6 +39,7 @@
           class="activeClass"
         >Пароль должен быть не меньше 8 символов</small>
 
+        <!--TODO: вот недоделанные селекты-->
         <select
           name="gender"
           id="gender"
