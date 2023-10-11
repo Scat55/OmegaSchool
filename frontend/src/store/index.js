@@ -4,11 +4,11 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+let store = new Vuex.Store({
   state: {
     status: false,
     users: [],
-    isAuth: false
+    isAuth: false,
   },
   getters: {
     USERS(state) {
@@ -42,3 +42,4 @@ export default new Vuex.Store({
     },
   },
 });
+export default store;

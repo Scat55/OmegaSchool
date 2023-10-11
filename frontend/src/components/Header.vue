@@ -33,7 +33,8 @@
             <li
               class="header__logo-item login"
               @click="logout()"
-              v-else>
+              v-else
+            >
               Выйти
             </li>
           </ul>
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-
+import store from '../store/index';
 export default {
   data() {
     return {
@@ -55,11 +56,11 @@ export default {
   methods: {
     changeStatusOnTrue() {
       const body = document.querySelector('body')
-      this.$store.state.status = true
+      store.state.status = true
       body.style.overflow = "hidden"
     },
-    logout(){
-      this.$store.state.isAuth = false
+    logout() {
+      store.state.isAuth = false
       this.$router.push('/')
     }
 

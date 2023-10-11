@@ -6,7 +6,7 @@ import AuthPage from '../views/AuthPage.vue';
 import HomePage from '../views/HomePage.vue';
 import TaskPage from '../views/TaskPage.vue';
 import TaskDetail from '@/components/TaskDetail.vue';
-import { isAuth } from '../store/index';
+import store from '../store/index';
 Vue.use(VueRouter);
 
 const routes = [
@@ -21,7 +21,7 @@ const routes = [
     component: ProfilePage,
     beforeEnter(to, from, next) {
       console.log('before');
-      if (isAuth) {
+      if (store.state.isAuth) {
         next(true);
       } else {
         next(false);
