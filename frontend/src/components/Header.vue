@@ -32,6 +32,7 @@
             </li>
             <li
               class="header__logo-item login"
+              @click="logout()"
               v-else>
               Выйти
             </li>
@@ -58,8 +59,11 @@ export default {
       const body = document.querySelector('body')
       this.$store.state.status = true
       body.style.overflow = "hidden"
-
     },
+    logout(){
+      this.$router.push('/')
+      this.$store.state.logout = false
+    }
 
   },
 
