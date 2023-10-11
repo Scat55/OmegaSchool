@@ -2,74 +2,76 @@
   <div class="reg ">
     <div class="container">
       <form
-          action="#"
-          class="reg__form no-scroll"
-          @submit.prevent="handler()"
+        action="#"
+        class="reg__form no-scroll"
+        @submit.prevent="handler()"
       >
         <p class="reg__form-title">Регистрация</p>
         <img
-            src="../assets/images/closeForm.png"
-            alt="CloseForm"
-            class="reg__form-img"
-            @click="changeStatusOnFalse()"
+          src="../assets/images/closeForm.png"
+          alt="CloseForm"
+          class="reg__form-img"
+          @click="changeStatusOnFalse()"
         >
 
         <div class="reg__info">
           <span class="reg__info-name ">Почта</span>
           <input
-              type="email"
-              class="reg__input name"
-              v-model.trim="email"
+            type="email"
+            class="reg__input name"
+            v-model.trim="email"
           >
         </div>
         <small
-            v-if="activeClass"
-            class="activeClass"
+          v-if="activeClass"
+          class="activeClass"
         >Поле не должно быть пустым</small>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
           <input
-              type="password"
-              class="reg__input"
-              v-model.trim="pass"
+            type="password"
+            class="reg__input"
+            v-model.trim="pass"
           >
         </div>
         <small
-            v-if="activeClass"
-            class="activeClass"
+          v-if="activeClass"
+          class="activeClass"
         >Пароль должен быть не меньше 8 символов</small>
 
         <!--TODO: вот недоделанные селекты-->
         <select
-            name="gender"
-            id="gender"
-            class="reg__form-prof"
-            v-model="gender.name"
+          name="gender"
+          id="gender"
+          class="reg__form-prof"
+          v-model="gender.name"
         >
           <option
-              selected="selected"
-              disabled
-              class="reg__from-option">
+            selected="selected"
+            disabled
+            class="reg__from-option"
+          >
             Ваш пол
           </option>
 
-          <option
-              class="reg__from-option">
+          <option class="reg__from-option">
             Мужской
           </option>
-          <option
-              class="reg__from-option">
+          <option class="reg__from-option">
             Женский
           </option>
         </select>
 
         <select
-            name="proffesion"
-            id="proffesion"
-            class="reg__form-prof"
-            v-model="proffesion.name"
+          name="proffesion"
+          id="proffesion"
+          class="reg__form-prof"
+          v-model="proffesion.name"
         >
-          <option selected="selected" disabled>
+          <option
+            selected="selected"
+            disabled
+          >
             Ваш статус
           </option>
           <option>
@@ -82,18 +84,13 @@
         </select>
 
         <button
-
           class="reg__form-btn"
           type="submit"
         >Зарегестрироваться</button>
-        <p>Есть аккаут? <span class="reg__auth" @click="goToAuth()">Войти</span> </p>
-        <button>
-            class="reg__form-btn"
-            type="submit"
-        >Зарегестрироваться
-        </button>
-        <p>Есть аккаут? <span class="reg__auth"> Войти</span></p>
-
+        <p>Есть аккаут? <span
+            class="reg__auth"
+            @click="goToAuth()"
+          >Войти</span> </p>
       </form>
 
 
@@ -111,14 +108,14 @@ export default {
     return {
       pass: '',
       email: '',
-      proffesion: [{id: 0, name: 'Ученик'}, {id: 1, name: 'Учитель'}],
-      gender: [{id: 0, name: 'Мужской'}, {id: 1, name: 'Женский'}],
+      proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
+      gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }],
       activeClass: false
     }
   },
 
   methods: {
-    goToAuth(){
+    goToAuth() {
       const body = document.querySelector('body')
       this.$store.state.status = false
       body.style.overflow = ""
@@ -156,9 +153,9 @@ export default {
         }
       })
 
-          .catch(function (error) {
-            console.log(error);
-          });
+        .catch(function (error) {
+          console.log(error);
+        });
 
     },
     // Обработка формы
@@ -335,5 +332,4 @@ export default {
   align-self: start;
   font-size: 0.8rem;
   padding: 0;
-}
-</style>
+}</style>
