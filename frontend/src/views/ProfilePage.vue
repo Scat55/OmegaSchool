@@ -1,10 +1,8 @@
 <template>
   <div>
     <div class="container">
-      {{ id }}
       <div class="window">
         <div class="left_div">
-
           <div class="tabs">
             <div
               class="tab"
@@ -106,7 +104,7 @@ export default {
         student: false, // переключатель вкладок
         class: '11',
         item: 'Математика',
-        email: 'a1exa2@adsaw.ry',
+        email: '',
         expert: false,
       },
       isActiveComponents: {
@@ -137,7 +135,7 @@ export default {
     axios.get(`/getUserIdForInf/${this.id}`).then(response => {
       console.log(response.data)
       // this.email = response.data.user.email
-      this.person.name = response.data.user.email
+      this.person.email = response.data.user.email
     })
     console.log(this.person)
   },
