@@ -42,6 +42,7 @@
   }
 
   &__title {
+    line-height: 140%;
     font-size: 1.2rem;
   }
 

@@ -41,6 +41,7 @@
 
   &__title {
     font-size: 1.2rem;
+    line-height: 140%;
   }
 }
 </style>
