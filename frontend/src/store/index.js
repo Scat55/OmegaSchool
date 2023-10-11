@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     status: false,
     users: [],
+    isAuth: false
   },
   getters: {
     USERS(state) {
