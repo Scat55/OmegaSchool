@@ -42,7 +42,7 @@ const routes = [
     component: TaskPage,
   },
   {
-    path: '/task/:id',
+    path: '/task/:id?',
     component: TaskDetail,
     name: 'taskDetail',
   },

@@ -43,11 +43,15 @@
         </div>
 
         <div class="div3">
-          <div v-for="task in zadania">
-            <TaskList :task="task"/>
-          </div>
+<!--          <div v-for="task in zadania">-->
+<!--            <TaskList :task="task" :key="task.id"/>-->
+<!--          </div>-->
+          <TaskList
+              v-for="task in $store.state.zadania"
+              :key="task.id"
+              :task="task"
+          />
         </div>
-
       </div>
 
     </div>
@@ -59,71 +63,21 @@
 import FilterItems from "@/components/FilterItems.vue";
 import Task from "@/components/TaskList.vue";
 import TaskList from "@/components/TaskList.vue";
+import taskList from "@/components/TaskList.vue";
 
 export default {
+  computed: {
+    taskList() {
+      return taskList
+    }
+  },
   components: {
     TaskList,
     FilterItems,
   },
   data() {
     return {
-      zadania: [{
-        id: 1,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd",
-        status: false,
-      }, {
-        id: 2,
-        title: "sdrgrsdgsdrgxdrgxrtdht",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 3,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 4,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 5,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 6,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 7,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 8,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      },]
+
     }
   }
 }
