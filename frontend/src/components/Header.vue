@@ -57,15 +57,12 @@ export default {
       const body = document.querySelector('body')
       store.state.status = true
       body.style.overflow = "hidden"
-      console.log('He')
     },
     logout() {
-
       const body = document.querySelector('body')
       body.style.overflow = ""
       store.state.isAuth = false
       store.state.status = false
-      console.log(store.state.isAuth)
       this.$nextTick(() => {
         this.$router.push('/')
       });
