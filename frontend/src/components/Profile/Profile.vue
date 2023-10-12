@@ -146,6 +146,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@import '../../assets/styles/vars';
 .flexDiv {
   display: flex;
 }
@@ -166,15 +167,20 @@ export default {
   border: none;
   font-size: 2rem;
   font-family: Visitor, sans-serif;
+  outline: none;
 }
 
 .InputChange {
   color: black;
-  background: none;
+  background: #fff;
   border: none;
   font-size: 2rem;
+  width: 50%;
   font-family: Visitor, sans-serif;
   border-bottom: 1px solid black;
+  outline: none;
+  border-radius: 0.5rem;
+  padding: 3px;
 }
 
 .avatar {
@@ -190,17 +196,22 @@ export default {
 }
 
 .change_profile {
-  margin-top: 15%;
+  margin-top: 1rem;
   display: flex;
 }
 
 .editBtn {
-  background: white;
+  background: #fff;
   padding: 10px;
   margin: 5px;
   border-radius: 1.5rem;
-  border: 2px solid black;
-  box-shadow: 2px 2px 4px black;
+  border: 1px solid $accentColor;
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover{
+    background-color: #c7fdff;
+  }
 }
 .date_person_fio{
   justify-self: flex-end;
