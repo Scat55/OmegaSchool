@@ -193,6 +193,12 @@ export default {
   height: 40px;
   border-radius: 1rem;
   background: aliceblue;
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover{
+    background-color: #c7fdff;
+  }
 }
 
 .right_div {
