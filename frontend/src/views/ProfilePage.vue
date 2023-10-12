@@ -101,7 +101,7 @@ export default {
         patronymic: 'Segeevich',
         // birthday: '14.03.2002',
         gender: "Мужской",
-        student: false, // переключатель вкладок
+        student: null, // переключатель вкладок
         class: '11',
         item: 'Математика',
         email: '',
@@ -136,6 +136,12 @@ export default {
       console.log(response.data)
       // this.email = response.data.user.email
       this.person.email = response.data.user.email
+      this.person.name = response.data.user.name
+      if (response.data.user.type_user === 'Ученик'){
+        this.person.student = true
+      } else {
+        this.person.student = false
+      }
     })
     console.log(this.person)
   },

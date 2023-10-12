@@ -4,6 +4,12 @@ export default {
     return {
       score: 5
     }
+  },
+
+  methods: {
+    clearForm() {
+      console.log('Форма очищена')
+    }
   }
 }
 </script>
@@ -16,7 +22,7 @@ export default {
     </div>
     <div class="block">
       <p>Введите условие задания:</p>
-      <textarea id="textAreaUsl" v-model="condition"></textarea>
+      <textarea id="textAreaUsl"></textarea>
       <div class="block">
         <p>Дополнительные материалы:</p>
         <input type="file" id="fileInput">
