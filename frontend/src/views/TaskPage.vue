@@ -35,6 +35,16 @@
               >
               <label for="checkbox1">Тяжелые</label><br>
             </div>
+            <div class="topic-filter">
+              <p>Предмет:</p>
+              <select v-model="selectedTopic">
+                <option value="">Все предметы</option>
+                <option value="Математика">Математика</option>
+                <option value="Физика">Физика</option>
+                <option value="Химия">Химия</option>
+                <!-- Добавьте другие предметы, если необходимо -->
+              </select>
+            </div>
           </div>
 
           <button class="btn_filter">Применить фильтр</button>
@@ -42,11 +52,11 @@
         </div>
 
         <div class="div3">
-<!--          <div v-for="task in zadania">-->
-<!--            <TaskList :task="task" :key="task.id"/>-->
-<!--          </div>-->
+          <!--          <div v-for="task in zadania">-->
+          <!--            <TaskList :task="task" :key="task.id"/>-->
+          <!--          </div>-->
           <TaskList
-              v-for="task in $store.state.zadania"
+              v-for="task in filteredTasks"
               :key="task.id"
               :task="task"
           />
@@ -66,13 +76,22 @@ export default {
     // taskList() {
     //   return taskList
     // }
+
+    zadania() {
+      return this.$store.state.zadania;
+    },
+    filteredTasks() {
+      return this.selectedTopic
+          ? this.zadania.filter((task) => task.topic === this.selectedTopic)
+          : this.zadania;
+    }
   },
   components: {
     TaskList,
   },
   data() {
     return {
-
+      selectedTopic: '',
     }
   }
 }
