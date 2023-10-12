@@ -19,7 +19,7 @@ let store = new Vuex.Store({
         }, {
             id: 2,
             title: "sdrgrsdgsdrgxdrgxrtdht",
-            topic: "Математика",
+            topic: "Физика",
             complexity: "1",
             bodyTask: "ХРЕН Нужно будет сложить два числа",
             status: false,
@@ -33,7 +33,7 @@ let store = new Vuex.Store({
         }, {
             id: 4,
             title: "Сложение двух числе",
-            topic: "Математика",
+            topic: "Химия",
             complexity: "3",
             bodyTask: "Нужно будет свфыложить два ыфвыфвфывфычисла",
             status: false,
@@ -47,7 +47,7 @@ let store = new Vuex.Store({
         }, {
             id: 6,
             title: "Сложение двух числе",
-            topic: "Математика",
+            topic: "Физика",
             complexity: "1",
             bodyTask: "Нужно будет сложить два числа",
             status: false,
@@ -61,7 +61,7 @@ let store = new Vuex.Store({
         }, {
             id: 8,
             title: "Сложение двух числе",
-            topic: "Математика",
+            topic: "Химия",
             complexity: "1",
             bodyTask: "Нужно будет сложить два числа",
             status: false,
