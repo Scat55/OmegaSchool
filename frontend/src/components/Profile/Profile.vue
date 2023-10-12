@@ -156,8 +156,8 @@ export default {
   width: 100%;
   height: 100%;
   //padding: 25px;
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
   //flex-wrap: wrap;
 }
 
@@ -186,7 +186,8 @@ export default {
 .avatar {
   display: inline-block;
   height: 30%;
-  align-self: flex-end;
+  //align-self: flex-end;
+  margin-bottom: 2rem;
 }
 
 .avatar img {

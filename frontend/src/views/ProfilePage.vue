@@ -184,6 +184,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 15px;
 }
 
 .tab {
@@ -191,6 +192,7 @@ export default {
   padding: 10px;
   width: 100%;
   height: 40px;
+  font-size: 0.8rem;
   border-radius: 1rem;
   background: aliceblue;
   cursor: pointer;
