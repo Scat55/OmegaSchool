@@ -89,6 +89,10 @@ export default {
     align-items: start;
     justify-content: space-between;
 
+    @media (min-width: 300px) and (max-width: 1200px){
+      flex-wrap: wrap;
+    }
+
     &-text {
       display: flex;
       flex-direction: column;
