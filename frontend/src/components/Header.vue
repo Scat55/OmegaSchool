@@ -11,10 +11,12 @@
 
         <div class="header__logo-lists">
           <ul class="header__logo-list">
-            <li
-              class="header__logo-item"
-              @click="changeStatusOnTrue()"
-            >Задания</li>
+            <router-link to="/task" class = "router">
+              <li
+                  v-if="this.$store.state.isAuth"
+                  class="header__logo-item"
+              >Задания</li>
+            </router-link>
             <li class="header__logo-item">О нас</li>
             <li class="header__logo-item">Полезное</li>
             <li
