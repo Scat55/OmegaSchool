@@ -3,13 +3,14 @@
     <div class="container">
 
       <div class="header__logo">
-        <router-link to="/">
+
           <img
             src="../assets/images/Logo_px (2).png"
             alt="Logo"
             class="header__logo-img"
+            v-on:click="logout()"
           >
-        </router-link>
+
         <div class="header__logo-lists">
           <ul class="header__logo-list">
             <li
@@ -63,9 +64,14 @@ export default {
       body.style.overflow = ""
       store.state.isAuth = false
       store.state.status = false
-      this.$nextTick(() => {
-        this.$router.push('/')
-      });
+
+      if (this.$route.name === 'home'){
+        return
+      } else {
+        this.$nextTick(() => {
+          this.$router.push('/')
+        });
+      }
     }
 
   },
@@ -94,6 +100,7 @@ export default {
       width: 5.3rem;
       margin-top: .625rem;
       margin-bottom: 1rem;
+      cursor: pointer;
     }
 
     &-list {
