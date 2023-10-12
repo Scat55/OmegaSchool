@@ -7,9 +7,7 @@
           <img
             src="../assets/images/Logo_px (2).png"
             alt="Logo"
-            class="header__logo-img"
-            v-on:click="logout()"
-          >
+            class="header__logo-img">
 
         <div class="header__logo-lists">
           <ul class="header__logo-list">
@@ -100,7 +98,6 @@ export default {
       width: 5.3rem;
       margin-top: .625rem;
       margin-bottom: 1rem;
-      cursor: pointer;
     }
 
     &-list {
