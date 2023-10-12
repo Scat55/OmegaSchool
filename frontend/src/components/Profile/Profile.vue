@@ -157,6 +157,7 @@ export default {
   //padding: 25px;
   display: flex;
   flex-direction: column;
+  //flex-wrap: wrap;
 }
 
 .InputChangeNO {
@@ -177,7 +178,9 @@ export default {
 }
 
 .avatar {
+  display: inline-block;
   height: 30%;
+  align-self: flex-end;
 }
 
 .avatar img {
@@ -198,5 +201,8 @@ export default {
   border-radius: 1.5rem;
   border: 2px solid black;
   box-shadow: 2px 2px 4px black;
+}
+.date_person_fio{
+  justify-self: flex-end;
 }
 </style>
