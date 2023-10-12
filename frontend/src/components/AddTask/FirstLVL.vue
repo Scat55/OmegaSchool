@@ -123,7 +123,7 @@ export default {
 
     & > div > p {
       background: white;
-      padding: 5px;
+      padding: 10px;
       border-radius: 1rem;
     }
 
