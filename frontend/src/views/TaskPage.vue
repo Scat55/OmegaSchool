@@ -12,28 +12,8 @@
         <div class="div2">
           <div>
             <div class="complexity">
-              <p>Уровень сложности заданий:</p>
-              <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxGroup"
-                  value="Пункт 1"
-              >
-              <label for="checkbox1">Легкие</label><br>
-              <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxGroup"
-                  value="Пункт 1"
-              >
-              <label for="checkbox1">Средние</label><br>
-              <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxGroup"
-                  value="Пункт 1"
-              >
-              <label for="checkbox1">Тяжелые</label><br>
+              <p>Уровень уровень заданий:</p>
+
             </div>
             <div class="topic-filter">
               <p>Предмет:</p>
@@ -42,7 +22,6 @@
                 <option value="Математика">Математика</option>
                 <option value="Физика">Физика</option>
                 <option value="Химия">Химия</option>
-                <!-- Добавьте другие предметы, если необходимо -->
               </select>
             </div>
           </div>
