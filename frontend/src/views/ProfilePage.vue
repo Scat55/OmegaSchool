@@ -17,7 +17,7 @@
             </div>
             <div
               class="tab"
-              v-if="(person.student === false) && person.expert === true"
+              v-if="person.expert === true"
               @click="switchTab('TaskToCheckTeacher')"
             >Задачи на проверку
             </div>
@@ -140,6 +140,9 @@ export default {
       this.person.lastname = response.data.user.last_name
       this.person.patronymic = response.data.user.patronymic
       this.person.gender = response.data.user.gender
+      if (response.data.user.expert === "true") {
+        this.person.expert = true
+      }
       if (response.data.user.type_user === 'Ученик'){
         this.person.student = true
       } else {
