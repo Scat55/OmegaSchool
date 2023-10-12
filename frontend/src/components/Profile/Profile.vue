@@ -1,8 +1,5 @@
-<script setup>
-
-</script>
-
 <script>
+import axios from 'axios';
 export default {
   props: {
     person: {
@@ -24,8 +21,15 @@ export default {
       }
     }
   },
-  computed: {
-
+  methods: {
+    //  TODO: сделать запрос на изменение данных
+    changeInfoAboutUSer(){
+      this.edit = false
+       console.log('Изменить данные')
+      // axios.post('/additionalData', {
+      //
+      // })
+    },
   }
 }
 </script>
@@ -131,7 +135,7 @@ export default {
         >Изменить профиль</button>
         <button
           v-show="edit === true"
-          @click="edit = false"
+          @click="changeInfoAboutUSer()"
           class="editBtn"
         >Подтвердить изменения</button>
         <button

@@ -129,9 +129,28 @@ export default {
           this.isActiveComponents[key] = true;
         }
       }
-    }
+    },
+    getInfoAboutUser(){
+      axios.get(`/getUserIdForInf/${this.id}`).then(response => {
+        // this.email = response.data.user.email
+        this.person.email = response.data.user.email
+        this.person.name = response.data.user.first_name
+        this.person.lastname = response.data.user.last_name
+        this.person.patronymic = response.data.user.patronymic
+        this.person.gender = response.data.user.gender
+        if (response.data.user.type_user === 'Ученик'){
+          this.person.student = true
+        } else {
+          this.person.student = false
+        }
+      })
+      console.log(this.person)
+    },
+
   },
   mounted() {
+
+    this.getInfoAboutUser()
     axios.get(`/getUserIdForInf/${this.id}`).then(response => {
       console.log(response.data)
       // this.email = response.data.user.email
@@ -150,6 +169,7 @@ export default {
       }
     })
     console.log(this.person)
+
   },
 }
 </script>
