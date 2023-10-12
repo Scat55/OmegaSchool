@@ -20,9 +20,7 @@ const routes = [
     name: 'profile',
     component: ProfilePage,
     beforeEnter(to, from, next) {
-      console.log('before');
       if (store.state.isAuth) {
-        console.log(store.state.isAuth)
         next(true);
       } else {
         next(false);
