@@ -19,16 +19,17 @@ const routes = [
     path: '/profile/:id',
     name: 'profile',
     component: ProfilePage,
-    beforeEnter(to, from, next) {
-      console.log('before');
-      if (store.state.isAuth) {
-        next(true);
-      } else {
-        next(false);
-        alert('Войдите в аккаунт');
-        router.push('/');
-      }
-    },
+    // beforeEnter(to, from, next) {
+    //   console.log('before');
+    //   if (store.state.isAuth) {
+    //     console.log(store.state.isAuth)
+    //     next(true);
+    //   } else {
+    //     next(false);
+    //     alert('Войдите в аккаунт');
+    //     router.push('/'); // next({path: '/'});
+    //   }
+    // },
   },
   {
     path: '/auth',
