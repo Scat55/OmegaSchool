@@ -11,7 +11,6 @@
 
         <div class="div2">
           <div>
-            <FilterItems/>
             <div class="complexity">
               <p>Уровень сложности заданий:</p>
               <input
@@ -60,10 +59,7 @@
 
 
 <script>
-import FilterItems from "@/components/FilterItems.vue";
-import Task from "@/components/TaskList.vue";
 import TaskList from "@/components/TaskList.vue";
-import taskList from "@/components/TaskList.vue";
 
 export default {
   computed: {
@@ -73,7 +69,6 @@ export default {
   },
   components: {
     TaskList,
-    FilterItems,
   },
   data() {
     return {
