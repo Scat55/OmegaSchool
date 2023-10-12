@@ -30,13 +30,11 @@
               >
               Войти
             </li>
-            <li
-              class="header__logo-item login"
-              @click="logout()"
-              v-else
-            >
-              Выйти
-            </li>
+              <li v-else
+                  class="header__logo-item login"
+                  v-on:click="logout()">
+                Выйти</li>
+
           </ul>
         </div>
       </div>
@@ -46,6 +44,7 @@
 
 <script>
 import store from '../store/index';
+import router from '../router/index';
 export default {
   data() {
     return {
@@ -58,10 +57,18 @@ export default {
       const body = document.querySelector('body')
       store.state.status = true
       body.style.overflow = "hidden"
+      console.log('He')
     },
     logout() {
+
+      const body = document.querySelector('body')
+      body.style.overflow = ""
       store.state.isAuth = false
-      this.$router.push('/')
+      store.state.status = false
+      console.log(store.state.isAuth)
+      this.$nextTick(() => {
+        this.$router.push('/')
+      });
     }
 
   },

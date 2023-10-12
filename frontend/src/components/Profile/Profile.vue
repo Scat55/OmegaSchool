@@ -25,9 +25,7 @@ export default {
     }
   },
   computed: {
-    htmlContent() {
-      return this.edit === false ? this.person.name : 'World';
-    }
+
   }
 }
 </script>

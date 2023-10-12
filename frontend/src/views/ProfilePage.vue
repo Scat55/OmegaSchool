@@ -97,15 +97,15 @@ export default {
       person: {
         // avatar: '',
         name: '',
-        lastname: 'Volkov',
-        patronymic: 'Segeevich',
-        // birthday: '14.03.2002',
-        gender: "Мужской",
-        student: false, // переключатель вкладок
+        lastname: '',
+        patronymic: '',
+        birthday: '',
+        gender: "",
+        student: null, // переключатель вкладок
         class: '11',
         item: 'Математика',
         email: '',
-        expert: false,
+        expert: null,
       },
       isActiveComponents: {
         Profile: true,
@@ -136,6 +136,15 @@ export default {
       console.log(response.data)
       // this.email = response.data.user.email
       this.person.email = response.data.user.email
+      this.person.name = response.data.user.first_name
+      this.person.lastname = response.data.user.last_name
+      this.person.patronymic = response.data.user.patronymic
+      this.person.gender = response.data.user.gender
+      if (response.data.user.type_user === 'Ученик'){
+        this.person.student = true
+      } else {
+        this.person.student = false
+      }
     })
     console.log(this.person)
   },
