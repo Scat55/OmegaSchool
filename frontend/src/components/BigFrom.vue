@@ -20,12 +20,13 @@
             @click="changeStatusOnTrue()"
           >Войти</p>
         </div>
+        <p v-if="statusText">y`V 7E`V `B 2r$j$qYt1[F 1`Vt# 31D z7`V1D2$ 85$ q7`NjzR1 w5$ `C t5^3 - `B qEqjzT1D`B5^ iG w^jzéT`V `C jqY82%2$ = z7E`N r#`N 8zj^2 t5$ `C q`C`× t5^`V`×</p>
         <img
           src="../assets/images/spaceMan.png"
           alt="SpaceMan"
           class="big__content-img"
+          @click="show()"
         >
-
       </div>
     </div>
   </div>
@@ -36,7 +37,8 @@
 export default {
   data() {
     return {
-
+      count: 0,
+      statusText: false,
     }
   },
 
@@ -48,6 +50,16 @@ export default {
       body.style.overflow = "hidden"
       console.log(this.STATUS)
     },
+    show(){
+      this.count++;
+      if (this.count === 3) {
+        this.statusText = true
+      }
+      if (this.count === 4){
+        this.statusText = false
+        return
+      }
+    }
   },
 }
 
