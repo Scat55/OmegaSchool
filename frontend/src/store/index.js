@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import Temp from "@/store/TempBD/Temp";
 
 Vue.use(Vuex);
 
@@ -9,68 +10,16 @@ let store = new Vuex.Store({
         status: false,
         users: [],
         isAuth: false,
-        zadania: [{
-            id: 1,
-            title: "Сложение двух числе",
-            topic: "Математика",
-            complexity: "1",
-            bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd",
-            status: false,
-        }, {
-            id: 2,
-            title: "sdrgrsdgsdrgxdrgxrtdht",
-            topic: "Физика",
-            complexity: "1",
-            bodyTask: "ХРЕН Нужно будет сложить два числа",
-            status: false,
-        }, {
-            id: 3,
-            title: "Сложение двух числе",
-            topic: "Математика",
-            complexity: "1",
-            bodyTask: "Нужно будет сложить два числаФЫ",
-            status: false,
-        }, {
-            id: 4,
-            title: "Сложение двух числе",
-            topic: "Химия",
-            complexity: "3",
-            bodyTask: "Нужно будет свфыложить два ыфвыфвфывфычисла",
-            status: false,
-        }, {
-            id: 5,
-            title: "Сложение двух числе",
-            topic: "Математика",
-            complexity: "1",
-            bodyTask: "Нужно будет сложить два числа",
-            status: false,
-        }, {
-            id: 6,
-            title: "Сложение двух числе",
-            topic: "Физика",
-            complexity: "1",
-            bodyTask: "Нужно будет сложить два числа",
-            status: false,
-        }, {
-            id: 7,
-            title: "Сложение двух числе",
-            topic: "Математика",
-            complexity: "1",
-            bodyTask: "Нужно будет сложить два числа",
-            status: false,
-        }, {
-            id: 8,
-            title: "Сложение двух числе",
-            topic: "Химия",
-            complexity: "1",
-            bodyTask: "Нужно будет сложить два числа",
-            status: false,
-        },]
+        Temp,
     },
     getters: {
         USERS(state) {
             return state.users;
         },
+        // Задания которые на проверке
+        filterCheckedTask: (state) => filter =>{
+            return state.Temp.addTask.filter(task => task.statusCheck === filter)
+        }
     },
     mutations: {
         // Создаем функцию добавления пользователей в state
