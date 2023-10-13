@@ -49,6 +49,7 @@
 
 <script>
 import TaskList from "@/components/TaskList.vue";
+import axios from "axios";
 
 export default {
   computed: {
@@ -72,6 +73,18 @@ export default {
     return {
       selectedTopic: '',
     }
+  },
+
+  methods: {
+    getWork() {
+      axios.get(`/getWork`).then(response => {
+        // this.email = response.data.user.email
+        console.log(response.data)
+      })
+    },
+    },
+  mounted() {
+    this.getWork()
   }
 }
 </script>
