@@ -23,10 +23,12 @@
                   class="header__logo-item"
               >Кабинет</li>
             </router-link>
-            <li class="header__logo-item" v-if="!this.$store.state.isAuth">О нас</li>
-            <li class="header__logo-item" v-if="!this.$store.state.isAuth">Полезное</li>
+<!--            <li class="header__logo-item" v-if="!this.$store.state.isAuth">-->
+<!--              <a href="#comp">О нас</a>-->
+<!--            </li>-->
+<!--            <li class="header__logo-item" v-if="!this.$store.state.isAuth">Полезное</li>-->
             <li
-              class="header__logo-item login"
+                class="header__logo-item login"
               @click="changeStatusOnTrue()"
               v-if="!this.$store.state.isAuth"
             >
