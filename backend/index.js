@@ -47,23 +47,23 @@ app.get('/userlist', (req, res) => {
 });
 
 // забираю задание с бд
-app.get('/getWork', (req, res) => {
-  const query = 'SELECT * FROM works';
-
-  db.all(query, [], (err, rows) => {
-    if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
-      return;
-    }
-
-    // Преобразуем результат запроса в формат JSON
-    const jsonData = JSON.stringify(rows);
-
-    // Отправляем JSON-данные клиенту
-    res.json(jsonData);
-  });
-});
+// app.get('/getWork', (req, res) => {
+//   const query = 'SELECT * FROM works';
+//
+//   db.all(query, [], (err, rows) => {
+//     if (err) {
+//       console.error('Ошибка при выполнении SQL-запроса:', err.message);
+//       res.status(500).json({ error: 'Ошибка на сервере' });
+//       return;
+//     }
+//
+//     // Преобразуем результат запроса в формат JSON
+//     const jsonData = JSON.stringify(rows);
+//
+//     // Отправляем JSON-данные клиенту
+//     res.json(jsonData);
+//   });
+// });
 
 // Используйте express.json() для обработки JSON-тела запроса
 app.use(express.json());
