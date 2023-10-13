@@ -2,12 +2,6 @@
 export default {
   data() {
     return {
-      condition: '',
-      addMaterialOne: '',
-      addMaterialTwo: '',
-      addMaterialThree: '',
-      clue: '',
-      answer: ''
     }
   },
   methods: {
@@ -20,42 +14,44 @@ export default {
 </script>
 
 <template>
-  <div class="shablonZadaniaTwo">
-    <div class="name_task">
-      <h3>Название задания:</h3>
-      <input type="text" placeholder="Введите название задания">
-    </div>
-    <div class="block">
-      <p>Введите условие задания:</p>
-      <textarea id="textAreaUsl" v-model="condition"></textarea>
-      <div>
-        <p>Дополнительные материалы:</p>
-        <input type="file" id="fileInput">
+  <form @submit.prevent>
+    <div class="shablonZadaniaTwo">
+      <div class="name_task">
+        <h3>Название задания:</h3>
+        <input type="text" placeholder="Введите название задания">
+      </div>
+      <div class="block">
+        <p>Введите условие задания:</p>
+        <textarea id="textAreaUsl"></textarea>
+        <div>
+          <p>Дополнительные материалы:</p>
+          <input type="file" id="fileInput">
+        </div>
+      </div>
+      <div class="block">
+        <p>Введите подсказку - <span id="warning">ВНИМАНИЕ! ЕСЛИ УЧЕНИК ИСПОЛЬЗУЕТ ПОДСКАЗКУ, ОН МОЖЕТ ПОЛУЧИТЬ МАКСИМУМ 2 БАЛЛА. В ТО ВРЕМЯ У ВАС ВО ВКЛАДКЕ "ЗАДАЧИ НА ПРОВЕРКУ ( ОТ УЧЕНИКОВ )" БУДЕТ ПОМЕЧЕНО ИСПОЛЬЗОВАЛ ЛИ УЧЕНИК ПОДСКАЗКУ."</span>
+        </p>
+        <textarea id="textAreaUsl"></textarea>
+        <div>
+          <p>Дополнительные материалы:</p>
+          <input type="file" id="fileInput">
+        </div>
+      </div>
+      <div class="block">
+        <p>Ответ - <span id="warning">ВНИМАНИЕ! ЕСЛИ УЧЕНИК ИСПОЛЬЗУЕТ ОТВЕТ, ОН ПОЛУЧИТ 0 БАЛЛОВ. В ТО ВРЕМЯ У ВАС ВО ВКЛАДКЕ "ЗАДАЧИ НА ПРОВЕРКУ ( ОТ УЧЕНИКОВ )" БУДЕТ ПОМЕЧЕНО ИСПОЛЬЗОВАЛ ЛИ УЧЕНИК ОТВЕТ."</span>
+        </p>
+        <textarea id="answer"></textarea>
+        <div>
+          <p>Дополнительные материалы:</p>
+          <input type="file" id="fileInput">
+        </div>
+      </div>
+      <div class="btn-send">
+        <button id="send">Отправить задание на проверку эксперту!</button>
+        <button id="clear" type="reset">Удалить все!</button>
       </div>
     </div>
-    <div class="block">
-      <p>Введите подсказку - <span id="warning">ВНИМАНИЕ! ЕСЛИ УЧЕНИК ИСПОЛЬЗУЕТ ПОДСКАЗКУ, ОН МОЖЕТ ПОЛУЧИТЬ МАКСИМУМ 2 БАЛЛА. В ТО ВРЕМЯ У ВАС ВО ВКЛАДКЕ "ЗАДАЧИ НА ПРОВЕРКУ ( ОТ УЧЕНИКОВ )" БУДЕТ ПОМЕЧЕНО ИСПОЛЬЗОВАЛ ЛИ УЧЕНИК ПОДСКАЗКУ."</span>
-      </p>
-      <textarea id="textAreaUsl"></textarea>
-      <div>
-        <p>Дополнительные материалы:</p>
-        <input type="file" id="fileInput">
-      </div>
-    </div>
-    <div class="block">
-      <p>Ответ - <span id="warning">ВНИМАНИЕ! ЕСЛИ УЧЕНИК ИСПОЛЬЗУЕТ ОТВЕТ, ОН ПОЛУЧИТ 0 БАЛЛОВ. В ТО ВРЕМЯ У ВАС ВО ВКЛАДКЕ "ЗАДАЧИ НА ПРОВЕРКУ ( ОТ УЧЕНИКОВ )" БУДЕТ ПОМЕЧЕНО ИСПОЛЬЗОВАЛ ЛИ УЧЕНИК ОТВЕТ."</span>
-      </p>
-      <textarea id="answer"></textarea>
-      <div>
-        <p>Дополнительные материалы:</p>
-        <input type="file" id="fileInput">
-      </div>
-    </div>
-    <div class="btn-send">
-      <button id="send">Отправить задание на проверку эксперту!</button>
-      <button id="clear" @click="clearForm">Удалить все!</button>
-    </div>
-  </div>
+  </form>
 </template>
 
 <style scoped lang="scss">

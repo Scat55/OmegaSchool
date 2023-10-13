@@ -38,7 +38,7 @@ export default {
   // },
   computed: {
     task() {
-      return this.$store.state.zadania.find(t => t.id == this.$route.params.id)
+      return this.$store.state.Temp.zadania.find(t => t.id == this.$route.params.id)
     }
   }
 }

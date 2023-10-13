@@ -57,7 +57,7 @@ export default {
     // }
 
     zadania() {
-      return this.$store.state.zadania;
+      return this.$store.state.Temp.zadania;
     },
     filteredTasks() {
       return this.selectedTopic
