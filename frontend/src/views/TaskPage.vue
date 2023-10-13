@@ -17,7 +17,7 @@
             </div>
             <div class="topic-filter">
               <p>Предмет:</p>
-              <select v-model="selectedTopic">
+              <select v-model="selectedTopic" class = "topic-section">
                 <option value="">Все предметы</option>
                 <option value="Математика">Математика</option>
                 <option value="Физика">Физика</option>
@@ -139,5 +139,13 @@ export default {
   // scroll пока работает на firefox
   scrollbar-width: thin;
   scrollbar-color: $lightBlueColor white;
+}
+.topic-section{
+  font-family: Visitor;
+  padding: 10px;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  font-size: .8rem;
+  outline: none;
 }
 </style>
