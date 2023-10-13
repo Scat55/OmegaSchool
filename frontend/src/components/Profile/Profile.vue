@@ -37,9 +37,13 @@ export default {
 <template>
   <div class="main">
     <div class="avatar">
-      <img
+      <img v-if="person.gender === 'Мужской' "
         src="../../assets/images/Avatar/boy.png"
         alt="Аватарка"
+      >
+      <img v-else
+           src="../../assets/images/Avatar/girl (3).png"
+           alt="Аватарка"
       >
     </div>
     <div class="date_person_fio">
