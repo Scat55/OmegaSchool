@@ -70,6 +70,7 @@ export default {
             axios.get(`/getUserIdForMail/${this.email}`).then(response => {
               store.state.isAuth = true
               this.$router.push(`/profile/${response.data.user_id}`)
+              localStorage.setItem('userID', response.data.user_id)
             })
           }
 

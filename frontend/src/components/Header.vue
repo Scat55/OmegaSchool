@@ -49,7 +49,7 @@
                 Мой кабинет
               </li>
               <div v-if="statusMenu" class="header__logout-list">
-                <li @click="goToPersenPage()">
+                <li @click="goToPersonPage()">
                   Кабинет
                 </li>
                 <li @click="logout()">Выйти</li>
@@ -65,11 +65,12 @@
 <script>
 import store from '../store/index';
 import router from '../router/index';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      id: this.$router.currentRoute.params.id,
+      id: this.$router.currentRoute.params['id'],
       statusMenu: false
     }
   },
@@ -86,6 +87,13 @@ export default {
       store.state.isAuth = false
       store.state.status = false
       this.statusMenu = false
+      if (this.$route.name === 'home'){
+        return
+      } else {
+        this.$nextTick(() => {
+          this.$router.push('/')
+        });
+      }
     },
     goToHomePage() {
       if (this.$route.name === 'home') {
@@ -99,11 +107,23 @@ export default {
     changeStatusMenu() {
       this.statusMenu = !this.statusMenu
     },
-    goToPersenPage(){
-      this.$router.push(`/profile/${this.id}`)
+   async goToPersonPage(){
+      const userID = localStorage.getItem('userID')
+      if (this.$route.fullPath === `/profile/${userID}`){
+        this.statusMenu = false
+        return
+
+      } else {
+        this.$nextTick(() => {
+          this.$router.push(`/profile/${userID}`)
+        });
+        this.statusMenu = false
+      }
+      console.log(this.id)
     }
 
   },
+
 
 }
 </script>
