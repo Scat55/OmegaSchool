@@ -2,25 +2,26 @@
 export default {
   data() {
     return {
-      checkboxes: 2,
-      checkboxText: Array(2).fill(''), // Инициализируем массив пустыми строками
+      checkboxes: [
+        { text: '', checked: false},
+        { text: '', checked: false}
+      ],
+      // checkboxText: Array(2).fill(''),
       isWindowOpen: false,
     };
   },
   methods: {
     addCheckbox() {
-      this.checkboxes++;
-      this.checkboxText.push(''); // Добавляем пустую строку при добавлении чекбокса
+      this.checkboxes.push({ text: '', checked: false});
     },
     toggleWindow() {
       this.isWindowOpen = !this.isWindowOpen;
     },
     removeCheckbox(index) {
-      this.checkboxes--;
-      this.checkboxText.splice(index, 1);
+      this.checkboxes.splice(index, 1)
     },
     sendTest() {
-      console.log(this.checkboxText, this.checkboxes)
+      console.log(this.checkboxes)
     },
     addTask(){
       alert('Заданме добавлено')
@@ -49,17 +50,18 @@ export default {
             чекбокс</p>
         </div>
       </div>
+<!--  Вот здесь начинается блок с checkbox    -->
       <div class="shablonZadaniaFirst__option_answers">
-        <button @click="addCheckbox" type="button">Добавить чекбокс</button>
-        <div v-for="index in checkboxes" :key="index">
+        <button @click="addCheckbox" type="button" v-if="checkboxes.length !== 6">Добавить чекбокс</button>
+        <div v-for="(checkbox, index) in checkboxes" :key="index">
           <div class="shablonZadaniaFirst__checkbox-item">
-            <input type="checkbox" :id="'checkbox-' + (index)"/>
-            <input type="text" v-model="checkboxText[index-1]"/>
-            <button @click="removeCheckbox(index-1)" type="button">X</button>
-            <!--          <label :for="'checkbox-' + index">Введите текст</label>-->
+            <input type="checkbox" v-model="checkbox.checked" :id="'checkbox-' + index"/>
+            <input type="text" v-model="checkbox.text"/>
+            <button @click="removeCheckbox(index)" type="button">X</button>
           </div>
         </div>
       </div>
+<!--   Конец. Наконец-то сделал адекватный вывод. Я бухать!   -->
       <div class="shablonZadaniaFirst__btn_send">
         <button  @click="sendTest" class = "btn" type="submit">Отправить задание на проверку эксперту!</button>
         <button  class = "btn-reset" type="reset">Удалить все!</button>
