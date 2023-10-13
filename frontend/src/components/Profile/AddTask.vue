@@ -40,7 +40,7 @@ export default {
     <h2>Добавление задачи</h2>
     <div class="variantLVL">
       <label>Выберите уровень задачи: </label>
-      <select v-model="selectedValue">
+      <select v-model="selectedValue" class = "window_Add-level">
         <option value="oneLVL">1 уровень</option>
         <option value="twoLVL">2 уровень</option>
         <option value="threeLVL">3 уровень</option>
@@ -60,5 +60,11 @@ export default {
   width: 100%;
   //padding: 10px;
   flex-direction: column;
+
+  &-level{
+    padding: 1px;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 </style>
