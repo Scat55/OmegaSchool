@@ -17,12 +17,12 @@
                   class="header__logo-item"
               >Задания</li>
             </router-link>
-            <router-link :to='/profile/ + id' class = "router">
-              <li
-                  v-if="this.$store.state.isAuth"
-                  class="header__logo-item"
-              >Кабинет</li>
-            </router-link>
+<!--            <router-link :to="/profile/ + id" class = "router">-->
+<!--              <li-->
+<!--                  v-if="this.$store.state.isAuth"-->
+<!--                  class="header__logo-item"-->
+<!--              >Кабинет</li>-->
+<!--            </router-link>-->
 <!--            <li class="header__logo-item" v-if="!this.$store.state.isAuth">-->
 <!--              <a href="#comp">О нас</a>-->
 <!--            </li>-->
@@ -43,7 +43,6 @@
                   class="header__logo-item login"
                   v-on:click="logout()">
                 Выйти</li>
-
           </ul>
         </div>
       </div>
