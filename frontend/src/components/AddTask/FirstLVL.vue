@@ -25,6 +25,13 @@ export default {
     },
     addTask(){
       alert('Заданме добавлено')
+    },
+
+    deleteCheckBox() {
+      this.checkboxes = [
+        { text: '', checked: false},
+        { text: '', checked: false}
+      ]
     }
   },
 };
@@ -64,7 +71,7 @@ export default {
 <!--   Конец. Наконец-то сделал адекватный вывод. Я бухать!   -->
       <div class="shablonZadaniaFirst__btn_send">
         <button  @click="sendTest" class = "btn" type="submit">Отправить задание на проверку эксперту!</button>
-        <button  class = "btn-reset" type="reset">Удалить все!</button>
+        <button  class = "btn-reset" type="reset" @click="deleteCheckBox">Удалить все!</button>
       </div>
     </div>
   </form>
