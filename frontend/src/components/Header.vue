@@ -57,7 +57,7 @@ import router from '../router/index';
 export default {
   data() {
     return {
-      id: this.$router.currentRoute.params['id'],
+      id: this.$route.params['id'],
     }
   },
 
