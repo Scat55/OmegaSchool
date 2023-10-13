@@ -17,7 +17,7 @@
                   class="header__logo-item"
               >Задания</li>
             </router-link>
-            <router-link :to='/profile/ + this.id' class = "router">
+            <router-link :to='/profile/ + id' class = "router">
               <li
                   v-if="this.$store.state.isAuth"
                   class="header__logo-item"
