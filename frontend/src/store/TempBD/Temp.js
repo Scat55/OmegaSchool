@@ -14,7 +14,7 @@ export default {
                 class: '10',
                 complexity: "1",
                 bodyTask: "ХРЕН Нужно будет сложить два числа",
-                status: false,
+                status: true,
             }, {
                 id: 3,
                 title: "Сложение двух числе",
@@ -22,7 +22,7 @@ export default {
                 class: '11',
                 complexity: "1",
                 bodyTask: "Нужно будет сложить два числаФЫ",
-                status: false,
+                status: true,
             }, {
                 id: 4,
                 title: "Сложение двух числе",

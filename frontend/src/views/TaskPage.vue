@@ -38,6 +38,14 @@
                 <option value="11">11 класс</option>
               </select>
             </div>
+            <div class="status_filter">
+              <p>Статус:</p>
+              <select v-model="selectedStatus" class="topic-section">
+                <option value="">Не выбран</option>
+                <option :value="false">Не решено</option>
+                <option :value="true">Решено</option>
+              </select>
+            </div>
           </div>
 
           <button class="btn_filter" @click="resetFilter">Сбросить</button>
@@ -87,6 +95,9 @@ export default {
         filtered = filtered.filter((task) => task.class === this.selectedClass);
       }
 
+      if (this.selectedStatus !== '') {
+        filtered = filtered.filter((task) => task.status === this.selectedStatus);
+      }
       return filtered;
 
 
@@ -100,6 +111,7 @@ export default {
       selectedTopic: '',
       selectedLVL: '',
       selectedClass: '',
+      selectedStatus: '',
     }
   },
 
@@ -108,6 +120,7 @@ export default {
       this.selectedClass = ''
       this.selectedLVL = ''
       this.selectedTopic = ''
+      this.selectedStatus = ''
     }
   },
 }
