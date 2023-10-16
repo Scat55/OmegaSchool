@@ -31,12 +31,12 @@ let store = new Vuex.Store({
         // Получаем всех пользователей
         GET_USERS_FROM_API({commit}) {
             return (
-                axios('/userlist', {
+                axios('/api/user_list', {
                     method: 'GET',
                 })
                     // Описываем мутацию добавления пользователей в state
                     .then((users) => {
-                        commit('SET_USERS_TO_STATE', JSON.parse(users.data));
+                        commit('SET_USERS_TO_STATE', users.data);
                         return users;
                     })
                     // Обрабатываем ошибки
