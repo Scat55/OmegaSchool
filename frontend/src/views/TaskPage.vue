@@ -17,7 +17,7 @@
             </div>
             <div class="topic-filter">
               <p>Предмет:</p>
-              <select v-model="selectedTopic" class = "topic-section">
+              <select v-model="selectedTopic" class="topic-section">
                 <option value="">Все предметы</option>
                 <option value="Математика">Математика</option>
                 <option value="Физика">Физика</option>
@@ -75,17 +75,7 @@ export default {
     }
   },
 
-  methods: {
-    getWork() {
-      axios.get(`/getWork`).then(response => {
-        // this.email = response.data.user.email
-        console.log(response.data)
-      })
-    },
-    },
-  mounted() {
-    this.getWork()
-  }
+  methods: {},
 }
 </script>
 
@@ -153,6 +143,7 @@ export default {
   scrollbar-width: thin;
   scrollbar-color: $lightBlueColor white;
 }
+
 .div3::-webkit-scrollbar {
   width: 10px;
 }
@@ -167,7 +158,8 @@ export default {
   border-radius: 10px;
   background: linear-gradient(180deg, #00c6fb, #005bea);
 }
-.topic-section{
+
+.topic-section {
   font-family: Visitor;
   padding: 10px;
   border-radius: 1rem;
