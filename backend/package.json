@@ -9,6 +9,7 @@
   "author": "IVT",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "fs": "^0.0.1-security",

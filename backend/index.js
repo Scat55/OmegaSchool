@@ -3,11 +3,15 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-
+//добавление пользователя
+const bcrypt = require('bcrypt');
+const saltRounds = 7; // Количество "соли", чем выше, тем безопаснее, но медленнее
 
 const { body, validationResult } = require('express-validator');
 const sqlite3 = require('sqlite3').verbose();
 const PORT = process.env.PORT || 8070;
+// Используйте express.json() для обработки JSON-тела запроса
+app.use(express.json());
 
 const app = express();
 
@@ -28,119 +32,171 @@ app.listen(PORT, () => {
 console.log('Подключение к базе данных установлено');
 
 // отправка на фронт данный из таблицы users
-app.get('/userlist', (req, res) => {
-  const query = 'SELECT * FROM users';
 
-  db.all(query, [], (err, rows) => {
-    if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
-      return;
-    }
+// app.get('/userlist', (req, res) => {
+//   const query = 'SELECT * FROM users';
+//
+//   db.all(query, [], (err, rows) => {
+//     if (err) {
+//       console.error('Ошибка при выполнении SQL-запроса:', err.message);
+//       res.status(500).json({ error: 'Ошибка на сервере' });
+//       return;
+//     }
+//
+//     // Преобразование результатов запроса в формат JSON
+//     const usersWithHashedPasswords = rows.map((user) => {
+//       // Здесь можно добавить хеширование пароля, если он не был хеширован ранее
+//       if (!user.password.startsWith('$2b$')) {
+//         const hashedPassword = bcrypt.hashSync(user.password, saltRounds); // Здесь 10 - стоимость хеширования
+//         user.password = hashedPassword;
+//       }
+//       return user;
+//     });
+//
+//     // Отправляем JSON-данные клиенту
+//     res.json(usersWithHashedPasswords);
+//   });
+// });
 
-    // Преобразуем результат запроса в формат JSON
-    const jsonData = JSON.stringify(rows);
+// app.post('/checkUser', (req, res) => {
+//   console.log('Запрос получен');
+//
+//   // Получение логина и пароля из JSON-тела запроса
+//   const { email, password } = req.body;
+//   console.log(req.body);
+//
+//   // SQL-запрос для проверки наличия пользователя
+//   const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+//   const values = [email, password];
+//   db.get(query, values, (err, row) => {
+//     if (err) {
+//       console.error('Ошибка при выполнении SQL-запроса:', err.message);
+//       res.status(500).json({ error: 'Ошибка на сервере' });
+//       return;
+//     }
+//
+//     if (row) {
+//       console.log(`Пользователь ${email} найден в базе данных`);
+//       res.json({ message: 'Пользователь найден' });
+//     } else {
+//       console.log(`Пользователь ${email} не найден в базе данных`);
+//       res.json({ message: 'Пользователь не найден' });
+//     }
+//   });
+// });
+// Обработчик POST-запроса для проверки пользователя в базе данных с хэшом
 
-    // Отправляем JSON-данные клиенту
-    res.json(jsonData);
-  });
-});
+// app.post('/checkUser', (req, res) => {
+//   console.log('Запрос получен');
+//
+//   // Получение логина и пароля из JSON-тела запроса
+//   const { email, password } = req.body;
+//
+//   // SQL-запрос для получения хешированного пароля по email
+//   const query = 'SELECT password FROM users WHERE email = ?';
+//   const values = [email];
+//   db.get(query, values, (err, row) => {
+//     if (err) {
+//       console.error('Ошибка при выполнении SQL-запроса:', err.message);
+//       res.status(500).json({ error: 'Ошибка на сервере' });
+//       return;
+//     }
+//
+//     if (row) {
+//       // Сравните хешированный пароль из базы данных с введенным паролем
+//       bcrypt.compare(password, row.password, (compareErr, passwordMatch) => {
+//         if (compareErr) {
+//           console.error('Ошибка при сравнении паролей:', compareErr.message);
+//           res.status(500).json({ error: 'Ошибка на сервере' });
+//           return;
+//         }
+//
+//         if (passwordMatch) {
+//           console.log(`Пользователь ${email} найден в базе данных`);
+//           res.json({ message: 'Пользователь найден' });
+//         } else {
+//           console.log(`Пользователь ${email} не найден в базе данных`);
+//           res.json({ message: 'Пользователь не найден' });
+//         }
+//       });
+//     } else {
+//       console.log(`Пользователь ${email} не найден в базе данных`);
+//       res.json({ message: 'Пользователь не найден' });
+//     }
+//   });
+// });
 
-// Используйте express.json() для обработки JSON-тела запроса
-app.use(express.json());
+//добавление пользователя с хэшем
+app.post('/addUser',
+    [
+      // Валидация email
+      body('email').isEmail(),
+      // Валидация пароля
+      body('password').isLength({ min: 8, max: 30 }),
+      // Валидация пола
+      body('gender').isIn(['Женский', 'Мужской']),
+      // Валидация типа пользователя
+      body('type_user').isIn(['Ученик', 'Учитель', 'Эксперт']),
+    ],
+    (req, res) => {
+      console.log('Запрос на добавление пользователя получен');
 
-// Обработчик POST-запроса для проверки пользователя в базе данных
-app.post('/checkUser', (req, res) => {
-  console.log('Запрос получен');
-
-  // Получение логина и пароля из JSON-тела запроса
-  const { email, password } = req.body;
-  console.log(req.body);
-
-  // SQL-запрос для проверки наличия пользователя
-  const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
-  const values = [email, password];
-  db.get(query, values, (err, row) => {
-    if (err) {
-      console.error('Ошибка при выполнении SQL-запроса:', err.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
-      return;
-    }
-
-    if (row) {
-      console.log(`Пользователь ${email} найден в базе данных`);
-      res.json({ message: 'Пользователь найден' });
-    } else {
-      console.log(`Пользователь ${email} не найден в базе данных`);
-      res.json({ message: 'Пользователь не найден' });
-    }
-  });
-});
-
-//добавление пользователя
-
-app.post(
-  '/addUser',
-  [
-    // Валидация email
-    body('email').isEmail(),
-    // Валидация пароля
-    body('password').isLength({ min: 8, max: 30 }),
-    // Валидация пола
-    body('gender').isIn(['Женский', 'Мужской']),
-    // Валидация типа пользователя
-    body('type_user').isIn(['Ученик', 'Учитель', 'Эксперт']),
-  ],
-  (req, res) => {
-    console.log('Запрос на добавление пользователя получен');
-
-    // Проверяем наличие ошибок валидации
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ message: 'Ошибка валидации' });
-    }
-
-    // Получение данных пользователя из JSON-тела запроса
-    const { email, password, gender, type_user } = req.body;
-
-    // SQL-запрос для проверки уникальности email
-    const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
-    const checkEmailValues = [email];
-
-    // Проверка, существует ли пользователь с таким email
-    db.get(checkEmailQuery, checkEmailValues, (err, row) => {
-      if (err) {
-        console.error('Ошибка при выполнении SQL-запроса:', err.message);
-        res.status(500).json({ error: 'Ошибка на сервере' });
-        return;
+      // Проверяем наличие ошибок валидации
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ message: 'Ошибка валидации' });
       }
 
-      // Если найден пользователь с таким email, вернуть ошибку
-      // TODO: Коль, можешь убрать статус 400 и просто возвращать сообщение // сделано
-      if (row) {
-        console.log(`Пользователь с email ${email} уже существует`);
-        res.json({ masage: 'Пользователь с email уже существует' });
-        return;
-      }
+      // Получение данных пользователя из JSON-тела запроса
+      const { email, password, gender, type_user } = req.body;
 
-      // Если email уникален, выполнить добавление пользователя
-      const insertUserQuery =
-        'INSERT INTO users (email, password, gender, type_user) VALUES (?, ?, ?, ?)';
-      const insertUserValues = [email, password, gender, type_user];
+      // SQL-запрос для проверки уникальности email
+      const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
+      const checkEmailValues = [email];
 
-      db.run(insertUserQuery, insertUserValues, function (err) {
+      // Проверка, существует ли пользователь с таким email
+      db.get(checkEmailQuery, checkEmailValues, (err, row) => {
         if (err) {
           console.error('Ошибка при выполнении SQL-запроса:', err.message);
           res.status(500).json({ error: 'Ошибка на сервере' });
           return;
         }
 
-        console.log(`Пользователь ${email} успешно добавлен`);
-        res.json({ message: 'Пользователь успешно добавлен' });
+        // Если найден пользователь с таким email, вернуть ошибку
+        if (row) {
+          console.log(`Пользователь с email ${email} уже существует`);
+          res.json({ message: 'Пользователь с email уже существует' });
+          return;
+        }
+
+        // Хешируем пароль
+        bcrypt.hash(password, saltRounds, (hashErr, hash) => {
+          if (hashErr) {
+            console.error('Ошибка при хешировании пароля:', hashErr.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+            return;
+          }
+
+          // Если хеширование прошло успешно, добавляем пользователя
+          const insertUserQuery =
+              'INSERT INTO users (email, password, gender, type_user) VALUES (?, ?, ?, ?)';
+          const insertUserValues = [email, hash, gender, type_user];
+
+          db.run(insertUserQuery, insertUserValues, function (insertErr) {
+            if (insertErr) {
+              console.error('Ошибка при выполнении SQL-запроса:', insertErr.message);
+              res.status(500).json({ error: 'Ошибка на сервере' });
+              return;
+            }
+
+            console.log(`Пользователь ${email} успешно добавлен`);
+            res.json({ message: 'Пользователь успешно добавлен' });
+          });
+        });
       });
-    });
-  },
+    }
 );
+
 
 //TODO: hjhhjhhj
 
