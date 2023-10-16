@@ -1,10 +1,8 @@
 <template>
   <div>
     <div class="container">
-      {{ id }}
       <div class="window">
         <div class="left_div">
-
           <div class="tabs">
             <div
               class="tab"
@@ -15,13 +13,13 @@
               class="tab"
               v-if="person.student === false"
               @click="switchTab('TaskToCheckStudent')"
-            >Задачи на проверку ( от учеников )
+            >Задачи на проверку ( ученик )
             </div>
             <div
               class="tab"
-              v-if="(person.student === false) && person.expert === true"
+              v-if="person.expert === true"
               @click="switchTab('TaskToCheckTeacher')"
-            >Задачи на проверку ( от учителей )
+            >Задачи на проверку ( учитель )
             </div>
             <div
               class="tab"
@@ -99,15 +97,15 @@ export default {
       person: {
         // avatar: '',
         name: '',
-        lastname: 'Volkov',
-        patronymic: 'Segeevich',
-        // birthday: '14.03.2002',
-        gender: "Мужской",
-        student: false, // переключатель вкладок
+        lastname: '',
+        patronymic: '',
+        birthday: '',
+        gender: "",
+        student: null, // переключатель вкладок
         class: '11',
         item: 'Математика',
-        email: 'a1exa2@adsaw.ry',
-        expert: false,
+        email: '',
+        expert: null,
       },
       isActiveComponents: {
         Profile: true,
@@ -131,15 +129,47 @@ export default {
           this.isActiveComponents[key] = true;
         }
       }
-    }
+    },
+    // getInfoAboutUser(){
+    //   axios.get(`/getUserIdForInf/${this.id}`).then(response => {
+    //     // this.email = response.data.user.email
+    //     this.person.email = response.data.user.email
+    //     this.person.name = response.data.user.first_name
+    //     this.person.lastname = response.data.user.last_name
+    //     this.person.patronymic = response.data.user.patronymic
+    //     this.person.gender = response.data.user.gender
+    //     if (response.data.user.type_user === 'Ученик'){
+    //       this.person.student = true
+    //     } else {
+    //       this.person.student = false
+    //     }
+    //   })
+    //   console.log(this.person)
+    // },
+
   },
   mounted() {
+
+    // this.getInfoAboutUser()
     axios.get(`/getUserIdForInf/${this.id}`).then(response => {
       console.log(response.data)
       // this.email = response.data.user.email
-      this.person.name = response.data.user.email
+      this.person.email = response.data.user.email
+      this.person.name = response.data.user.first_name
+      this.person.lastname = response.data.user.last_name
+      this.person.patronymic = response.data.user.patronymic
+      this.person.gender = response.data.user.gender
+      if (response.data.user.expert === "true") {
+        this.person.expert = true
+      }
+      if (response.data.user.type_user === 'Ученик'){
+        this.person.student = true
+      } else {
+        this.person.student = false
+      }
     })
     console.log(this.person)
+
   },
 }
 </script>
@@ -177,6 +207,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 15px;
 }
 
 .tab {
@@ -184,8 +215,15 @@ export default {
   padding: 10px;
   width: 100%;
   height: 40px;
+  font-size: 0.8rem;
   border-radius: 1rem;
   background: aliceblue;
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover{
+    background-color: #c7fdff;
+  }
 }
 
 .right_div {
@@ -194,6 +232,21 @@ export default {
   grid-row: 1 / span 2;
   overflow-y: auto;
   padding: 25px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+    background-color: #f9f9fd;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient(180deg, #00c6fb, #005bea);
+  }
 }
 
 .left_div,

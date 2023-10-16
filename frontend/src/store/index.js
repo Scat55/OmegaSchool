@@ -1,44 +1,51 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import Temp from "@/store/TempBD/Temp";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    status: false,
-    users: [],
-    isAuth: false
-  },
-  getters: {
-    USERS(state) {
-      return state.users;
+let store = new Vuex.Store({
+    state: {
+        status: false,
+        users: [],
+        isAuth: false,
+        Temp,
     },
-  },
-  mutations: {
-    // Создаем функцию добавления пользователей в state
-    SET_USERS_TO_STATE: (state, users) => {
-      state.users = users;
+    getters: {
+        USERS(state) {
+            return state.users;
+        },
+        // Задания которые на проверке
+        filterCheckedTask: (state) => filter =>{
+            return state.Temp.addTask.filter(task => task.statusCheck === filter)
+        }
     },
-  },
-  actions: {
-    // Получаем всех пользователей
-    GET_USERS_FROM_API({ commit }) {
-      return (
-        axios('/userlist', {
-          method: 'GET',
-        })
-          // Описываем мутацию добавления пользователей в state
-          .then((users) => {
-            commit('SET_USERS_TO_STATE', JSON.parse(users.data));
-            return users;
-          })
-          // Обрабатываем ошибки
-          .catch((error) => {
-            console.log(error);
-            return error;
-          })
-      );
+    mutations: {
+        // Создаем функцию добавления пользователей в state
+        SET_USERS_TO_STATE: (state, users) => {
+            state.users = users;
+        },
     },
-  },
+    actions: {
+        // Получаем всех пользователей
+        GET_USERS_FROM_API({commit}) {
+            return (
+                axios('/userlist', {
+                    method: 'GET',
+                })
+                    // Описываем мутацию добавления пользователей в state
+                    .then((users) => {
+                        commit('SET_USERS_TO_STATE', JSON.parse(users.data));
+                        return users;
+                    })
+                    // Обрабатываем ошибки
+                    .catch((error) => {
+                        console.log(error);
+                        return error;
+                    })
+            );
+        },
+    },
 });
+export default store;

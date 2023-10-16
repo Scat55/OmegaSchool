@@ -6,7 +6,7 @@ import AuthPage from '../views/AuthPage.vue';
 import HomePage from '../views/HomePage.vue';
 import TaskPage from '../views/TaskPage.vue';
 import TaskDetail from '@/components/TaskDetail.vue';
-
+import store from '../store/index';
 Vue.use(VueRouter);
 
 const routes = [
@@ -19,6 +19,15 @@ const routes = [
     path: '/profile/:id',
     name: 'profile',
     component: ProfilePage,
+    // beforeEnter(to, from, next) {
+    //   if (store.state.isAuth) {
+    //     next(true);
+    //   } else {
+    //     next(false);
+    //     alert('Войдите в аккаунт');
+    //      next({path: '/'});
+    //   }
+    // },
   },
   {
     path: '/auth',
@@ -29,9 +38,18 @@ const routes = [
     path: '/task',
     name: 'task',
     component: TaskPage,
+    beforeEnter(to, from, next) {
+      if (store.state.isAuth) {
+        next(true);
+      } else {
+        next(false);
+        alert('Войдите в аккаунт');
+        next({path: '/'});
+      }
+    },
   },
   {
-    path: '/task/:id',
+    path: '/task/:id?',
     component: TaskDetail,
     name: 'taskDetail',
   },

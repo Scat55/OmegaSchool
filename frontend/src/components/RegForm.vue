@@ -40,28 +40,22 @@
         >Пароль должен быть не меньше 8 символов</small>
 
         <!--TODO: вот недоделанные селекты-->
+        <p class="select__plase">Ваш пол: </p>
         <select
-          name="gender"
-          id="gender"
-          class="reg__form-prof"
-          v-model="gender.name"
+            id="gender"
+            v-model="gender.name"
+            class="reg__form-prof"
+            name="gender"
+            :value="gender.name"
         >
-          <option
-            selected="selected"
-            disabled
-            class="reg__from-option">
-            Ваш пол
-          </option>
 
-          <option
-            class="reg__from-option">
-            Мужской
-          </option>
-          <option
-            class="reg__from-option">
-            Женский
+          <option class="reg__form-option"
+          v-for="gender in gender">
+
+            {{gender.name}}
           </option>
         </select>
+        <p class="select__plase">Ваш статус: </p>
 
         <select
           name="proffesion"
@@ -69,15 +63,8 @@
           class="reg__form-prof"
           v-model="proffesion.name"
         >
-          <option selected="selected" disabled>
-            Ваш статус
-          </option>
-          <option>
-            Ученик
-          </option>
-
-          <option>
-            Учитель
+          <option class="reg__form-option" v-for="prof in proffesion">
+            {{prof.name}}
           </option>
         </select>
 
@@ -85,32 +72,37 @@
           class="reg__form-btn"
           type="submit"
         >Зарегестрироваться</button>
-        <p>Есть аккаут? <span class="reg__auth"> Войти</span> </p>
+        <p>Есть аккаут? <span
+            class="reg__auth"
+            @click="goToAuth()"
+          >Войти</span> </p>
       </form>
-
-
     </div>
   </div>
 </template>
 
 <script>
-
 import axios from 'axios';
-
 export default {
 
   data() {
-
     return {
       pass: '',
       email: '',
-      proffesion: [{id: 0, name: 'Ученик'}, {id: 1, name: 'Учитель'}],
-      gender: [{id: 0, name: 'Мужской'}, {id: 1, name: 'Женский'}],
+      proffesion: [{ id: 0, name: 'Ученик' }, { id: 1, name: 'Учитель' }],
+      gender: [{ id: 0, name: 'Мужской' }, { id: 1, name: 'Женский' }],
       activeClass: false
     }
   },
 
   methods: {
+    // Переход на страницу входа
+    goToAuth() {
+      const body = document.querySelector('body')
+      this.$store.state.status = false
+      body.style.overflow = ""
+      this.$router.push('/auth')
+    },
     changeStatusOnFalse() {
       const body = document.querySelector('body')
       this.$store.state.status = false
@@ -150,8 +142,7 @@ export default {
     },
     // Обработка формы
     handler() {
-      console.log(`${this.email}, ${this.pass}, ${this.proffesion.name}, ${this.gender.name}`)
-
+      // console.log(`${this.email}, ${this.pass}, ${this.proffesion.name}, ${this.gender.name}`)
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
         this.activeClass = true
         return false
@@ -163,6 +154,34 @@ export default {
   }
 }
 </script> 
+
+<!--    }-->
+<!--    //   if (this.pass === '' || this.pass.length < 8 || this.email === '') {-->
+<!--    //     this.activeClass = true-->
+<!--    //     return false-->
+<!--    //   }-->
+<!--    //   else {-->
+<!--    //     this.activeClass = false-->
+<!--    //     this.changeUserList()-->
+<!--    //   }-->
+<!--    // }-->
+<!--=======-->
+<!--  },-->
+<!--  mounted() {-->
+<!--    const selectGender = document.querySelector('#gender');-->
+<!--    selectGender.selectedIndex = 0;-->
+<!--&gt;>>>>>> ce5a6b798c04730b23aeef0276c083c90d1febff-->
+
+<!--  }-->
+<!--  mounted() {-->
+<!--    const selectGender = document.querySelector('#gender');-->
+<!--    selectGender.selectedIndex = 0;-->
+
+<!--    const selectProffesion = document.querySelector('#proffesion');-->
+<!--    selectProffesion.selectedIndex = 0;-->
+<!--  }-->
+
+
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
@@ -193,7 +212,6 @@ export default {
     padding: 5.75rem;
     box-shadow: 0 0 20px 0px $accentColor;
     background-color: #fff;
-
 
 
     &-title {
@@ -294,5 +312,11 @@ export default {
   align-self: start;
   font-size: 0.8rem;
   padding: 0;
+}
+.select__plase{
+  align-self: flex-start;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  font-size: 0.5rem;
 }
 </style>

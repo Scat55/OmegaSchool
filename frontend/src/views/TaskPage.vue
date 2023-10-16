@@ -11,30 +11,18 @@
 
         <div class="div2">
           <div>
-            <FilterItems/>
             <div class="complexity">
-              <p>Уровень сложности заданий:</p>
-              <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxGroup"
-                  value="Пункт 1"
-              >
-              <label for="checkbox1">Легкие</label><br>
-              <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxGroup"
-                  value="Пункт 1"
-              >
-              <label for="checkbox1">Средние</label><br>
-              <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxGroup"
-                  value="Пункт 1"
-              >
-              <label for="checkbox1">Тяжелые</label><br>
+              <p>Уровень уровень заданий:</p>
+
+            </div>
+            <div class="topic-filter">
+              <p>Предмет:</p>
+              <select v-model="selectedTopic" class = "topic-section">
+                <option value="">Все предметы</option>
+                <option value="Математика">Математика</option>
+                <option value="Физика">Физика</option>
+                <option value="Химия">Химия</option>
+              </select>
             </div>
           </div>
 
@@ -43,11 +31,15 @@
         </div>
 
         <div class="div3">
-          <div v-for="task in zadania">
-            <TaskList :task="task"/>
-          </div>
+          <!--          <div v-for="task in zadania">-->
+          <!--            <TaskList :task="task" :key="task.id"/>-->
+          <!--          </div>-->
+          <TaskList
+              v-for="task in filteredTasks"
+              :key="task.id"
+              :task="task"
+          />
         </div>
-
       </div>
 
     </div>
@@ -56,75 +48,43 @@
 
 
 <script>
-import FilterItems from "@/components/FilterItems.vue";
-import Task from "@/components/TaskList.vue";
 import TaskList from "@/components/TaskList.vue";
+import axios from "axios";
 
 export default {
+  computed: {
+    // taskList() {
+    //   return taskList
+    // }
+
+    zadania() {
+      return this.$store.state.Temp.zadania;
+    },
+    filteredTasks() {
+      return this.selectedTopic
+          ? this.zadania.filter((task) => task.topic === this.selectedTopic)
+          : this.zadania;
+    }
+  },
   components: {
     TaskList,
-    FilterItems,
   },
   data() {
     return {
-      zadania: [{
-        id: 1,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd",
-        status: false,
-      }, {
-        id: 2,
-        title: "sdrgrsdgsdrgxdrgxrtdht",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 3,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 4,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 5,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 6,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 7,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      }, {
-        id: 8,
-        title: "Сложение двух числе",
-        topic: "Математика",
-        complexity: "1",
-        bodyTask: "Нужно будет сложить два числа",
-        status: false,
-      },]
+      selectedTopic: '',
     }
+  },
+
+  methods: {
+    getWork() {
+      axios.get(`/getWork`).then(response => {
+        // this.email = response.data.user.email
+        console.log(response.data)
+      })
+    },
+    },
+  mounted() {
+    this.getWork()
   }
 }
 </script>
@@ -193,4 +153,28 @@ export default {
   scrollbar-width: thin;
   scrollbar-color: $lightBlueColor white;
 }
+.div3::-webkit-scrollbar {
+  width: 10px;
+}
+
+.div3::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: #f9f9fd;
+  border-radius: 10px;
+}
+
+.div3::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #00c6fb, #005bea);
+}
+.topic-section{
+  font-family: Visitor;
+  padding: 10px;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  font-size: .8rem;
+  outline: none;
+}
+
+
 </style>

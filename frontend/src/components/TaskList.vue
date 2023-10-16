@@ -1,11 +1,6 @@
 <script>
 export default {
-  props: {
-    task: {
-      type: Object,
-      required: true
-    }
-  }
+  props: ['task']
 }
 </script>
 

@@ -1,8 +1,5 @@
-<script setup>
-
-</script>
-
 <script>
+import axios from 'axios';
 export default {
   props: {
     person: {
@@ -24,10 +21,15 @@ export default {
       }
     }
   },
-  computed: {
-    htmlContent() {
-      return this.edit === false ? this.person.name : 'World';
-    }
+  methods: {
+    //  TODO: сделать запрос на изменение данных
+    changeInfoAboutUSer(){
+      this.edit = false
+       console.log('Изменить данные')
+      // axios.post('/additionalData', {
+      //
+      // })
+    },
   }
 }
 </script>
@@ -35,9 +37,13 @@ export default {
 <template>
   <div class="main">
     <div class="avatar">
-      <img
+      <img v-if="person.gender === 'Мужской' "
         src="../../assets/images/Avatar/boy.png"
         alt="Аватарка"
+      >
+      <img v-else
+           src="../../assets/images/Avatar/girl (3).png"
+           alt="Аватарка"
       >
     </div>
     <div class="date_person_fio">
@@ -133,7 +139,7 @@ export default {
         >Изменить профиль</button>
         <button
           v-show="edit === true"
-          @click="edit = false"
+          @click="changeInfoAboutUSer()"
           class="editBtn"
         >Подтвердить изменения</button>
         <button
@@ -148,6 +154,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@import '../../assets/styles/vars';
 .flexDiv {
   display: flex;
 }
@@ -157,8 +164,9 @@ export default {
   width: 100%;
   height: 100%;
   //padding: 25px;
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
+  //flex-wrap: wrap;
 }
 
 .InputChangeNO {
@@ -167,19 +175,27 @@ export default {
   border: none;
   font-size: 2rem;
   font-family: Visitor, sans-serif;
+  outline: none;
 }
 
 .InputChange {
   color: black;
-  background: none;
+  background: #fff;
   border: none;
   font-size: 2rem;
+  width: 50%;
   font-family: Visitor, sans-serif;
   border-bottom: 1px solid black;
+  outline: none;
+  border-radius: 0.5rem;
+  padding: 3px;
 }
 
 .avatar {
+  display: inline-block;
   height: 30%;
+  //align-self: flex-end;
+  margin-bottom: 2rem;
 }
 
 .avatar img {
@@ -189,16 +205,24 @@ export default {
 }
 
 .change_profile {
-  margin-top: 15%;
+  margin-top: 1rem;
   display: flex;
 }
 
 .editBtn {
-  background: white;
+  background: #fff;
   padding: 10px;
   margin: 5px;
   border-radius: 1.5rem;
-  border: 2px solid black;
-  box-shadow: 2px 2px 4px black;
+  border: 1px solid $accentColor;
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover{
+    background-color: #c7fdff;
+  }
+}
+.date_person_fio{
+  justify-self: flex-end;
 }
 </style>
