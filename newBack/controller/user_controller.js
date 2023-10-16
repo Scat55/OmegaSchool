@@ -66,7 +66,7 @@ class User_controller {
         const achievementsSql = 'SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = ?)';
         const gradesSql = 'SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = ?)';
 
-        db.get(userSql, [email], (err, userRow) => {
+        db.query(userSql, [email], (err, userRow) => {
             if (err) {
                 console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
                 res.status(500).json({error: 'Ошибка на сервере'});
@@ -80,7 +80,7 @@ class User_controller {
             }
 
             // Выполните запрос для получения данных об достижениях
-            db.get(achievementsSql, [email], (achievementsErr, achievementsRow) => {
+            db.query(achievementsSql, [email], (achievementsErr, achievementsRow) => {
                 if (achievementsErr) {
                     console.error('Ошибка при выполнении SQL-запроса для достижений:', achievementsErr.message);
                     res.status(500).json({error: 'Ошибка на сервере'});
@@ -88,7 +88,7 @@ class User_controller {
                 }
 
                 // Выполните запрос для получения данных оценок пользователя (используя db.all)
-                db.all(gradesSql, [email], (gradesErr, gradesRows) => {
+                db.query(gradesSql, [email], (gradesErr, gradesRows) => {
                     if (gradesErr) {
                         console.error('Ошибка при выполнении SQL-запроса для оценок:', gradesErr.message);
                         res.status(500).json({error: 'Ошибка на сервере'});
