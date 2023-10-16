@@ -16,16 +16,13 @@ const roleMiddleware = require('../middlewaree/roleMiddlewaer')
 
 
 
-router.get('/check_user', roleMiddleware(['Ученик']), userController.getUserList)
+router.get('/user_list', roleMiddleware(['Ученик']), userController.getUserList)
+router.get('/user_id/:email', userController.getUserIDForEmail)
 
 
-
-// router.get('/user_list', userController.getUserList)
-// router.get('/user_id/:email', userController.getUserIDForEmail)
-// router.get('/user_with_data/:email', userController.getUserDataForEmail)
-// router.get('/user_with_inf/:user_id', userController.getUserInformation)
-//
-// router.put('/addition_data', userController.additionalData)
+router.get('/user_inf_email/:email', userController.getUserDataForEmail)
+router.get('/user_inf/:user_id', userController.getUserInformation)
+router.post('/addition_data', userController.additionalData)
 
 
 // router.put('/user:id', userController.updateUser)
