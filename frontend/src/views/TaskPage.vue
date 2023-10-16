@@ -4,11 +4,13 @@
 
       <div class="window">
 
+<!--    Тут верхняя шапка    -->
         <div class="div1">
           <div>Задания</div>
           <div>Слева вы сможете выбрать фильтры для заданий. <br> По каким предметам, сложность и тд.</div>
         </div>
-
+<!--    конец шапки    -->
+<!-- Фильтр -->
         <div class="div2">
           <div>
             <div class="search-bar">
@@ -55,7 +57,8 @@
 
           <button class="btn_filter" @click="resetFilter">Сбросить</button>
         </div>
-
+<!-- Конец фильтра -->
+<!--    Где выводятся задачи    -->
         <div class="div3">
           <!--          <div v-for="task in zadania">-->
           <!--            <TaskList :task="task" :key="task.id"/>-->
@@ -66,6 +69,7 @@
               :task="task"
           />
         </div>
+<!--    Конец этого окна    -->
       </div>
 
     </div>
