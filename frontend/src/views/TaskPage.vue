@@ -49,6 +49,7 @@
 
 <script>
 import TaskList from "@/components/TaskList.vue";
+import axios from "axios";
 
 export default {
   computed: {
@@ -72,6 +73,18 @@ export default {
     return {
       selectedTopic: '',
     }
+  },
+
+  methods: {
+    getWork() {
+      axios.get(`/getWork`).then(response => {
+        // this.email = response.data.user.email
+        console.log(response.data)
+      })
+    },
+    },
+  mounted() {
+    this.getWork()
   }
 }
 </script>
@@ -140,6 +153,20 @@ export default {
   scrollbar-width: thin;
   scrollbar-color: $lightBlueColor white;
 }
+.div3::-webkit-scrollbar {
+  width: 10px;
+}
+
+.div3::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: #f9f9fd;
+  border-radius: 10px;
+}
+
+.div3::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #00c6fb, #005bea);
+}
 .topic-section{
   font-family: Visitor;
   padding: 10px;
@@ -148,4 +175,6 @@ export default {
   font-size: .8rem;
   outline: none;
 }
+
+
 </style>

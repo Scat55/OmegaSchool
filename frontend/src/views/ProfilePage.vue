@@ -13,13 +13,13 @@
               class="tab"
               v-if="person.student === false"
               @click="switchTab('TaskToCheckStudent')"
-            >Задачи на проверку
+            >Задачи на проверку ( ученик )
             </div>
             <div
               class="tab"
               v-if="person.expert === true"
               @click="switchTab('TaskToCheckTeacher')"
-            >Задачи на проверку
+            >Задачи на проверку ( учитель )
             </div>
             <div
               class="tab"
@@ -130,27 +130,27 @@ export default {
         }
       }
     },
-    getInfoAboutUser(){
-      axios.get(`/getUserIdForInf/${this.id}`).then(response => {
-        // this.email = response.data.user.email
-        this.person.email = response.data.user.email
-        this.person.name = response.data.user.first_name
-        this.person.lastname = response.data.user.last_name
-        this.person.patronymic = response.data.user.patronymic
-        this.person.gender = response.data.user.gender
-        if (response.data.user.type_user === 'Ученик'){
-          this.person.student = true
-        } else {
-          this.person.student = false
-        }
-      })
-      console.log(this.person)
-    },
+    // getInfoAboutUser(){
+    //   axios.get(`/getUserIdForInf/${this.id}`).then(response => {
+    //     // this.email = response.data.user.email
+    //     this.person.email = response.data.user.email
+    //     this.person.name = response.data.user.first_name
+    //     this.person.lastname = response.data.user.last_name
+    //     this.person.patronymic = response.data.user.patronymic
+    //     this.person.gender = response.data.user.gender
+    //     if (response.data.user.type_user === 'Ученик'){
+    //       this.person.student = true
+    //     } else {
+    //       this.person.student = false
+    //     }
+    //   })
+    //   console.log(this.person)
+    // },
 
   },
   mounted() {
 
-    this.getInfoAboutUser()
+    // this.getInfoAboutUser()
     axios.get(`/getUserIdForInf/${this.id}`).then(response => {
       console.log(response.data)
       // this.email = response.data.user.email
@@ -232,6 +232,21 @@ export default {
   grid-row: 1 / span 2;
   overflow-y: auto;
   padding: 25px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+    background-color: #f9f9fd;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient(180deg, #00c6fb, #005bea);
+  }
 }
 
 .left_div,
