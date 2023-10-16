@@ -11,9 +11,14 @@
 
         <div class="div2">
           <div>
-            <div class="complexity">
+            <div class="complexity_filter">
               <p>Уровень уровень заданий:</p>
-
+              <select v-model="selectedLVL" class="topic-section">
+                <option value="">Все уровни</option>
+                <option value="1">1 LVL</option>
+                <option value="2">2 LVL</option>
+                <option value="3">3 LVL</option>
+              </select>
             </div>
             <div class="topic-filter">
               <p>Предмет:</p>
@@ -22,6 +27,15 @@
                 <option value="Математика">Математика</option>
                 <option value="Физика">Физика</option>
                 <option value="Химия">Химия</option>
+              </select>
+            </div>
+            <div class="class_filter">
+              <p>Класс:</p>
+              <select v-model="selectedClass" class="topic-section">
+                <option value="">Не указан</option>
+                <option value="9">9 класс</option>
+                <option value="10">10 класс</option>
+                <option value="11">11 класс</option>
               </select>
             </div>
           </div>
@@ -61,9 +75,22 @@ export default {
       return this.$store.state.Temp.zadania;
     },
     filteredTasks() {
-      return this.selectedTopic
-          ? this.zadania.filter((task) => task.topic === this.selectedTopic)
-          : this.zadania;
+      let filtered = this.zadania;
+
+      if (this.selectedTopic) {
+        filtered = filtered.filter((task) => task.topic === this.selectedTopic);
+      }
+
+      if (this.selectedLVL) {
+        filtered = filtered.filter((task) => task.complexity === this.selectedLVL);
+      }
+      if (this.selectedClass) {
+        filtered = filtered.filter((task) => task.class === this.selectedClass);
+      }
+
+      return filtered;
+
+
     }
   },
   components: {
@@ -72,6 +99,8 @@ export default {
   data() {
     return {
       selectedTopic: '',
+      selectedLVL: '',
+      selectedClass: '',
     }
   },
 
