@@ -168,7 +168,7 @@ class User_controller {
 
             if (row) {
                 console.log(`Пользователь ${email} найден в базе данных`);
-                return json({ message: 'Пользователь найден' });
+                return row;
             } else {
                 console.log(`Пользователь ${email} не найден в базе данных`);
                 return json({ message: 'Пользователь не найден' });
