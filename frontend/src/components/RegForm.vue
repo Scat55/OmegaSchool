@@ -115,7 +115,7 @@ export default {
       const gender = this.gender.name
       const type_user = this.proffesion.name
 
-      axios.post('/addUser', {
+      axios.post('/auth/registration', {
         email: email,
         password: pass,
         gender: gender,

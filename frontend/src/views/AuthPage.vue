@@ -58,7 +58,7 @@ export default {
       const email = this.email;
       const password = this.pass;
 
-      axios.post('/checkUser', {
+      axios.post('/auth/login', {
         email: email,
         password: password
       })
