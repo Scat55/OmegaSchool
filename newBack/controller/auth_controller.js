@@ -34,7 +34,7 @@ class Auth_controller {
         try {
             const { email, password } = req.body;
 
-            const user = checkUser(email, password);
+            return checkUser(email, password);
         } catch (e) {
             res.status(400).json({ message: 'Ошибка входа' });
         }

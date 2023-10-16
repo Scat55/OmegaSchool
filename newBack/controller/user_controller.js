@@ -170,8 +170,8 @@ class User_controller {
 
             if (row) {
                 console.log(`Пользователь ${email} найден в базе данных`);
-                const token = jwt.sign({ email }, 'qhksoidbjdsknjdskmdkjcndjdsfldsnxgttwpzmzfwodn1n3udn734h5dsh82hd7h', { expiresIn: '24h' });
-                return json({ token });
+                // console.log(token)
+                return jwt.sign({email}, 'qhksoidbjdsknjdskmdkjcndjdsfldsnxgttwpzmzfwodn1n3udn734h5dsh82hd7h', {expiresIn: '24h'});
             } else {
                 console.log(`Пользователь ${email} не найден в базе данных`);
                 return json({ message: 'Пользователь не найден' });
