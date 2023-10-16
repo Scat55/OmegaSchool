@@ -38,15 +38,15 @@ const routes = [
     path: '/task',
     name: 'task',
     component: TaskPage,
-    beforeEnter(to, from, next) {
-      if (store.state.isAuth) {
-        next(true);
-      } else {
-        next(false);
-        alert('Войдите в аккаунт');
-        next({path: '/'});
-      }
-    },
+    // beforeEnter(to, from, next) {
+    //   if (store.state.isAuth) {
+    //     next(true);
+    //   } else {
+    //     next(false);
+    //     alert('Войдите в аккаунт');
+    //     next({path: '/'});
+    //   }
+    // },
   },
   {
     path: '/task/:id?',
