@@ -11,7 +11,7 @@
         </div>
 <!--    конец шапки    -->
 <!-- Фильтр -->
-        <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = true">
+        <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = !filterSee">
           <div>Показать фильтры</div>
         </div>
         <div class="filter" v-show='filterSee === true'>
@@ -57,8 +57,8 @@
               </select>
             </div>
             <div class="filter__btn">
-              <button class="filter__btn" @click="filterSee = false">Скрыть фильтр</button>
-              <button class="filter__btn" @click="resetFilter">Сбросить</button>
+              <button class="filter__btn__hide" @click="filterSee = !filterSee">Скрыть фильтр</button>
+              <button class="filter__btn__reset" @click="resetFilter">Сбросить</button>
             </div>
           </div>
         </div>
@@ -239,24 +239,56 @@ width: 25px;
   text-align: center;
   background: white;
 
-  &__btn {
-    margin-top: 5%;
+  &__search-bar {
+
+
+    &>input {
+      width: 80%;
+      padding: 7px;
+      outline: none;
+      border: 1px solid $lightBlueColor;
+      border-radius: 1rem;
+      margin: 5px 0;
+    }
   }
+
+
+  &__btn {
+
+
+    &__hide, &__reset {
+      margin: 10px 5px;
+      padding: 8px;
+      border-radius: 1rem;
+      border: none;
+      color: white;
+    }
+
+    &__hide {
+background: $lightBlueColor;
+    }
+
+    &__reset {
+background: red;
+    }
+  }
+
+}
+
+.topic-section {
+  font-family: Visitor,serif;
+  margin: 5px 0;
+  padding: 10px;
+  width: 200px;
+  border-radius: 1rem;
+  font-size: .8rem;
+  outline: none;
 }
 
 .div3 {
   padding: 15px 0 10px 0;
   text-align: center;
   border: none;
-}
-
-.topic-section {
-  font-family: Visitor,serif;
-  padding: 10px;
-  border-radius: 1rem;
-  margin-top: 1rem;
-  font-size: .8rem;
-  outline: none;
 }
 
 
