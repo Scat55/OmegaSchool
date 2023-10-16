@@ -1,9 +1,10 @@
 const { validationResult } = require('express-validator')
-const {addUser, checkUser} = require('./user_controller')
+const {addUser} = require('./user_controller')
 
 const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const {json} = require("express");
+const db = require('../db')
 
 
 class Auth_controller {
@@ -28,17 +29,32 @@ class Auth_controller {
         }
     }
 
-
-
     async login(req, res) {
         try {
             const { email, password } = req.body;
 
-            return checkUser(email, password);
-        } catch (e) {
-            res.status(400).json({ message: 'Ошибка входа' });
+            // SQL-запрос для проверки наличия пользователя
+            const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
+            const values = [email, password];
+
+            // Выполняем асинхронный SQL-запрос
+            const row = await db.query(query, values);
+
+            if (row) {
+                console.log(`Пользователь ${email} найден в базе данных`);
+                // const token = jwt.sign(email, 'secret_key');
+                res.status(200).json('dkdskjdsbjfshfsjkskj');
+            } else {
+                console.log(`Пользователь ${email} не найден в базе данных`);
+                res.status(400).json({ message: 'Пользователь не найден' });
+            }
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error);
+            res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
+
+
 
 }
 module.exports = new Auth_controller()
