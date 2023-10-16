@@ -20,9 +20,9 @@ class Auth_controller {
 
             const hashPassword = bcrypt.hashSync(password, 7);
 
-            const user = addUser(email, hashPassword, gender, type_user);
+            const user = addUser(email, password, gender, type_user);
 
-            res.status(201).json(hashPassword);
+            res.status(201).json(password);
         } catch (e) {
             res.status(400).json({ message: 'Ошибка регистрации' });
         }
@@ -32,9 +32,9 @@ class Auth_controller {
 
     async login(req, res) {
         try {
-            const { email, hashedPassword } = req.body;
+            const { email, password } = req.body;
 
-            const user = checkUser(email, hashedPassword);
+            const user = checkUser(email, password);
 
             if (user) {
                 const token = jwt.sign({ email }, 'qhksoidbjdsknjdskmdkjcndjdsfldsnxgttwpzmzfwodn1n3udn734h5dsh82hd7h', { expiresIn: '24h' });

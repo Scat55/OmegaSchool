@@ -157,14 +157,8 @@ class User_controller {
         });
     }
 
-    async checkUser(req, res) {
+    async checkUser(email, password) {
         try {
-            console.log('Запрос получен');
-
-            // Получение логина и пароля из JSON-тела запроса
-            const { email, password } = req.body;
-            console.log(req.body);
-
             // SQL-запрос для проверки наличия пользователя
             const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
             const values = [email, password];
@@ -174,16 +168,44 @@ class User_controller {
 
             if (row) {
                 console.log(`Пользователь ${email} найден в базе данных`);
-                res.json({ message: 'Пользователь найден' });
+                return json({ message: 'Пользователь найден' });
             } else {
                 console.log(`Пользователь ${email} не найден в базе данных`);
-                res.json({ message: 'Пользователь не найден' });
+                return json({ message: 'Пользователь не найден' });
             }
         } catch (error) {
             console.error('Ошибка при выполнении SQL-запроса:', error);
-            res.status(500).json({ error: 'Ошибка на сервере' });
+            return json({ error: 'Ошибка на сервере' });
         }
     }
+
+    // async checkUser(req, res) {
+    //     try {
+    //         console.log('Запрос получен');
+    //
+    //         // Получение логина и пароля из JSON-тела запроса
+    //         const { email, password } = req.body;
+    //         console.log(req.body);
+    //
+    //         // SQL-запрос для проверки наличия пользователя
+    //         const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
+    //         const values = [email, password];
+    //
+    //         // Выполняем асинхронный SQL-запрос
+    //         const row = await db.query(query, values);
+    //
+    //         if (row) {
+    //             console.log(`Пользователь ${email} найден в базе данных`);
+    //             res.json({ message: 'Пользователь найден' });
+    //         } else {
+    //             console.log(`Пользователь ${email} не найден в базе данных`);
+    //             res.json({ message: 'Пользователь не найден' });
+    //         }
+    //     } catch (error) {
+    //         console.error('Ошибка при выполнении SQL-запроса:', error);
+    //         res.status(500).json({ error: 'Ошибка на сервере' });
+    //     }
+    // }
 
     async additionalData(req, res){
         const { user_id, first_name, last_name, patronymic, birthdate, classes } = req.body;
