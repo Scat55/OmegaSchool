@@ -11,14 +11,17 @@
         </div>
 <!--    конец шапки    -->
 <!-- Фильтр -->
-        <div class="div2">
-          <div>
-            <div class="search-bar">
+        <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = true">
+          <div>Показать фильтры</div>
+        </div>
+        <div class="filter" v-show='filterSee === true'>
+          <div >
+            <div class="filter__search-bar">
               <p>Поиск задачи: </p>
               <input v-model="searchQuery" placeholder="Поиск по названию задачи...">
             </div>
 
-            <div class="complexity_filter">
+            <div class="filter__complexity_filter">
               <p>Уровень уровень заданий:</p>
               <select v-model="selectedLVL" class="topic-section">
                 <option value="">Все уровни</option>
@@ -27,7 +30,7 @@
                 <option value="3">3 LVL</option>
               </select>
             </div>
-            <div class="topic-filter">
+            <div class="filter__topic-filter">
               <p>Предмет:</p>
               <select v-model="selectedTopic" class="topic-section">
                 <option value="">Все предметы</option>
@@ -36,7 +39,7 @@
                 <option value="Химия">Химия</option>
               </select>
             </div>
-            <div class="class_filter">
+            <div class="filter__class_filter">
               <p>Класс:</p>
               <select v-model="selectedClass" class="topic-section">
                 <option value="">Не указан</option>
@@ -45,7 +48,7 @@
                 <option value="11">11 класс</option>
               </select>
             </div>
-            <div class="status_filter">
+            <div class="filter__status_filter">
               <p>Статус:</p>
               <select v-model="selectedStatus" class="topic-section">
                 <option value="">Не выбран</option>
@@ -53,17 +56,26 @@
                 <option :value="true">Решено</option>
               </select>
             </div>
-            <button class="btn_filter" @click="resetFilter">Сбросить</button>
+            <div class="filter__btn">
+              <button class="filter__btn" @click="filterSee = false">Скрыть фильтр</button>
+              <button class="filter__btn" @click="resetFilter">Сбросить</button>
+            </div>
           </div>
         </div>
 <!-- Конец фильтра -->
 <!--    Где выводятся задачи    -->
         <div class="div3">
           <TaskList
-              v-for="task in filteredTasks"
+              v-for="task in paginatedTasks"
               :key="task.id"
               :task="task"
           />
+          <div class="pagination-controls">
+            <button @click="goToPrevPage" :disabled="currentPage === 1">←</button>
+            <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+            <button @click="goToNextPage" :disabled="currentPage === totalPages">→</button>
+          </div>
+
         </div>
 <!--    Конец этого окна    -->
       </div>
@@ -108,6 +120,16 @@ export default {
       return filtered;
 
 
+    },
+
+    paginatedTasks() {
+      const start = (this.currentPage - 1) * this.tasksPerPage;
+      const end = start + this.tasksPerPage;
+      return this.filteredTasks.slice(start, end);
+    },
+
+    totalPages() {
+      return Math.ceil(this.filteredTasks.length / this.tasksPerPage);
     }
   },
   components: {
@@ -119,7 +141,10 @@ export default {
       selectedLVL: '',
       selectedClass: '',
       selectedStatus: '',
-      searchQuery: ''
+      searchQuery: '',
+      currentPage: 1,
+      tasksPerPage: 10,
+      filterSee: false,
     }
   },
 
@@ -130,6 +155,22 @@ export default {
       this.selectedTopic = ''
       this.selectedStatus = ''
       this.searchQuery = ''
+    },
+
+    goToNextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+
+    goToPrevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+
+    goToPage(page) {
+      this.currentPage = page;
     }
   },
 }
@@ -138,8 +179,33 @@ export default {
 <style scoped lang="scss">
 @import '../assets/styles/vars.scss';
 
-.btn_filter {
-  margin-top: 5%;
+.button_trueFilteredSee {
+  height: 100%;
+  width: 100%;
+}
+
+.button_trueFilteredSee:hover {
+  background: #0077B1;
+  border: 1px solid #0077B1;
+  color: white;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &>span {
+    margin: 0 5px;
+  }
+
+  &>button {
+width: 25px;
+    text-align: center;
+    color: white;
+    background: $lightBlueColor;
+    border: none;
+  }
 }
 
 .complexity p {
@@ -155,7 +221,7 @@ export default {
 }
 
 .div1,
-.div2,
+.filter,
 .div3 {
   border: 2px solid $lightBlueColor;
   padding: 10px;
@@ -168,36 +234,20 @@ export default {
   background: white;
 }
 
-.div2 {
+.filter {
   margin-top: 10px;
   text-align: center;
   background: white;
+
+  &__btn {
+    margin-top: 5%;
+  }
 }
 
 .div3 {
+  padding: 15px 0 10px 0;
   text-align: center;
   border: none;
-  //overflow-x: hidden;
-  //overflow-y: auto;
-
-  // scroll пока работает на firefox
-  scrollbar-width: thin;
-  scrollbar-color: $lightBlueColor white;
-}
-
-.div3::-webkit-scrollbar {
-  width: 10px;
-}
-
-.div3::-webkit-scrollbar-track {
-  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
-  background-color: #f9f9fd;
-  border-radius: 10px;
-}
-
-.div3::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: linear-gradient(180deg, #00c6fb, #005bea);
 }
 
 .topic-section {
