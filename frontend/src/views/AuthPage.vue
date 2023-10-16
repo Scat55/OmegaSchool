@@ -85,6 +85,7 @@ export default {
         password: password
       }).then(response => {
         console.log(response.data)
+        localStorage.setItem('token', response.data.token)
       })
     },
     // Обработка формы
