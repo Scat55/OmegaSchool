@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="main">
+    <div class="container">
 
       <div class="window">
 
@@ -53,16 +53,12 @@
                 <option :value="true">Решено</option>
               </select>
             </div>
+            <button class="btn_filter" @click="resetFilter">Сбросить</button>
           </div>
-
-          <button class="btn_filter" @click="resetFilter">Сбросить</button>
         </div>
 <!-- Конец фильтра -->
 <!--    Где выводятся задачи    -->
         <div class="div3">
-          <!--          <div v-for="task in zadania">-->
-          <!--            <TaskList :task="task" :key="task.id"/>-->
-          <!--          </div>-->
           <TaskList
               v-for="task in filteredTasks"
               :key="task.id"
@@ -83,10 +79,6 @@ import axios from "axios";
 
 export default {
   computed: {
-    // taskList() {
-    //   return taskList
-    // }
-
     zadania() {
       return this.$store.state.Temp.zadania;
     },
@@ -150,27 +142,16 @@ export default {
   margin-top: 5%;
 }
 
-.main {
-  margin-top: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  padding: 10px;
-}
-
 .complexity p {
   margin: 15px 0 5px 0;
 }
 
 .window {
-  width: 1270px;
-  //margin: 0 5% 0 5%;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto 1fr;
-  gap: 10px;
+  margin-top: 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .div1,
@@ -179,29 +160,25 @@ export default {
   border: 2px solid $lightBlueColor;
   padding: 10px;
   border-radius: 1rem;
+  width: 100%;
 }
 
 .div1 {
-  grid-column: 1 / span 3;
   text-align: center;
   background: white;
 }
 
 .div2 {
   margin-top: 10px;
-  grid-row: 2 / span 1;
   text-align: center;
-  height: 400px;
   background: white;
 }
 
 .div3 {
-  grid-column: 2 / span 2;
-  grid-row: 2 / span 1;
   text-align: center;
   border: none;
-  overflow-x: hidden;
-  overflow-y: auto;
+  //overflow-x: hidden;
+  //overflow-y: auto;
 
   // scroll пока работает на firefox
   scrollbar-width: thin;
@@ -224,7 +201,7 @@ export default {
 }
 
 .topic-section {
-  font-family: Visitor;
+  font-family: Visitor,serif;
   padding: 10px;
   border-radius: 1rem;
   margin-top: 1rem;
