@@ -3,32 +3,33 @@
     <div class="container">
 
       <form
-        action="#"
-        class="reg__form"
-        @submit.prevent="handler()"
+          action="#"
+          class="reg__form"
+          @submit.prevent="handler()"
       >
         <p class="reg__form-title">Вход</p>
         <div class="reg__info">
           <span class="reg__info-name ">Почта</span>
           <input
-            type="email"
-            class="reg__input name"
-            v-model="email"
+              type="email"
+              class="reg__input name"
+              v-model="email"
           >
         </div>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
           <input
-            type="password"
-            class="reg__input"
-            v-model="pass"
+              type="password"
+              class="reg__input"
+              v-model="pass"
           >
         </div>
 
         <button
-          class="reg__form-btn"
-          type="submit"
-        >Войти</button>
+            class="reg__form-btn"
+            type="submit"
+        >Войти
+        </button>
 
       </form>
 
@@ -39,8 +40,9 @@
 
 <script>
 import axios from 'axios';
-import { mapActions, mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import store from '../store/index';
+
 export default {
   data() {
     return {
@@ -58,25 +60,32 @@ export default {
       const email = this.email;
       const password = this.pass;
 
+      // axios.post('/auth/login', {
+      //   email: email,
+      //   password: password
+      // })
+      //   .then(response => {
+      //     if (response.data.message === 'Пользователь не найден') {
+      //       alert(response.data.message)
+      //       this.email = this.pass = ''
+      //     } else {
+      //       axios.get(`/api/user_with_data/${this.email}`).then(response => {
+      //         store.state.isAuth = true
+      //         this.$router.push(`/profile/${response.data.user_id}`)
+      //         localStorage.setItem('userID', response.data.user_id)
+      //       })
+      //     }
+      //
+      //
+      //     // console.log(response.data.message)
+      //   })
+
       axios.post('/auth/login', {
         email: email,
         password: password
+      }).then(response => {
+        console.log(response.data)
       })
-        .then(response => {
-          if (response.data.message === 'Пользователь не найден') {
-            alert(response.data.message)
-            this.email = this.pass = ''
-          } else {
-            axios.get(`/getUserIdForMail/${this.email}`).then(response => {
-              store.state.isAuth = true
-              this.$router.push(`/profile/${response.data.user_id}`)
-              localStorage.setItem('userID', response.data.user_id)
-            })
-          }
-
-
-          // console.log(response.data.message)
-        })
     },
     // Обработка формы
     handler() {
@@ -122,7 +131,6 @@ export default {
       font-weight: bold;
       font-size: 1.3rem;
     }
-
 
 
     &-btn {
