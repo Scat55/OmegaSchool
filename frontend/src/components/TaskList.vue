@@ -5,13 +5,16 @@ export default {
 </script>
 
 <template>
-  <div class="task">
-    <router-link :to="'/task/' + task.id" class="title">{{ task.title }}
+  <div class="task_task">
+    <router-link :to="'/task/' + task.id" class="task_title">{{ task.title }}
     </router-link>
-    <div class="body">
-      <div class="topic">Предмет: {{task.topic}}</div>
-      <div class="status">Статус: {{task.status === false ? 'Не решено' : 'Решено'}}</div>
-      <div class="complexity">Уровень задания: {{task.complexity}}</div>
+    <div class="task_status">
+      <div class="task_status_name">Статус: {{task.status === false ? 'Не решено' : 'Решено'}}</div>
+    </div>
+    <div class="task_body">
+      <div class="task_topic">Предмет: {{task.topic}}</div>
+      <div class="task_class">Класс: {{task.class}}</div>
+      <div class="task_complexity">Уровень задания: {{task.complexity}}</div>
     </div>
 <!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
   </div>
@@ -21,7 +24,7 @@ export default {
 @import '../assets/styles/vars.scss';
 
 
-.task {
+.task_task {
   border: 2px solid $lightBlueColor;
   border-radius: 1rem;
   margin-bottom: 15px;
@@ -31,7 +34,7 @@ export default {
   overflow: hidden;
 }
 
-.body {
+.task_body {
   margin: 10px ;
   display: flex;
   justify-content: space-between;
@@ -39,11 +42,20 @@ export default {
   padding: 5px 0;
 }
 
-.task:hover {
+.task_status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  //margin: 10px 0 0 0 ;
+  border-bottom: 2px solid $lightBlueColor;
+}
+
+.task_task:hover {
   border: 3px solid #151280;
 }
 
-.title {
+.task_title {
 
   color: white;
   text-decoration: none;
@@ -53,11 +65,11 @@ export default {
 }
 
 
-.topic {
+.task_topic {
   text-align: left;
 }
 
-.complexity {
+.task_complexity {
 
   text-align: right;
 }

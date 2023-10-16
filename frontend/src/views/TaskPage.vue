@@ -40,8 +40,7 @@
             </div>
           </div>
 
-          <button class="btn_filter">Применить фильтр</button>
-          <button class="btn_filter">Сбросить</button>
+          <button class="btn_filter" @click="resetFilter">Сбросить</button>
         </div>
 
         <div class="div3">
@@ -104,7 +103,13 @@ export default {
     }
   },
 
-  methods: {},
+  methods: {
+    resetFilter() {
+      this.selectedClass = ''
+      this.selectedLVL = ''
+      this.selectedTopic = ''
+    }
+  },
 }
 </script>
 
