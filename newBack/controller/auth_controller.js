@@ -5,62 +5,91 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {json} = require("express");
 const db = require('../db')
+const {secret} = require('../config')
 
+const generateAccesToken = (user_id, type_user, email) =>{
+    const payload = {
+        user_id,
+        type_user,
+        email
+    }
+    return jwt.sign(payload, secret,  { expiresIn: '12H' })
+}
 
 class Auth_controller {
-
     async registration(req, res) {
         try {
-            const errors = validationResult(req);
+            // Извлекаем данные из тела запроса
+            const {email, password, gender, type_user} = req.body;
 
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+            // Выполняем SQL-запрос, чтобы найти пользователя по email
+            const queryResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
 
-            const { email, password, gender, type_user } = req.body;
-
-            const hashPassword = bcrypt.hashSync(password, 7);
-
-            const user = addUser(email, password, gender, type_user);
-
-            res.status(201).json(password);
-        } catch (e) {
-            res.status(400).json({ message: 'Ошибка регистрации' });
-        }
-    }
-
-    async login(req, res) {
-        try {
-            const { email, password } = req.body;
-
-            // SQL-запрос для проверки наличия пользователя
-            const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
-            const values = [email, password];
-
-            // Выполняем асинхронный SQL-запрос
-            const user = await db.query(query, values);
-
-            if (user) {
-                console.log('Пользователь ${email} найден в базе данных');
-                const token = jwt.sign({ email }, 'secret_key', { expiresIn: '24h' });
-
-                // Обновляем поле token в таблице users
-                const updateTokenQuery = 'UPDATE users SET token = $1 WHERE email = $2';
-                const updateTokenValues = [token, email];
-                await db.query(updateTokenQuery, updateTokenValues);
-                console.log(updateTokenValues)
-                res.status(200).json({ token });
+            // Если результат запроса не пустой, отправляем сообщение о наличии пользователя
+            if (queryResult.rows.length > 0) {
+                res.json({message: 'Пользователь с таким email уже существует'});
             } else {
-                console.log('Пользователь ${email} не найден в базе данных');
-                res.status(400).json({ message: 'Пользователь не найден' });
+                // Хешируем пароль перед сохранением в базу данных
+                const saltRounds = 10; // Уровень соли
+                const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+                // Добавляем пользователя в базу данных с хешированным паролем
+                const insertQuery = `
+                INSERT INTO users (email, password, gender, type_user)
+                VALUES ($1, $2, $3, $4)
+                RETURNING user_id;`;
+
+                const insertResult = await db.query(insertQuery, [email, hashedPassword, gender, type_user]);
+
+                if (insertResult.rows.length > 0) {
+                    res.json({message: 'Пользователь успешно добавлен', user_id: insertResult.rows[0].user_id});
+                } else {
+                    res.status(500).json({message: 'Ошибка при добавлении пользователя'});
+                }
             }
         } catch (error) {
-            console.error('Ошибка при выполнении SQL-запроса:', error);
-            res.status(500).json({ error: 'Ошибка на сервере' });
+            // Обрабатываем ошибки, логируем их для отладки и отправляем ответ с ошибкой
+            console.error(error);
+            res.status(500).json({message: 'Внутренняя ошибка сервера'});
+        }
+
+    }
+    async login(req, res) {
+        try {
+            // Извлекаем данные из тела запроса
+            const { email, password } = req.body;
+
+            // Выполняем SQL-запрос, чтобы найти пользователя по email
+            const queryResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+
+            // Если результат запроса пустой, отправляем сообщение о неправильной электронной почте
+            if (queryResult.rows.length === 0) {
+                res.status(401).json({ message: 'Неправильная электронная почта' });
+            } else {
+                // Получаем данные пользователя
+                const user = queryResult.rows[0];
+
+                // Проверяем совпадение пароля с хешированным паролем
+                const passwordMatch = await bcrypt.compare(password, user.password);
+
+                if (passwordMatch) {
+                    // Генерируем JWT токен
+                    const token = generateAccesToken(user.user_id,user.type_user,user.email);
+
+                    // Отправляем JWT токен в ответе
+                    res.json({ message: 'Успешная аутентификация', token });
+                } else {
+                    // Если пароль неверен, отправляем сообщение о неправильном пароле
+                    res.status(401).json({ message: 'Неправильный пароль' });
+                }
+            }
+        } catch (error) {
+            // Обрабатываем ошибки, логируем их для отладки и отправляем ответ с ошибкой
+            console.error(error);
+            res.status(500).json({ message: 'Внутренняя ошибка сервера' });
         }
     }
 
-
-
 }
+
 module.exports = new Auth_controller()
