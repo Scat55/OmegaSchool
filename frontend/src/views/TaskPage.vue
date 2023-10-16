@@ -11,6 +11,11 @@
 
         <div class="div2">
           <div>
+            <div class="search-bar">
+              <p>Поиск задачи: </p>
+              <input v-model="searchQuery" placeholder="Поиск по названию задачи...">
+            </div>
+
             <div class="complexity_filter">
               <p>Уровень уровень заданий:</p>
               <select v-model="selectedLVL" class="topic-section">
@@ -98,6 +103,12 @@ export default {
       if (this.selectedStatus !== '') {
         filtered = filtered.filter((task) => task.status === this.selectedStatus);
       }
+
+      if (this.searchQuery) {
+        filtered = filtered.filter((task) =>
+            task.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
       return filtered;
 
 
@@ -112,6 +123,7 @@ export default {
       selectedLVL: '',
       selectedClass: '',
       selectedStatus: '',
+      searchQuery: ''
     }
   },
 
