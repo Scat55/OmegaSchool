@@ -12,7 +12,7 @@
 <!--    конец шапки    -->
 <!-- Фильтр -->
         <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = !filterSee">
-          <div>Показать фильтры</div>
+          <div>Показать фильтры <span v-show="hasActiveFilters">( Есть примененные )</span></div>
         </div>
         <div class="filter" v-show='filterSee === true'>
           <div >
@@ -87,10 +87,17 @@
 
 <script>
 import TaskList from "@/components/TaskList.vue";
-import axios from "axios";
 
 export default {
   computed: {
+    hasActiveFilters() {
+      return this.selectedTopic ||
+          this.selectedLVL ||
+          this.selectedClass ||
+          (this.selectedStatus !== '') ||
+          this.searchQuery;
+    },
+
     zadania() {
       return this.$store.state.Temp.zadania;
     },
@@ -149,13 +156,13 @@ export default {
   },
 
   methods: {
-    resetFilter() {
-      this.selectedClass = ''
-      this.selectedLVL = ''
-      this.selectedTopic = ''
-      this.selectedStatus = ''
-      this.searchQuery = ''
-    },
+    // resetFilter() {
+    //   this.selectedClass = ''
+    //   this.selectedLVL = ''
+    //   this.selectedTopic = ''
+    //   this.selectedStatus = ''
+    //   this.searchQuery = ''
+    // },
 
     goToNextPage() {
       if (this.currentPage < this.totalPages) {
@@ -171,8 +178,53 @@ export default {
 
     goToPage(page) {
       this.currentPage = page;
-    }
+    },
+
+    updateLocalStorage() {
+      const filters = {
+        selectedTopic: this.selectedTopic,
+        selectedLVL: this.selectedLVL,
+        selectedClass: this.selectedClass,
+        selectedStatus: this.selectedStatus,
+        searchQuery: this.searchQuery,
+      };
+      localStorage.setItem("filters", JSON.stringify(filters));
+    },
+
+    getFiltersFromLocalStorage() {
+      const filters = JSON.parse(localStorage.getItem("filters"));
+      if (filters) {
+        this.selectedTopic = filters.selectedTopic || '';
+        this.selectedLVL = filters.selectedLVL || '';
+        this.selectedClass = filters.selectedClass || '';
+        this.selectedStatus = filters.selectedStatus || '';
+        this.searchQuery = filters.searchQuery || '';
+      }
+    },
+
+    resetFilter() {
+      this.selectedClass = '';
+      this.selectedLVL = '';
+      this.selectedTopic = '';
+      this.selectedStatus = '';
+      this.searchQuery = '';
+      localStorage.removeItem("filters");
+    },
   },
+
+  watch: {
+    // LocalStorage
+    selectedTopic: "updateLocalStorage",
+    selectedLVL: "updateLocalStorage",
+    selectedClass: "updateLocalStorage",
+    selectedStatus: "updateLocalStorage",
+    searchQuery: "updateLocalStorage",
+  },
+
+  created() {
+    this.getFiltersFromLocalStorage();
+  }
+
 }
 </script>
 
