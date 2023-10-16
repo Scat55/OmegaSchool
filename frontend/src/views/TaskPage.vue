@@ -238,7 +238,7 @@ export default {
 
 .button_trueFilteredSee:hover {
   background: #0077B1;
-  border: 1px solid #0077B1;
+  border: 2px solid #0077B1;
   color: white;
 }
 
