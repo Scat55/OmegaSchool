@@ -133,6 +133,7 @@ export default {
       this.selectedLVL = ''
       this.selectedTopic = ''
       this.selectedStatus = ''
+      this.searchQuery = ''
     }
   },
 }
@@ -142,7 +143,7 @@ export default {
 @import '../assets/styles/vars.scss';
 
 .btn_filter {
-  margin-top: 50px;
+  margin-top: 5%;
 }
 
 .main {
