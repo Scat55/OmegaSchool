@@ -38,14 +38,20 @@ class Auth_controller {
             const values = [email, password];
 
             // Выполняем асинхронный SQL-запрос
-            const row = await db.query(query, values);
+            const user = await db.query(query, values);
 
-            if (row) {
-                console.log(`Пользователь ${email} найден в базе данных`);
-                // const token = jwt.sign(email, 'secret_key');
-                res.status(200).json('dkdskjdsbjfshfsjkskj');
+            if (user) {
+                console.log('Пользователь ${email} найден в базе данных');
+                const token = jwt.sign({ email }, 'secret_key', { expiresIn: '24h' });
+
+                // Обновляем поле token в таблице users
+                const updateTokenQuery = 'UPDATE users SET token = $1 WHERE email = $2';
+                const updateTokenValues = [token, email];
+                await db.query(updateTokenQuery, updateTokenValues);
+                console.log(updateTokenValues)
+                res.status(200).json({ token });
             } else {
-                console.log(`Пользователь ${email} не найден в базе данных`);
+                console.log('Пользователь ${email} не найден в базе данных');
                 res.status(400).json({ message: 'Пользователь не найден' });
             }
         } catch (error) {
