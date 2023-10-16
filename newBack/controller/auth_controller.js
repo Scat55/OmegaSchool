@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator')
 const {addUser, checkUser} = require('./user_controller')
 
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const {json} = require("express");
 
 
@@ -35,13 +35,6 @@ class Auth_controller {
             const { email, password } = req.body;
 
             const user = checkUser(email, password);
-
-            if (user) {
-                const token = jwt.sign({ email }, 'qhksoidbjdsknjdskmdkjcndjdsfldsnxgttwpzmzfwodn1n3udn734h5dsh82hd7h', { expiresIn: '24h' });
-                res.status(200).json({ token });
-            } else {
-                res.status(400).json({ message: 'Введен неверный пароль или пользователь не найден' });
-            }
         } catch (e) {
             res.status(400).json({ message: 'Ошибка входа' });
         }

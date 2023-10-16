@@ -3,6 +3,7 @@ const {validationResult} = require("express-validator");
 const {json} = require("express");
 const fs = require('fs');
 const path = require('path');
+const jwt = require("jsonwebtoken");
 class User_controller {
     async addUser(email, hashPassword, gender, type_user) {
         try {
@@ -39,7 +40,7 @@ class User_controller {
 
         // SQL-запрос для получения user_id по адресу электронной почты
         const sql = 'SELECT user_id FROM users WHERE email = ?';
-        db.get(sql, [email], (err, row) => {
+        db.query(sql, [email], (err, row) => {
             if (err) {
                 console.error('Ошибка при выполнении SQL-запроса:', err.message);
                 res.status(500).json({ error: 'Ошибка на сервере' });
@@ -114,7 +115,7 @@ class User_controller {
         const gradesSql = 'SELECT * FROM student_grades WHERE user_id = ?';
         const achievementsSql = 'SELECT * FROM achievements WHERE user_id = ?';
 
-        db.get(userSql, [user_id], (err, userRow) => {
+        db.query(userSql, [user_id], (err, userRow) => {
             if (err) {
                 console.error('Ошибка при выполнении SQL-запроса для пользователя:', err.message);
                 res.status(500).json({ error: 'Ошибка на сервере' });
@@ -128,7 +129,7 @@ class User_controller {
             }
 
             // Выполните запрос для получения данных об достижениях
-            db.get(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
+            db.query(achievementsSql, [user_id], (achievementsErr, achievementsRow) => {
                 if (achievementsErr) {
                     console.error('Ошибка при выполнении SQL-запроса для достижений:', achievementsErr.message);
                     res.status(500).json({ error: 'Ошибка на сервере' });
@@ -136,7 +137,7 @@ class User_controller {
                 }
 
                 // Выполните запрос для получения данных оценок пользователя (используя db.all)
-                db.all(gradesSql, [user_id], (gradesErr, gradesRows) => {
+                db.query(gradesSql, [user_id], (gradesErr, gradesRows) => {
                     if (gradesErr) {
                         console.error('Ошибка при выполнении SQL-запроса для оценок:', gradesErr.message);
                         res.status(500).json({ error: 'Ошибка на сервере' });
@@ -159,6 +160,7 @@ class User_controller {
 
     async checkUser(email, password) {
         try {
+
             // SQL-запрос для проверки наличия пользователя
             const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
             const values = [email, password];
@@ -168,7 +170,8 @@ class User_controller {
 
             if (row) {
                 console.log(`Пользователь ${email} найден в базе данных`);
-                return row;
+                const token = jwt.sign({ email }, 'qhksoidbjdsknjdskmdkjcndjdsfldsnxgttwpzmzfwodn1n3udn734h5dsh82hd7h', { expiresIn: '24h' });
+                return json({ token });
             } else {
                 console.log(`Пользователь ${email} не найден в базе данных`);
                 return json({ message: 'Пользователь не найден' });
@@ -215,7 +218,7 @@ class User_controller {
                SET first_name = ?, last_name = ?, patronymic = ?, birthdate = ? ,classes = ?
                WHERE user_id = ?; s`;
 
-        db.run(sql, [first_name, last_name, patronymic, birthdate, classes, user_id], function (err) {
+        db.query(sql, [first_name, last_name, patronymic, birthdate, classes, user_id], function (err) {
             if (err) {
                 console.error('Ошибка при вставке данных:', err.message);
                 res.status(500).json({ message: 'Произошла ошибка при вставке данных' });
