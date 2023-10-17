@@ -76,6 +76,7 @@ export default {
                 'Authorization': `Bearer ${this.token}`,
                 'Content-Type': 'application/json'
               },
+
             }).then(response => {
               store.state.isAuth = true
               this.$router.push(`/profile/${response.data.user.user_id}`)
