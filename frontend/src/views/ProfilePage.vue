@@ -80,6 +80,8 @@ import MySolvedTask from "@/components/Profile/MySolvedTask.vue";
 import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
 import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
 import AddTask from "@/components/Profile/AddTask.vue";
+import store from '../store/index';
+
 import axios from 'axios'
 export default {
   components: {
@@ -147,9 +149,16 @@ export default {
     //   console.log(this.person)
     // },
 
+    getTokenFromLocal(){
+      const token = localStorage.getItem('token');
+
+      if (token){
+        store.state.isAuth = true
+      }
+    }
+
   },
   mounted() {
-
     // this.getInfoAboutUser()
     axios.get(`/api/user_inf/${this.id}`).then(response => {
       console.log(response.data)
@@ -170,6 +179,7 @@ export default {
     })
     console.log(this.person)
 
+    this.getTokenFromLocal()
   },
 }
 </script>
