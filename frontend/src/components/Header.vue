@@ -85,6 +85,7 @@ export default {
     logout() {
       const body = document.querySelector('body')
       body.style.overflow = ""
+      localStorage.removeItem('local')
       store.state.isAuth = false
       store.state.status = false
       this.statusMenu = false

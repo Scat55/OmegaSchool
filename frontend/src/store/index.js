@@ -9,7 +9,7 @@ let store = new Vuex.Store({
     state: {
         status: false,
         users: [],
-        isAuth: false,
+        isAuth: localStorage.getItem('local'),
         Temp,
     },
     getters: {

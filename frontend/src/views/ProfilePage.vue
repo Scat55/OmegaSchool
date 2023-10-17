@@ -150,13 +150,7 @@ export default {
     //   console.log(this.person)
     // },
 
-    getTokenFromLocal(){
-      const token = localStorage.getItem('token');
 
-      if (token){
-        store.state.isAuth = true
-      }
-    }
 
   },
   mounted() {
@@ -186,8 +180,6 @@ export default {
       }
     })
     console.log(this.person)
-
-    this.getTokenFromLocal()
   },
 }
 </script>

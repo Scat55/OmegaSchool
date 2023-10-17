@@ -86,7 +86,8 @@ export default {
               console.log(this.userID)
               const local = {
                 userID: this.userID,
-                token: this.token
+                token: this.token,
+                isAuth: store.state.isAuth
               }
               localStorage.setItem('local', JSON.stringify(local))
             })
