@@ -10,7 +10,8 @@
             class="header__logo-img"
             v-on:click="goToHomePage()">
 
-        <div class="header__logo-lists">
+        <div class="header__logo-lists"
+        v-if="this.$route.path != '/auth'">
           <ul class="header__logo-list">
             <router-link to="/task" class="router">
               <li
