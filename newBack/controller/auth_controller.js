@@ -79,9 +79,12 @@ class Auth_controller {
                     const token = generateAccesToken(user.user_id,user.type_user,user.email);
 
                     req.session.token = token;
-
+                    console.log(req.session)
+                    req.session.save(() => {
+                        res.json({ message: 'Успешная аутентификация', token });
+                    });
                     // Отправляем JWT токен в ответе
-                    res.json({ message: 'Успешная аутентификация', token });
+
                 } else {
                     // Если пароль неверен, отправляем сообщение о неправильном пароле
                     res.status(401).json({ message: 'Неправильный пароль' });

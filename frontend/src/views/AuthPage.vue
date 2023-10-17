@@ -92,7 +92,8 @@ export default {
             this.token = response.data.token
             axios(`/api/user_inf_email/${this.email}`, {
               method: 'GET',
-              headers: {'Authorization': `Bearer ${this.token}`},
+              headers: { 'Authorization': 'Bearer ' + this.token }
+
             }).then(response => {
               store.state.isAuth = true
               this.$router.push(`/profile/${response.data.user.user_id}`)
