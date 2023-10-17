@@ -117,21 +117,21 @@ class User_controller {
 
             const [userResult,achievementsResult , gradesResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE email = $1', [email]),
-                db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                //db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                //db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
-            const grades = gradesResult.rows;
-            const achievements = achievementsResult.rows;
+           // const grades = gradesResult.rows;
+           // const achievements = achievementsResult.rows;
 
 
             // Соберите результаты в один объект
             const userData = {
-                user,
-                achievements,
-                grades,
+                user//,
+               // achievements,
+               // grades,
             };
 
             console.log(`Данные для пользователя с Email ${email} найдены`);
