@@ -151,7 +151,7 @@ export default {
   mounted() {
 
     // this.getInfoAboutUser()
-    axios.get(`/getUserIdForInf/${this.id}`).then(response => {
+    axios.get(`/api/user_inf/${this.id}`).then(response => {
       console.log(response.data)
       // this.email = response.data.user.email
       this.person.email = response.data.user.email
