@@ -14,15 +14,11 @@ const roleMiddleware = require('../middlewaree/roleMiddlewaer')
 
 
 
-
-
-router.get('/user_list', roleMiddleware(['Ученик']), userController.getUserList)
-router.get('/user_id/:email', userController.getUserIDForEmail)
-
-
-router.get('/user_inf_email/:email', userController.getUserDataForEmail)
-router.get('/user_inf/:user_id', userController.getUserInformation)
-router.post('/addition_data', userController.additionalData)
+router.get('/user_list', roleMiddleware(['Ученик','Эксперт']), userController.getUserList)
+router.get('/user_id/:email',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.getUserIDForEmail)
+router.get('/user_inf_email/:email',userMiddleware, userController.getUserDataForEmail)
+router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformation)
+router.post('/addition_data',userMiddleware, userController.additionalData)
 
 
 // router.put('/user:id', userController.updateUser)

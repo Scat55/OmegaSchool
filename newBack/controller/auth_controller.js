@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const {json} = require("express");
 const db = require('../db')
 const {secret} = require('../config')
+const session = require('express-session');
+
 
 const generateAccesToken = (user_id, type_user, email) =>{
     const payload = {
@@ -13,7 +15,7 @@ const generateAccesToken = (user_id, type_user, email) =>{
         type_user,
         email
     }
-    return jwt.sign(payload, secret,  { expiresIn: '12H' })
+    return jwt.sign(payload, secret,  { expiresIn: '24h' })
 }
 
 class Auth_controller {
@@ -75,6 +77,8 @@ class Auth_controller {
                 if (passwordMatch) {
                     // Генерируем JWT токен
                     const token = generateAccesToken(user.user_id,user.type_user,user.email);
+
+                    req.session.token = token;
 
                     // Отправляем JWT токен в ответе
                     res.json({ message: 'Успешная аутентификация', token });
