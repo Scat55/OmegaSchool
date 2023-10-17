@@ -15,7 +15,7 @@ const generateAccesToken = (user_id, type_user, email) =>{
         type_user,
         email
     }
-    return jwt.sign(payload, secret,  { expiresIn: '24h' })
+    return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
 
 class Auth_controller {
