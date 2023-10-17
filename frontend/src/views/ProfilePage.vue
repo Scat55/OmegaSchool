@@ -120,6 +120,7 @@ export default {
         AddTask: false,
       },
       id: this.$router.currentRoute.params['id'],
+      token: localStorage.getItem('token'),
     }
   },
   methods: {
@@ -160,9 +161,12 @@ export default {
   },
   mounted() {
     // this.getInfoAboutUser()
-    axios.get(`/api/user_inf/${this.id}`).then(response => {
+    axios(`/api/user_inf/${this.id}`, {
+      method: 'GET',
+      headers: {'Authorization': `Bearer ${this.token}`},
+    }).then(response => {
       console.log(response.data)
-      // this.email = response.data.user.email
+      this.email = response.data.user.email
       this.person.email = response.data.user.email
       this.person.name = response.data.user.first_name
       this.person.lastname = response.data.user.last_name

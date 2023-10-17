@@ -61,26 +61,6 @@ export default {
       const email = this.email;
       const password = this.pass;
 
-      // axios.post('/auth/login', {
-      //   email: email,
-      //   password: password
-      // })
-      //   .then(response => {
-      //     if (response.data.message === 'Пользователь не найден') {
-      //       alert(response.data.message)
-      //       this.email = this.pass = ''
-      //     } else {
-      //       axios.get(`/api/user_with_data/${this.email}`).then(response => {
-      //         store.state.isAuth = true
-      //         this.$router.push(`/profile/${response.data.user_id}`)
-      //         localStorage.setItem('userID', response.data.user_id)
-      //       })
-      //     }
-      //
-      //
-      //     // console.log(response.data.message)
-      //   })
-
       axios.post('/auth/login', {
         email: email,
         password: password
@@ -92,20 +72,18 @@ export default {
             this.token = response.data.token
             axios(`/api/user_inf_email/${this.email}`, {
               method: 'GET',
-              headers: {'Authorization': `Bearer ${this.token}`},
+              headers: {
+                'Authorization': `Bearer ${this.token}`,
+                'Content-Type': 'application/json'
+              },
             }).then(response => {
               store.state.isAuth = true
               this.$router.push(`/profile/${response.data.user.user_id}`)
-              localStorage.setItem('token', this.token)
+              localStorage.setItem('userID', response.data.user.user_id)
             })
           }
       })
 
-      // axios.get(`/api/user_inf_email/${this.email}`).then(response => {
-      //   store.state.isAuth = true
-      //   this.$router.push(`/profile/${response.data.user.user_id}`)
-      //   console.log(response.data)
-      // })
     },
     // Обработка формы
     handler() {
