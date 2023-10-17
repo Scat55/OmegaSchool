@@ -107,15 +107,16 @@ export default {
     changeStatusMenu() {
       this.statusMenu = !this.statusMenu
     },
-   async goToPersonPage(){
-      const userID = localStorage.getItem('userID')
-      if (this.$route.fullPath === `/profile/${userID}`){
+   goToPersonPage(){
+      let local = localStorage.getItem('local')
+      local = JSON.parse(local)
+      if (this.$route.fullPath === `/profile/${local.userID}`){
         this.statusMenu = false
         return
 
       } else {
         this.$nextTick(() => {
-          this.$router.push(`/profile/${userID}`)
+          this.$router.push(`/profile/${local.userID}`)
         });
         this.statusMenu = false
       }

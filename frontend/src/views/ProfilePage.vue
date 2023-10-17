@@ -119,8 +119,8 @@ export default {
         MySolvedTask: false,
         AddTask: false,
       },
-      id: this.$router.currentRoute.params['id'],
-      token: localStorage.getItem('token'),
+      // id: this.$router.currentRoute.params['id'],
+      // token: localStorage.getItem('token'),
     }
   },
   methods: {
@@ -161,9 +161,13 @@ export default {
   },
   mounted() {
     // this.getInfoAboutUser()
-    axios(`/api/user_inf/${this.id}`, {
+    let local = localStorage.getItem('local')
+    local = JSON.parse(local)
+    console.log(local.userID)
+
+    axios(`/api/user_inf/${local.userID}`, {
       method: 'GET',
-      headers: {'Authorization': `Bearer ${this.token}`},
+      headers: {'Authorization': `Bearer ${local.token}`},
     }).then(response => {
       console.log(response.data)
       this.email = response.data.user.email

@@ -49,6 +49,7 @@ export default {
       email: '',
       pass: '',
       token: '',
+      userID: ''
     }
   },
   computed: {
@@ -70,6 +71,7 @@ export default {
             this.email = this.pass = ''
           } else {
             this.token = response.data.token
+
             axios(`/api/user_inf_email/${this.email}`, {
               method: 'GET',
               headers: {
@@ -78,9 +80,15 @@ export default {
               },
 
             }).then(response => {
+              this.userID = response.data.user.user_id
               store.state.isAuth = true
               this.$router.push(`/profile/${response.data.user.user_id}`)
-              localStorage.setItem('userID', response.data.user.user_id)
+              console.log(this.userID)
+              const local = {
+                userID: this.userID,
+                token: this.token
+              }
+              localStorage.setItem('local', JSON.stringify(local))
             })
           }
       })
