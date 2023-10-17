@@ -48,6 +48,7 @@ export default {
     return {
       email: '',
       pass: '',
+      token: '',
     }
   },
   computed: {
@@ -84,9 +85,27 @@ export default {
         email: email,
         password: password
       }).then(response => {
-        console.log(response.data)
-        localStorage.setItem('token', response.data.token)
+          if (response.data.message === "Неправильный пароль"){
+            alert(response.data.message)
+            this.email = this.pass = ''
+          } else {
+            this.token = response.data.token
+            axios(`/api/user_inf_email/${this.email}`, {
+              method: 'GET',
+              headers: {'Authorization': `Bearer ${this.token}`},
+            }).then(response => {
+              store.state.isAuth = true
+              this.$router.push(`/profile/${response.data.user.user_id}`)
+              localStorage.setItem('token', this.token)
+            })
+          }
       })
+
+      // axios.get(`/api/user_inf_email/${this.email}`).then(response => {
+      //   store.state.isAuth = true
+      //   this.$router.push(`/profile/${response.data.user.user_id}`)
+      //   console.log(response.data)
+      // })
     },
     // Обработка формы
     handler() {
@@ -96,7 +115,7 @@ export default {
   },
   mounted() {
 
-    this.GET_USERS_FROM_API()
+    // this.GET_USERS_FROM_API()
 
   },
 }

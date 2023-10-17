@@ -54,7 +54,7 @@ export default {
     ...mapActions(['GET_USERS_FROM_API'])
   },
   mounted() {
-    this.GET_USERS_FROM_API()
+    // this.GET_USERS_FROM_API()
 
   },
 }
