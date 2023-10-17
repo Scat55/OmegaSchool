@@ -264,6 +264,13 @@ width: 25px;
   margin: 15px 0 5px 0;
 }
 
+@media (max-width: 1285px){
+  .window {
+    padding: 0 7px;
+  }
+}
+
+
 .window {
   margin-top: 80px;
   min-height: 100vh;
