@@ -167,7 +167,7 @@ export default {
 
     axios(`/api/user_inf/${local.userID}`, {
       method: 'GET',
-      headers: {'Authorization': `Bearer ${this.token}`},
+      headers: {'Authorization': `Bearer ${local.token}`},
     }).then(response => {
       console.log(response.data)
       this.email = response.data.user.email
