@@ -10,15 +10,11 @@ module.exports = function (roles) {
         try {
             const authorizationHeader = req.headers.authorization;
 
-            console.log('Headers:', req.headers);
-            console.log('Session:', req.session);
 
-
-/*
             if (!authorizationHeader) {
                 return res.status(403).json({ message: 'Пользователь не авторизован1' });
             }
-*/
+
 
 // Теперь вы можете разбирать заголовок, так как он существует
             const tokenFromHeaders = authorizationHeader.split(' ')[1];
@@ -26,14 +22,12 @@ module.exports = function (roles) {
 
             // Извлекаем токен из сессии
             const tokenFromSession = req.session.token;
-            console.log(tokenFromSession)
-            console.log('-------------------------')
-            console.log(tokenFromHeaders)
 
-            // Проверяем, совпадают ли токены
-            //if (tokenFromHeaders !== tokenFromSession) {
-            //    return res.status(403).json({ message: 'Пользователь не авторизован2' });
-            //}
+
+             //Проверяем, совпадают ли токены
+            if (tokenFromHeaders !== tokenFromSession) {
+                return res.status(403).json({ message: 'Пользователь не авторизован2' });
+            }
 
             // Проверяем токен и извлекаем роль пользователя
             const { type_user } = jwt.verify(tokenFromHeaders, secret);
