@@ -18,11 +18,7 @@ app.use(express.json())
 
 app.use('/api', userRouter)
 app.use('/auth', authRouter)
-app.get('/userr',(req,res) => {
 
-    const userid = req.session
-    console.log(userid)
-})
 
 app.listen(PORT, ()=>console.log(`server started on port ${PORT}`))
 

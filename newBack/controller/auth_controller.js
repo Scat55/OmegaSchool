@@ -8,7 +8,6 @@ const db = require('../db')
 const {secret} = require('../config')
 const session = require('express-session');
 
-
 const generateAccesToken = (user_id, type_user, email) =>{
     const payload = {
         user_id,
@@ -34,7 +33,6 @@ class Auth_controller {
                 // Хешируем пароль перед сохранением в базу данных
                 const saltRounds = 10; // Уровень соли
                 const hashedPassword = await bcrypt.hash(password, saltRounds);
-
                 // Добавляем пользователя в базу данных с хешированным паролем
                 const insertQuery = `
                 INSERT INTO users (email, password, gender, type_user)
