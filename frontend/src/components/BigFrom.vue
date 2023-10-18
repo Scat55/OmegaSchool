@@ -57,10 +57,10 @@ export default {
     },
     show(){
       this.count++;
-      if (this.count === 3) {
+      if (this.count % 8 === 0) {
         this.statusText = true
       }
-      if (this.count === 4){
+      else {
         this.statusText = false
         return
       }
