@@ -17,8 +17,6 @@ router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformatio
 router.post('/addition_data',userMiddleware, userController.additionalData)
 
 
-
-
 router.post('/upload/', userMiddleware, userController.postFile)
 router.get('/download', roleMiddleware(['Эксперт','Учитель']), userController.getFile)
 
