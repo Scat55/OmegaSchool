@@ -2,7 +2,8 @@
   <div>
     <div class="container">
       <div class="window">
-        <div class="left_div">
+        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Показать меня</div>
+        <div class="left_div" v-show="ShowMenu === true">
           <div class="tabs">
             <div
               class="tab"
@@ -92,7 +93,7 @@ export default {
     MyAddTask,
     Profile,
     AchivmentStudent,
-    RatingTeacher
+    RatingTeacher,
   },
   data() {
     return {
@@ -119,6 +120,7 @@ export default {
         MySolvedTask: false,
         AddTask: false,
       },
+      ShowMenu: false
       // id: this.$router.currentRoute.params['id'],
       // token: localStorage.getItem('token'),
     }
@@ -178,9 +180,19 @@ export default {
   column-gap: 10px;
   margin: 0 auto;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   //display: grid;
   //grid-template-columns: repeat(4, 1fr);
   //grid-template-rows: 1fr 1fr;
+}
+
+.seeMenu {
+  background: $lightBlueColor;
+  height: 33px;
+  padding: 5px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 
@@ -240,7 +252,8 @@ export default {
 }
 
 .left_div,
-.right_div {
+.right_div,
+.seeMenu {
   border: 2px solid $lightBlueColor;
   border-radius: 1rem;
 }
