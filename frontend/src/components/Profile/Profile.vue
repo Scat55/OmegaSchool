@@ -55,10 +55,11 @@ export default {
         src="../../assets/images/Avatar/boy.png"
         alt="Аватарка"
       >
-      <img v-else
+      <img v-if="person.gender === 'Женский'"
            src="../../assets/images/Avatar/girl (3).png"
            alt="Аватарка"
       >
+      <p v-if="person.gender === ''" >Загрузка аватара...</p>
     </div>
     <div class="date_person_fio">
       <div class="name"><label>Имя:</label>&nbsp;
