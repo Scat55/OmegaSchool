@@ -24,9 +24,7 @@ router.get('/user_inf_email/:email',roleMiddleware(['Ученик','Экспер
 router.get('/user_inf/:user_id',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.getUserInformation)
 router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.additionalData)
 
-router.post('/upload/',
-    // roleMiddleware(['Эксперт','Учитель']),
-    userController.postFile)
+router.post('/upload/', userMiddleware, userController.postFile)
 router.get('/download', roleMiddleware(['Эксперт','Учитель']), userController.getFile)
 
 // router.put('/user:id', userController.updateUser)

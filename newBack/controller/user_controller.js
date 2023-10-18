@@ -145,19 +145,21 @@ class User_controller {
     }
 
     async postFile(req, res) {
-        const { user_id } = req.body;
+        const { user_id } = req.user;
 
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, 'uploads/');
             },
             filename: (req, file, cb) => {
-                // Генерируйте уникальное имя файла с информацией о пользователе, типе файла и времени загрузки
                 const userId = user_id;
-                const fileType = file.mimetype.split('/')[1];
-                const timestamp = Date.now();
+                // const fileType = file.mimetype.split('/')[1];
+                const date = new Date();
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
 
-                const fileName = `${userId}_${file.originalname}_${fileType}_${timestamp}`;
+                const fileName = `${day}_${month}_${year}_${userId}_${file.originalname}`;
                 cb(null, fileName);
             },
         });
