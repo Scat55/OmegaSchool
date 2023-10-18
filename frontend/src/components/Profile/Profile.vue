@@ -18,7 +18,8 @@ export default {
         changeBirthDay: false,
         changeClass: false,
         changePass: false,
-      }
+      },
+      newName: ''
     }
   },
   methods: {
@@ -26,10 +27,14 @@ export default {
     changeInfoAboutUSer(){
       this.edit = false
        console.log('Изменить данные')
-      // axios.post('/additionalData', {
-      //
-      // })
+      axios.post('/api/addition_data', {
+        first_name: this.person.name
+      })
+
     },
+  },
+  mounted() {
+    console.log(this.person.item)
   }
 }
 </script>
@@ -52,8 +57,8 @@ export default {
         <input
           type="text"
           :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          v-bind:value="person.name"
           :disabled="!edit"
+          v-model="person.name"
         >
       </div>
       <div class="lastName">
@@ -61,8 +66,8 @@ export default {
         <input
           type="text"
           :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          v-bind:value="person.lastname"
           :disabled="!edit"
+          v-model="person.lastname"
         >
       </div>
       <div class="patronymic">
@@ -70,8 +75,8 @@ export default {
         <input
           type="text"
           :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          v-bind:value="person.patronymic"
           :disabled="!edit"
+          v-model="person.patronymic"
         >
       </div>
     </div>
@@ -98,7 +103,7 @@ export default {
           :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
           type="text"
           :disabled="!edit"
-          :value="person.item"
+          v-model="person.item"
         >
       </div>
     </div>
