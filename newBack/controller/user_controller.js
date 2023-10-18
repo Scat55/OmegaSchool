@@ -29,7 +29,7 @@ class User_controller {
             const user_id = req.user_id
             // Извлекаем данные из тела запроса
             const { first_name, last_name, patronymic, birthdate, classes } = req.body;
-
+            console.log(user_id, first_name, last_name, patronymic, birthdate, classes)
             // Создаем SQL-запрос для обновления данных пользователя в таблице users
             const sql = `UPDATE users 
                    SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5
