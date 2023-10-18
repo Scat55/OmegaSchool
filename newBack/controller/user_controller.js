@@ -28,15 +28,15 @@ class User_controller {
         try {
             const user_id = req.user_id
             // Извлекаем данные из тела запроса
-            const { first_name, last_name, patronymic, birthdate, classes } = req.body;
-            console.log(user_id, first_name, last_name, patronymic, birthdate, classes)
+            const { first_name, last_name, patronymic, birthdate, classes,item } = req.body;
+            console.log(user_id, first_name, last_name, patronymic, birthdate, classes, item)
             // Создаем SQL-запрос для обновления данных пользователя в таблице users
             const sql = `UPDATE users 
-                   SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5
-                   WHERE user_id = $6`;
+                   SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
+                   WHERE user_id = $7`;
 
             // Используем асинхронный метод для выполнения SQL-запроса
-            await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, user_id]);
+            await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
 
             console.log('Дополнительные данные успешно обновлены');
             res.status(200).json({ message: 'Дополнительные данные успешно обновлены' });
@@ -144,6 +144,96 @@ class User_controller {
         }
     }
 
+
+
+
+    async add_level_1_test(req,res){
+        // Разбираем JSON-объект из запроса
+        const { user_id, task_test, task_description, add_file, classes, questions } = req.body;
+
+        // Вставляем данные теста в базу данных
+        const insertTestQuery = `
+    INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING test_id;
+  `;
+        const testValues = [user_id, task_test, task_description, add_file, classes];
+
+        // Отправляем запрос и получаем ID вставленного теста
+        db.query(insertTestQuery, testValues)
+            .then((testResult) => {
+                const testId = testResult.rows[0].test_id;
+
+                // Вставляем вопросы и варианты ответов
+                questions.forEach((question) => {
+                    const { question_text, options } = question;
+
+                    // Вставляем данные вопроса
+                    const insertQuestionQuery = `
+          INSERT INTO questions (text, test_id)
+          VALUES ($1, $2)
+          RETURNING question_id;
+        `;
+                    const questionValues = [question_text, testId];
+
+                    // Отправляем запрос и получаем ID вставленного вопроса
+                    db.query(insertQuestionQuery, questionValues)
+                        .then((questionResult) => {
+                            const questionId = questionResult.rows[0].question_id;
+
+                            // Вставляем варианты ответов
+                            options.forEach((option) => {
+                                const { option_text, is_correct } = option;
+
+                                // Вставляем данные варианта ответа
+                                const insertOptionQuery = `
+                INSERT INTO options (text, is_correct, question_id)
+                VALUES ($1, $2, $3);
+              `;
+                                const optionValues = [option_text, is_correct, questionId];
+
+                                // Отправляем запрос для вставки варианта ответа
+                                db.query(insertOptionQuery, optionValues);
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('Ошибка при вставке вопроса:', error.message);
+                        });
+                });
+
+                // Отправляем ответ об успешном добавлении теста
+                res.json({ message: 'Тест успешно добавлен' });
+            })
+            .catch((error) => {
+                console.error('Ошибка при вставке теста:', error.message);
+                res.status(500).json({ error: 'Ошибка на сервере' });
+            });
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     async postFile(req, res) {
         const { user_id } = req.user;
 
@@ -176,6 +266,8 @@ class User_controller {
             }
         });
     }
+
+
 
     async getFile(req, res) {
 
