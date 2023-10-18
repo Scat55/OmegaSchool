@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="window">
-        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Показать меню</div>
+        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Открыть меню</div>
         <div class="left_div" v-show="ShowMenu === true">
           <div class="tabs">
             <div
@@ -52,6 +52,7 @@
               @click="switchTab('MySolvedTask')"
             >Мои решенные задачи
             </div>
+            <div class="closeMenu" @click="ShowMenu = !ShowMenu">Закрыть меню</div>
           </div>
         </div>
         <div class="right_div">
@@ -152,14 +153,11 @@ export default {
       this.person.patronymic = response.data.user.patronymic
       this.person.gender = response.data.user.gender
       this.person.item = response.data.user.item
+      this.person.birthday = response.data.user.birthdata
       if (response.data.user.expert === "true") {
         this.person.expert = true
       }
-      if (response.data.user.type_user === 'Ученик'){
-        this.person.student = true
-      } else {
-        this.person.student = false
-      }
+      this.person.student = response.data.user.type_user === 'Ученик';
     })
   },
 }
@@ -170,7 +168,6 @@ export default {
 
 .container {
   margin-top: 80px;
-  //height: 80vh;
 }
 
 .window {
@@ -179,26 +176,35 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  //display: grid;
-  //grid-template-columns: repeat(4, 1fr);
-  //grid-template-rows: 1fr 1fr;
 }
 
 .seeMenu {
   background: $lightBlueColor;
-  height: 33px;
-  padding: 5px;
+  padding: 10px;
   margin-bottom: 15px;
   text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 50px #888888;
+  }
 }
 
+.closeMenu {
+  margin-top: 15px;
+  padding: 10px;
+  background: #ee2d2d;
+  border-radius: 1rem;
+  cursor: pointer;
+}
 
 .left_div {
   background: $lightBlueColor;
-  //grid-column: 1 / span 1;
-  //grid-row: 1 / span 1;
-  height: 350px;
   margin-bottom: 15px;
+
+  &:hover {
+    box-shadow: 0 0 50px #888888;
+  }
 }
 
 .tabs {
@@ -227,8 +233,6 @@ export default {
 
 .right_div {
   background: $lightBlueColor;
-  //grid-column: 2 / span 3;
-  //grid-row: 1 / span 2;
   overflow-y: auto;
   padding: 25px;
 

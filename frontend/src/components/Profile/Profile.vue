@@ -94,6 +94,7 @@ export default {
     <div class="date_person_birthday_gender">
       <!--      <p>Дата рождения {{ person.birthday }}</p>-->
       <p>Пол: {{ person.gender }}</p>
+      <p>Дата рождения: {{ person.birthday}}</p>
     </div>
 
     <div class="date_person_class">
