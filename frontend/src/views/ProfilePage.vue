@@ -140,7 +140,6 @@ export default {
   mounted() {
     let local = localStorage.getItem('local')
     local = JSON.parse(local)
-    console.log(local.userID)
 
     axios(`/api/user_inf/${local.userID}`, {
       method: 'GET',
