@@ -171,7 +171,7 @@ export default {
 
 .container {
   margin-top: 80px;
-  height: 80vh;
+  //height: 80vh;
   justify-content: center;
 }
 
