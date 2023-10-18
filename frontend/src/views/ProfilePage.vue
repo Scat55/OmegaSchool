@@ -83,6 +83,7 @@ import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
 import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
 import AddTask from "@/components/Profile/AddTask.vue";
 import store from '../store/index';
+import { format} from "date-fns";
 
 import axios from 'axios'
 export default {
@@ -153,7 +154,7 @@ export default {
       this.person.patronymic = response.data.user.patronymic
       this.person.gender = response.data.user.gender
       this.person.item = response.data.user.item
-      this.person.birthday = response.data.user.birthdata
+      this.person.birthday = format(new Date(response.data.user.birthdata), 'dd.MM.yyyy') // Приводим дату в человеческий вид с помощью data-fns
       if (response.data.user.expert === "true") {
         this.person.expert = true
       }
