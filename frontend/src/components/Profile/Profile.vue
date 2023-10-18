@@ -19,7 +19,7 @@ export default {
         changeClass: false,
         changePass: false,
       },
-      newName: ''
+      token: ''
     }
   },
   methods: {
@@ -27,10 +27,17 @@ export default {
     changeInfoAboutUSer(){
       this.edit = false
        console.log('Изменить данные')
-      axios.post('/api/addition_data', {
-        first_name: this.person.name
+      this.token = JSON.parse(localStorage.getItem('local'))
+      axios('/api/addition_data', {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: {
+          first_name: this.person.name
+        }
       })
-
     },
   },
   mounted() {
