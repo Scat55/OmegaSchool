@@ -106,7 +106,7 @@ export default {
         gender: "",
         student: null, // переключатель вкладок
         class: '11',
-        item: 'Математика',
+        item: '',
         email: '',
         expert: null,
       },
@@ -154,6 +154,7 @@ export default {
       this.person.lastname = response.data.user.last_name
       this.person.patronymic = response.data.user.patronymic
       this.person.gender = response.data.user.gender
+      this.person.item = response.data.user.item
       if (response.data.user.expert === "true") {
         this.person.expert = true
       }

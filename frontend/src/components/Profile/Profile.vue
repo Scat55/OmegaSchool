@@ -24,25 +24,31 @@ export default {
   },
   methods: {
     //  TODO: сделать запрос на изменение данных
-    changeInfoAboutUSer(){
+    changeInfoAboutUSer() {
       this.edit = false
-       console.log('Изменить данные')
       this.token = JSON.parse(localStorage.getItem('local'))
-      axios('/api/addition_data', {
-        method: "POST",
+
+      const first_name = this.person.name
+      const last_name = this.person.lastname
+      const patronymic = this.person.patronymic
+      const item = this.person.item
+      axios.post('/api/addition_data', {
+        first_name: first_name,
+        last_name: last_name,
+        patronymic: patronymic,
+        item: item
+      }, {
         headers: {
           'Authorization': `Bearer ${this.token.token}`,
           'Content-Type': 'application/json'
-        },
-        body: {
-          first_name: this.person.name
         }
       })
-    },
+
+    }
   },
+
   mounted() {
-    console.log(this.person.item)
-  }
+  },
 }
 </script>
 
