@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="window">
-        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Показать меня</div>
+        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Показать меню</div>
         <div class="left_div" v-show="ShowMenu === true">
           <div class="tabs">
             <div

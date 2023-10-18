@@ -70,7 +70,10 @@
               :key="task.id"
               :task="task"
           />
-          <div class="pagination-controls">
+          <div v-if="filteredTasks.length === 0" class="no-tasks-message">
+            Нет задач, соответствующих выбранным фильтрам.
+          </div>
+          <div v-if="filteredTasks.length > 0" class="pagination-controls">
             <button @click="goToPrevPage" :disabled="currentPage === 1">←</button>
             <span>Страница {{ currentPage }} из {{ totalPages }}</span>
             <button @click="goToNextPage" :disabled="currentPage === totalPages">→</button>
@@ -210,15 +213,40 @@ export default {
       this.searchQuery = '';
       localStorage.removeItem("filters");
     },
+
+    resetPage() {
+      this.currentPage = 1;
+    }
   },
 
   watch: {
     // LocalStorage
-    selectedTopic: "updateLocalStorage",
-    selectedLVL: "updateLocalStorage",
-    selectedClass: "updateLocalStorage",
-    selectedStatus: "updateLocalStorage",
-    searchQuery: "updateLocalStorage",
+    // selectedTopic: "updateLocalStorage",
+    // selectedLVL: "updateLocalStorage",
+    // selectedClass: "updateLocalStorage",
+    // selectedStatus: "updateLocalStorage",
+    // searchQuery: "updateLocalStorage",
+
+    selectedTopic() {
+      this.updateLocalStorage();
+      this.resetPage();
+    },
+    selectedLVL() {
+      this.updateLocalStorage();
+      this.resetPage();
+    },
+    selectedClass() {
+      this.updateLocalStorage();
+      this.resetPage();
+    },
+    selectedStatus() {
+      this.updateLocalStorage();
+      this.resetPage();
+    },
+    searchQuery() {
+      this.updateLocalStorage();
+      this.resetPage();
+    }
   },
 
   created() {
