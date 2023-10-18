@@ -193,15 +193,15 @@ export default {
 
 .avatar {
   display: inline-block;
-  height: 30%;
   //align-self: flex-end;
   margin-bottom: 2rem;
-}
+  //width: 100%;
 
-.avatar img {
-  height: 100%;
-  border: 2px solid white;
-  border-radius: 1rem;
+  &>img {
+    border: 2px solid white;
+    border-radius: 1rem;
+    width: 30%;
+  }
 }
 
 .change_profile {
