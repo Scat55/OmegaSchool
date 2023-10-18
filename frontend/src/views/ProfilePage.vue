@@ -138,7 +138,6 @@ export default {
 
   },
   mounted() {
-    // this.getInfoAboutUser()
     let local = localStorage.getItem('local')
     local = JSON.parse(local)
     console.log(local.userID)
@@ -147,7 +146,6 @@ export default {
       method: 'GET',
       headers: {'Authorization': `Bearer ${local.token}`},
     }).then(response => {
-      console.log(response.data)
       this.email = response.data.user.email
       this.person.email = response.data.user.email
       this.person.name = response.data.user.first_name
@@ -164,7 +162,6 @@ export default {
         this.person.student = false
       }
     })
-    console.log(this.person)
   },
 }
 </script>

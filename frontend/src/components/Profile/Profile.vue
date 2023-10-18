@@ -23,7 +23,6 @@ export default {
     }
   },
   methods: {
-    //  TODO: сделать запрос на изменение данных
     changeInfoAboutUSer() {
       this.edit = false
       this.token = JSON.parse(localStorage.getItem('local'))
@@ -45,9 +44,6 @@ export default {
       })
 
     }
-  },
-
-  mounted() {
   },
 }
 </script>
