@@ -130,11 +130,7 @@ export default {
   methods: {
     switchTab(nameTab) {
       for (const key in this.isActiveComponents) {
-        if (key !== nameTab) {
-          this.isActiveComponents[key] = false;
-        } else {
-          this.isActiveComponents[key] = true;
-        }
+        this.isActiveComponents[key] = key === nameTab;
       }
     },
 
