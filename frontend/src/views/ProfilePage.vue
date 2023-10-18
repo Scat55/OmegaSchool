@@ -201,7 +201,7 @@ export default {
   //grid-column: 1 / span 1;
   //grid-row: 1 / span 1;
   height: 350px;
-  padding: 10px 3px 0 3px;
+  margin-bottom: 15px;
 }
 
 .tabs {
