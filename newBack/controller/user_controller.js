@@ -25,8 +25,9 @@ class User_controller {
 
     async additionalData(req,res){
         try {
+            const user_id = req.user_id
             // Извлекаем данные из тела запроса
-            const { user_id, first_name, last_name, patronymic, birthdate, classes } = req.body;
+            const { first_name, last_name, patronymic, birthdate, classes } = req.body;
 
             // Создаем SQL-запрос для обновления данных пользователя в таблице users
             const sql = `UPDATE users 
