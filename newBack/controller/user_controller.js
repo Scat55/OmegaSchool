@@ -1,9 +1,10 @@
 const db = require('../db')
 const {validationResult} = require("express-validator");
 const {json} = require("express");
+const jwt = require("jsonwebtoken");
 const fs = require('fs');
 const path = require('path');
-const jwt = require("jsonwebtoken");
+const multer = require('multer');
 
 
 class User_controller {
@@ -141,12 +142,40 @@ class User_controller {
         }
     }
 
+    async postFile(req, res) {
+        const { user_id } = req.body;
 
+        const storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, 'uploads/');
+            },
+            filename: (req, file, cb) => {
+                // Генерируйте уникальное имя файла с информацией о пользователе, типе файла и времени загрузки
+                const userId = user_id;
+                const fileType = file.mimetype.split('/')[1];
+                const timestamp = Date.now();
 
+                const fileName = `${userId}_${file.originalname}_${fileType}_${timestamp}`;
+                cb(null, fileName);
+            },
+        });
 
+        const upload = multer({ storage }).single('file');
 
+        upload(req, res, (err) => {
+            if (err) {
+                // Если произошла ошибка при загрузке файла, вернуть соответствующий ответ
+                res.status(500).send('Ошибка при загрузке файла.');
+            } else {
+                // Если файл успешно загружен, вернуть успешный ответ
+                res.send('Файл успешно загружен.');
+            }
+        });
+    }
 
+    async getFile(req, res) {
 
+    }
 }
 
 
