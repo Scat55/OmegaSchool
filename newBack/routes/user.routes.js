@@ -18,7 +18,7 @@ router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','У
 router.post('/add_level_1_test',userController.add_level_1_test)
 
 router.post('/upload/', userMiddleware, userController.postFile)
-router.get('/download', roleMiddleware(['Эксперт','Учитель']), userController.getFile)
+router.post('/upload_file/', userMiddleware, userController.postFileWithType)
 
 // router.put('/user:id', userController.updateUser)
 // router.delete('/user:id', userController.deleteUser)

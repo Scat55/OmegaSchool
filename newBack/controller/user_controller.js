@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const {randomUUID} = require("crypto");
 
 
 class User_controller {
@@ -211,31 +212,9 @@ class User_controller {
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     async postFile(req, res) {
-        const { user_id } = req.user;
+
+        const {user_id} = req.user
 
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
@@ -243,13 +222,12 @@ class User_controller {
             },
             filename: (req, file, cb) => {
                 const userId = user_id;
-                // const fileType = file.mimetype.split('/')[1];
                 const date = new Date();
                 const day = String(date.getDate()).padStart(2, '0');
                 const month = String(date.getMonth() + 1).padStart(2, '0');
                 const year = date.getFullYear();
 
-                const fileName = `${day}_${month}_${year}_${userId}_${file.originalname}`;
+                const fileName = `${day}_${month}_${year}_${user_id}_${file.originalname}`;
                 cb(null, fileName);
             },
         });
@@ -267,11 +245,59 @@ class User_controller {
         });
     }
 
+    async postFileWithType(req, res) {
+        const { type_of_unit } = req.body;
 
+        try {
+            const files = fs.readdirSync('./uploads');
 
-    async getFile(req, res) {
+            const userFiles = files.filter((fileName) => {
+                const userIdFromFileName = fileName.split('_')[3]; // Предполагается, что user_id в имени файла находится на четвертом месте, разделенное "_".
+                return userIdFromFileName === req.user.user_id;
+            });
 
+            const updatePromises = [];
+
+            if (type_of_unit === "level_1_tests") {
+                updatePromises.push(
+                    ...userFiles.map(async (fileName) => {
+                        const filePath = `uploads/${fileName}`;
+                        const query = 'UPDATE level_1_tests SET add_file = $1, user_id = $2';
+                        const values = [filePath, req.user.user_id];
+                        await db.query(query, values);
+                    })
+                );
+            } else if (type_of_unit === "level_2_tests") {
+                updatePromises.push(
+                    ...userFiles.map(async (fileName) => {
+                        const filePath = `uploads/${fileName}`;
+                        const query = 'UPDATE level_2_tests SET add_file = $1, user_id = $2, test_id = $3';
+                        const values = [filePath, req.user.user_id, randomUUID()];
+                        await db.query(query, values);
+                    })
+                );
+            } else if (type_of_unit === "level_3_tests") {
+                updatePromises.push(
+                    ...userFiles.map(async (fileName) => {
+                        const filePath = `uploads/${fileName}`;
+                        const query = 'UPDATE level_3_tests SET add_file = $1, user_id = $2';
+                        const values = [filePath, req.user.user_id];
+                        await db.query(query, values);
+                    })
+                );
+            } else {
+                res.status(400).json('Неизвестный тип задания.');
+                return;
+            }
+
+            await Promise.all(updatePromises);
+            res.json(`/uploads/${userFiles}`);
+        } catch (error) {
+            console.error('Ошибка при чтении директории:', error);
+            res.status(500).send('Ошибка сервера.');
+        }
     }
+
 }
 
 
