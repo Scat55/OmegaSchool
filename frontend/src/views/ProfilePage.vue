@@ -171,25 +171,23 @@ export default {
 
 .container {
   margin-top: 80px;
-  height: 80vh;
-  justify-content: center;
+  //height: 80vh;
 }
 
 .window {
   column-gap: 10px;
   margin: 0 auto;
-
   height: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1fr 1fr;
+  //display: grid;
+  //grid-template-columns: repeat(4, 1fr);
+  //grid-template-rows: 1fr 1fr;
 }
 
 
 .left_div {
   background: $lightBlueColor;
-  grid-column: 1 / span 1;
-  grid-row: 1 / span 1;
+  //grid-column: 1 / span 1;
+  //grid-row: 1 / span 1;
   height: 350px;
   padding: 10px 3px 0 3px;
 }
@@ -220,8 +218,8 @@ export default {
 
 .right_div {
   background: $lightBlueColor;
-  grid-column: 2 / span 3;
-  grid-row: 1 / span 2;
+  //grid-column: 2 / span 3;
+  //grid-row: 1 / span 2;
   overflow-y: auto;
   padding: 25px;
 
