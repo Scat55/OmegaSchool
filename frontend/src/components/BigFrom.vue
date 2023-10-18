@@ -44,11 +44,16 @@ export default {
 
   methods: {
     changeStatusOnTrue() {
-      window.scrollTo(0, 0);
-      const body = document.querySelector('body')
-      this.$store.state.status = true
-      body.style.overflow = "hidden"
-      console.log(this.STATUS)
+      const local = JSON.parse(localStorage.getItem('local'))
+      if (local){
+        this.$router.push(`/profile/${local.userID}`)
+        window.scrollTo(0, 0);
+      } else {
+        window.scrollTo(0, 0);
+        const body = document.querySelector('body')
+        this.$store.state.status = true
+        body.style.overflow = "hidden"
+      }
     },
     show(){
       this.count++;

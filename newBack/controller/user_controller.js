@@ -26,8 +26,9 @@ class User_controller {
 
     async additionalData(req,res){
         try {
+            const user_id = req.user_id
             // Извлекаем данные из тела запроса
-            const { user_id, first_name, last_name, patronymic, birthdate, classes } = req.body;
+            const { first_name, last_name, patronymic, birthdate, classes } = req.body;
 
             // Создаем SQL-запрос для обновления данных пользователя в таблице users
             const sql = `UPDATE users 
@@ -46,19 +47,20 @@ class User_controller {
     }
 
     async getUserInformation(req, res) {
+
         const user_id = req.params.user_id;
         try {
             // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
             const [userResult, gradesResult, achievementsResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
-                db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
-                db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
+                //db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
+                //db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
-            const grades = gradesResult.rows;
-            const achievements = achievementsResult.rows;
+           // const grades = gradesResult.rows;
+           // const achievements = achievementsResult.rows;
 
             if (!user) {
                 console.log(`Пользователь с ID ${user_id} не найден`);
@@ -67,9 +69,9 @@ class User_controller {
 
             // Соберите результаты в один объект
             const userData = {
-                user,
-                grades,
-                achievements,
+                user//,
+               // grades,
+               // achievements,
             };
 
             console.log(`Данные для пользователя с ID ${user_id} найдены`);
@@ -117,21 +119,21 @@ class User_controller {
 
             const [userResult,achievementsResult , gradesResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE email = $1', [email]),
-                db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                //db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                //db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
-            const grades = gradesResult.rows;
-            const achievements = achievementsResult.rows;
+           // const grades = gradesResult.rows;
+           // const achievements = achievementsResult.rows;
 
 
             // Соберите результаты в один объект
             const userData = {
-                user,
-                achievements,
-                grades,
+                user//,
+               // achievements,
+               // grades,
             };
 
             console.log(`Данные для пользователя с Email ${email} найдены`);

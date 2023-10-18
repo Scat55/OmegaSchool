@@ -8,14 +8,13 @@ const db = require('../db')
 const {secret} = require('../config')
 const session = require('express-session');
 
-
 const generateAccesToken = (user_id, type_user, email) =>{
     const payload = {
         user_id,
         type_user,
         email
     }
-    return jwt.sign(payload, secret,  { expiresIn: '24h' })
+    return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
 
 class Auth_controller {
@@ -34,7 +33,6 @@ class Auth_controller {
                 // Хешируем пароль перед сохранением в базу данных
                 const saltRounds = 10; // Уровень соли
                 const hashedPassword = await bcrypt.hash(password, saltRounds);
-
                 // Добавляем пользователя в базу данных с хешированным паролем
                 const insertQuery = `
                 INSERT INTO users (email, password, gender, type_user)
@@ -79,9 +77,12 @@ class Auth_controller {
                     const token = generateAccesToken(user.user_id,user.type_user,user.email);
 
                     req.session.token = token;
-
+                    console.log(req.session)
+                    req.session.save(() => {
+                        res.json({ message: 'Успешная аутентификация', token });
+                    });
                     // Отправляем JWT токен в ответе
-                    res.json({ message: 'Успешная аутентификация', token });
+
                 } else {
                     // Если пароль неверен, отправляем сообщение о неправильном пароле
                     res.status(401).json({ message: 'Неправильный пароль' });

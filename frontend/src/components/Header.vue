@@ -10,7 +10,8 @@
             class="header__logo-img"
             v-on:click="goToHomePage()">
 
-        <div class="header__logo-lists">
+        <div class="header__logo-lists"
+        v-if="this.$route.path != '/auth'">
           <ul class="header__logo-list">
             <router-link to="/task" class="router">
               <li
@@ -84,6 +85,7 @@ export default {
     logout() {
       const body = document.querySelector('body')
       body.style.overflow = ""
+      localStorage.removeItem('local')
       store.state.isAuth = false
       store.state.status = false
       this.statusMenu = false
@@ -107,15 +109,16 @@ export default {
     changeStatusMenu() {
       this.statusMenu = !this.statusMenu
     },
-   async goToPersonPage(){
-      const userID = localStorage.getItem('userID')
-      if (this.$route.fullPath === `/profile/${userID}`){
+   goToPersonPage(){
+      let local = localStorage.getItem('local')
+      local = JSON.parse(local)
+      if (this.$route.fullPath === `/profile/${local.userID}`){
         this.statusMenu = false
         return
 
       } else {
         this.$nextTick(() => {
-          this.$router.push(`/profile/${userID}`)
+          this.$router.push(`/profile/${local.userID}`)
         });
         this.statusMenu = false
       }

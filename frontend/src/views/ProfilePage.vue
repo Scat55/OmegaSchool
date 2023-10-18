@@ -119,7 +119,8 @@ export default {
         MySolvedTask: false,
         AddTask: false,
       },
-      id: this.$router.currentRoute.params['id'],
+      // id: this.$router.currentRoute.params['id'],
+      // token: localStorage.getItem('token'),
     }
   },
   methods: {
@@ -132,37 +133,20 @@ export default {
         }
       }
     },
-    // getInfoAboutUser(){
-    //   axios.get(`/getUserIdForInf/${this.id}`).then(response => {
-    //     // this.email = response.data.user.email
-    //     this.person.email = response.data.user.email
-    //     this.person.name = response.data.user.first_name
-    //     this.person.lastname = response.data.user.last_name
-    //     this.person.patronymic = response.data.user.patronymic
-    //     this.person.gender = response.data.user.gender
-    //     if (response.data.user.type_user === 'Ученик'){
-    //       this.person.student = true
-    //     } else {
-    //       this.person.student = false
-    //     }
-    //   })
-    //   console.log(this.person)
-    // },
-
-    getTokenFromLocal(){
-      const token = localStorage.getItem('token');
-
-      if (token){
-        store.state.isAuth = true
-      }
-    }
 
   },
   mounted() {
     // this.getInfoAboutUser()
-    axios.get(`/api/user_inf/${this.id}`).then(response => {
+    let local = localStorage.getItem('local')
+    local = JSON.parse(local)
+    console.log(local.userID)
+
+    axios(`/api/user_inf/${local.userID}`, {
+      method: 'GET',
+      headers: {'Authorization': `Bearer ${local.token}`},
+    }).then(response => {
       console.log(response.data)
-      // this.email = response.data.user.email
+      this.email = response.data.user.email
       this.person.email = response.data.user.email
       this.person.name = response.data.user.first_name
       this.person.lastname = response.data.user.last_name
@@ -178,8 +162,6 @@ export default {
       }
     })
     console.log(this.person)
-
-    this.getTokenFromLocal()
   },
 }
 </script>
@@ -189,7 +171,7 @@ export default {
 
 .container {
   margin-top: 80px;
-  height: 80vh;
+  //height: 80vh;
   justify-content: center;
 }
 

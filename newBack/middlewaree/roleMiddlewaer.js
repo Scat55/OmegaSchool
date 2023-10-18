@@ -8,24 +8,30 @@ module.exports = function (roles) {
             next();
         }
         try {
-            // Извлекаем токен из заголовков запроса
-            const tokenFromHeaders = req.headers.authorization.split(' ')[1];
-            if (!tokenFromHeaders) {
-                // Если токен отсутствует в заголовках, возвращаем ошибку
+            const authorizationHeader = req.headers.authorization;
+
+
+            if (!authorizationHeader) {
                 return res.status(403).json({ message: 'Пользователь не авторизован1' });
             }
+
+
+            // Теперь вы можете разбирать заголовок, так как он существует
+            const tokenFromHeaders = authorizationHeader.split(' ')[1];
+
 
             // Извлекаем токен из сессии
             const tokenFromSession = req.session.token;
 
-            // Проверяем, совпадают ли токены
+
+             //Проверяем, совпадают ли токены
             if (tokenFromHeaders !== tokenFromSession) {
                 return res.status(403).json({ message: 'Пользователь не авторизован2' });
             }
 
             // Проверяем токен и извлекаем роль пользователя
-            const { type_user } = jwt.verify(tokenFromHeaders, secret);
-
+            const { type_user, user_id } = jwt.verify(tokenFromHeaders, secret);
+            req.user_id = user_id
             if (!roles.includes(type_user)) {
                 // Если роль пользователя не совпадает с разрешенными ролями, возвращаем ошибку
                 return res.status(403).json({ message: 'У вас нет доступа' });
