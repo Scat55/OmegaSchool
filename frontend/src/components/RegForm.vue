@@ -142,7 +142,6 @@ export default {
     },
     // Обработка формы
     handler() {
-      // console.log(`${this.email}, ${this.pass}, ${this.proffesion.name}, ${this.gender.name}`)
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
         this.activeClass = true
         return false
@@ -154,34 +153,6 @@ export default {
   }
 }
 </script> 
-
-<!--    }-->
-<!--    //   if (this.pass === '' || this.pass.length < 8 || this.email === '') {-->
-<!--    //     this.activeClass = true-->
-<!--    //     return false-->
-<!--    //   }-->
-<!--    //   else {-->
-<!--    //     this.activeClass = false-->
-<!--    //     this.changeUserList()-->
-<!--    //   }-->
-<!--    // }-->
-<!--=======-->
-<!--  },-->
-<!--  mounted() {-->
-<!--    const selectGender = document.querySelector('#gender');-->
-<!--    selectGender.selectedIndex = 0;-->
-<!--&gt;>>>>>> ce5a6b798c04730b23aeef0276c083c90d1febff-->
-
-<!--  }-->
-<!--  mounted() {-->
-<!--    const selectGender = document.querySelector('#gender');-->
-<!--    selectGender.selectedIndex = 0;-->
-
-<!--    const selectProffesion = document.querySelector('#proffesion');-->
-<!--    selectProffesion.selectedIndex = 0;-->
-<!--  }-->
-
-
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';

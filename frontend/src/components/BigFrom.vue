@@ -43,24 +43,29 @@ export default {
   },
 
   methods: {
+    // Проверка авторизации
     changeStatusOnTrue() {
       const local = JSON.parse(localStorage.getItem('local'))
+      // Если да, то переходим в личный кабинет
       if (local){
         this.$router.push(`/profile/${local.userID}`)
         window.scrollTo(0, 0);
-      } else {
+      }
+      // Если нет, то открывается форма регистрации
+      else {
         window.scrollTo(0, 0);
         const body = document.querySelector('body')
         this.$store.state.status = true
         body.style.overflow = "hidden"
       }
     },
+    // Отображение пасхалкаи
     show(){
       this.count++;
-      if (this.count === 3) {
+      if (this.count % 8 === 0) {
         this.statusText = true
       }
-      if (this.count === 4){
+      else {
         this.statusText = false
         return
       }

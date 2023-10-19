@@ -46,7 +46,7 @@ export default {
           img: 'grup.png',
         },
         {
-          title: 'Система достиений',
+          title: 'Система достижений',
           img: 'awards.png'
         },
         {
@@ -64,8 +64,6 @@ export default {
     }
   },
 }
-
-
 
 </script>
 

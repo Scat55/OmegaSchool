@@ -77,11 +77,13 @@ export default {
   },
 
   methods: {
+    // Функция оотображения формы регистрации
     changeStatusOnTrue() {
       const body = document.querySelector('body')
       store.state.status = true
       body.style.overflow = "hidden"
     },
+    // Выход из личного кабинета
     logout() {
       const body = document.querySelector('body')
       body.style.overflow = ""
@@ -97,6 +99,7 @@ export default {
         });
       }
     },
+    // Переход на главную и проверка нахождения на главной или нет
     goToHomePage() {
       if (this.$route.name === 'home') {
         return
@@ -106,9 +109,11 @@ export default {
         });
       }
     },
+    // Открытие меню в личном кабинете
     changeStatusMenu() {
       this.statusMenu = !this.statusMenu
     },
+    // Переход в личный кабинет
    goToPersonPage(){
       let local = localStorage.getItem('local')
       local = JSON.parse(local)
@@ -124,9 +129,7 @@ export default {
       }
       console.log(this.id)
     }
-
   },
-
 
 }
 </script>

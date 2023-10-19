@@ -33,11 +33,15 @@ export default {
   },
 
   methods: {
+    // Проверка авторизации
     changeStatusOnTrue() {
       const local = JSON.parse(localStorage.getItem('local'))
+      // Если да, то переходим в личный кабинет
       if (local){
         this.$router.push(`/profile/${local.userID}`)
-      } else {
+      }
+      // Если нет, то открывается форма регистрации
+      else {
         window.scrollTo(0, 0);
         const body = document.querySelector('body')
         this.$store.state.status = true

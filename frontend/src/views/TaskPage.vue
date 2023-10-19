@@ -159,14 +159,6 @@ export default {
   },
 
   methods: {
-    // resetFilter() {
-    //   this.selectedClass = ''
-    //   this.selectedLVL = ''
-    //   this.selectedTopic = ''
-    //   this.selectedStatus = ''
-    //   this.searchQuery = ''
-    // },
-
     goToNextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
@@ -220,13 +212,6 @@ export default {
   },
 
   watch: {
-    // LocalStorage
-    // selectedTopic: "updateLocalStorage",
-    // selectedLVL: "updateLocalStorage",
-    // selectedClass: "updateLocalStorage",
-    // selectedStatus: "updateLocalStorage",
-    // searchQuery: "updateLocalStorage",
-
     selectedTopic() {
       this.updateLocalStorage();
       this.resetPage();
@@ -262,6 +247,7 @@ export default {
 .button_trueFilteredSee {
   height: 100%;
   width: 100%;
+  cursor: pointer;
 }
 
 .button_trueFilteredSee:hover {
@@ -280,6 +266,7 @@ export default {
   }
 
   &>button {
+    cursor: pointer;
 width: 25px;
     text-align: center;
     color: white;
@@ -349,6 +336,7 @@ width: 25px;
       border-radius: 1rem;
       border: none;
       color: white;
+      cursor: pointer;
     }
 
     &__hide {

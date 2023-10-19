@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="window">
-        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Показать меню</div>
+        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Открыть меню</div>
         <div class="left_div" v-show="ShowMenu === true">
           <div class="tabs">
             <div
@@ -52,6 +52,7 @@
               @click="switchTab('MySolvedTask')"
             >Мои решенные задачи
             </div>
+            <div class="closeMenu" @click="ShowMenu = !ShowMenu">Закрыть меню</div>
           </div>
         </div>
         <div class="right_div">
@@ -82,6 +83,7 @@ import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
 import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
 import AddTask from "@/components/Profile/AddTask.vue";
 import store from '../store/index';
+import { format} from "date-fns";
 
 import axios from 'axios'
 export default {
@@ -106,7 +108,7 @@ export default {
         gender: "",
         student: null, // переключатель вкладок
         class: '11',
-        item: 'Математика',
+        item: '',
         email: '',
         expert: null,
       },
@@ -128,42 +130,32 @@ export default {
   methods: {
     switchTab(nameTab) {
       for (const key in this.isActiveComponents) {
-        if (key !== nameTab) {
-          this.isActiveComponents[key] = false;
-        } else {
-          this.isActiveComponents[key] = true;
-        }
+        this.isActiveComponents[key] = key === nameTab;
       }
     },
 
   },
   mounted() {
-    // this.getInfoAboutUser()
     let local = localStorage.getItem('local')
     local = JSON.parse(local)
-    console.log(local.userID)
 
     axios(`/api/user_inf/${local.userID}`, {
       method: 'GET',
       headers: {'Authorization': `Bearer ${local.token}`},
     }).then(response => {
-      console.log(response.data)
       this.email = response.data.user.email
       this.person.email = response.data.user.email
       this.person.name = response.data.user.first_name
       this.person.lastname = response.data.user.last_name
       this.person.patronymic = response.data.user.patronymic
       this.person.gender = response.data.user.gender
+      this.person.item = response.data.user.item
+      this.person.birthday = format(new Date(response.data.user.birthdata), 'dd.MM.yyyy') // Приводим дату в человеческий вид с помощью data-fns
       if (response.data.user.expert === "true") {
         this.person.expert = true
       }
-      if (response.data.user.type_user === 'Ученик'){
-        this.person.student = true
-      } else {
-        this.person.student = false
-      }
+      this.person.student = response.data.user.type_user === 'Ученик';
     })
-    console.log(this.person)
   },
 }
 </script>
@@ -173,7 +165,6 @@ export default {
 
 .container {
   margin-top: 80px;
-  //height: 80vh;
 }
 
 .window {
@@ -182,26 +173,35 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  //display: grid;
-  //grid-template-columns: repeat(4, 1fr);
-  //grid-template-rows: 1fr 1fr;
 }
 
 .seeMenu {
   background: $lightBlueColor;
-  height: 33px;
-  padding: 5px;
+  padding: 10px;
   margin-bottom: 15px;
   text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 50px #888888;
+  }
 }
 
+.closeMenu {
+  margin-top: 15px;
+  padding: 10px;
+  background: #ee2d2d;
+  border-radius: 1rem;
+  cursor: pointer;
+}
 
 .left_div {
   background: $lightBlueColor;
-  //grid-column: 1 / span 1;
-  //grid-row: 1 / span 1;
-  height: 350px;
   margin-bottom: 15px;
+
+  &:hover {
+    box-shadow: 0 0 50px #888888;
+  }
 }
 
 .tabs {
@@ -230,8 +230,6 @@ export default {
 
 .right_div {
   background: $lightBlueColor;
-  //grid-column: 2 / span 3;
-  //grid-row: 1 / span 2;
   overflow-y: auto;
   padding: 25px;
 
