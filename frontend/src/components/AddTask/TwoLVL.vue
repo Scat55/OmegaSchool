@@ -47,8 +47,8 @@ export default {
         </div>
       </div>
       <div class="btn-send">
-        <button id="send">Отправить задание на проверку эксперту!</button>
-        <button id="clear" type="reset">Удалить все!</button>
+        <button class = "btn"> Отправить задание на проверку эксперту!</button>
+        <button class = "btn-reset" type="reset">Удалить все!</button>
       </div>
     </div>
   </form>
@@ -80,26 +80,6 @@ export default {
   justify-content: space-between;
 }
 
-#send {
-  background: #00DFCC;
-  border: 2px solid white;
-  border-radius: 1rem;
-  padding: 15px;
-  order: 1;
-}
-
-#send:hover, #clear:hover {
-  font-size: 1.1rem;
-}
-
-#clear {
-  order: 0;
-  background: indianred;
-  border: 2px solid white;
-  border-radius: 1rem;
-  padding: 15px;
-}
-
 .block {
   padding: 10px;
   border: 3px solid black;
@@ -109,5 +89,31 @@ export default {
 
 .shablonZadaniaTwo p {
   margin: 15px 0 5px 0;
+}
+
+.btn {
+  padding: 8px;
+  border-radius: 1rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover {
+    background-color: #00DFCC;
+  }
+}
+
+.btn-reset {
+  padding: 8px;
+  border-radius: 1rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all .3s;
+
+  &:hover {
+    background-color: #ff6e6e;
+  }
 }
 </style>
