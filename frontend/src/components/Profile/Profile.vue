@@ -36,12 +36,14 @@ export default {
       const patronymic = this.person.patronymic
       const item = this.person.item
       const classes = this.person.class
+      const birthdate = this.person.birthday
       axios.post('/api/addition_data', {
         first_name: first_name,
         last_name: last_name,
         patronymic: patronymic,
         classes: classes,
-        item: item
+        item: item,
+        birthdate: birthdate
       }, {
         headers: {
           'Authorization': `Bearer ${this.token.token}`,
@@ -120,7 +122,14 @@ export default {
     <div class="date_person_birthday_gender">
       <!--      <p>Дата рождения {{ person.birthday }}</p>-->
       <p>Пол: {{ person.gender }}</p>
-      <p>Дата рождения: {{ person.birthday }}</p>
+      <div v-if="edit">
+        <label>Дата рождения:</label>&nbsp;
+        <input
+            type="date"
+            v-model="person.birthday"
+        >
+      </div>
+      <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
     </div>
 
     <div class="date_person_class">

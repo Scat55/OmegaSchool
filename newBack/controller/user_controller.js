@@ -219,15 +219,26 @@ class User_controller {
 
             // Выполнение SQL-запроса
             const sql = `
-      SELECT * 
-      FROM level_1_tests AS l1
-      LEFT JOIN level_2_tests AS l2 ON l1.test_id = l2.test_id
-      LEFT JOIN level_3_tests AS l3 ON l1.test_id = l3.test_id
-      WHERE
-          l1.user_id <> $1
-          OR l2.ver_1_id <> $1
-          OR l3.ver_2 <> $1;
+            SELECT *
+            FROM level_1_tests
+            WHERE ((ver_1_id IS NULL OR NOT(ver_2_id = $1)) AND
+                (NOT(ver_1_id = $1) OR ver_2_id IS NULL) AND
+                (ver_1_id IS NULL OR ver_2_id IS NULL))
+            
+
     `;
+            //UNION ALLs
+            //SELECT *
+            //FROM level_2_tests
+            //WHERE ((ver_1_id IS NULL OR NOT(ver_2_id = $1)) AND
+            //       (NOT(ver_1_id = $1) OR ver_2_id IS NULL) AND
+            //       (ver_1_id IS NULL OR ver_2_id IS NULL))
+            //UNION ALL
+            //SELECT *
+            //FROM level_3_tests
+            //WHERE ((ver_1_id IS NULL OR NOT(ver_2_id = $1)) AND
+            //       (NOT(ver_1_id = $1) OR ver_2_id IS NULL) AND
+            //       (ver_1_id IS NULL OR ver_2_id IS NULL));
             const result = await db.query(sql, [user_id]);
 
             // Отправка результата клиенту
