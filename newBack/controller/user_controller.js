@@ -149,9 +149,10 @@ class User_controller {
 
 
     async add_level_1_test(req,res){
-        // Разбираем JSON-объект из запроса
-        const { user_id, task_test, task_description, add_file, classes, questions } = req.body;
 
+        // Разбираем JSON-объект из запроса
+        const { task_test, task_description, add_file, classes, questions } = req.body;
+        const user_id = req.user_id
         // Вставляем данные теста в базу данных
         const insertTestQuery = `
     INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
