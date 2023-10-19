@@ -253,16 +253,48 @@ class User_controller {
 
 
 
-    async postFile(req, res) {
+    // async postFile(req, res) {
+    //
+    //     const {user_id} = req.user
+    //
+    //     const storage = multer.diskStorage({
+    //         destination: (req, file, cb) => {
+    //             cb(null, 'uploads/');
+    //         },
+    //         filename: (req, file, cb) => {
+    //             const userId = user_id;
+    //             const date = new Date();
+    //             const day = String(date.getDate()).padStart(2, '0');
+    //             const month = String(date.getMonth() + 1).padStart(2, '0');
+    //             const year = date.getFullYear();
+    //
+    //             const fileName = `${day}_${month}_${year}_${user_id}_${file.originalname}`;
+    //             cb(null, fileName);
+    //         },
+    //     });
+    //
+    //     const upload = multer({ storage }).single('file');
+    //
+    //     upload(req, res, (err) => {
+    //         if (err) {
+    //             // Если произошла ошибка при загрузке файла, вернуть соответствующий ответ
+    //             res.status(500).send('Ошибка при загрузке файла.');
+    //         } else {
+    //             // Если файл успешно загружен, вернуть успешный ответ
+    //             res.send('Файл успешно загружен.');
+    //         }
+    //     });
+    // }
 
-        const {user_id} = req.user
+
+    async postFile(req, res) {
+        const {user_id} = req.user;
 
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, 'uploads/');
             },
             filename: (req, file, cb) => {
-                const userId = user_id;
                 const date = new Date();
                 const day = String(date.getDate()).padStart(2, '0');
                 const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -273,18 +305,38 @@ class User_controller {
             },
         });
 
-        const upload = multer({ storage }).single('file');
+        const upload = multer({storage}).single('file');
 
-        upload(req, res, (err) => {
+        upload(req, res, async (err) => {
             if (err) {
                 // Если произошла ошибка при загрузке файла, вернуть соответствующий ответ
                 res.status(500).send('Ошибка при загрузке файла.');
             } else {
-                // Если файл успешно загружен, вернуть успешный ответ
-                res.send('Файл успешно загружен.');
+                // Если файл успешно загружен, обновляем запись в базе данных
+                const filePath = 'uploads/' + req.file.filename;
+
+                // З
+                const query = 'UPDATE level_1_tests SET add_file = $1 WHERE user_id = $2';
+                const values = [filePath, user_id];
+                try {
+                    await db.query(query, values);
+                    res.send('Файл успешно загружен и информация обновлена в базе данных.');
+                } catch (dbErr) {
+                    console.error(dbErr);
+                    res.status(500).send('Ошибка при обновлении информации о файле в базе данных.');
+                }
             }
-        });
+        })
     }
+
+
+
+
+
+
+
+
+
 
     async postFilesWithType(req, res) {
         const { type_of_unit } = req.body;
@@ -328,3 +380,13 @@ class User_controller {
 
 
 module.exports = new User_controller()
+
+
+
+
+
+
+
+
+
+
