@@ -10,6 +10,11 @@ export default {
       selectedFiles: [],
       // checkboxText: Array(2).fill(''),
       isWindowOpen: false,
+      nameTask: '',
+      descriptionTask: '',
+      class: '',
+      level: '',
+      topic: ''
     };
   },
   methods: {
@@ -23,7 +28,7 @@ export default {
       this.checkboxes.splice(index, 1)
     },
     sendTest() {
-      console.log(this.checkboxes)
+      console.log(this.checkboxes, this.nameTask, this.descriptionTask)
     },
     addTask() {
       alert('Заданме добавлено')
@@ -68,11 +73,11 @@ export default {
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания">
+        <input type="text" placeholder="Введите название задания" v-model="nameTask">
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
-        <textarea></textarea>
+        <textarea v-model="descriptionTask"></textarea>
       </div>
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>
