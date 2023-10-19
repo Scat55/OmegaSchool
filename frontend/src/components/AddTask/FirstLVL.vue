@@ -41,7 +41,7 @@ export default {
       ]
     },
     // Для загрузки файлов
-    handleFileChange() {
+    handleFileChange(e) {
       // При изменении выбранных файлов обновляем список имен файлов
       const fileInput = this.$refs.fileInput;
       const files = fileInput.files;
@@ -52,6 +52,8 @@ export default {
       }
 
       this.selectedFiles = fileNames;
+      console.log(e.target.files)
+
     },
     removeFile(index) {
       // Удаляем файл из списка выбранных файлов по индексу
@@ -85,7 +87,7 @@ export default {
         <div>
           <label for="fileInput" class="custom-file-upload">
             <span>{{ buttonText }}</span>
-            <input type="file" id="fileInput" ref="fileInput" @change="handleFileChange" multiple>
+            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange" accept=".doc">
           </label>
           <div class="list_task_file">
             <p>Выбранные файлы:</p>
