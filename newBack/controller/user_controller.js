@@ -29,15 +29,15 @@ class User_controller {
         try {
             const user_id = req.user_id
             // Извлекаем данные из тела запроса
-            const { first_name, last_name, patronymic, birthdata, classes,item } = req.body;
-            console.log(user_id, first_name, last_name, patronymic, birthdata, classes, item)
+            const { first_name, last_name, patronymic, birthdate, classes,item } = req.body;
+            console.log(user_id, first_name, last_name, patronymic, birthdate, classes, item)
             // Создаем SQL-запрос для обновления данных пользователя в таблице users
             const sql = `UPDATE users 
-                   SET first_name = $1, last_name = $2, patronymic = $3, birthdata = $4, classes = $5, item = $6
+                   SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
                    WHERE user_id = $7`;
 
             // Используем асинхронный метод для выполнения SQL-запроса
-            await db.query(sql, [first_name, last_name, patronymic, birthdata, classes, item, user_id]);
+            await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
 
             console.log('Дополнительные данные успешно обновлены');
             res.status(200).json({ message: 'Дополнительные данные успешно обновлены' });
@@ -211,6 +211,35 @@ class User_controller {
                 res.status(500).json({ error: 'Ошибка на сервере' });
             });
     };
+
+    async getTasksForExpert(req, res) {
+        try {
+            // Получение user_id из JWT токена
+            const user_id = req.user_id
+
+            // Выполнение SQL-запроса
+            const sql = `
+      SELECT * 
+      FROM level_1_tests AS l1
+      LEFT JOIN level_2_tests AS l2 ON l1.test_id = l2.test_id
+      LEFT JOIN level_3_tests AS l3 ON l1.test_id = l3.test_id
+      WHERE
+          l1.user_id <> $1
+          OR l2.ver_1_id <> $1
+          OR l3.ver_2 <> $1;
+    `;
+            const result = await db.query(sql, [user_id]);
+
+            // Отправка результата клиенту
+            res.json(result.rows);
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+
+
 
 
     async postFile(req, res) {
