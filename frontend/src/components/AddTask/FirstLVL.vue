@@ -18,7 +18,7 @@ export default {
       level: '',
       topic: '',
       file: '',
-      token: ''
+      token: '',
     };
   },
   methods: {
@@ -31,17 +31,18 @@ export default {
     removeCheckbox(index) {
       this.checkboxes.splice(index, 1)
     },
-     sendTest() {
+    sendTest() {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
       const task_test = this.nameTask;
       const task_description = this.descriptionTask;
-      const add_file = this.file;
+      const add_file = this.file
       const questions = this.checkboxes;
+      const formData = new FormData()
+      formData.append('file', this.selectedFiles)
       this.token = JSON.parse(localStorage.getItem('local'))
-       axios.post('/api/add_level_1_test', {
-        task_test:task_test,
-        task_description:task_description,
-        add_file:add_file,
+      axios.post('/api/add_level_1_test', {
+        task_test: task_test,
+        task_description: task_description,
         questions: questions
       }, {
         headers: {
@@ -49,8 +50,14 @@ export default {
           'Content-Type': 'application/json'
         }
       })
-      console.log(this.token.token)
-
+      axios.post('/api/upload/',
+        formData,
+       {
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
     },
     addTask() {
       alert('Заданме добавлено')
@@ -74,7 +81,7 @@ export default {
       }
 
       this.selectedFiles = fileNames;
-      this.file = e.target.files
+      console.log(this.selectedFiles)
 
     },
     removeFile(index) {
@@ -93,7 +100,7 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="addTask()">
+  <form @submit.prevent="sendTest()">
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
@@ -109,7 +116,8 @@ export default {
         <div>
           <label for="fileInput" class="custom-file-upload">
             <span>{{ buttonText }}</span>
-            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange" accept="application/pdf ,.docx">
+            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
+                   accept="application/pdf ,.docx">
           </label>
           <div class="list_task_file">
             <p>Выбранные файлы:</p>
@@ -147,7 +155,7 @@ export default {
         </div>
         <!--   Конец. Наконец-то сделал адекватный вывод. Я бухать!   -->
         <div class="shablonZadaniaFirst__btn_send">
-          <button @click="sendTest" class="btn" type="submit">Отправить задание на проверку эксперту!</button>
+          <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
           <button class="btn-reset" type="reset" @click="deleteCheckBox">Сброс</button>
         </div>
       </div>
