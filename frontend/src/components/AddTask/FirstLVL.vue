@@ -19,6 +19,7 @@ export default {
       topic: '',
       file: '',
       token: '',
+      newFile: ''
     };
   },
   methods: {
@@ -38,8 +39,9 @@ export default {
       const add_file = this.file
       const questions = this.checkboxes;
       const formData = new FormData()
-      formData.append('file', this.selectedFiles)
+      formData.append('file', this.newFile)
       this.token = JSON.parse(localStorage.getItem('local'))
+
       axios.post('/api/add_level_1_test', {
         task_test: task_test,
         task_description: task_description,
@@ -51,13 +53,13 @@ export default {
         }
       })
       axios.post('/api/upload/',
-        formData,
-       {
-        headers: {
-          'Authorization': `Bearer ${this.token.token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+          formData,
+          {
+            headers: {
+              'Authorization': `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data;  charset=utf-8'
+            }
+          })
     },
     addTask() {
       alert('Заданме добавлено')
@@ -82,7 +84,12 @@ export default {
       }
 
       this.selectedFiles = fileNames;
-      console.log(this.selectedFiles)
+
+      this.file = this.$refs.fileInput.files
+      const allFile = Object.values(this.file)
+      for (let i = 0; i < allFile.length; i++){
+        this.newFile = allFile[i]
+      }
 
     },
     removeFile(index) {
