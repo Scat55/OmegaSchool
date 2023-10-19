@@ -39,6 +39,7 @@ export default {
         {text: '', checked: false},
         {text: '', checked: false}
       ]
+      this.selectedFiles = []
     },
     // Для загрузки файлов
     handleFileChange() {
@@ -88,7 +89,7 @@ export default {
             <input type="file" id="fileInput" ref="fileInput" @change="handleFileChange" multiple>
           </label>
           <div class="list_task_file">
-            <p>Выбранные файлы:</p>
+            <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
             <ul>
               <li v-for="(fileName, index) in selectedFiles" :key="index">
                 <span>{{ index + 1 }}</span>
