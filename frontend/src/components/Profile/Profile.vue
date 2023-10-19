@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios';
+
 export default {
   props: {
     person: {
@@ -19,7 +20,10 @@ export default {
         changeClass: false,
         changePass: false,
       },
-      token: ''
+      token: '',
+      oldPass: '',
+      newPass: '',
+      repeatNewPass: ''
     }
   },
   methods: {
@@ -45,8 +49,27 @@ export default {
         }
       })
 
+    },
+    changePass() {
+      if ((this.newPass.length >= 8 && this.repeatNewPass.length >= 8) && (this.newPass === this.repeatNewPass)) {
+        alert('Пароль успешно изменен')
+        this.changeDate.changePass = false
+        console.log(this.repeatNewPass)
+        this.newPass = this.repeatNewPass = ''
+      }
+      if (this.newPass.length < 8 && this.repeatNewPass.length < 8) {
+        alert('Пароль не должен быть меньше 8 символов')
+      }
+      if (this.newPass !== this.repeatNewPass) {
+        alert('Пароль несовпадают')
+
+      }
+
+
     }
   },
+
+
 }
 </script>
 
@@ -54,41 +77,41 @@ export default {
   <div class="main">
     <div class="avatar">
       <img v-if="person.gender === 'Мужской' "
-        src="../../assets/images/Avatar/boy.png"
-        alt="Аватарка"
+           src="../../assets/images/Avatar/boy.png"
+           alt="Аватарка"
       >
       <img v-if="person.gender === 'Женский'"
            src="../../assets/images/Avatar/girl (3).png"
            alt="Аватарка"
       >
-      <p v-if="person.gender === ''" >Загрузка аватара...</p>
+      <p v-if="person.gender === ''">Загрузка аватара...</p>
     </div>
     <div class="date_person_fio">
       <div class="name"><label>Имя:</label>&nbsp;
         <!-- <div v-html="htmlContent"></div> -->
         <input
-          type="text"
-          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          :disabled="!edit"
-          v-model="person.name"
+            type="text"
+            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+            :disabled="!edit"
+            v-model="person.name"
         >
       </div>
       <div class="lastName">
         <label>Фамилия:</label>&nbsp;
         <input
-          type="text"
-          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          :disabled="!edit"
-          v-model="person.lastname"
+            type="text"
+            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+            :disabled="!edit"
+            v-model="person.lastname"
         >
       </div>
       <div class="patronymic">
         <label>Отчество:</label>&nbsp;
         <input
-          type="text"
-          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          :disabled="!edit"
-          v-model="person.patronymic"
+            type="text"
+            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+            :disabled="!edit"
+            v-model="person.patronymic"
         >
       </div>
     </div>
@@ -97,26 +120,26 @@ export default {
     <div class="date_person_birthday_gender">
       <!--      <p>Дата рождения {{ person.birthday }}</p>-->
       <p>Пол: {{ person.gender }}</p>
-      <p>Дата рождения: {{ person.birthday}}</p>
+      <p>Дата рождения: {{ person.birthday }}</p>
     </div>
 
     <div class="date_person_class">
       <div v-if="person.student === true">
         <label>Класс</label>&nbsp;
         <input
-          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          type="text"
-          :disabled="!edit"
-          :value="person.class"
+            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+            type="text"
+            :disabled="!edit"
+            :value="person.class"
         >
       </div>
       <div v-if="person.student === false">
         <label>Учитель по</label>&nbsp;
         <input
-          :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-          type="text"
-          :disabled="!edit"
-          v-model="person.item"
+            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
+            type="text"
+            :disabled="!edit"
+            v-model="person.item"
         >
       </div>
     </div>
@@ -127,44 +150,49 @@ export default {
 
     <div class="change_profile">
       <div
-        class="change_password"
-        v-if="edit === false"
+          class="change_password"
+          v-if="edit === false"
       >
         <button
-          v-if="changeDate.changePass === false"
-          @click="changeDate.changePass = true"
-          class="editBtn"
-        >Изменить пароль</button>
-        <div v-if="changeDate.changePass === true" class = "passwords">
-          <label>Введите пароль</label><input type="password" class = "passwords__pass">
-          <label>Введите новый</label><input type="password" class = "passwords__pass">
-          <label>повторите новый пароль</label><input type="password" class = "passwords__pass">
-          <button class="editBtn">Подтвердить изменение</button>
-          <button
-            @click="changeDate.changePass = false"
+            v-if="changeDate.changePass === false"
+            @click="changeDate.changePass = true"
             class="editBtn"
-          >Отмена</button>
+        >Изменить пароль
+        </button>
+        <div v-if="changeDate.changePass === true" class="passwords">
+          <label>Введите пароль</label><input type="password" class="passwords__pass">
+          <label>Введите новый</label><input type="password" class="passwords__pass" v-model="newPass">
+          <label>повторите новый пароль</label><input type="password" class="passwords__pass" v-model="repeatNewPass">
+          <button class="editBtn" @click="changePass()">Подтвердить изменение</button>
+          <button
+              @click="changeDate.changePass = false"
+              class="editBtn"
+          >Отмена
+          </button>
         </div>
       </div>
       <div
-        class="edit_profile"
-        v-if="changeDate.changePass === false"
+          class="edit_profile"
+          v-if="changeDate.changePass === false"
       >
         <button
-          @click="edit = true"
-          v-if="edit === false"
-          class="editBtn"
-        >Изменить профиль</button>
+            @click="edit = true"
+            v-if="edit === false"
+            class="editBtn"
+        >Изменить профиль
+        </button>
         <button
-          v-show="edit === true"
-          @click="changeInfoAboutUSer()"
-          class="editBtn"
-        >Подтвердить изменения</button>
+            v-show="edit === true"
+            @click="changeInfoAboutUSer()"
+            class="editBtn"
+        >Подтвердить изменения
+        </button>
         <button
-          v-show="edit === true"
-          @click="edit = false"
-          class="editBtn"
-        >Отмена изменения</button>
+            v-show="edit === true"
+            @click="edit = false"
+            class="editBtn"
+        >Отмена изменения
+        </button>
       </div>
     </div>
 
@@ -173,6 +201,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../../assets/styles/vars';
+
 .flexDiv {
   display: flex;
 }
@@ -215,7 +244,7 @@ export default {
   margin-bottom: 2rem;
   //width: 100%;
 
-  &>img {
+  & > img {
     border: 2px solid white;
     border-radius: 1rem;
     width: 30%;
@@ -236,20 +265,21 @@ export default {
   cursor: pointer;
   transition: all .3s;
 
-  &:hover{
+  &:hover {
     background-color: #c7fdff;
   }
 }
-.date_person_fio{
+
+.date_person_fio {
   justify-self: flex-end;
 }
 
-.passwords{
+.passwords {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
-  &__pass{
+  &__pass {
     width: 13rem;
     padding: .5rem;
     border: none;
