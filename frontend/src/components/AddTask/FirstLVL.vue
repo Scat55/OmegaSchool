@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -14,7 +16,9 @@ export default {
       descriptionTask: '',
       class: '',
       level: '',
-      topic: ''
+      topic: '',
+      file: '',
+      token: '',
     };
   },
   methods: {
@@ -28,7 +32,32 @@ export default {
       this.checkboxes.splice(index, 1)
     },
     sendTest() {
-      console.log(this.checkboxes, this.nameTask, this.descriptionTask)
+      // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
+      const task_test = this.nameTask;
+      const task_description = this.descriptionTask;
+      const add_file = this.file
+      const questions = this.checkboxes;
+      const formData = new FormData()
+      formData.append('file', this.selectedFiles)
+      this.token = JSON.parse(localStorage.getItem('local'))
+      axios.post('/api/add_level_1_test', {
+        task_test: task_test,
+        task_description: task_description,
+        questions: questions
+      }, {
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      axios.post('/api/upload/',
+        formData,
+       {
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
     },
     addTask() {
       alert('Заданме добавлено')
@@ -42,7 +71,7 @@ export default {
       this.selectedFiles = []
     },
     // Для загрузки файлов
-    handleFileChange() {
+    handleFileChange(e) {
       // При изменении выбранных файлов обновляем список имен файлов
       const fileInput = this.$refs.fileInput;
       const files = fileInput.files;
@@ -53,6 +82,8 @@ export default {
       }
 
       this.selectedFiles = fileNames;
+      console.log(this.selectedFiles)
+
     },
     removeFile(index) {
       // Удаляем файл из списка выбранных файлов по индексу
@@ -70,7 +101,7 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="addTask()">
+  <form @submit.prevent="sendTest()">
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
@@ -86,7 +117,8 @@ export default {
         <div>
           <label for="fileInput" class="custom-file-upload">
             <span>{{ buttonText }}</span>
-            <input type="file" id="fileInput" ref="fileInput" @change="handleFileChange" multiple>
+            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
+                   accept="application/pdf ,.docx">
           </label>
           <div class="list_task_file">
             <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
@@ -124,7 +156,7 @@ export default {
         </div>
         <!--   Конец. Наконец-то сделал адекватный вывод. Я бухать!   -->
         <div class="shablonZadaniaFirst__btn_send">
-          <button @click="sendTest" class="btn" type="submit">Отправить задание на проверку эксперту!</button>
+          <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
           <button class="btn-reset" type="reset" @click="deleteCheckBox">Сброс</button>
         </div>
       </div>
