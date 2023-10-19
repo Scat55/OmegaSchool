@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -14,7 +16,9 @@ export default {
       descriptionTask: '',
       class: '',
       level: '',
-      topic: ''
+      topic: '',
+      file: '',
+      token: ''
     };
   },
   methods: {
@@ -27,8 +31,26 @@ export default {
     removeCheckbox(index) {
       this.checkboxes.splice(index, 1)
     },
-    sendTest() {
-      console.log(this.checkboxes, this.nameTask, this.descriptionTask)
+     sendTest() {
+      // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
+      const task_test = this.nameTask;
+      const task_description = this.descriptionTask;
+      const add_file = this.file;
+      const questions = this.checkboxes;
+      this.token = JSON.parse(localStorage.getItem('local'))
+       axios.post('/api/add_level_1_test', {
+        task_test:task_test,
+        task_description:task_description,
+        add_file:add_file,
+        questions: questions
+      }, {
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      console.log(this.token.token)
+
     },
     addTask() {
       alert('Заданме добавлено')
@@ -52,7 +74,7 @@ export default {
       }
 
       this.selectedFiles = fileNames;
-      console.log(e.target.files)
+      this.file = e.target.files
 
     },
     removeFile(index) {
@@ -87,7 +109,7 @@ export default {
         <div>
           <label for="fileInput" class="custom-file-upload">
             <span>{{ buttonText }}</span>
-            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange" accept=".doc">
+            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange" accept="application/pdf ,.docx">
           </label>
           <div class="list_task_file">
             <p>Выбранные файлы:</p>
