@@ -31,10 +31,12 @@ export default {
       const last_name = this.person.lastname
       const patronymic = this.person.patronymic
       const item = this.person.item
+      const classes = this.person.class
       axios.post('/api/addition_data', {
         first_name: first_name,
         last_name: last_name,
         patronymic: patronymic,
+        classes: classes,
         item: item
       }, {
         headers: {
