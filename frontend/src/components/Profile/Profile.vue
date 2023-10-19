@@ -135,10 +135,10 @@ export default {
           @click="changeDate.changePass = true"
           class="editBtn"
         >Изменить пароль</button>
-        <div v-if="changeDate.changePass === true">
-          <label>Введите пароль</label><input type="password"><br>
-          <label>Введите новый</label><input type="password"><br>
-          <label>повторите новый пароль</label><input type="password"><br>
+        <div v-if="changeDate.changePass === true" class = "passwords">
+          <label>Введите пароль</label><input type="password" class = "passwords__pass">
+          <label>Введите новый</label><input type="password" class = "passwords__pass">
+          <label>повторите новый пароль</label><input type="password" class = "passwords__pass">
           <button class="editBtn">Подтвердить изменение</button>
           <button
             @click="changeDate.changePass = false"
@@ -242,5 +242,20 @@ export default {
 }
 .date_person_fio{
   justify-self: flex-end;
+}
+
+.passwords{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__pass{
+    width: 13rem;
+    padding: .5rem;
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+    font-size: 1.1rem;
+  }
 }
 </style>
