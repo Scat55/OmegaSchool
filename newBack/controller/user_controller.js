@@ -275,7 +275,7 @@ class User_controller {
         });
     }
 
-    async postFileWithType(req, res) {
+    async postFilesWithType(req, res) {
         const { type_of_unit } = req.body;
 
         try {
@@ -288,32 +288,17 @@ class User_controller {
 
             const updatePromises = [];
 
-            if (type_of_unit === "level_1_tests") {
+            if (type_of_unit === "level_1_tests" || type_of_unit === "level_2_tests" || type_of_unit === "level_3_tests") {
+                // Собираем имена файлов в одну строку с разделителями (запятые)
+                const filesString = userFiles.map(fileName => `uploads/${fileName}`).join(',');
+
+                // Создаем один общий запрос для обновления базы данных
+                const query = `UPDATE ${type_of_unit} SET add_file = $1, user_id = $2, test_id = $3`;
+                const values = [filesString, req.user.user_id, randomUUID()];
+
+                // Добавляем обновление в список промисов
                 updatePromises.push(
-                    ...userFiles.map(async (fileName) => {
-                        const filePath = `uploads/${fileName}`;
-                        const query = 'UPDATE level_1_tests SET add_file = $1, user_id = $2';
-                        const values = [filePath, req.user.user_id];
-                        await db.query(query, values);
-                    })
-                );
-            } else if (type_of_unit === "level_2_tests") {
-                updatePromises.push(
-                    ...userFiles.map(async (fileName) => {
-                        const filePath = `uploads/${fileName}`;
-                        const query = 'UPDATE level_2_tests SET add_file = $1, user_id = $2, test_id = $3';
-                        const values = [filePath, req.user.user_id, randomUUID()];
-                        await db.query(query, values);
-                    })
-                );
-            } else if (type_of_unit === "level_3_tests") {
-                updatePromises.push(
-                    ...userFiles.map(async (fileName) => {
-                        const filePath = `uploads/${fileName}`;
-                        const query = 'UPDATE level_3_tests SET add_file = $1, user_id = $2';
-                        const values = [filePath, req.user.user_id];
-                        await db.query(query, values);
-                    })
+                    db.query(query, values)
                 );
             } else {
                 res.status(400).json('Неизвестный тип задания.');
