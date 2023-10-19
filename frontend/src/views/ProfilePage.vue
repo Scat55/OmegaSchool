@@ -151,7 +151,7 @@ export default {
       this.person.gender = response.data.user.gender
       this.person.item = response.data.user.item
       this.person.expert = response.data.user.expert === 'Да'
-      this.person.birthday = response.data.user.birthdate
+      this.person.birthday = format(new Date(response.data.user.birthdate), "dd.MM.yyyy")
       if (response.data.user.expert === "true") {
         this.person.expert = true
       }
