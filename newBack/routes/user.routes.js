@@ -21,7 +21,7 @@ router.post('/getTasksForExpert', userMiddleware, userController.getTasksForExpe
 
 
 router.post('/upload/', userMiddleware, userController.postFile)
-router.post('/upload_file/', userMiddleware, userController.postFileWithType)
+router.post('/uploads_file/', userMiddleware, userController.postFilesWithType)
 
 
 

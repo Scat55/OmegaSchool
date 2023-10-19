@@ -14,13 +14,13 @@
               class="tab"
               v-if="person.student === false"
               @click="switchTab('TaskToCheckStudent')"
-            >Задачи на проверку ( ученик )
+            >Задачи на проверку ( от ученика )
             </div>
             <div
               class="tab"
               v-if="person.expert === true"
               @click="switchTab('TaskToCheckTeacher')"
-            >Задачи на проверку ( учитель )
+            >Задачи на проверку ( от учителя )
             </div>
             <div
               class="tab"
@@ -151,7 +151,7 @@ export default {
       this.person.gender = response.data.user.gender
       this.person.item = response.data.user.item
       this.person.expert = response.data.user.expert === 'Да'
-      this.person.birthday = format(new Date(response.data.user.birthdate), 'dd.MM.yyyy') // Приводим дату в человеческий вид с помощью data-fns
+      this.person.birthday = response.data.user.birthdate
       if (response.data.user.expert === "true") {
         this.person.expert = true
       }
