@@ -14,13 +14,13 @@
               class="tab"
               v-if="person.student === false"
               @click="switchTab('TaskToCheckStudent')"
-            >Задачи на проверку ( ученик )
+            >Задачи на проверку ( от ученика )
             </div>
             <div
               class="tab"
               v-if="person.expert === true"
               @click="switchTab('TaskToCheckTeacher')"
-            >Задачи на проверку ( учитель )
+            >Задачи на проверку ( от учителя )
             </div>
             <div
               class="tab"
