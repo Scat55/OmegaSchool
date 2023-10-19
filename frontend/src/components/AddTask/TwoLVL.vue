@@ -18,7 +18,7 @@ export default {
     <div class="shablonZadaniaTwo">
       <div class="name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания">
+        <input type="text" placeholder="Введите название задания" class = "name__task">
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
@@ -72,7 +72,13 @@ export default {
   resize: none;
   height: 10rem;
 }
-
+.name__task{
+  padding: 0.5rem;
+  margin-top: 10px;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
+}
 .btn-send {
   width: 100%;
   padding: 15px;

@@ -19,7 +19,7 @@ export default {
     <div class="shablonZadaniaThree">
       <div class="name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания">
+        <input type="text" placeholder="Введите название задания" class = "name__task">
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
@@ -42,7 +42,23 @@ export default {
   margin: 15px 0;
 }
 
+.name__task{
+  padding: 0.5rem;
+  margin-top: 10px;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
+}
 
+#textAreaUsl {
+  width: 100%;
+  font-size: 1.5rem;
+  resize: none;
+  height: 20rem;
+  margin-top: 10px;
+  outline: none;
+  border: none;
+}
 .btn-send {
   width: 100%;
   padding: 15px;
