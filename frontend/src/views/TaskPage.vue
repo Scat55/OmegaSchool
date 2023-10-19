@@ -4,18 +4,18 @@
 
       <div class="window">
 
-<!--    Тут верхняя шапка    -->
+        <!--    Тут верхняя шапка    -->
         <div class="div1">
           <div>Задания</div>
           <div>Слева вы сможете выбрать фильтры для заданий. <br> По каким предметам, сложность и тд.</div>
         </div>
-<!--    конец шапки    -->
-<!-- Фильтр -->
+        <!--    конец шапки    -->
+        <!-- Фильтр -->
         <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = !filterSee">
           <div>Показать фильтры <span v-show="hasActiveFilters">( Есть примененные )</span></div>
         </div>
         <div class="filter" v-show='filterSee === true'>
-          <div >
+          <div>
             <div class="filter__search-bar">
               <p>Поиск задачи: </p>
               <input v-model="searchQuery" placeholder="Поиск по названию задачи...">
@@ -34,7 +34,11 @@
               <p>Предмет:</p>
               <select v-model="selectedTopic" class="topic-section">
                 <option value="">Все предметы</option>
+                <option value="Биология">Биология</option>
+                <option value="География">География</option>
+                <option value="Информатика">Информатика</option>
                 <option value="Математика">Математика</option>
+                <option value="Технология">Технология</option>
                 <option value="Физика">Физика</option>
                 <option value="Химия">Химия</option>
               </select>
@@ -62,8 +66,8 @@
             </div>
           </div>
         </div>
-<!-- Конец фильтра -->
-<!--    Где выводятся задачи    -->
+        <!-- Конец фильтра -->
+        <!--    Где выводятся задачи    -->
         <div class="div3">
           <TaskList
               v-for="task in paginatedTasks"
@@ -80,7 +84,7 @@
           </div>
 
         </div>
-<!--    Конец этого окна    -->
+        <!--    Конец этого окна    -->
       </div>
 
     </div>
@@ -261,13 +265,13 @@ export default {
   align-items: center;
   justify-content: center;
 
-  &>span {
+  & > span {
     margin: 0 5px;
   }
 
-  &>button {
+  & > button {
     cursor: pointer;
-width: 25px;
+    width: 25px;
     text-align: center;
     color: white;
     background: $lightBlueColor;
@@ -279,7 +283,7 @@ width: 25px;
   margin: 15px 0 5px 0;
 }
 
-@media (max-width: 1285px){
+@media (max-width: 1285px) {
   .window {
     padding: 0 7px;
   }
@@ -316,7 +320,7 @@ width: 25px;
   &__search-bar {
 
 
-    &>input {
+    & > input {
       width: 80%;
       padding: 7px;
       outline: none;
@@ -340,18 +344,18 @@ width: 25px;
     }
 
     &__hide {
-background: $lightBlueColor;
+      background: $lightBlueColor;
     }
 
     &__reset {
-background: red;
+      background: red;
     }
   }
 
 }
 
 .topic-section {
-  font-family: Visitor,serif;
+  font-family: Visitor, serif;
   margin: 5px 0;
   padding: 10px;
   width: 200px;
