@@ -29,15 +29,15 @@ class User_controller {
         try {
             const user_id = req.user_id
             // Извлекаем данные из тела запроса
-            const { first_name, last_name, patronymic, birthdate, classes,item } = req.body;
-            console.log(user_id, first_name, last_name, patronymic, birthdate, classes, item)
+            const { first_name, last_name, patronymic, birthdata, classes,item } = req.body;
+            console.log(user_id, first_name, last_name, patronymic, birthdata, classes, item)
             // Создаем SQL-запрос для обновления данных пользователя в таблице users
             const sql = `UPDATE users 
-                   SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
+                   SET first_name = $1, last_name = $2, patronymic = $3, birthdata = $4, classes = $5, item = $6
                    WHERE user_id = $7`;
 
             // Используем асинхронный метод для выполнения SQL-запроса
-            await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
+            await db.query(sql, [first_name, last_name, patronymic, birthdata, classes, item, user_id]);
 
             console.log('Дополнительные данные успешно обновлены');
             res.status(200).json({ message: 'Дополнительные данные успешно обновлены' });
