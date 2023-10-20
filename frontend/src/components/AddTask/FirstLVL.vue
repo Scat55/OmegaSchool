@@ -39,9 +39,9 @@ export default {
       const add_file = this.file
       const questions = this.checkboxes;
       const formData = new FormData()
-      formData.append('file', this.newFile)
+      formData.append('file', this.file)
       this.token = JSON.parse(localStorage.getItem('local'))
-
+      console.log(this.file)
       axios.post('/api/add_level_1_test', {
         task_test: task_test,
         task_description: task_description,
@@ -57,7 +57,7 @@ export default {
           {
             headers: {
               'Authorization': `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data;  charset=utf-8'
+              'Content-Type': 'multipart/form-data'
             }
           })
     },
@@ -73,7 +73,7 @@ export default {
       this.selectedFiles = []
     },
     // Для загрузки файлов
-    handleFileChange(e) {
+    handleFileChange() {
       // При изменении выбранных файлов обновляем список имен файлов
       const fileInput = this.$refs.fileInput;
       const files = fileInput.files;
@@ -84,18 +84,18 @@ export default {
       }
 
       this.selectedFiles = fileNames;
-
-      this.file = this.$refs.fileInput.files
-      const allFile = Object.values(this.file)
-      for (let i = 0; i < allFile.length; i++){
-        this.newFile = allFile[i]
-      }
-
+      this.file = this.$refs.fileInput.files[0]
+      // this.file = this.$refs.fileInput.files
+      // const allFile = Object.values(this.file)
+      // for (let i = 0; i < allFile.length; i++){
+      //   this.newFile = allFile[i]
+      // }
     },
     removeFile(index) {
       // Удаляем файл из списка выбранных файлов по индексу
       this.selectedFiles.splice(index, 1);
     },
+
   },
   computed: {
     // Для загрузки файлов
