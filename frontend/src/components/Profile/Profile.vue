@@ -120,17 +120,14 @@ export default {
 
 
     <div class="date_person_birthday_gender">
-      <!--      <p>Дата рождения {{ person.birthday }}</p>-->
       <p>Пол: {{ person.gender }}</p>
-      <div v-if="edit">
+      <div v-if="edit" class="input-container">
         <label>Дата рождения:</label>&nbsp;
-        <input
-            type="date"
-            v-model="person.birthday"
-        >
+        <input type="date" class="styled-input" v-model="person.birthday">
       </div>
       <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
     </div>
+
 
     <div class="date_person_class">
       <div v-if="person.student === true">
@@ -259,6 +256,31 @@ export default {
     width: 30%;
   }
 }
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.styled-input {
+  padding: 8px 12px;
+  border: 1px solid #c7fdff;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $accentColor;
+    box-shadow: 0 0 5px rgba(199, 253, 255, 0.5);
+  }
+
+  &:hover {
+    border-color: darken($accentColor, 10%);
+  }
+}
+
 
 .change_profile {
   margin-top: 1rem;
