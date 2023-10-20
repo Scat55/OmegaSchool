@@ -10,7 +10,8 @@ const userMiddleware = require('../middlewaree/userMiddlewaer');
 const roleMiddleware = require('../middlewaree/roleMiddlewaer')
 
 
-router.get('/user_list', roleMiddleware(['Ученик','Эксперт']), userController.getUserList)
+ //   , roleMiddleware(['Ученик','Эксперт'])
+router.get('/user_list', userController.getUserList)
 router.get('/user_id/:email',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.getUserIDForEmail)
 router.get('/user_inf_email/:email',userMiddleware, userController.getUserDataForEmail)
 router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformation)
@@ -20,7 +21,7 @@ router.post('/getTasksForExpert',roleMiddleware(['Эксперт']), userControl
 
 
 
-router.post('/upload/', userMiddleware, userController.postFile)
+//router.post('/upload/', userMiddleware, userController.postFile)
 router.post('/uploads_file/', userMiddleware, userController.postFilesWithType)
 
 

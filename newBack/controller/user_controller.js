@@ -287,94 +287,177 @@ class User_controller {
     // }
 
 
-    async postFile(req, res) {
-        const {user_id} = req.user;
+    // async postFilesWithType(req, res) {
+    //     const { user_id } = req.user;
+    //
+    //     const storage = multer.diskStorage({
+    //         destination: (req, file, cb) => {
+    //             cb(null, 'uploads/');
+    //         },
+    //         filename: (req, file, cb) => {
+    //             const date = new Date();
+    //             const day = String(date.getDate()).padStart(2, '0');
+    //             const month = String(date.getMonth() + 1).padStart(2, '0');
+    //             const year = date.getFullYear();
+    //
+    //             const fileName = `${day}_${month}_${year}_${user_id}_${file.originalname}`;
+    //             cb(null, fileName);
+    //         },
+    //     });
+    //
+    //     const upload = multer({ storage }).array('files');  // Принимаем массив файлов
+    //
+    //     upload(req, res, async (err) => {
+    //         if (err) {
+    //             // Если произошла ошибка при загрузке файлов
+    //             res.status(500).send('Ошибка при загрузке файлов.');
+    //             return;
+    //         }
+    //
+    //         // Файлы успешно загружены
+    //         const filePaths = req.files.map(file => 'uploads/' + file.filename);
+    //
+    //         // Собираем пути файлов в одну строку с разделителями (запятые)
+    //         const filesString = filePaths.join(',');
+    //
+    //         // Создаем запрос для обновления базы данных
+    //         const query = `UPDATE level_1_tests SET add_file = $1 WHERE user_id = $2`;
+    //         const values = [filesString, user_id];
+    //
+    //         try {
+    //             await db.query(query, values);
+    //             res.send(`Файлы успешно загружены и информация обновлена в базе данных: ${filesString}`);
+    //         } catch (dbErr) {
+    //             console.error(dbErr);
+    //             res.status(500).send('Ошибка при обновлении информации о файлах в базе данных.');
+    //         }
+    //     });
+    // }
 
+
+
+
+
+
+
+
+
+
+
+    // async postFilesWithType(req, res) {
+    //     const { type_of_unit } = req.body;
+    //
+    //     try {
+    //         const files = fs.readdirSync('./uploads');
+    //
+    //         const userFiles = files.filter((fileName) => {
+    //             const userIdFromFileName = fileName.split('_')[3]; // Предполагается, что user_id в имени файла находится на четвертом месте, разделенное "_".
+    //             return userIdFromFileName === req.user.user_id;
+    //         });
+    //
+    //         const updatePromises = [];
+    //
+    //         if (type_of_unit === "level_1_tests" || type_of_unit === "level_2_tests" || type_of_unit === "level_3_tests") {
+    //             // Собираем имена файлов в одну строку с разделителями (запятые)
+    //             const filesString = userFiles.map(fileName => `uploads/${fileName}`).join(',');
+    //
+    //             // Создаем один общий запрос для обновления базы данных
+    //             const query = `UPDATE ${type_of_unit} SET add_file = $1, user_id = $2, test_id = $3`;
+    //             const values = [filesString, req.user.user_id, randomUUID()];
+    //
+    //             // Добавляем обновление в список промисов
+    //             updatePromises.push(
+    //                 db.query(query, values)
+    //             );
+    //         } else {
+    //             res.status(400).json('Неизвестный тип задания.');
+    //             return;
+    //         }
+    //
+    //         await Promise.all(updatePromises);
+    //         res.json(`/uploads/${userFiles}`);
+    //     } catch (error) {
+    //         console.error('Ошибка при чтении директории:', error);
+    //         res.status(500).send('Ошибка сервера.');
+    //     }
+    // }
+
+    async postFilesWithType(req, res) {
+        const { user_id } = req.user;
+        const { task_test, task_description, classes, questions } = req.body;
+
+        // 1. Создайте запись в базе данных
+        const taskQuery = 'INSERT INTO level_1_tests (user_id, task_test, task_description, classes) VALUES ($1, $2, $3, $4) RETURNING test_id';
+        const taskValues = [user_id, task_test, task_description, classes];
+
+        let taskId;
+        try {
+            const result = await db.query(taskQuery, taskValues);
+            taskId = result.rows[0].id;
+        } catch (dbErr) {
+            console.error(dbErr);
+            res.status(500).send('Ошибка при создании задания в базе данных.');
+            return;
+        }
+
+        // 2. Загрузите файлы с использованием идентификатора задания
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
-                cb(null, 'uploads/');
+                const dir = 'uploads/';
+                cb(null, dir);
             },
             filename: (req, file, cb) => {
-                const date = new Date();
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-
-                const fileName = `${day}_${month}_${year}_${user_id}_${file.originalname}`;
+                const encodedName = encodeURIComponent(file.originalname);
+                const fileName = `${taskId}_${encodedName}`;
                 cb(null, fileName);
             },
         });
 
-        const upload = multer({storage}).single('file');
+        const upload = multer({ storage }).array('files');
 
         upload(req, res, async (err) => {
             if (err) {
-                // Если произошла ошибка при загрузке файла, вернуть соответствующий ответ
-                res.status(500).send('Ошибка при загрузке файла.');
-            } else {
-                // Если файл успешно загружен, обновляем запись в базе данных
-                const filePath = 'uploads/' + req.file.filename;
-
-                // З
-                const query = 'UPDATE level_1_tests SET add_file = $1 WHERE user_id = $2';
-                const values = [filePath, user_id];
-                try {
-                    await db.query(query, values);
-                    res.send('Файл успешно загружен и информация обновлена в базе данных.');
-                } catch (dbErr) {
-                    console.error(dbErr);
-                    res.status(500).send('Ошибка при обновлении информации о файле в базе данных.');
-                }
-            }
-        })
-    }
-
-
-
-
-
-
-
-
-
-
-    async postFilesWithType(req, res) {
-        const { type_of_unit } = req.body;
-
-        try {
-            const files = fs.readdirSync('./uploads');
-
-            const userFiles = files.filter((fileName) => {
-                const userIdFromFileName = fileName.split('_')[3]; // Предполагается, что user_id в имени файла находится на четвертом месте, разделенное "_".
-                return userIdFromFileName === req.user.user_id;
-            });
-
-            const updatePromises = [];
-
-            if (type_of_unit === "level_1_tests" || type_of_unit === "level_2_tests" || type_of_unit === "level_3_tests") {
-                // Собираем имена файлов в одну строку с разделителями (запятые)
-                const filesString = userFiles.map(fileName => `uploads/${fileName}`).join(',');
-
-                // Создаем один общий запрос для обновления базы данных
-                const query = `UPDATE ${type_of_unit} SET add_file = $1, user_id = $2, test_id = $3`;
-                const values = [filesString, req.user.user_id, randomUUID()];
-
-                // Добавляем обновление в список промисов
-                updatePromises.push(
-                    db.query(query, values)
-                );
-            } else {
-                res.status(400).json('Неизвестный тип задания.');
+                console.error("Multer error:", err);
+                res.status(500).send('Ошибка при загрузке файлов.');
                 return;
             }
+            // Файлы успешно загружены
+            const filePaths = req.files.map(file => 'uploads/' + file.filename);
+            const filesString = filePaths.join(',');
 
-            await Promise.all(updatePromises);
-            res.json(`/uploads/${userFiles}`);
-        } catch (error) {
-            console.error('Ошибка при чтении директории:', error);
-            res.status(500).send('Ошибка сервера.');
-        }
+            // Обновите запись в базе данных с путями к файлам
+            const updateQuery = 'UPDATE level_1_tests SET add_file = $1 WHERE test_id = $2';
+            const updateValues = [filesString, taskId];
+
+            try {
+                await db.query(updateQuery, updateValues);
+                res.send(`Файлы успешно загружены и информация обновлена в базе данных: ${filesString}`);
+            } catch (updateErr) {
+                console.error(updateErr);
+                res.status(500).send('Ошибка при обновлении информации о файлах в базе данных.');
+            }
+        });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
