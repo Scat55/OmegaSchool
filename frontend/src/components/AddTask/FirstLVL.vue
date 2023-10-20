@@ -45,24 +45,14 @@ export default {
       axios.post('/api/add_level_1_test', {
         task_test: task_test,
         task_description: task_description,
-        questions: questions
+        questions: questions,
+        add_file: add_file
       }, {
         headers: {
           'Authorization': `Bearer ${this.token.token}`,
           'Content-Type': 'application/json'
         }
       })
-      axios.post('/api/upload/',
-          formData,
-          {
-            headers: {
-              'Authorization': `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-    },
-    addTask() {
-      alert('Заданме добавлено')
     },
 
     deleteCheckBox() {
