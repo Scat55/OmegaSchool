@@ -249,10 +249,6 @@ class User_controller {
         }
     }
 
-
-
-
-
     // async postFile(req, res) {
     //
     //     const {user_id} = req.user
@@ -334,16 +330,6 @@ class User_controller {
     //     });
     // }
 
-
-
-
-
-
-
-
-
-
-
     // async postFilesWithType(req, res) {
     //     const { type_of_unit } = req.body;
     //
@@ -382,85 +368,64 @@ class User_controller {
     //     }
     // }
 
-    async postFilesWithType(req, res) {
-        const { user_id } = req.user;
-        const { task_test, task_description, classes, questions } = req.body;
-
-        // 1. Создайте запись в базе данных
-        const taskQuery = 'INSERT INTO level_1_tests (user_id, task_test, task_description, classes) VALUES ($1, $2, $3, $4) RETURNING test_id';
-        const taskValues = [user_id, task_test, task_description, classes];
-
-        let taskId;
-        try {
-            const result = await db.query(taskQuery, taskValues);
-            taskId = result.rows[0].id;
-        } catch (dbErr) {
-            console.error(dbErr);
-            res.status(500).send('Ошибка при создании задания в базе данных.');
-            return;
-        }
-
-        // 2. Загрузите файлы с использованием идентификатора задания
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                const dir = 'uploads/';
-                cb(null, dir);
-            },
-            filename: (req, file, cb) => {
-                const encodedName = encodeURIComponent(file.originalname);
-                const fileName = `${taskId}_${encodedName}`;
-                cb(null, fileName);
-            },
-        });
-
-        const upload = multer({ storage }).array('files');
-
-        upload(req, res, async (err) => {
-            if (err) {
-                console.error("Multer error:", err);
-                res.status(500).send('Ошибка при загрузке файлов.');
-                return;
-            }
-            // Файлы успешно загружены
-            const filePaths = req.files.map(file => 'uploads/' + file.filename);
-            const filesString = filePaths.join(',');
-
-            // Обновите запись в базе данных с путями к файлам
-            const updateQuery = 'UPDATE level_1_tests SET add_file = $1 WHERE test_id = $2';
-            const updateValues = [filesString, taskId];
-
-            try {
-                await db.query(updateQuery, updateValues);
-                res.send(`Файлы успешно загружены и информация обновлена в базе данных: ${filesString}`);
-            } catch (updateErr) {
-                console.error(updateErr);
-                res.status(500).send('Ошибка при обновлении информации о файлах в базе данных.');
-            }
-        });
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // async postFilesWithType(req, res) {
+    //     const { user_id } = req.user;
+    //     const { task_test, task_description, classes, questions } = req.body;
+    //
+    //     // 1. Создайте запись в базе данных
+    //     const taskQuery = 'INSERT INTO level_1_tests (user_id, task_test, task_description, classes) VALUES ($1, $2, $3, $4) RETURNING test_id';
+    //     const taskValues = [user_id, task_test, task_description, classes];
+    //
+    //     let taskId;
+    //     try {
+    //         const result = await db.query(taskQuery, taskValues);
+    //         taskId = result.rows[0].id;
+    //     } catch (dbErr) {
+    //         console.error(dbErr);
+    //         res.status(500).send('Ошибка при создании задания в базе данных.');
+    //         return;
+    //     }
+    //
+    //     // 2. Загрузите файлы с использованием идентификатора задания
+    //     const storage = multer.diskStorage({
+    //         destination: (req, file, cb) => {
+    //             const dir = 'uploads/';
+    //             cb(null, dir);
+    //         },
+    //         filename: (req, file, cb) => {
+    //             const encodedName = encodeURIComponent(file.originalname);
+    //             const fileName = `${taskId}_${encodedName}`;
+    //             cb(null, fileName);
+    //         },
+    //     });
+    //
+    //     const upload = multer({ storage }).array('files');
+    //
+    //     upload(req, res, async (err) => {
+    //         if (err) {
+    //             console.error("Multer error:", err);
+    //             res.status(500).send('Ошибка при загрузке файлов.');
+    //             return;
+    //         }
+    //         // Файлы успешно загружены
+    //         const filePaths = req.files.map(file => 'uploads/' + file.filename);
+    //         const filesString = filePaths.join(',');
+    //
+    //         // Обновите запись в базе данных с путями к файлам
+    //         const updateQuery = 'UPDATE level_1_tests SET add_file = $1 WHERE test_id = $2';
+    //         const updateValues = [filesString, taskId];
+    //
+    //         try {
+    //             await db.query(updateQuery, updateValues);
+    //             res.send(`Файлы успешно загружены и информация обновлена в базе данных: ${filesString}`);
+    //         } catch (updateErr) {
+    //             console.error(updateErr);
+    //             res.status(500).send('Ошибка при обновлении информации о файлах в базе данных.');
+    //         }
+    //     });
+    // }
 
 }
-
 
 module.exports = new User_controller()
 
