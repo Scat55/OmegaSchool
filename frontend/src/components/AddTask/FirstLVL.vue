@@ -32,28 +32,65 @@ export default {
     removeCheckbox(index) {
       this.checkboxes.splice(index, 1)
     },
+    // Обработка форма и отправка данных с нее
     sendTest() {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
-      const task_test = this.nameTask;
-      const task_description = this.descriptionTask;
-      const add_file = this.file
-      const questions = this.checkboxes;
+
       const formData = new FormData()
-      formData.append('file', this.file)
+      const data = {
+        task_test: this.nameTask,
+        task_description: this.descriptionTask,
+        questions: this.checkboxes,
+      }
+      const files = this.file;
       this.token = JSON.parse(localStorage.getItem('local'))
+      formData.append('data', data)
+      formData.append('files', files)
+
+
       console.log(this.file)
-      axios.post('/api/add_level_1_test', {
-        task_test: task_test,
-        task_description: task_description,
-        questions: questions,
-        add_file: add_file
-      }, {
-        headers: {
-          'Authorization': `Bearer ${this.token.token}`,
-          'Content-Type': 'application/json'
-        }
-      })
+      axios.post('/api/uploads_file/',
+          data,
+          {
+            headers: {
+              'Authorization': `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json'
+            }
+          })
     },
+
+    // sendTest(event) {
+    //   const formData = new FormData();
+    //   const file = this.$refs.fileInput.files[0]
+    //   const data = {
+    //     task_test: this.nameTask,
+    //     task_description: this.descriptionTask,
+    //     questions: this.checkboxes,
+    //   };
+    //
+    //   formData.append('data', JSON.stringify(data)); // Конвертировать объект данных в строку JSON
+    //
+    //   if (Array.isArray(this.file)) {
+    //     file.forEach((file, index) => {
+    //       formData.append(`files[${index}]`, file);
+    //     });
+    //   } else {
+    //     formData.append('files', file);
+    //   }
+    //
+    //   this.token = JSON.parse(localStorage.getItem('local'));
+    //
+    //   axios.post('/api/uploads_file/', formData, {
+    //     headers: {
+    //       'Authorization': `Bearer ${this.token.token}` ,
+    //       'Content-Type': 'multipart/form-data' // Исправленный Content-Type
+    //     }
+    //   }).then(response => {
+    //     console.log(response.data);
+    //   }).catch(error => {
+    //     console.error("Error uploading files:", error);
+    //   });
+    // },
 
     deleteCheckBox() {
       this.checkboxes = [
@@ -63,7 +100,7 @@ export default {
       this.selectedFiles = []
     },
     // Для загрузки файлов
-    handleFileChange() {
+    handleFileChange(event) {
       // При изменении выбранных файлов обновляем список имен файлов
       const fileInput = this.$refs.fileInput;
       const files = fileInput.files;
@@ -74,7 +111,9 @@ export default {
       }
 
       this.selectedFiles = fileNames;
-      this.file = this.$refs.fileInput.files[0]
+      // this.file = event.target.files[0]
+      // console.log(this.file)
+      // this.file = this.$refs.fileInput.files[0]
       // this.file = this.$refs.fileInput.files
       // const allFile = Object.values(this.file)
       // for (let i = 0; i < allFile.length; i++){
