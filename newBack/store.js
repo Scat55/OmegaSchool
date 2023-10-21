@@ -6,11 +6,12 @@ class Store {
     constructor() {
         // Функция, которая будет генерировать путь к папке, в которую будут сохраняться загруженные файлы
         this.getUploadsPath = () => {
+
             const today = new Date();
             const year = today.getFullYear().toString();
             const month = (today.getMonth() + 1).toString().padStart(2, '0');
             const day = today.getDate().toString().padStart(2, '0');
-            return path.join(__dirname, 'uploads', `${year}_${month}_${day}`);
+            return path.join(__dirname, 'uploads', `${year}`);
         };
 
         // Объект storage, который задает папку для сохранения загруженных файлов и их имена.
