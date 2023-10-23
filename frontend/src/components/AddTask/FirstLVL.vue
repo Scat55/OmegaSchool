@@ -33,30 +33,41 @@ export default {
       this.checkboxes.splice(index, 1)
     },
     // Обработка форма и отправка данных с нее
-    sendTest() {
+    async sendTest() {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
 
       const formData = new FormData()
-      const data = {
-        task_test: this.nameTask,
-        task_description: this.descriptionTask,
-        questions: this.checkboxes,
-      }
-      const files = this.file;
+
+      const task_test = this.nameTask;
+      const task_description = this.description;
+      const questions = this.checkboxes;
+      const files = this.$refs.fileInput.files[0]
+
       this.token = JSON.parse(localStorage.getItem('local'))
-      formData.append('data', data)
+      // formData.append('data', data)
       formData.append('files', files)
 
 
       console.log(this.file)
-      axios.post('/api/uploads_file/',
-          data,
-          {
-            headers: {
-              'Authorization': `Bearer ${this.token.token}`,
-              'Content-Type': 'application/json'
-            }
-          })
+      // axios.post(`/api/uploads/sddfsdsdf/sdsdfsfsdf/9/sjkdvnsjkcnsjkdn`,
+      //     {
+      //       files: files
+      //     }, {
+      //       headers: {
+      //         'Authorization': `Bearer ${this.token.token}`,
+      //         'Content-Type': 'multipart/form-data; boundary=RaNdOmDeLiMiTeR'
+      //       }
+      //     })
+
+      await fetch(`/api/uploads/sddfsdsdf/sdsdfsfsdf/9/sjkdvnsjkcnsjkdn`, {
+        method: "POST",
+        // mode: "cors",
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`,
+          'Content-Type': 'multipart/form-data; boundary=RaNdOmDeLiMiTeR'
+        },
+          files:files
+      })
     },
 
     // sendTest(event) {
