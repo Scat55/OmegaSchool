@@ -6,7 +6,10 @@ export default {
         class: '11',
         complexity: "1",
         bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd",
-        status: false,
+        status: false, // статус решения у пользователя.
+        answer: 'Правильный ответ .........',
+        help: 'Вспомните.......',
+        maxScore: 2,
         checkPoint:
             [{text: 'ASD', checked: false},
                 {text: 'ASD312', checked: true},
