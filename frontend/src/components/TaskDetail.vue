@@ -30,10 +30,9 @@
     <!--  END -->
 
     <!--  Блок только для 1 лвл заданий START  -->
-    <div class="container_answer">
+    <div class="container_answer" v-if="task.complexity === '1'">
       <p>Варианты ответов. Выберите верный ответ(-ы):</p>
-      <div v-if="task.complexity === '1'"
-           v-for="(chP, index) in task.checkPoint"
+      <div v-for="(chP, index) in task.checkPoint"
            :key="index"
       >
         <div class="itemAnswer">
