@@ -21,7 +21,7 @@
         <div class="footer__universitet">
 
           <img
-            src="../assets/images/logoUni.jpg"
+            src="../assets/images/logo_w.png"
             alt="LogoUniversitet"
             class="footer__logo-img"
             @click="goToTopPage()"
