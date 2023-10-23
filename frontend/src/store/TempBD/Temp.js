@@ -7,6 +7,15 @@ export default {
         complexity: "1",
         bodyTask: "sadkjruesiljfkldxlrjk5hjlghjldfxrhljg drg heslrg ersg hkle lkdfxhgljrfhdls ghrfj edrgehsjlgh ldj f gsjl hsdfjl; g dfg jldsf gdr gdf ;lgjdf hgjdfhjgdfl; d gjldfh gkjsdf gjl;dfh gldf nlg hdfgh dflhg ldfhgl hdfg hdfl gsd",
         status: false,
+        checkPoint:
+            [{text: 'ASD', checked: false},
+                {text: 'ASD312', checked: true},
+                {text: 'ASDASDASDD', checked: false},],
+        addedFile: ["https://example.com/path/to/your/file.pdf",
+            "https://example.com/path/to/your/file.pdf",
+            "https://example.com/path/to/your/file.pdf",
+            "https://example.com/path/to/your/file.pdf",
+            "https://example.com/path/to/your/file.pdf"]
     }, {
         id: 2,
         title: "sdrgrsdgsdrgxdrgxrtdht",
