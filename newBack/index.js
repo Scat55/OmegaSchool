@@ -1,6 +1,6 @@
 const express = require('express')
 const session = require('express-session');
-const cors = require('cors');
+// const cors = require('cors');
 
 const userRouter = require('./routes/user.routes')
 const authRouter = require('./routes/auth.routes')
@@ -10,7 +10,7 @@ const {secret} = require('./config')
 const PORT = process.env.PORT || 8070
 
 const app = express();
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
