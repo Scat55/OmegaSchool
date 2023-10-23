@@ -22,7 +22,7 @@ router.post('/getTasksForExpert',roleMiddleware(['Эксперт']), userControl
 //маршруты для работы с файлами
 
 //маршрут для ручной загрузки файла или файлов получения файла.
-router.post('/uploads/:task_test/:task_description/:classes/:questions', userMiddleware, store.upload.array('files'), async (req, res) => {
+router.post('/uploads/', userMiddleware, store.upload.array('files'), async (req, res) => {
     const files = req.files;
     if (!files) {
         const error = new Error('Files upload failed');
@@ -31,7 +31,7 @@ router.post('/uploads/:task_test/:task_description/:classes/:questions', userMid
     }
     console.log(files)
     const {user_id} = req.user;
-    const {task_test, task_description, classes, questions} = req.params;
+    const {task_test, task_description, classes, questions} = req.body;
 
     // 1. Создайте запись в базе данных
     const taskQuery = 'INSERT INTO level_1_tests (user_id, task_test, task_description, classes) VALUES ($1, $2, $3, $4) RETURNING test_id';
