@@ -26,6 +26,6 @@ router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учи
 
 
 //маршрут для получения файла, используя URL с датой и именем файла.
-//router.get('/download', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
+router.get('/download', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
 
 module.exports = router

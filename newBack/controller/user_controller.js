@@ -284,6 +284,19 @@ class User_controller {
         });
     }
 
+    async download(req, res) {
+
+        const user_id = req.user
+
+        const files = fs.readdirSync('./uploads');
+
+        const userFiles = files.filter((fileName) => {
+            const userIdFromFileName = fileName.split('_')[3];
+            return userIdFromFileName === user_id;
+        });
+
+        return res.send({message: 'Файлы успешно загружены', userFiles});
+    }
 }
 
 module.exports = new User_controller()
