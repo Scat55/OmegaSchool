@@ -37,7 +37,7 @@ class Store {
         this.upload = multer({
             storage: this.storage,
             fileFilter: (req, file, cb) => {
-                const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'application/msword'];
+                const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
                 if (!allowedTypes.includes(file.mimetype)) {
                     const error = new Error('Неподдерживаемый тип файлов. Выберите из pdf, jpeg, png, msword.');
                     error.statusCode = 400;
