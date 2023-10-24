@@ -59,11 +59,8 @@ export default {
   margin-top: 5rem;
   background-color: #00DFCC;
   padding: 1.625rem;
-  border-radius: 1rem;
-
   &__content {
     display: flex;
-
     align-items: center;
     justify-content: space-around;
 

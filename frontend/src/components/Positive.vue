@@ -86,6 +86,7 @@ export default {
     display: flex;
     align-items: start;
     justify-content: space-between;
+    gap: 2rem;
 
     @media (min-width: 300px) and (max-width: 1200px){
       flex-wrap: wrap;
@@ -94,15 +95,13 @@ export default {
     &-text {
       display: flex;
       flex-direction: column;
-      gap: 13rem;
+      gap: 9rem;
       align-items: center;
-
     }
 
     &-item {
       position: relative;
       text-align: center;
-      padding: .625rem;
       width: 18.75rem;
       margin-bottom: 3.125rem;
       height: 18.75rem;
