@@ -139,7 +139,7 @@ export default {
     },
 
     paginatedTasks() {
-      const start = (this.currentPage - 1) * this.tasksPerPage;
+      const start = (this.currentPage -1 ) * this.tasksPerPage;
       const end = start + this.tasksPerPage;
       return this.filteredTasks.slice(start, end);
     },
