@@ -46,9 +46,9 @@
                    <p>Класс:</p>
                    <select v-model="selectedClass" class="topic-section">
                      <option value="">Не указан</option>
-                     <option value="9">9 класс</option>
-                     <option value="10">10 класс</option>
-                     <option value="11">11 класс</option>
+                     <option value="9">8 класс</option>
+                     <option value="10">9 класс</option>
+                     <option value="11">10 класс</option>
                    </select>
                  </div>
                  <div class="filter__status_filter">
