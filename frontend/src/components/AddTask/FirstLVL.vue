@@ -42,8 +42,9 @@ export default {
       const task_description = this.description;
       const questions = this.checkboxes;
       const files = this.$refs.fileInput.files[0]
-
+      console.log("Название файла:", files.name);
       this.token = JSON.parse(localStorage.getItem('local'))
+
       // formData.append('data', data)
       formData.append('files', files)
 
@@ -59,14 +60,14 @@ export default {
       //       }
       //     })
 
-      await fetch(`/api/uploads/sddfsdsdf/sdsdfsfsdf/9/sjkdvnsjkcnsjkdn`, {
+      await fetch(`/api/uploads`, {
         method: "POST",
         // mode: "cors",
         headers: {
-          'Authorization': `Bearer ${this.token.token}`,
-          'Content-Type': 'multipart/form-data; boundary=RaNdOmDeLiMiTeR'
+          'Authorization': `Bearer ${this.token.token}`
         },
-          files:files
+
+        body: formData
       })
     },
 
@@ -148,7 +149,7 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="sendTest()">
+  <form @submit.prevent="sendTest()" accept-charset="US-ASCII">
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
