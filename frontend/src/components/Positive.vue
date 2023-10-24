@@ -89,6 +89,8 @@ export default {
     gap: 2rem;
 
     @media (min-width: 300px) and (max-width: 1200px){
+      align-items: center;
+      justify-content: center;
       flex-wrap: wrap;
     }
 
