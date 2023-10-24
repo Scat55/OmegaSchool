@@ -37,14 +37,14 @@ export default {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
 
       const formData = new FormData();
-      const full = event.target.files[0]
+      // const full = event.target.files[0]
       const task_test = this.nameTask;
-      const task_description = this.description;
+      const task_description = this.descriptionTask;
       const questions = this.checkboxes;
 
       const files = this.$refs.fileInput.files[0]
-      console.log("Название файла:", files.name);
-      console.log(full)
+      // console.log("Название файла:", files.name);
+      // console.log(full)
 
       this.token = JSON.parse(localStorage.getItem('local'))
 
@@ -52,28 +52,30 @@ export default {
       formData.append('files', files)
 
       console.log(this.file)
-      axios.post('/api/uploads/',
-          {
-            task_test,
-            task_description,
-            questions,
-            files
-          }, {
-            headers: {
-              'Authorization': `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          })
+      // await axios.post('/api/uploads/',
+      //     {
+      //       task_test,
+      //       task_description,
+      //       questions,
+      //       files
+      //     }, {
+      //       headers: {
+      //         'Authorization': `Bearer ${this.token.token}`,
+      //         'Content-Type': 'multipart/form-data'
+      //       }
+      //     })
 
-      await fetch(`/api/uploads`, {
-        method: "POST",
-        // mode: "cors",
-        headers: {
-          'Authorization': `Bearer ${this.token.token}`
-        },
+      this.nameTask = this.descriptionTask = this.class = ''
 
-        body: formData
-      })
+      // await fetch(`/api/uploads`, {
+      //   method: "POST",
+      //   // mode: "cors",
+      //   headers: {
+      //     'Authorization': `Bearer ${this.token.token}`
+      //   },
+      //
+      //   body: formData
+      // })
     },
 
     // sendTest(event) {
