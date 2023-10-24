@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const {randomUUID} = require("crypto");
-//const upload = require('../multer/multerConfig');
+//const { upload } = require('../multer/multerConfig');
 const store = require('../store')
 
 class User_controller {
@@ -55,14 +55,14 @@ class User_controller {
             // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
             const [userResult, gradesResult, achievementsResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
-                //db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
-                //db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
+                db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
+                db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
-           // const grades = gradesResult.rows;
-           // const achievements = achievementsResult.rows;
+            const grades = gradesResult.rows;
+            const achievements = achievementsResult.rows;
 
             if (!user) {
                 console.log(`Пользователь с ID ${user_id} не найден`);
@@ -71,9 +71,9 @@ class User_controller {
 
             // Соберите результаты в один объект
             const userData = {
-                user//,
-               // grades,
-               // achievements,
+                user,
+                grades,
+                achievements,
             };
 
             console.log(`Данные для пользователя с ID ${user_id} найдены`);
@@ -121,21 +121,21 @@ class User_controller {
 
             const [userResult,achievementsResult , gradesResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE email = $1', [email]),
-                //db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                //db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
-           // const grades = gradesResult.rows;
-           // const achievements = achievementsResult.rows;
+            const grades = gradesResult.rows;
+            const achievements = achievementsResult.rows;
 
 
             // Соберите результаты в один объект
             const userData = {
-                user//,
-               // achievements,
-               // grades,
+                user,
+                achievements,
+                grades,
             };
 
             console.log(`Данные для пользователя с Email ${email} найдены`);
@@ -266,6 +266,7 @@ class User_controller {
             const test_id = '243fbc4a-2be8-46c4-994c-73ac30eb9b74';
             const filePaths = req.files.map(file => file.path);
             const filesString = filePaths.join(',');
+            console.log("Путь к файлу:", fileDetails);
 
             // Обновите запись в базе данных с путями к файлам
             const updateQuery = 'UPDATE level_1_tests SET add_file = $1 WHERE test_id = $2';

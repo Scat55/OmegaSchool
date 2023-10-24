@@ -41,10 +41,16 @@ export default {
       const task_test = this.nameTask;
       const task_description = this.description;
       const questions = this.checkboxes;
+<<<<<<< HEAD
+      const files = this.$refs.fileInput.files[0]
+      console.log("Название файла:", files.name);
+=======
       const files = this.$refs.fileInput.files[0];
       console.log(full)
 
+>>>>>>> 6bf326931f1f56ce86221e2c11f67c46049ad2df
       this.token = JSON.parse(localStorage.getItem('local'))
+
       // formData.append('data', data)
       formData.append('files', files)
 
@@ -64,6 +70,18 @@ export default {
           })
 
 
+<<<<<<< HEAD
+      await fetch(`/api/uploads`, {
+        method: "POST",
+        // mode: "cors",
+        headers: {
+          'Authorization': `Bearer ${this.token.token}`
+        },
+
+        body: formData
+      })
+=======
+>>>>>>> 6bf326931f1f56ce86221e2c11f67c46049ad2df
     },
 
     // sendTest(event) {
