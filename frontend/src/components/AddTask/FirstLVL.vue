@@ -33,16 +33,22 @@ export default {
       this.checkboxes.splice(index, 1)
     },
     // Обработка форма и отправка данных с нее
-    async sendTest() {
+     sendTest(event) {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
 
-      const formData = new FormData()
-
+      const formData = new FormData();
+      const full = event.target.files[0]
       const task_test = this.nameTask;
       const task_description = this.description;
       const questions = this.checkboxes;
+<<<<<<< HEAD
       const files = this.$refs.fileInput.files[0]
       console.log("Название файла:", files.name);
+=======
+      const files = this.$refs.fileInput.files[0];
+      console.log(full)
+
+>>>>>>> 6bf326931f1f56ce86221e2c11f67c46049ad2df
       this.token = JSON.parse(localStorage.getItem('local'))
 
       // formData.append('data', data)
@@ -50,16 +56,21 @@ export default {
 
 
       console.log(this.file)
-      // axios.post(`/api/uploads/sddfsdsdf/sdsdfsfsdf/9/sjkdvnsjkcnsjkdn`,
-      //     {
-      //       files: files
-      //     }, {
-      //       headers: {
-      //         'Authorization': `Bearer ${this.token.token}`,
-      //         'Content-Type': 'multipart/form-data; boundary=RaNdOmDeLiMiTeR'
-      //       }
-      //     })
+       axios.post('/api/uploads/',
+          {
+            task_test,
+            task_description,
+            questions,
+            files
+          }, {
+            headers: {
+              'Authorization': `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data'
+            }
+          })
 
+
+<<<<<<< HEAD
       await fetch(`/api/uploads`, {
         method: "POST",
         // mode: "cors",
@@ -69,6 +80,8 @@ export default {
 
         body: formData
       })
+=======
+>>>>>>> 6bf326931f1f56ce86221e2c11f67c46049ad2df
     },
 
     // sendTest(event) {
@@ -123,6 +136,7 @@ export default {
       }
 
       this.selectedFiles = fileNames;
+      // console.log(event.target.files[0])
       // this.file = event.target.files[0]
       // console.log(this.file)
       // this.file = this.$refs.fileInput.files[0]
@@ -149,7 +163,7 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="sendTest()" accept-charset="US-ASCII">
+  <form @submit.prevent="sendTest()">
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
