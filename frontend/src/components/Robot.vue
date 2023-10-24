@@ -85,11 +85,10 @@ export default {
 
   &__subtitle {
     display: inline-block;
-    line-height: 140%;
+    line-height: 180%;
     letter-spacing: 0.2rem;
     font-size: 1.1rem;
     margin-bottom: 3rem;
-    text-align: justify;
   }
 
   &__btn {
