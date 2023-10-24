@@ -40,6 +40,8 @@ export default {
 .achievement_title {
   text-align: center;
 &>select {
+  font-size: 1.1rem;
+  padding: 5px;
   outline: none;
   border-radius: 1rem;
   margin-top: 15px;
