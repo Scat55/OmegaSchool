@@ -1,9 +1,6 @@
 <template>
   <div class="header">
-    <div class="container">
-
       <div class="header__logo">
-
         <img
             src="../assets/images/Logo_px (2).png"
             alt="Logo"
@@ -20,16 +17,6 @@
               >Задания
               </li>
             </router-link>
-            <!--            <router-link :to="/profile/ + id" class = "router">-->
-            <!--              <li-->
-            <!--                  v-if="this.$store.state.isAuth"-->
-            <!--                  class="header__logo-item"-->
-            <!--              >Кабинет</li>-->
-            <!--            </router-link>-->
-            <!--            <li class="header__logo-item" v-if="!this.$store.state.isAuth">-->
-            <!--              <a href="#comp">О нас</a>-->
-            <!--            </li>-->
-            <!--            <li class="header__logo-item" v-if="!this.$store.state.isAuth">Полезное</li>-->
             <li
                 class="header__logo-item login"
                 @click="changeStatusOnTrue()"
@@ -59,7 +46,6 @@
           </ul>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
