@@ -328,7 +328,7 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100rem;
-  
+
   @media(min-width: 250px) and (max-width: 1285px) {
     gap: 2rem;
     //flex-wrap: nowrap;
@@ -405,6 +405,14 @@ export default {
   justify-content: space-between;
   gap: 2rem;
   margin: 1rem;
+
+  @media(min-width: 250px) and (max-width: 806px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  @media(min-width: 806px) and (max-width: 1285px) {
+    flex-wrap: wrap;
+  }
 }
 
 </style>
