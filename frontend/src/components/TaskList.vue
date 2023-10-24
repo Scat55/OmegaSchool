@@ -12,7 +12,7 @@ export default {
     <div class="task_body">
       <p class="task_topic">Предмет: {{ task.topic }}</p>
       <p class="task_class">Класс: {{ task.class }}</p>
-      <p class="task_complexity">Уровень задания: {{ task.complexity }}</p>
+      <p class="task_complexity">Уровень: {{ task.complexity }}</p>
     </div>
     <!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
   </div>
@@ -31,14 +31,16 @@ export default {
   background: white;
   overflow: hidden;
   transition: all .3s;
+  width: 20rem;
 }
 
 .task_body {
-  margin: 10px;
+  //margin: 10px;
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
   flex-wrap: wrap;
-  padding: 5px 0;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .task_status {
@@ -56,7 +58,7 @@ export default {
 }
 
 .task_title {
-
+  margin-bottom: 1rem;
   color: white;
   text-decoration: none;
   padding: 10px 5px;
