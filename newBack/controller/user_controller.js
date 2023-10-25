@@ -151,8 +151,7 @@ class User_controller {
         // Разбираем JSON-объект из запроса
         const { task_test, task_description, add_file, classes, questions } = req.body;
         const user_id = req.user_id
-        const entriesArray = Object.entries(questions);
-        console.log(entriesArray);
+
         if (!Array.isArray(questions)) {
             return res.status(400).json({ error: 'Questions should be an array' });
         }
@@ -187,12 +186,12 @@ class User_controller {
                     db.query(insertQuestionQuery, questionValues)
                         .then((questionResult) => {
                             const questionId = questionResult.rows[0].question_id;
-                            console.log(options)
+                            //console.log(options)
                             // Вставляем варианты ответовs
-
-                            options.forEach((option) => {
-                                const { option_text, is_correct } = option;
-                                console.log(option)
+                            for (let option in options)
+                             {
+                                const { option_text, is_correct } = options[option];
+                                
                                 // Вставляем данные варианта ответа
                                 const insertOptionQuery = `
                 INSERT INTO options (text, is_correct, question_id)
@@ -202,7 +201,7 @@ class User_controller {
 
                                 // Отправляем запрос для вставки варианта ответа
                                 db.query(insertOptionQuery, optionValues);
-                            });
+                            };
                         })
                         .catch((error) => {
                             console.error('Ошибка при вставке вопроса:', error.message);
