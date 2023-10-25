@@ -8,15 +8,13 @@ export default {
   <div class="task_task">
     <router-link :to="'/task/' + task.id" class="task_title">{{ task.title }}
     </router-link>
-    <div class="task_status">
-      <div class="task_status_name">Статус: {{task.status === false ? 'Не решено' : 'Решено'}}</div>
-    </div>
+    <p class="task_status_name">Статус: {{ task.status === false ? 'Не решено' : 'Решено' }}</p>
     <div class="task_body">
-      <div class="task_topic">Предмет: {{task.topic}}</div>
-      <div class="task_class">Класс: {{task.class}}</div>
-      <div class="task_complexity">Уровень задания: {{task.complexity}}</div>
+      <p class="task_topic">Предмет: {{ task.topic }}</p>
+      <p class="task_class">Класс: {{ task.class }}</p>
+      <p class="task_complexity">Уровень: {{ task.complexity }}</p>
     </div>
-<!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
+    <!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
   </div>
 </template>
 
@@ -32,14 +30,17 @@ export default {
   flex-direction: column;
   background: white;
   overflow: hidden;
+  transition: all .3s;
+  width: 20rem;
 }
 
 .task_body {
-  margin: 10px ;
+  //margin: 10px;
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
   flex-wrap: wrap;
-  padding: 5px 0;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .task_status {
@@ -52,11 +53,12 @@ export default {
 }
 
 .task_task:hover {
-  border: 3px solid #151280;
+  box-shadow: 0 0 10px 2px #2a7afc;
+  cursor: pointer;
 }
 
 .task_title {
-
+  margin-bottom: 1rem;
   color: white;
   text-decoration: none;
   padding: 10px 5px;

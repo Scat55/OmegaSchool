@@ -151,6 +151,10 @@ class User_controller {
         // Разбираем JSON-объект из запроса
         const { task_test, task_description, add_file, classes, questions } = req.body;
         const user_id = req.user_id
+        if (!Array.isArray(questions)) {
+            return res.status(400).json({ error: 'Questions should be an array' });
+        }
+
         // Вставляем данные теста в базу данных
         const insertTestQuery = `
     INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
@@ -366,6 +370,19 @@ class User_controller {
 
 
 
+    async download(req, res) {
+
+        const user_id = req.user
+
+        const files = fs.readdirSync('./uploads');
+
+        const userFiles = files.filter((fileName) => {
+            const userIdFromFileName = fileName.split('_')[3];
+            return userIdFromFileName === user_id;
+        });
+
+        return res.send({message: 'Файлы успешно загружены', userFiles});
+    }
 }
 
 module.exports = new User_controller()

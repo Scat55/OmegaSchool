@@ -5,7 +5,7 @@
       <p class="big__subtitle">Зарегестируйтесь и получайте знания</p>
 
       <div class="big__content">
-        <div class="big__content-info">
+        <div class="big__content-info" v-if="!statusText">
           <p class="big__content-text">Обучение может быть не только полезным, но и увлекательным! Попробуйте наши
             образовательные игры и квизы,
             разработанные для закрепления и проверки знаний в интерактивной форме. Играя, вы будете учиться быстрее!</p>
@@ -80,9 +80,9 @@ export default {
 @import '../assets/styles/vars.scss';
 
 .big {
-  background-color: #0046B8;
-  border-radius: 1rem;
+  background-color: $accentColor;
   margin-top: 1.875rem;
+  padding: 1.2rem;
 
   &__title {
     font-size: 2rem;
@@ -113,9 +113,9 @@ export default {
     }
 
     &-btn {
+      background-color: $lightBlueColor;
       width: 12.5rem;
       text-align: center;
-      background-color: $accentColor;
       padding: .625rem 1.25rem;
       margin-top: 2.25rem;
       border-radius: 1rem;
@@ -125,7 +125,6 @@ export default {
       transition: all .3s;
 
       &:hover {
-        box-shadow: 0 0 10px 10px #2a7afc;
         transform: scale(1.1);
       }
     }

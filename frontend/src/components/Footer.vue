@@ -4,11 +4,8 @@
 
 <template>
   <div class="footer">
-    <div class="container">
 
-      <div class="footer__logo">
         <div class="footer__logo-omega">
-
           <img
             src="../assets/images/Logo_px (2).png"
             alt="Logo"
@@ -30,8 +27,7 @@
           <p class="footer__logo-title">Липецкий Государственный Педагогический Университет имени П.П.
             Семенова-Тян-Шанского</p>
         </div>
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -51,17 +47,12 @@ export default {
 
 .footer {
   background-color: $accentColor;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
   margin-top: 2rem;
-  padding-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 3rem 1rem 3rem;
 
   &__logo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-
     &-omega {
       display: flex;
       flex-direction: column;

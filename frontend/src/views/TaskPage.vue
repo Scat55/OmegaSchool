@@ -5,67 +5,70 @@
       <div class="window">
 
         <!--    Тут верхняя шапка    -->
-        <div class="div1">
-          <div>Задания</div>
-          <div>Слева вы сможете выбрать фильтры для заданий. <br> По каким предметам, сложность и тд.</div>
-        </div>
-        <!--    конец шапки    -->
-        <!-- Фильтр -->
-        <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = !filterSee">
-          <div>Показать фильтры <span v-show="hasActiveFilters">( Есть примененные )</span></div>
-        </div>
-        <div class="filter" v-show='filterSee === true'>
+            <p>Задания</p>
+            <p>Слева вы сможете выбрать фильтры для заданий. <br> По каким предметам, сложность и тд.</p>
+          <!-- Фильтр -->
           <div>
-            <div class="filter__search-bar">
-              <p>Поиск задачи: </p>
-              <input v-model="searchQuery" placeholder="Поиск по названию задачи...">
-            </div>
+<!--            <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = !filterSee">-->
+<!--              <div>Показать фильтры <span v-show="hasActiveFilters">( Есть примененные )</span></div>-->
+<!--            </div>-->
+            <div class="filter" >
+              <div>
+                <div class="filter__search-bar">
+                  <p>Поиск задачи: </p>
+                  <input v-model="searchQuery" placeholder="Поиск по названию задачи...">
+                </div>
 
-            <div class="filter__complexity_filter">
-              <p>Уровень уровень заданий:</p>
-              <select v-model="selectedLVL" class="topic-section">
-                <option value="">Все уровни</option>
-                <option value="1">1 LVL</option>
-                <option value="2">2 LVL</option>
-                <option value="3">3 LVL</option>
-              </select>
-            </div>
-            <div class="filter__topic-filter">
-              <p>Предмет:</p>
-              <select v-model="selectedTopic" class="topic-section">
-                <option value="">Все предметы</option>
-                <option value="Биология">Биология</option>
-                <option value="География">География</option>
-                <option value="Информатика">Информатика</option>
-                <option value="Математика">Математика</option>
-                <option value="Технология">Технология</option>
-                <option value="Физика">Физика</option>
-                <option value="Химия">Химия</option>
-              </select>
-            </div>
-            <div class="filter__class_filter">
-              <p>Класс:</p>
-              <select v-model="selectedClass" class="topic-section">
-                <option value="">Не указан</option>
-                <option value="9">9 класс</option>
-                <option value="10">10 класс</option>
-                <option value="11">11 класс</option>
-              </select>
-            </div>
-            <div class="filter__status_filter">
-              <p>Статус:</p>
-              <select v-model="selectedStatus" class="topic-section">
-                <option value="">Не выбран</option>
-                <option :value="false">Не решено</option>
-                <option :value="true">Решено</option>
-              </select>
-            </div>
-            <div class="filter__btn">
-              <button class="filter__btn__hide" @click="filterSee = !filterSee">Скрыть фильтр</button>
-              <button class="filter__btn__reset" @click="resetFilter">Сбросить</button>
+               <div class = "filter__flex">
+                 <div class="filter__complexity_filter">
+                   <p>Уровень:</p>
+                   <select v-model="selectedLVL" class="topic-section">
+                     <option value="">Все уровни</option>
+                     <option value="1">1 LVL</option>
+                     <option value="2">2 LVL</option>
+                     <option value="3">3 LVL</option>
+                   </select>
+                 </div>
+                 <div class="filter__topic-filter">
+                   <p>Предмет:</p>
+                   <select v-model="selectedTopic" class="topic-section">
+                     <option value="">Все предметы</option>
+                     <option value="Биология">Биология</option>
+                     <option value="География">География</option>
+                     <option value="Информатика">Информатика</option>
+                     <option value="Математика">Математика</option>
+                     <option value="Технология">Технология</option>
+                     <option value="Физика">Физика</option>
+                     <option value="Химия">Химия</option>
+                   </select>
+                 </div>
+                 <div class="filter__class_filter">
+                   <p>Класс:</p>
+                   <select v-model="selectedClass" class="topic-section">
+                     <option value="">Не указан</option>
+                     <option value="9">8 класс</option>
+                     <option value="10">9 класс</option>
+                     <option value="11">10 класс</option>
+                   </select>
+                 </div>
+                 <div class="filter__status_filter">
+                   <p>Статус:</p>
+                   <select v-model="selectedStatus" class="topic-section">
+                     <option value="">Не выбран</option>
+                     <option :value="false">Не решено</option>
+                     <option :value="true">Решено</option>
+                   </select>
+               </div>
+
+                </div>
+                <div class="filter__btn">
+<!--                  <button class="filter__btn__hide" @click="filterSee = !filterSee">Скрыть фильтр</button>-->
+                  <button class="filter__btn__reset" @click="resetFilter">Сбросить</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        <!--    конец шапки    -->
         <!-- Конец фильтра -->
         <!--    Где выводятся задачи    -->
         <div class="div3">
@@ -74,17 +77,16 @@
               :key="task.id"
               :task="task"
           />
-          <div v-if="filteredTasks.length === 0" class="no-tasks-message">
-            Нет задач, соответствующих выбранным фильтрам.
-          </div>
-          <div v-if="filteredTasks.length > 0" class="pagination-controls">
-            <button @click="goToPrevPage" :disabled="currentPage === 1">←</button>
-            <span>Страница {{ currentPage }} из {{ totalPages }}</span>
-            <button @click="goToNextPage" :disabled="currentPage === totalPages">→</button>
-          </div>
 
         </div>
-        <!--    Конец этого окна    -->
+        <!--    Конец этого окна    --> <div v-if="filteredTasks.length === 0" class="no-tasks-message">
+        Нет задач, соответствующих выбранным фильтрам.
+      </div>
+        <div v-if="filteredTasks.length > 0" class="pagination-controls">
+          <button @click="goToPrevPage" :disabled="currentPage === 1">←</button>
+          <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+          <button @click="goToNextPage" :disabled="currentPage === totalPages">→</button>
+        </div>
       </div>
 
     </div>
@@ -299,12 +301,39 @@ export default {
 }
 
 .div1,
-.filter,
 .div3 {
   border: 2px solid $lightBlueColor;
   padding: 10px;
   border-radius: 1rem;
   width: 100%;
+}
+
+.div1{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter{
+  border: 2px solid $lightBlueColor;
+  padding: 10px;
+  border-radius: 1rem;
+  width: 100%;
+}
+
+.div3{
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100rem;
+
+  @media(min-width: 250px) and (max-width: 1285px) {
+    gap: 2rem;
+    //flex-wrap: nowrap;
+    width: 100%;
+  }
 }
 
 .div1 {
@@ -322,7 +351,7 @@ export default {
 
     & > input {
       width: 80%;
-      padding: 7px;
+      padding: 0.7rem;
       outline: none;
       border: 1px solid $lightBlueColor;
       border-radius: 1rem;
@@ -343,12 +372,13 @@ export default {
       cursor: pointer;
     }
 
-    &__hide {
-      background: $lightBlueColor;
-    }
-
     &__reset {
-      background: red;
+      background: $lightBlueColor;
+      transition: all .3s;
+
+      &:hover{
+        transform: scale(1.1);
+      }
     }
   }
 
@@ -369,6 +399,20 @@ export default {
   text-align: center;
   border: none;
 }
+.filter__flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 1rem;
 
+  @media(min-width: 250px) and (max-width: 806px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  @media(min-width: 806px) and (max-width: 1285px) {
+    flex-wrap: wrap;
+  }
+}
 
 </style>

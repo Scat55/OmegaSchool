@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <router-link to="/task">
+      <p class="back__tasks">Вернуться к списку заданий</p>
+    </router-link>
     <div class="container__title">
       <h2>{{ task.title }}</h2>
     </div>
@@ -19,11 +22,10 @@
     </div>
 
 
-
     <!--  Доп.материалы Start  -->
     <div class="addedFile" v-if="task.addedFile.length !== 0">
-      <p>Дополнительные материалы:</p>
-      <div v-for="file in task.addedFile">
+      <p class="files" @click="isShow = !isShow">Дополнительные материалы &#8595;</p>
+      <div v-for="file in task.addedFile" v-if="isShow">
         <a :href="file" :key="file">{{ getFileName(file) }}</a>
       </div>
     </div>
@@ -43,9 +45,9 @@
     <!--  END -->
 
     <div class="container_button">
-      <button @click="checkAnswer">Проверить</button>
-      <button @click="helpMe">Взять подсказку</button>
-      <button @click="showMeAnswer">Показать ответ</button>
+      <button class="container_button-btn" @click="checkAnswer">Проверить</button>
+      <button class="container_button-btn" @click="helpMe">Взять подсказку</button>
+      <button class="container_button-btn" @click="showMeAnswer">Показать ответ</button>
     </div>
   </div>
 </template>
@@ -54,8 +56,9 @@
 export default {
   data() {
     return {
-      userChecks: []
-      // chPt: this.task.checkPoint
+      userChecks: [],
+      // chPt: this.task.checkPoint,
+      isShow: false,
     }
   },
   methods: {
@@ -80,8 +83,10 @@ export default {
         alert('Неверно. Вы получили 0 баллов.');
       }
     },
-    helpMe(){},
-    showMeAnswer(){},
+    helpMe() {
+    },
+    showMeAnswer() {
+    },
   },
   created() {
     this.initializeUserChecks();
@@ -101,6 +106,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../assets/styles/vars.scss';
+
 .container {
   margin-top: 80px;
   background: white;
@@ -125,6 +132,7 @@ export default {
   }
 
   &__bodyTask {
+    line-height: 160%;
 
     & > span {
       font-weight: bold;
@@ -132,20 +140,46 @@ export default {
 
   }
 
+  &_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    &-btn{
+      padding: 0.5rem;
+      border-radius: 1rem;
+      border: none;
+      cursor: pointer;
+      &:first-child{
+        background-color: $accentColor;
+        color: #fff;
+      }
+      &:nth-child(2){
+        background-color: $lightBlueColor;
+        color: #fff;
+      }
+
+      &:last-child{
+        background-color: #00DFCC;
+      }
+    }
+  }
 }
 
 .addedFile {
   padding: 15px 0 10px 0;
   text-decoration: none;
 
-  &>p {
+
+  & > p {
     margin-bottom: 5px;
   }
 
-  &>div>a {
+  & > div > a {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: inline-block;
     padding: 5px 0;
 
     &:hover {
@@ -155,7 +189,11 @@ export default {
 }
 
 .container_answer {
-  padding: 5px 0 15px 0;
+  //padding: 5px 0 15px 0;
+  border: 2px solid #000;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
 }
 
 .itemAnswer {
@@ -163,8 +201,28 @@ export default {
   display: flex;
   align-items: center;
 
-  &>input {
+  & > input {
     margin-right: 5px;
   }
+}
+
+.back__tasks {
+  background-color: $accentColor;
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  color: #fff;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  transition: all .3s;
+
+  &:hover {
+    transform: scale(0.95);
+    cursor: pointer;
+  }
+}
+
+.files {
+  cursor: pointer;
 }
 </style>

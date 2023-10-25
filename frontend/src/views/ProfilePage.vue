@@ -65,7 +65,7 @@
           <TaskToCheckTeacher v-show="isActiveComponents.TaskToCheckTeacher === true" />
           <MySolvedTask v-show="isActiveComponents.MySolvedTask === true" />
           <MyAddTask v-show="isActiveComponents.MyAddTask === true" />
-          <AchivmentStudent v-show="isActiveComponents.AchivStud === true" />
+          <AchivmentStudent :grades="person.grades" :achievements="person.achievements" v-show="isActiveComponents.AchivStud === true" />
           <RatingTeacher v-show="isActiveComponents.RatingTeach === true" />
         </div>
       </div>
@@ -111,6 +111,8 @@ export default {
         item: '',
         email: '',
         expert: null,
+        grades: '',
+        achievements: ''
       },
       isActiveComponents: {
         Profile: true,
@@ -156,6 +158,8 @@ export default {
         this.person.expert = true
       }
       this.person.student = response.data.user.type_user === 'Ученик';
+      this.person.grades = response.data.grades;
+      this.person.achievements = response.data.achievements;
     })
   },
 }
@@ -191,8 +195,11 @@ export default {
 .closeMenu {
   margin-top: 15px;
   padding: 10px;
-  background: #ee2d2d;
+  font-size: 0.7rem;
+  background: $accentColor;
+  color: #d5d5d5;
   border-radius: 1rem;
+  letter-spacing: 0.2rem;
   cursor: pointer;
 }
 

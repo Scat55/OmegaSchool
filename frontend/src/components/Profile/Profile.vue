@@ -1,7 +1,9 @@
 <script>
 import axios from 'axios';
+import Button from "@/UI/Button.vue";
 
 export default {
+  components: {Button},
   props: {
     person: {
       type: Object,
@@ -216,10 +218,7 @@ export default {
   font-size: 2rem;
   width: 100%;
   height: 100%;
-  //padding: 25px;
-  //display: flex;
-  //flex-direction: column;
-  //flex-wrap: wrap;
+  line-height: 140%;
 }
 
 .InputChangeNO {
@@ -318,5 +317,8 @@ export default {
     border-radius: 1rem;
     font-size: 1.1rem;
   }
+}
+button{
+  font-family: Visitor;
 }
 </style>
