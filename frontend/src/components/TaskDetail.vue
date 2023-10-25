@@ -25,8 +25,8 @@
 
     <!--  Доп.материалы Start  -->
     <div class="addedFile" v-if="task.addedFile.length !== 0">
-      <p>Дополнительные материалы:</p>
-      <div v-for="file in task.addedFile">
+      <p class = "files" @click="isShow = !isShow">Дополнительные материалы &#8595;</p>
+      <div v-for="file in task.addedFile" v-if="isShow">
         <a :href="file" :key="file">{{ getFileName(file) }}</a>
       </div>
     </div>
@@ -57,8 +57,9 @@
 export default {
   data() {
     return {
-      userChecks: []
-      // chPt: this.task.checkPoint
+      userChecks: [],
+      // chPt: this.task.checkPoint,
+      isShow: false,
     }
   },
   methods: {
@@ -187,5 +188,9 @@ export default {
     transform: scale(0.95);
     cursor: pointer;
   }
+}
+
+.files{
+  cursor: pointer;
 }
 </style>
