@@ -219,40 +219,50 @@ class User_controller {
 
     async getTasksForExpert(req, res) {
         try {
-            // Получение user_id из JWT токена
-            const user_id = req.user_id
+            const user_id = req.user_id;
 
-            // Выполнение SQL-запроса
-            const sql = `
+            // Запрос для level_1_tests
+            const testsSql = `
             SELECT *
             FROM level_1_tests
-            WHERE ((ver_1_id IS NULL OR NOT(ver_2_id = $1)) AND
-                (NOT(ver_1_id = $1) OR ver_2_id IS NULL) AND
-                (ver_1_id IS NULL OR ver_2_id IS NULL))
-            
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1);
+        `;
+            const testsResult = await db.query(testsSql, [user_id]);
 
-    `;
-            //UNION ALLs
-            //SELECT *
-            //FROM level_2_tests
-            //WHERE ((ver_1_id IS NULL OR NOT(ver_2_id = $1)) AND
-            //       (NOT(ver_1_id = $1) OR ver_2_id IS NULL) AND
-            //       (ver_1_id IS NULL OR ver_2_id IS NULL))
-            //UNION ALL
-            //SELECT *
-            //FROM level_3_tests
-            //WHERE ((ver_1_id IS NULL OR NOT(ver_2_id = $1)) AND
-            //       (NOT(ver_1_id = $1) OR ver_2_id IS NULL) AND
-            //       (ver_1_id IS NULL OR ver_2_id IS NULL));
-            const result = await db.query(sql, [user_id]);
+            // Запрос для questions
+            const questionsSql = `
+            SELECT q.*
+            FROM questions q
+            JOIN level_1_tests t ON q.test_id = t.test_id
+            WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
+        `;
+            const questionsResult = await db.query(questionsSql, [user_id]);
 
-            // Отправка результата клиенту
-            res.json(result.rows);
+            // Запрос для options
+            const optionsSql = `
+            SELECT o.*
+            FROM options o
+            JOIN questions q ON o.question_id = q.question_id
+            JOIN level_1_tests t ON q.test_id = t.test_id
+            WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
+        `;
+            const optionsResult = await db.query(optionsSql, [user_id]);
+
+            // Объединяем результаты в одном объекте и отправляем ответ
+            res.json({
+                tests: testsResult.rows,
+                questions: questionsResult.rows,
+                options: optionsResult.rows
+            });
+
         } catch (error) {
             console.error('Ошибка при выполнении SQL-запроса:', error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
+
+
+
 
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
