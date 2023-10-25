@@ -180,11 +180,11 @@ class User_controller {
                     db.query(insertQuestionQuery, questionValues)
                         .then((questionResult) => {
                             const questionId = questionResult.rows[0].question_id;
-
-                            // Вставляем варианты ответов
+                            console.log(options)
+                            // Вставляем варианты ответовs
                             options.forEach((option) => {
                                 const { option_text, is_correct } = option;
-
+                                console.log(option)
                                 // Вставляем данные варианта ответа
                                 const insertOptionQuery = `
                 INSERT INTO options (text, is_correct, question_id)
@@ -283,6 +283,88 @@ class User_controller {
             return res.send({ message: 'Файлы успешно загружены', files: fileDetails });
         });
     }
+
+    async addTestAndUpload(req, res) {
+        try {
+            // Parse data from the request
+            console.log(req.params);
+            console.log(req.body);
+            const { task_test, task_description, classes, questions, options } = req.params;
+
+            if (!options) {
+                return res.status(400).json({ error: 'Options are missing' });
+            }
+            const parsedOptions = JSON.parse(options);
+
+            console.log(parsedOptions);
+            const user_id = req.user_id;
+
+            // Insert test data into the database
+            const insertTestQuery = `
+            INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING test_id;
+        `;
+            const testValues = [user_id, task_test, task_description, null, classes];
+            const testResult = await db.query(insertTestQuery, testValues);
+            const testId = testResult.rows[0].test_id;
+
+            // Insert question
+            const insertQuestionQuery = `
+            INSERT INTO questions (text, test_id)
+            VALUES ($1, $2)
+            RETURNING question_id;
+        `;
+            const questionValues = [questions, testId];
+            const questionResult = await db.query(insertQuestionQuery, questionValues);
+            const questionId = questionResult.rows[0].question_id;
+
+            // Insert options
+            for (const option of parsedOptions) {
+                const { option_text, is_correct } = option;
+                const insertOptionQuery = `
+                INSERT INTO options (text, is_correct, question_id)
+                VALUES ($1, $2, $3);
+            `;
+                const optionValues = [option_text, is_correct, questionId];
+                await db.query(insertOptionQuery, optionValues);
+            }
+
+            // File uploading logic
+            store.upload.array('files')(req, async (err) => {
+                if (err) {
+                    throw new Error('Ошибка загрузки файла');
+                }
+                if (!req.files || req.files.length === 0) {
+                    throw new Error('Пожалуйста, загрузите файл');
+                }
+                const filePaths = req.files.map(file => file.path);
+                const filesString = filePaths.join(',');
+
+                // Update the database record with file paths
+                const updateQuery = 'UPDATE level_1_tests SET add_file = $1 WHERE test_id = $2';
+                const updateValues = [filesString, testId];
+                await db.query(updateQuery, updateValues);
+
+                return res.send({ message: 'Тест и файлы успешно добавлены' });
+            });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

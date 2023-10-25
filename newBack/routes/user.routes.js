@@ -23,7 +23,7 @@ router.post('/getTasksForExpert',roleMiddleware(['Эксперт']), userControl
 
 //маршрут для ручной загрузки файла или файлов получения файла.
 router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.uploads)
-
+router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:questions/:opions', roleMiddleware(['Учитель']),userController.addTestAndUpload)
 
 //маршрут для получения файла, используя URL с датой и именем файла.
 //router.get('/download', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
