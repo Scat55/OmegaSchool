@@ -195,8 +195,11 @@ export default {
 .closeMenu {
   margin-top: 15px;
   padding: 10px;
-  background: #ee2d2d;
+  font-size: 0.7rem;
+  background: $accentColor;
+  color: #d5d5d5;
   border-radius: 1rem;
+  letter-spacing: 0.2rem;
   cursor: pointer;
 }
 
