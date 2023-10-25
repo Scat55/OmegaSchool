@@ -11,13 +11,19 @@ export default {
 <!-- Это компонент который выводит задачи на проверку -->
 
 <template>
-  <div>
-    <h1>{{task.id}}</h1>
-    <h1>{{task.title}}</h1>
-    <h1>{{task.statusCheck}}</h1>
+  <div class = "task">
+    {{task.test_id}}
+    <p class = "task__name">{{task.task_test}}</p>
+    <p class = "task__description">{{task.task_description}}</p>
   </div>
 </template>
 
 <style scoped lang="scss">
-
+.task{
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 1rem;
+  border: 1px solid #000;
+  margin-top: 1rem;
+}
 </style>
