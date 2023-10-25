@@ -186,12 +186,12 @@ class User_controller {
                     db.query(insertQuestionQuery, questionValues)
                         .then((questionResult) => {
                             const questionId = questionResult.rows[0].question_id;
-                            //console.log(options)
+                            // console.log(req.body)
                             // Вставляем варианты ответовs
-                            for (let option in options)
+                            for (let question in questions)
                              {
-                                const { option_text, is_correct } = options[option];
-                                
+                                const { option_text, is_correct } = questions[question];
+                                // console.log(question)
                                 // Вставляем данные варианта ответа
                                 const insertOptionQuery = `
                 INSERT INTO options (text, is_correct, question_id)
