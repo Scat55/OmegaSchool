@@ -4,15 +4,30 @@ import StatusTaskToCheckeTeacher from "@/components/TaskToCheckeTeacher/StatusTa
 </script>
 
 <script>
+import axios from "axios";
+
 export default {
   data(){
     return {
+      token: '',
+      tasks: []
     }
   },
   computed: {
     filteredTasks() {
       return this.$store.getters.filterCheckedTask(false)
     }
+  },
+  mounted() {
+    this.token = JSON.parse(localStorage.getItem('local'))
+    axios.get('/api/getTasksForExpert', {
+      headers: {
+        'Authorization': `Bearer ${this.token.token}`,
+      },
+    }).then(response => {
+      this.tasks = response.data
+    })
+
   }
 }
 </script>
@@ -20,7 +35,7 @@ export default {
 <template>
   <div>
 <h1>TaskToCheckTeacher</h1>
-    <StatusTaskToCheckeTeacher v-for="task in filteredTasks" :key="task.id" :task="task" />
+    <StatusTaskToCheckeTeacher v-for="task in tasks" :key="task.id" :task="task" />
   </div>
 </template>
 
