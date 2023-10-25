@@ -189,7 +189,11 @@ export default {
 }
 
 .container_answer {
-  padding: 5px 0 15px 0;
+  //padding: 5px 0 15px 0;
+  border: 2px solid #000;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
 }
 
 .itemAnswer {
