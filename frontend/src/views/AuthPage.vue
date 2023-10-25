@@ -80,16 +80,20 @@ export default {
               },
 
             }).then(response => {
-              this.userID = response.data.user.user_id
-              store.state.isAuth = true
-              this.$router.push(`/profile/${response.data.user.user_id}`)
-              console.log(this.userID)
-              const local = {
-                userID: this.userID,
-                token: this.token,
-                isAuth: store.state.isAuth
-              }
-              localStorage.setItem('local', JSON.stringify(local))
+             try {
+               this.userID = response.data.user.user_id
+               store.state.isAuth = true
+               this.$router.push(`/profile/${response.data.user.user_id}`)
+               console.log(this.userID)
+               const local = {
+                 userID: this.userID,
+                 token: this.token,
+                 isAuth: store.state.isAuth
+               }
+               localStorage.setItem('local', JSON.stringify(local))
+             } catch (e){
+               alert(e)
+             }
             })
           }
       })
