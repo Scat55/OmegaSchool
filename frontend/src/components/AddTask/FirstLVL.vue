@@ -52,18 +52,18 @@ export default {
       formData.append('files', files)
 
       console.log(this.file)
-      // await axios.post('/api/uploads/',
-      //     {
-      //       task_test,
-      //       task_description,
-      //       questions,
-      //       files
-      //     }, {
-      //       headers: {
-      //         'Authorization': `Bearer ${this.token.token}`,
-      //         'Content-Type': 'multipart/form-data'
-      //       }
-      //     })
+      await axios.post('/api/add_level_1_test/',
+          {
+            task_test,
+            task_description,
+            questions,
+            files
+          }, {
+            headers: {
+              'Authorization': `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json'
+            }
+          })
 
       this.nameTask = this.descriptionTask = this.class = ''
 
