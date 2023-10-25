@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+  <router-link to="/task">
+    <p class = "back__tasks">Вернуться к списку заданий</p>
+  </router-link>
     <div class="container__title">
       <h2>{{ task.title }}</h2>
     </div>
@@ -101,6 +104,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../assets/styles/vars.scss';
 .container {
   margin-top: 80px;
   background: white;
@@ -138,6 +142,7 @@ export default {
   padding: 15px 0 10px 0;
   text-decoration: none;
 
+
   &>p {
     margin-bottom: 5px;
   }
@@ -145,7 +150,7 @@ export default {
   &>div>a {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: inline-block;
     padding: 5px 0;
 
     &:hover {
@@ -165,6 +170,22 @@ export default {
 
   &>input {
     margin-right: 5px;
+  }
+}
+
+.back__tasks{
+  background-color: $accentColor;
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  color: #fff;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  transition: all .3s;
+
+  &:hover{
+    transform: scale(0.95);
+    cursor: pointer;
   }
 }
 </style>
