@@ -178,6 +178,7 @@ class User_controller {
           VALUES ($1, $2)
           RETURNING question_id;
         `;
+
                     const questionValues = [question_text, testId];
 
                     // Отправляем запрос и получаем ID вставленного вопроса
@@ -186,7 +187,7 @@ class User_controller {
                             const questionId = questionResult.rows[0].question_id;
                             console.log(options)
                             // Вставляем варианты ответовs
-                            options.forEach((option) => {
+                            for( let option of options){
                                 const { option_text, is_correct } = option;
                                 console.log(option)
                                 // Вставляем данные варианта ответа
@@ -198,7 +199,7 @@ class User_controller {
 
                                 // Отправляем запрос для вставки варианта ответа
                                 db.query(insertOptionQuery, optionValues);
-                            });
+                            };
                         })
                         .catch((error) => {
                             console.error('Ошибка при вставке вопроса:', error.message);
