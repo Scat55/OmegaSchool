@@ -216,10 +216,7 @@ export default {
   font-size: 2rem;
   width: 100%;
   height: 100%;
-  //padding: 25px;
-  //display: flex;
-  //flex-direction: column;
-  //flex-wrap: wrap;
+  line-height: 140%;
 }
 
 .InputChangeNO {
