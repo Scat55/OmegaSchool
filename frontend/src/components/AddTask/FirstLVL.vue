@@ -170,21 +170,33 @@ export default {
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>
         <!--     Загрузка файлов мб удалю нахер   -->
-        <div>
-          <label for="fileInput" class="custom-file-upload">
-            <span>{{ buttonText }}</span>
-            <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
-                   accept="application/pdf ,.docx">
-          </label>
-          <div class="list_task_file">
-            <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
-            <ul>
-              <li v-for="(fileName, index) in selectedFiles" :key="index">
-                <span>{{ index + 1 }}</span>
-                {{ fileName }}
-                <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
-              </li>
-            </ul>
+<!--        TODO: Сделать выбор загруженных файлов-->
+        <div class ="add__file">
+         <div>
+           <label for="fileInput" class="custom-file-upload">
+             <span>{{ buttonText }}</span>
+             <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
+                    accept="application/pdf ,.docx">
+           </label>
+           <div class="list_task_file">
+             <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
+             <ul>
+               <li v-for="(fileName, index) in selectedFiles" :key="index">
+                 <span>{{ index + 1 }}</span>
+                 {{ fileName }}
+                 <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
+               </li>
+             </ul>
+           </div>
+         </div>
+          <div >
+            <select class = "files" >
+              <option disabled selected>-- Прикрепите файл --</option>
+              <option>Файл2</option>
+              <option>Файл3</option>
+              <option>Файл4</option>
+              <option>Файл5</option>
+            </select>
           </div>
         </div>
         <div class="shablonZadaniaFirst__window">
@@ -362,6 +374,7 @@ export default {
 }
 
 .btn {
+  font-family: Visitor;
   padding: 8px;
   border-radius: 1rem;
   outline: none;
@@ -375,6 +388,7 @@ export default {
 }
 
 .btn-reset {
+  font-family: Visitor;
   padding: 8px;
   border-radius: 1rem;
   outline: none;
@@ -420,5 +434,29 @@ export default {
     list-style-type: none;
   }
 }
-
+.add__file{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.files{
+  font-family: Visitor;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  margin-bottom: 0.7rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  
+  &:hover{
+    background-color: #0056b3;
+  }
+  
+  option{
+    background-color: #fff;
+    color: #000;
+  }
+}
 </style>
