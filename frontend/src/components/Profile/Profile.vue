@@ -1,7 +1,9 @@
 <script>
 import axios from 'axios';
+import Button from "@/UI/Button.vue";
 
 export default {
+  components: {Button},
   props: {
     person: {
       type: Object,
@@ -315,5 +317,8 @@ export default {
     border-radius: 1rem;
     font-size: 1.1rem;
   }
+}
+button{
+  font-family: Visitor;
 }
 </style>
