@@ -159,7 +159,7 @@ export default {
       selectedStatus: '',
       searchQuery: '',
       currentPage: 1,
-      tasksPerPage: 10,
+      tasksPerPage: 12,
       filterSee: false,
     }
   },
