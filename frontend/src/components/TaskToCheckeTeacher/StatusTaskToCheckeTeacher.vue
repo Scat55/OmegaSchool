@@ -11,7 +11,9 @@ export default {
 <!--TODO: Главный компонент на котором все задачи-->
 <template>
   <div class="task">
-    <p class="task__name">{{ task.task_test }}</p>
+    <router-link :to="'/taskToExpert/' + task.tast_id">
+      <p class="task__name">{{ task.task_test }}</p>
+    </router-link>
   </div>
 </template>
 
