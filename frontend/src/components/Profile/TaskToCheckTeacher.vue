@@ -10,6 +10,7 @@ export default {
     return {
       token: '',
       tasks: [],
+      taskID: '',
     };
   },
   computed: {
@@ -27,6 +28,7 @@ export default {
       })
       .then((response) => {
         console.log(response.data);
+        this.taskID = response.data.tast_id;
         this.tasks = response.data;
       });
   },
@@ -36,11 +38,21 @@ export default {
 <!-- Эта вкладка для эксперта тут он просматривает задачи от учителей-->
 <template>
   <div>
-    <h1>TaskToCheckTeacher</h1>
-    <div v-for="task in tasks">
-      <StatusTaskToCheckeTeacher :key="task.id" :task="task" />
+    <h1>Задачи от учителя</h1>
+    <div class="task">
+      <div v-for="task in tasks">
+        <StatusTaskToCheckeTeacher :key="task.id" :task="task" class="task__item" />
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+</style>

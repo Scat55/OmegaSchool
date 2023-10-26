@@ -6,6 +6,7 @@ import AuthPage from '../views/AuthPage.vue';
 import HomePage from '../views/HomePage.vue';
 import TaskPage from '../views/TaskPage.vue';
 import TaskDetail from '@/components/TaskDetail.vue';
+import taskToExpert from '../views/TaskToExpert';
 import store from '../store/index';
 Vue.use(VueRouter);
 
@@ -25,7 +26,7 @@ const routes = [
       } else {
         next(false);
         alert('Войдите в аккаунт');
-         next({path: '/auth'});
+        next({ path: '/auth' });
       }
     },
   },
@@ -44,7 +45,7 @@ const routes = [
       } else {
         next(false);
         alert('Войдите в аккаунт');
-        next({path: '/auth'});
+        next({ path: '/auth' });
       }
     },
   },
@@ -52,6 +53,10 @@ const routes = [
     path: '/task/:id?',
     component: TaskDetail,
     name: 'taskDetail',
+  },
+  {
+    path: '/taskToExpert/:id?',
+    component: taskToExpert,
   },
 ];
 

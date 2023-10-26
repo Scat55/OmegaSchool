@@ -60,13 +60,13 @@
             v-show="isActiveComponents.Profile === true"
             :person="person"
           />
-          <AddTask v-show="isActiveComponents.AddTask === true" />
-          <TaskToCheckStudent v-show="isActiveComponents.TaskToCheckStudent === true" />
+          <AddTask v-if="isActiveComponents.AddTask === true" />
+          <TaskToCheckStudent v-if="isActiveComponents.TaskToCheckStudent === true" />
           <TaskToCheckTeacher v-if="isActiveComponents.TaskToCheckTeacher === true" />
-          <MySolvedTask v-show="isActiveComponents.MySolvedTask === true" />
-          <MyAddTask v-show="isActiveComponents.MyAddTask === true" />
-          <AchivmentStudent :grades="person.grades" :achievements="person.achievements" v-show="isActiveComponents.AchivStud === true" />
-          <RatingTeacher v-show="isActiveComponents.RatingTeach === true" />
+          <MySolvedTask v-if="isActiveComponents.MySolvedTask === true" />
+          <MyAddTask v-if="isActiveComponents.MyAddTask === true" />
+          <AchivmentStudent :grades="person.grades" :achievements="person.achievements" v-if="isActiveComponents.AchivStud === true" />
+          <RatingTeacher v-if="isActiveComponents.RatingTeach === true" />
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ const {validationResult} = require("express-validator");
 const {json} = require("express");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
-const path = require('path');
 const multer = require('multer');
 const {randomUUID} = require("crypto");
 //const { upload } = require('../multer/multerConfig');
@@ -424,15 +423,10 @@ async updateTestByExpert(req, res){
     }
 
     async download(req, res) {
+        let math_path = './uploads/' + `${req.user_id}` + '/'
 
-        const user_id = req.user
-
-        const files = fs.readdirSync('./uploads');
-
-        const userFiles = files.filter((fileName) => {
-            const userIdFromFileName = fileName.split('_')[3];
-            return userIdFromFileName === user_id;
-        });
+        const files = fs.readdirSync(math_path);
+        const userFiles = files.filter((fileName) => { return fileName.split('_')[3]; });
 
         return res.send({message: 'Файлы успешно загружены', userFiles});
     }
