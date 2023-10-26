@@ -25,7 +25,10 @@ router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userContro
 router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.uploads)
 router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:questions/:options', roleMiddleware(['Учитель']), store.upload.array('files'), userController.addTestAndUpload)
 
-//маршрут для получения файла, используя URL с датой и именем файла.
-router.get('/download', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
+//маршрут для получения файла или файлов.
+//Поиск всех файлов, загруженных пользователем
+router.get('/list_all_files', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.listUserFiles);
+router.post('/delete_user_files/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.deleteUserFiles);
+router.get('/download/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
 
 module.exports = router

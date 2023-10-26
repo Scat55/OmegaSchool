@@ -17,7 +17,7 @@ class Store {
         // Объект storage, который задает папку для сохранения загруженных файлов и их имена.
         this.storage = multer.diskStorage({
             destination: (req, file, cb) => {
-                const uploadsPath = path.join('uploads', `${req.user_id}`);;
+                const uploadsPath = path.join('uploads', `${req.user_id}`);
                 if (!fs.existsSync(uploadsPath)) {
                     fs.mkdirSync(uploadsPath, { recursive: true });
                 }
