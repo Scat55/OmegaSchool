@@ -16,7 +16,7 @@ router.get('/user_id/:email',roleMiddleware(['Ученик','Эксперт','У
 router.get('/user_inf_email/:email',userMiddleware, userController.getUserDataForEmail)
 router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformation)
 router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.additionalData)
-router.post('/add_level_1_test',roleMiddleware(['Учитель']) ,userController.add_level_1_test)
+router.post('/add_level_1_test',roleMiddleware(['Учитель','Учитель']) ,userController.add_level_1_test)
 router.get('/getTasksForExpert',roleMiddleware(['Эксперт']), userController.getTasksForExpert)
   //  ,roleMiddleware(['Эксперт'])
 //маршруты для работы с файлами
