@@ -30,28 +30,27 @@ export default {
     </div>
     <div class="achievement_body">
       <div class="selected item1" v-show="selectedItem === ''">
-        <p></p>
       </div>
       <div class="selected item2" v-show="selectedItem === 'Биология'">
-        <p>Твой балл по Биологии</p>
+        <p>Твой балл по Биологии {{ grades[0].biology }}</p>
       </div>
       <div class="selected item3" v-show="selectedItem === 'География'">
-        <p>Твой балл по Географии</p>
+        <p>Твой балл по Географии {{ grades[0].geography }}</p>
       </div>
       <div class="selected item4" v-show="selectedItem === 'Информатика'">
-        <p>Твой балл по Информатика</p>
+        <p>Твой балл по Информатика {{ grades[0].informatics }}</p>
       </div>
       <div class="selected item5" v-show="selectedItem === 'Математика'">
-        <p>Твой балл по Математика</p>
+        <p>Твой балл по Математика {{ grades[0].mathematics }}</p>
       </div>
       <div class="selected item6" v-show="selectedItem === 'Технология'">
-        <p>Твой балл по Технология</p>
+        <p>Твой балл по Технология {{ grades[0].technology }}</p>
       </div>
       <div class="selected item7" v-show="selectedItem === 'Физика'">
-        <p>Твой балл по Физика</p>
+        <p>Твой балл по Физика {{ grades[0].physics }}</p>
       </div>
       <div class="selected item8" v-show="selectedItem === 'Химия'">
-        <p>Твой балл по Химия</p>
+        <p>Твой балл по Химия {{ grades[0].chemistry }}</p>
       </div>
     </div>
   </div>

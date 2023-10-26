@@ -158,7 +158,7 @@ export default {
       //   // this.person.expert = true
       // }
       this.person.student = response.data.user.type_user === 'Ученик';
-      this.person.grades = response.data.grades;
+      this.person.grades = response.data.grades_teacher;
       this.person.achievements = response.data.achievements;
     })
   },
