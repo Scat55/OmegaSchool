@@ -6,13 +6,11 @@ export default {
   },
   data() {
     return {
-      selectedItem: ''
-    }
+      selectedItem: '',
+    };
   },
-  methods: {
-  },
-
-}
+  methods: {},
+};
 </script>
 
 <template>
@@ -30,23 +28,21 @@ export default {
         <option value="Химия">Химия</option>
       </select>
     </div>
-    <div class="achievement_body">
-
-    </div>
+    <div class="achievement_body"></div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .achievement_title {
   text-align: center;
-&>select {
-  font-size: 1.1rem;
-  padding: 5px;
-  outline: none;
-  border-radius: 1rem;
-  margin-top: 15px;
-  width: 100%;
-  text-align: center;
-}
+  & > select {
+    font-size: 1.1rem;
+    padding: 5px;
+    outline: none;
+    border-radius: 1rem;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+  }
 }
 </style>

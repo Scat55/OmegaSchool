@@ -1,13 +1,13 @@
 <script>
-import TwoLVL from "@/components/AddTask/TwoLVL.vue";
-import FirstLVL from "@/components/AddTask/FirstLVL.vue";
-import ThreeLVL from "@/components/AddTask/ThreeLVL.vue";
+import TwoLVL from '@/components/AddTask/TwoLVL.vue';
+import FirstLVL from '@/components/AddTask/FirstLVL.vue';
+import ThreeLVL from '@/components/AddTask/ThreeLVL.vue';
 
 export default {
   components: {
     ThreeLVL,
     FirstLVL,
-    TwoLVL
+    TwoLVL,
   },
   data() {
     return {
@@ -15,37 +15,38 @@ export default {
       rules: '',
       selectedClass: '',
       selectedItems: '',
-    }
+    };
   },
   methods: {},
   watch: {
     selectedValue(rules) {
       switch (this.selectedValue) {
-        case ('oneLVL'):
-          this.rules = 'За задание дается 1 балл. Предполагает вопрос в котором есть вариант ответов.'
+        case 'oneLVL':
+          this.rules =
+            'За задание дается 1 балл. Предполагает вопрос в котором есть вариант ответов.';
           break;
-        case ('twoLVL'):
-          this.rules = 'За задание дается максимум 3 балла. Предполагается вопрос с развернутым ответом, где ответ проверяет учитель.'
+        case 'twoLVL':
+          this.rules =
+            'За задание дается максимум 3 балла. Предполагается вопрос с развернутым ответом, где ответ проверяет учитель.';
           break;
-        case ('threeLVL'):
-          this.rules = 'Проектная работа. Дается только тема и необходимые материалы.'
+        case 'threeLVL':
+          this.rules = 'Проектная работа. Дается только тема и необходимые материалы.';
           break;
         default:
-          this.rules = 'у вас не выбран уровень задания.'
+          this.rules = 'у вас не выбран уровень задания.';
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <template>
   <div class="window_Add">
-
     <h2>Добавление задачи</h2>
     <div class="tasks">
       <!--  Выборка уровня задания  -->
       <div class="window_variantLVL">
-        <div >
+        <div>
           <label>Уровень задачи: </label>
           <select v-model="selectedValue" class="window_Add-level">
             <option value="oneLVL">1 уровень</option>
@@ -80,9 +81,9 @@ export default {
         </select>
       </div>
     </div>
-    <FirstLVL v-show="selectedValue === 'oneLVL'"/>
-    <TwoLVL v-show="selectedValue === 'twoLVL'"/>
-    <ThreeLVL v-show="selectedValue === 'threeLVL'"/>
+    <FirstLVL v-show="selectedValue === 'oneLVL'" />
+    <TwoLVL v-show="selectedValue === 'twoLVL'" />
+    <ThreeLVL v-show="selectedValue === 'threeLVL'" />
   </div>
 </template>
 
@@ -109,12 +110,11 @@ export default {
     justify-content: space-between;
     align-items: center;
 
-    @media(min-width: 300px) and (max-width: 490px){
+    @media (min-width: 300px) and (max-width: 490px) {
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
   }
 }
-
 </style>

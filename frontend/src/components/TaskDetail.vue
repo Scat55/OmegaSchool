@@ -10,23 +10,21 @@
       <div class="container__infoTask__id">
         <p>Номер задачи: {{ task.id }}</p>
       </div>
-      <div class="container__infoTask__complexity">
-        Уровень задания: {{ task.complexity }}
-      </div>
-      <div class="container__infoTask__topic">
-        Предмет: {{ task.topic }}
-      </div>
+      <div class="container__infoTask__complexity">Уровень задания: {{ task.complexity }}</div>
+      <div class="container__infoTask__topic">Предмет: {{ task.topic }}</div>
     </div>
-    <div class="container__bodyTask">
-      <span>Условие задания:</span> {{ task.bodyTask }}
-    </div>
-
+    <div class="container__bodyTask"><span>Условие задания:</span> {{ task.bodyTask }}</div>
 
     <!--  Доп.материалы Start  -->
     <div class="addedFile" v-if="task.addedFile.length !== 0">
       <p class="files">Дополнительные материалы</p>
-      <img @click="showFiles()"
-          src="../assets/images/arrow.png" alt="Arrow"  class = "files__arrow" :class="{rotate : isShow}">
+      <img
+        @click="showFiles()"
+        src="../assets/images/arrow.png"
+        alt="Arrow"
+        class="files__arrow"
+        :class="{ rotate: isShow }"
+      />
       <div v-for="file in task.addedFile" v-if="isShow">
         <a :href="file" :key="file">{{ getFileName(file) }}</a>
       </div>
@@ -36,11 +34,11 @@
     <!--  Блок только для 1 лвл заданий START  -->
     <div class="container_answer" v-if="task.complexity === '1'">
       <p>Варианты ответов. Выберите верный ответ(-ы):</p>
-      <div v-for="(chP, index) in task.checkPoint"
-           :key="index"
-      >
+      <div v-for="(chP, index) in task.checkPoint" :key="index">
         <div class="itemAnswer">
-          <input type="checkbox" :value="chP.text" v-model="userChecks[index]"><label>{{ chP.text }}</label>
+          <input type="checkbox" :value="chP.text" v-model="userChecks[index]" /><label>{{
+            chP.text
+          }}</label>
         </div>
       </div>
     </div>
@@ -61,7 +59,7 @@ export default {
       userChecks: [],
       // chPt: this.task.checkPoint,
       isShow: false,
-    }
+    };
   },
   methods: {
     initializeUserChecks() {
@@ -71,7 +69,7 @@ export default {
       return url.substring(url.lastIndexOf('/') + 1);
     },
     checkAnswer() {
-      this.task.status = true
+      this.task.status = true;
       let isCorrect = true;
       for (let i = 0; i < this.task.checkPoint.length; i++) {
         if (this.userChecks[i] !== this.task.checkPoint[i].checked) {
@@ -85,12 +83,10 @@ export default {
         alert('Неверно. Вы получили 0 баллов.');
       }
     },
-    helpMe() {
-    },
-    showMeAnswer() {
-    },
-    showFiles(){
-      this.isShow = !this.isShow
+    helpMe() {},
+    showMeAnswer() {},
+    showFiles() {
+      this.isShow = !this.isShow;
     },
   },
   created() {
@@ -105,10 +101,10 @@ export default {
   // },
   computed: {
     task() {
-      return this.$store.state.Temp.zadania.find(t => t.id.toString() === this.$route.params.id)
-    }
-  }
-}
+      return this.$store.state.Temp.zadania.find((t) => t.id.toString() === this.$route.params.id);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -132,9 +128,7 @@ export default {
     margin: 10px 0;
 
     &__id {
-
     }
-
   }
 
   &__bodyTask {
@@ -143,7 +137,6 @@ export default {
     & > span {
       font-weight: bold;
     }
-
   }
 
   &_button {
@@ -152,22 +145,22 @@ export default {
     justify-content: center;
     gap: 1rem;
 
-    &-btn{
+    &-btn {
       padding: 0.5rem;
       border-radius: 1rem;
       border: none;
       cursor: pointer;
-      &:first-child{
+      &:first-child {
         background-color: $accentColor;
         color: #fff;
       }
-      &:nth-child(2){
+      &:nth-child(2) {
         background-color: $lightBlueColor;
         color: #fff;
       }
 
-      &:last-child{
-        background-color: #00DFCC;
+      &:last-child {
+        background-color: #00dfcc;
       }
     }
   }
@@ -176,7 +169,6 @@ export default {
 .addedFile {
   padding: 15px 0 10px 0;
   text-decoration: none;
-
 
   & > p {
     margin-bottom: 5px;
@@ -220,7 +212,7 @@ export default {
   color: #fff;
   border-radius: 1rem;
   font-size: 0.7rem;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     transform: scale(0.95);
@@ -231,14 +223,13 @@ export default {
 .files {
   display: inline-block;
 
-
-  &__arrow{
+  &__arrow {
     cursor: pointer;
-    transition: all .3s;
+    transition: all 0.3s;
     margin-left: 1rem;
   }
 }
-.rotate{
+.rotate {
   transform: rotate(-180deg);
 }
 </style>
