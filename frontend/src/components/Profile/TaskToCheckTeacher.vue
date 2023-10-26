@@ -10,6 +10,7 @@ export default {
     return {
       token: '',
       tasks: [],
+      taskID: '',
     };
   },
   computed: {
@@ -27,6 +28,7 @@ export default {
       })
       .then((response) => {
         console.log(response.data);
+        this.taskID = response.data.tast_id;
         this.tasks = response.data;
       });
   },
@@ -49,9 +51,7 @@ export default {
 .task {
   display: flex;
   align-items: center;
-  gap: 2rem;
-
-  &__item {
-  }
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 </style>
