@@ -351,12 +351,8 @@ class User_controller {
                 const optionValues = [option_text, is_correct, questionId];
                 await db.query(insertOptionQuery, optionValues);
             }
+            // console.log(req.files)
 
-            // File uploading logic
-            store.upload.array('files')
-
-            console.log(req.files)
-            {
                 if (!req.files || req.files.length === 0) {
                     throw new Error('Пожалуйста, загрузите файл');
                 }
@@ -369,7 +365,6 @@ class User_controller {
                 await db.query(updateQuery, updateValues);
 
                 return res.send({message: 'Тест и файлы успешно добавлены'});
-            }
         } catch (error) {
             console.error(error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
