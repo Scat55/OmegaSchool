@@ -71,4 +71,8 @@ export default {
     text-align: center;
   }
 }
+
+.selected {
+  margin-top: 20px;
+}
 </style>
