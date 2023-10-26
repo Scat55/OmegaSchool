@@ -124,9 +124,9 @@ class User_controller {
 
             const [userResult,achievementsResult , gradesResult, achievements_teacherResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE email = $1', [email]),
-                db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
+                db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
             ]);
 
             // Извлекаем результаты из объектов результата

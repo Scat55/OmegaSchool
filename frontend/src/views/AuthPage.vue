@@ -1,46 +1,26 @@
 <template>
   <div class="reg">
     <div class="container">
-
-      <form
-          action="#"
-          class="reg__form"
-          @submit.prevent="handler()"
-      >
+      <form action="#" class="reg__form" @submit.prevent="handler()">
         <p class="reg__form-title">Вход</p>
         <div class="reg__info">
-          <span class="reg__info-name ">Почта</span>
-          <input
-              type="email"
-              class="reg__input name"
-              v-model="email"
-          >
+          <span class="reg__info-name">Почта</span>
+          <input type="email" class="reg__input name" v-model="email" />
         </div>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
-          <input
-              type="password"
-              class="reg__input"
-              v-model="pass"
-          >
+          <input type="password" class="reg__input" v-model="pass" />
         </div>
 
-        <button
-            class="reg__form-btn"
-            type="submit"
-        >Войти
-        </button>
-
+        <button class="reg__form-btn" type="submit">Войти</button>
       </form>
-
-
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import {mapActions, mapGetters} from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 import store from '../store/index';
 
 export default {
@@ -49,11 +29,11 @@ export default {
       email: '',
       pass: '',
       token: '',
-      userID: ''
-    }
+      userID: '',
+    };
   },
   computed: {
-    ...mapGetters(['USERS'])
+    ...mapGetters(['USERS']),
   },
   methods: {
     ...mapActions(['GET_USERS_FROM_API']),
@@ -62,57 +42,53 @@ export default {
       const email = this.email;
       const password = this.pass;
 
-      axios.post('/auth/login', {
-        email: email,
-        password: password
-      }).then(response => {
-        try {
-          this.token = response.data.token
+      axios
+        .post('/auth/login', {
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          try {
+            this.token = response.data.token;
 
-          axios(`/api/user_inf_email/${this.email}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${this.token}`,
-              'Content-Type': 'application/json'
-            },
-
-          }).then(response => {
-            try {
-              this.userID = response.data.user.user_id
-              store.state.isAuth = true
-              this.$router.push(`/profile/${response.data.user.user_id}`)
-              console.log(this.userID)
-              const local = {
-                userID: this.userID,
-                token: this.token,
-                isAuth: store.state.isAuth
+            axios(`/api/user_id/${this.email}`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${this.token}`,
+                'Content-Type': 'application/json',
+              },
+            }).then((response) => {
+              try {
+                this.userID = response.data.user_id;
+                store.state.isAuth = true;
+                this.$router.push(`/profile/${response.data.user_id}`);
+                console.log(this.userID);
+                const local = {
+                  userID: this.userID,
+                  token: this.token,
+                  isAuth: store.state.isAuth,
+                };
+                localStorage.setItem('local', JSON.stringify(local));
+              } catch (e) {
+                alert(e);
               }
-              localStorage.setItem('local', JSON.stringify(local))
-            } catch (e){
-              alert(e)
-            }
-          })
-        } catch (e){
-          alert(response.data.message)
-          this.email = this.pass = ''
-        }
-
-      })
-
+            });
+          } catch (e) {
+            alert(response.data.message);
+            this.email = this.pass = '';
+          }
+        });
     },
     // Обработка формы
     handler() {
       // console.log(`${this.email}, ${this.pass}`)
-      this.chekUsers()
-    }
+      this.chekUsers();
+    },
   },
   mounted() {
-
     // this.GET_USERS_FROM_API()
-
   },
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
@@ -123,7 +99,7 @@ export default {
   align-items: center;
   justify-content: center;
   // height: 100vh;
-  background-color: #C7FDFF;
+  background-color: #c7fdff;
 
   &__form {
     display: flex;
@@ -145,9 +121,8 @@ export default {
       font-size: 1.3rem;
     }
 
-
     &-btn {
-      padding: .625rem;
+      padding: 0.625rem;
       background-color: $lightBlueColor;
       color: $whiteColor;
       font-family: Visitor;
@@ -168,7 +143,7 @@ export default {
     width: 18rem;
     border: 1px solid $accentColor;
     border-radius: 0.5rem;
-    padding: .625rem 1.25rem;
+    padding: 0.625rem 1.25rem;
 
     &-name {
       color: rgba(17, 17, 17, 0.49);
@@ -182,8 +157,6 @@ export default {
     background-color: transparent;
     font-size: 1rem;
   }
-
-
 }
 
 .name {
