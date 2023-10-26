@@ -18,9 +18,9 @@ router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformatio
 router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.additionalData)
 router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTasksForExpert',roleMiddleware(['Эксперт']), userController.getTasksForExpert)
-  //  ,roleMiddleware(['Эксперт'])
+//  ,roleMiddleware(['Эксперт'])
 //маршруты для работы с файлами
-
+router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)
 //маршрут для ручной загрузки файла или файлов получения файла.
 router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.uploads)
 router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:questions/:options', roleMiddleware(['Учитель']), store.upload.array('files'), userController.addTestAndUpload)

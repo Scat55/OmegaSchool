@@ -282,7 +282,42 @@ class User_controller {
         }
     }
 
+async updateTestByExpert(req, res){
+    console.log(req.body);
+    console.log(req.user_id);
+    try {
+        const { ver, ver_masseg, test_id } = req.body;
+        const user_id = req.user_id; // предположим, что user_id вы устанавливаете через middleware аутентификации
 
+        const client = await db.connect();
+
+        const updateVer1 = `
+      UPDATE level_1_tests
+      SET ver_1 = $1, ver_1_masseg = $2, ver_1_id = $3
+      WHERE test_id = $4 AND ver_1 IS NULL
+      RETURNING test_id
+    `;
+
+        const result = await client.query(updateVer1, [ver, ver_masseg, user_id, test_id]);
+
+        if (result.rowCount === 0) { // Если обновление для ver_1 не прошло
+            const updateVer2 = `
+        UPDATE level_1_tests
+        SET ver_2 = $1, ver_2_masseg = $2, ver_2_id = $3
+        WHERE test_id = $4 AND ver_2 IS NULL
+      `;
+
+            await client.query(updateVer2, [ver, ver_masseg, user_id, test_id]);
+        }
+
+        client.release();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Ошибка при выполнении SQL-запроса:', error.message);
+        res.status(500).json({ error: 'Ошибка на сервере' });
+    }
+}
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
             if (err) {
