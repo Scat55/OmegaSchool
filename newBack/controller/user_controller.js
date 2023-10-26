@@ -53,16 +53,18 @@ class User_controller {
         const user_id = req.params.user_id;
         try {
             // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
-            const [userResult, gradesResult, achievementsResult] = await Promise.all([
+            const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
                 db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
                 db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
+                db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
             const grades = gradesResult.rows;
             const achievements = achievementsResult.rows;
+            const grades_teacher = achievements_teacherResult.rows;
 
             if (!user) {
                 console.log(`Пользователь с ID ${user_id} не найден`);
@@ -74,6 +76,7 @@ class User_controller {
                 user,
                 grades,
                 achievements,
+                grades_teacher,
             };
 
             console.log(`Данные для пользователя с ID ${user_id} найдены`);
@@ -119,16 +122,18 @@ class User_controller {
         try {
 
 
-            const [userResult,achievementsResult , gradesResult] = await Promise.all([
+            const [userResult,achievementsResult , gradesResult, achievements_teacherResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE email = $1', [email]),
                 db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
                 db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
             ]);
 
             // Извлекаем результаты из объектов результата
             const user = userResult.rows[0];
             const grades = gradesResult.rows;
             const achievements = achievementsResult.rows;
+            const grades_teacher = achievements_teacherResult.rows;
 
 
             // Соберите результаты в один объект
@@ -136,6 +141,7 @@ class User_controller {
                 user,
                 achievements,
                 grades,
+                grades_teacher,
             };
 
             console.log(`Данные для пользователя с Email ${email} найдены`);
@@ -261,9 +267,6 @@ class User_controller {
         }
     }
 
-
-
-
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
             if (err) {
@@ -304,9 +307,11 @@ class User_controller {
     async addTestAndUpload(req, res) {
         try {
             // Parse data from the request
-            console.log(req.params);
-            console.log(req.body);
+
+
             const { task_test, task_description, classes, questions, options } = req.params;
+            const { files } = req.body;
+            console.log(files)
 
             if (!options) {
                 return res.status(400).json({ error: 'Options are missing' });
@@ -348,10 +353,10 @@ class User_controller {
             }
 
             // File uploading logic
-            store.upload.array('files')(req, async (err) => {
-                if (err) {
-                    throw new Error('Ошибка загрузки файла');
-                }
+            store.upload.array('files')
+
+            console.log(req.files)
+            {
                 if (!req.files || req.files.length === 0) {
                     throw new Error('Пожалуйста, загрузите файл');
                 }
@@ -363,25 +368,13 @@ class User_controller {
                 const updateValues = [filesString, testId];
                 await db.query(updateQuery, updateValues);
 
-                return res.send({ message: 'Тест и файлы успешно добавлены' });
-            });
+                return res.send({message: 'Тест и файлы успешно добавлены'});
+            }
         } catch (error) {
             console.error(error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     async download(req, res) {
 
