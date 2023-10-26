@@ -28,13 +28,39 @@ export default {
         <option value="Химия">Химия</option>
       </select>
     </div>
-    <div class="achievement_body"></div>
+    <div class="achievement_body">
+      <div class="selected item1" v-show="selectedItem === ''">
+        <p></p>
+      </div>
+      <div class="selected item2" v-show="selectedItem === 'Биология'">
+        <p>Твой балл по Биологии</p>
+      </div>
+      <div class="selected item3" v-show="selectedItem === 'География'">
+        <p>Твой балл по Географии</p>
+      </div>
+      <div class="selected item4" v-show="selectedItem === 'Информатика'">
+        <p>Твой балл по Информатика</p>
+      </div>
+      <div class="selected item5" v-show="selectedItem === 'Математика'">
+        <p>Твой балл по Математика</p>
+      </div>
+      <div class="selected item6" v-show="selectedItem === 'Технология'">
+        <p>Твой балл по Технология</p>
+      </div>
+      <div class="selected item7" v-show="selectedItem === 'Физика'">
+        <p>Твой балл по Физика</p>
+      </div>
+      <div class="selected item8" v-show="selectedItem === 'Химия'">
+        <p>Твой балл по Химия</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .achievement_title {
   text-align: center;
+
   & > select {
     font-size: 1.1rem;
     padding: 5px;
@@ -44,5 +70,9 @@ export default {
     width: 100%;
     text-align: center;
   }
+}
+
+.selected {
+  margin-top: 20px;
 }
 </style>
