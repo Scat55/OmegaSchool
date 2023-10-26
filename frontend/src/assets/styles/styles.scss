@@ -26,13 +26,16 @@ body {
 
   &::-webkit-scrollbar-thumb {
     background-color: #356184;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%,
-            color-stop(.5, rgba(255, 255, 255, .25)),
-            color-stop(.5, transparent), to(transparent));
+    background-image: -webkit-gradient(
+      linear,
+      0 0,
+      0 100%,
+      color-stop(0.5, rgba(255, 255, 255, 0.25)),
+      color-stop(0.5, transparent),
+      to(transparent)
+    );
     border-radius: 10px;
-
   }
-
 }
 .container {
   max-width: 79.375rem;
@@ -42,4 +45,8 @@ body {
 .router {
   text-decoration: none;
   color: $whiteColor;
+}
+.router2 {
+  text-decoration: none;
+  color: #000;
 }

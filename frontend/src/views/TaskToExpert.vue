@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="task__info">fgsdfgdfg</div>
+    <div class="task__info">{{ id }}</div>
   </div>
 </template>
 
