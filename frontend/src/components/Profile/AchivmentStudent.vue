@@ -1,4 +1,5 @@
 <script>
+
 export default {
   props: {
     grades: Array,
@@ -30,27 +31,54 @@ export default {
     </div>
     <div class="achievement_body">
       <div class="selected item1" v-show="selectedItem === ''">
+        <div class="achivment">
+          <div class="achivka">
+            <img src="../../assets/images/prizes/0.png" alt="sa"/>
+            <p>Text</p>
+          </div>
+        </div>
       </div>
       <div class="selected item2" v-show="selectedItem === 'Биология'">
         <p>Твой балл по Биологии {{ grades[0].biology }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
       <div class="selected item3" v-show="selectedItem === 'География'">
         <p>Твой балл по Географии {{ grades[0].geography }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
       <div class="selected item4" v-show="selectedItem === 'Информатика'">
         <p>Твой балл по Информатика {{ grades[0].informatics }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
       <div class="selected item5" v-show="selectedItem === 'Математика'">
         <p>Твой балл по Математика {{ grades[0].mathematics }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
       <div class="selected item6" v-show="selectedItem === 'Технология'">
-        <p>Твой балл по Технология {{ grades[0].technology }}</p>
+        <p>Твой балл по Технологии {{ grades[0].technology }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
       <div class="selected item7" v-show="selectedItem === 'Физика'">
-        <p>Твой балл по Физика {{ grades[0].physics }}</p>
+        <p>Твой балл по Физике {{ grades[0].physics }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
       <div class="selected item8" v-show="selectedItem === 'Химия'">
-        <p>Твой балл по Химия {{ grades[0].chemistry }}</p>
+        <p>Твой балл по Химии {{ grades[0].chemistry }}</p>
+        <div class="achivment">
+
+        </div>
       </div>
     </div>
   </div>
@@ -73,5 +101,19 @@ export default {
 
 .selected {
   margin-top: 20px;
+
+  & > p {
+    background: white;
+    padding: 15px;
+    border-radius: 1rem;
+  }
+}
+
+.achivka {
+  display: flex;
+
+  &>img {
+    width: 15%;
+  }
 }
 </style>
