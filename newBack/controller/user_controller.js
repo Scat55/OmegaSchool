@@ -229,43 +229,60 @@ class User_controller {
 
             // Запрос для level_1_tests
             const testsSql = `
-            SELECT *
-            FROM level_1_tests
-            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1);
-        `;
+        SELECT *
+        FROM level_1_tests
+        WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1);
+    `;
             const testsResult = await db.query(testsSql, [user_id]);
 
             // Запрос для questions
             const questionsSql = `
-            SELECT q.*
-            FROM questions q
-            JOIN level_1_tests t ON q.test_id = t.test_id
-            WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
-        `;
+        SELECT q.*
+        FROM questions q
+        JOIN level_1_tests t ON q.test_id = t.test_id
+        WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
+    `;
             const questionsResult = await db.query(questionsSql, [user_id]);
 
             // Запрос для options
             const optionsSql = `
-            SELECT o.*
-            FROM options o
-            JOIN questions q ON o.question_id = q.question_id
-            JOIN level_1_tests t ON q.test_id = t.test_id
-            WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
-        `;
+        SELECT o.*
+        FROM options o
+        JOIN questions q ON o.question_id = q.question_id
+        JOIN level_1_tests t ON q.test_id = t.test_id
+        WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
+    `;
             const optionsResult = await db.query(optionsSql, [user_id]);
 
-            // Объединяем результаты в одном объекте и отправляем ответ
-            res.json({
-                tests: testsResult.rows,
-                questions: questionsResult.rows,
-                options: optionsResult.rows
+            const formattedResponse = testsResult.rows.map(test => {
+                const relatedQuestions = questionsResult.rows.filter(q => q.test_id === test.test_id);
+                return {
+                    tast_id: test.test_id, // предполагаю что это поле у вас в базе данных
+                    task_test: test.task_test, // предполагаю что это поле у вас в базе данных
+                    task_description: test.task_description, // предполагаю что это поле у вас в базе данных
+                    add_file: test.add_file, // предполагаю что это поле у вас в базе данных
+                    classes: test.classes, // предполагаю что это поле у вас в базе данных
+                    questions: relatedQuestions.map(question => {
+                        const relatedOptions = optionsResult.rows.filter(option => option.question_id === question.question_id);
+                        return {
+                            question_text: question.question_text, // предполагаю что это поле у вас в базе данных
+                            options: relatedOptions.map(option => ({
+                                option_text: option.text, // предполагаю что это поле у вас в базе данных
+                                is_correct: option.is_correct // предполагаю что это поле у вас в базе данных
+                            }))
+                        }
+                    })
+                }
             });
+
+            res.json(formattedResponse);
 
         } catch (error) {
             console.error('Ошибка при выполнении SQL-запроса:', error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
+
 
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
