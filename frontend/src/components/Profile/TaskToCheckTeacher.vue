@@ -30,12 +30,15 @@ export default {
 
   }
 }
+// TODO: комонент задачи
 </script>
 <!-- Эта вкладка для эксперта тут он просматривает задачи от учителей-->
 <template>
   <div>
 <h1>TaskToCheckTeacher</h1>
-    <StatusTaskToCheckeTeacher v-for="task in tasks" :key="task.id" :task="task" />
+    <div  v-for="task in tasks.tests" >
+      <StatusTaskToCheckeTeacher :key="task.id" :task="task" />
+    </div>
   </div>
 </template>
 

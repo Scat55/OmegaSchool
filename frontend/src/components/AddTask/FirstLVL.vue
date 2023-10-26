@@ -19,7 +19,8 @@ export default {
       topic: '',
       file: '',
       token: '',
-      newFile: ''
+      newFile: '',
+      // files: []
     };
   },
   methods: {
@@ -151,7 +152,21 @@ export default {
     buttonText() {
       return this.selectedFiles.length > 0 ? `Выбрано файлов ${this.selectedFiles.length}` : 'Выберите файлы';
     },
-  }
+  },
+
+  // mounted() {
+  //   axios.get(`/api/download`, {
+  //     headers: {
+  //       'Authorization': `Bearer ${this.token.token}`,
+  //     }
+  //   }).then(response => {
+  //     try {
+  //       this.files = response.data.userFiles
+  //     } catch (err){
+  //       alert(err)
+  //     }
+  //   })
+  // }
 };
 
 </script>
@@ -170,27 +185,27 @@ export default {
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>
         <!--     Загрузка файлов мб удалю нахер   -->
-<!--        TODO: Сделать выбор загруженных файлов-->
-        <div class ="add__file">
-         <div>
-           <label for="fileInput" class="custom-file-upload">
-             <span>{{ buttonText }}</span>
-             <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
-                    accept="application/pdf ,.docx">
-           </label>
-           <div class="list_task_file">
-             <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
-             <ul>
-               <li v-for="(fileName, index) in selectedFiles" :key="index">
-                 <span>{{ index + 1 }}</span>
-                 {{ fileName }}
-                 <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
-               </li>
-             </ul>
-           </div>
-         </div>
-          <div >
-            <select class = "files" >
+        <!--        TODO: Сделать выбор загруженных файлов-->
+        <div class="add__file">
+          <div>
+            <label for="fileInput" class="custom-file-upload">
+              <span>{{ buttonText }}</span>
+              <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
+                     accept="application/pdf ,.docx">
+            </label>
+            <div class="list_task_file">
+              <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
+              <ul>
+                <li v-for="(fileName, index) in selectedFiles" :key="index">
+                  <span>{{ index + 1 }}</span>
+                  {{ fileName }}
+                  <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <select class="files">
               <option disabled selected>-- Прикрепите файл --</option>
               <option>Файл2</option>
               <option>Файл3</option>
@@ -434,12 +449,14 @@ export default {
     list-style-type: none;
   }
 }
-.add__file{
+
+.add__file {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.files{
+
+.files {
   font-family: Visitor;
   padding: 10px 20px;
   background-color: #007bff;
@@ -449,12 +466,12 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   outline: none;
-  
-  &:hover{
+
+  &:hover {
     background-color: #0056b3;
   }
-  
-  option{
+
+  option {
     background-color: #fff;
     color: #000;
   }

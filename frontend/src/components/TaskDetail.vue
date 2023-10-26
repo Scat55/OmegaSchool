@@ -24,7 +24,9 @@
 
     <!--  Доп.материалы Start  -->
     <div class="addedFile" v-if="task.addedFile.length !== 0">
-      <p class="files" @click="isShow = !isShow">Дополнительные материалы &#8595;</p>
+      <p class="files">Дополнительные материалы</p>
+      <img @click="showFiles()"
+          src="../assets/images/arrow.png" alt="Arrow"  class = "files__arrow" :class="{rotate : isShow}">
       <div v-for="file in task.addedFile" v-if="isShow">
         <a :href="file" :key="file">{{ getFileName(file) }}</a>
       </div>
@@ -87,10 +89,14 @@ export default {
     },
     showMeAnswer() {
     },
+    showFiles(){
+      this.isShow = !this.isShow
+    },
   },
   created() {
     this.initializeUserChecks();
   },
+
   // props: {
   //   task: {
   //     type: Object,
@@ -223,6 +229,16 @@ export default {
 }
 
 .files {
-  cursor: pointer;
+  display: inline-block;
+
+
+  &__arrow{
+    cursor: pointer;
+    transition: all .3s;
+    margin-left: 1rem;
+  }
+}
+.rotate{
+  transform: rotate(-180deg);
 }
 </style>

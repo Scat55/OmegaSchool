@@ -62,7 +62,7 @@
           />
           <AddTask v-show="isActiveComponents.AddTask === true" />
           <TaskToCheckStudent v-show="isActiveComponents.TaskToCheckStudent === true" />
-          <TaskToCheckTeacher v-show="isActiveComponents.TaskToCheckTeacher === true" />
+          <TaskToCheckTeacher v-if="isActiveComponents.TaskToCheckTeacher === true" />
           <MySolvedTask v-show="isActiveComponents.MySolvedTask === true" />
           <MyAddTask v-show="isActiveComponents.MyAddTask === true" />
           <AchivmentStudent :grades="person.grades" :achievements="person.achievements" v-show="isActiveComponents.AchivStud === true" />
@@ -154,9 +154,9 @@ export default {
       this.person.item = response.data.user.item
       this.person.expert = response.data.user.expert === 'Да'
       this.person.birthday = format(new Date(response.data.user.birthdate), "dd.MM.yyyy")
-      if (response.data.user.expert === "true") {
-        this.person.expert = true
-      }
+      // if (response.data.user.expert === "true") {
+      //   // this.person.expert = true
+      // }
       this.person.student = response.data.user.type_user === 'Ученик';
       this.person.grades = response.data.grades;
       this.person.achievements = response.data.achievements;
