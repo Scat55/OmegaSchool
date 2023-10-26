@@ -9,7 +9,7 @@ export default {
 </script>
 
 <!-- Это компонент который выводит задачи на проверку -->
-
+<!--TODO: Главный компонент на котором все задачи-->
 <template>
   <div class = "task">
     {{task.test_id}}
