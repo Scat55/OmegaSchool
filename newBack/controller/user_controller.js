@@ -124,9 +124,9 @@ class User_controller {
 
             const [userResult,achievementsResult , gradesResult, achievements_teacherResult] = await Promise.all([
                 db.query('SELECT * FROM users WHERE email = $1', [email]),
-                db.query('SELECT * FROM achievements WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                db.query('SELECT * FROM student_grades WHERE user_id = (SELECT user_id FROM users WHERE email = $1)', [email]),
-                db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
+                db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
             ]);
 
             // Извлекаем результаты из объектов результата
@@ -368,12 +368,8 @@ class User_controller {
                 const optionValues = [option_text, is_correct, questionId];
                 await db.query(insertOptionQuery, optionValues);
             }
+            // console.log(req.files)
 
-            // File uploading logic
-            store.upload.array('files')
-
-            console.log(req.files)
-            {
                 if (!req.files || req.files.length === 0) {
                     throw new Error('Пожалуйста, загрузите файл');
                 }
@@ -386,7 +382,6 @@ class User_controller {
                 await db.query(updateQuery, updateValues);
 
                 return res.send({message: 'Тест и файлы успешно добавлены'});
-            }
         } catch (error) {
             console.error(error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });

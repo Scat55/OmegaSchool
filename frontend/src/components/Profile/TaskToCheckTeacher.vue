@@ -1,47 +1,45 @@
 <script setup>
-
-import StatusTaskToCheckeTeacher from "@/components/TaskToCheckeTeacher/StatusTaskToCheckeTeacher.vue";
+import StatusTaskToCheckeTeacher from '@/components/TaskToCheckeTeacher/StatusTaskToCheckeTeacher.vue';
 </script>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-  data(){
+  data() {
     return {
       token: '',
-      tasks: []
-    }
+      tasks: [],
+    };
   },
   computed: {
     filteredTasks() {
-      return this.$store.getters.filterCheckedTask(false)
-    }
+      return this.$store.getters.filterCheckedTask(false);
+    },
   },
   mounted() {
-    this.token = JSON.parse(localStorage.getItem('local'))
-    axios.get('/api/getTasksForExpert', {
-      headers: {
-        'Authorization': `Bearer ${this.token.token}`,
-      },
-    }).then(response => {
-      this.tasks = response.data
-    })
-
-  }
-}
+    this.token = JSON.parse(localStorage.getItem('local'));
+    axios
+      .get('/api/getTasksForExpert', {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+        },
+      })
+      .then((response) => {
+        this.tasks = response.data;
+      });
+  },
+};
 // TODO: комонент задачи
 </script>
 <!-- Эта вкладка для эксперта тут он просматривает задачи от учителей-->
 <template>
   <div>
-<h1>TaskToCheckTeacher</h1>
-    <div  v-for="task in tasks.tests" >
+    <h1>TaskToCheckTeacher</h1>
+    <div v-for="task in tasks.tests">
       <StatusTaskToCheckeTeacher :key="task.id" :task="task" />
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

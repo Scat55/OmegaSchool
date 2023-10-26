@@ -1,13 +1,12 @@
 <script>
 export default {
-  props: ['task']
-}
+  props: ['task'],
+};
 </script>
 
 <template>
   <div class="task_task">
-    <router-link :to="'/task/' + task.id" class="task_title">{{ task.title }}
-    </router-link>
+    <router-link :to="'/task/' + task.id" class="task_title">{{ task.title }} </router-link>
     <p class="task_status_name">Статус: {{ task.status === false ? 'Не решено' : 'Решено' }}</p>
     <div class="task_body">
       <p class="task_topic">Предмет: {{ task.topic }}</p>
@@ -21,7 +20,6 @@ export default {
 <style scoped lang="scss">
 @import '../assets/styles/vars.scss';
 
-
 .task_task {
   border: 2px solid $lightBlueColor;
   border-radius: 1rem;
@@ -30,7 +28,7 @@ export default {
   flex-direction: column;
   background: white;
   overflow: hidden;
-  transition: all .3s;
+  transition: all 0.3s;
   width: 20rem;
 }
 
@@ -66,13 +64,11 @@ export default {
   background: $lightBlueColor;
 }
 
-
 .task_topic {
   text-align: left;
 }
 
 .task_complexity {
-
   text-align: right;
 }
 </style>

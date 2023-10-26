@@ -6,19 +6,15 @@
 
       <div class="robot__content">
         <div>
-          <p class="robot__subtitle">В эпоху цифровизации и глобализации, качественное образование становится нашим
-            главным
-            приоритетом. У нас вы найдете сочетание проверенных временем методов и современных технологий, чтобы учиться с
-            удовольствием и эффективностью. Присоединяйтесь к команде передовых мыслителей!</p>
-          <button
-            class="robot__btn"
-            @click="changeStatusOnTrue()"
-          >Начать заниматься</button>
+          <p class="robot__subtitle">
+            В эпоху цифровизации и глобализации, качественное образование становится нашим главным
+            приоритетом. У нас вы найдете сочетание проверенных временем методов и современных
+            технологий, чтобы учиться с удовольствием и эффективностью. Присоединяйтесь к команде
+            передовых мыслителей!
+          </p>
+          <button class="robot__btn" @click="changeStatusOnTrue()">Начать заниматься</button>
         </div>
-        <img
-          src="../assets/images/robot/myRobot.png"
-          alt="Robot"
-        >
+        <img src="../assets/images/robot/myRobot.png" alt="Robot" />
       </div>
     </div>
   </div>
@@ -27,29 +23,27 @@
 <script>
 export default {
   data() {
-    return {
-
-    }
+    return {};
   },
 
   methods: {
     // Проверка авторизации
     changeStatusOnTrue() {
-      const local = JSON.parse(localStorage.getItem('local'))
+      const local = JSON.parse(localStorage.getItem('local'));
       // Если да, то переходим в личный кабинет
-      if (local){
-        this.$router.push(`/profile/${local.userID}`)
+      if (local) {
+        this.$router.push(`/profile/${local.userID}`);
       }
       // Если нет, то открывается форма регистрации
       else {
         window.scrollTo(0, 0);
-        const body = document.querySelector('body')
-        this.$store.state.status = true
-        body.style.overflow = "hidden"
+        const body = document.querySelector('body');
+        this.$store.state.status = true;
+        body.style.overflow = 'hidden';
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -57,7 +51,7 @@ export default {
 
 .robot {
   margin-top: 5rem;
-  background-color: #00DFCC;
+  background-color: #00dfcc;
   padding: 1.625rem;
   &__content {
     display: flex;
@@ -91,7 +85,7 @@ export default {
   &__btn {
     font-family: Visitor;
     font-size: 1.3rem;
-    padding: .625rem 1.25rem;
+    padding: 0.625rem 1.25rem;
     background-color: $lightBlueColor;
     color: $whiteColor;
     border: none;

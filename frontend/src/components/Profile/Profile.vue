@@ -1,14 +1,14 @@
 <script>
 import axios from 'axios';
-import Button from "@/UI/Button.vue";
+import Button from '@/UI/Button.vue';
 
 export default {
-  components: {Button},
+  components: { Button },
   props: {
     person: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -25,130 +25,133 @@ export default {
       token: '',
       oldPass: '',
       newPass: '',
-      repeatNewPass: ''
-    }
+      repeatNewPass: '',
+    };
   },
   methods: {
     changeInfoAboutUSer() {
-      this.edit = false
-      this.token = JSON.parse(localStorage.getItem('local'))
+      this.edit = false;
+      this.token = JSON.parse(localStorage.getItem('local'));
 
-      const first_name = this.person.name
-      const last_name = this.person.lastname
-      const patronymic = this.person.patronymic
-      const item = this.person.item
-      const classes = this.person.class
-      const birthdate = this.person.birthday
-      axios.post('/api/addition_data', {
-        first_name: first_name,
-        last_name: last_name,
-        patronymic: patronymic,
-        classes: classes,
-        item: item,
-        birthdate: birthdate
-      }, {
-        headers: {
-          'Authorization': `Bearer ${this.token.token}`,
-          'Content-Type': 'application/json'
-        }
-      })
-
+      const first_name = this.person.name;
+      const last_name = this.person.lastname;
+      const patronymic = this.person.patronymic;
+      const item = this.person.item;
+      const classes = this.person.class;
+      const birthdate = this.person.birthday;
+      axios.post(
+        '/api/addition_data',
+        {
+          first_name: first_name,
+          last_name: last_name,
+          patronymic: patronymic,
+          classes: classes,
+          item: item,
+          birthdate: birthdate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
     },
     changePass() {
-      if ((this.newPass.length >= 8 && this.repeatNewPass.length >= 8) && (this.newPass === this.repeatNewPass)) {
-        alert('Пароль успешно изменен')
-        this.changeDate.changePass = false
-        console.log(this.repeatNewPass)
-        this.newPass = this.repeatNewPass = ''
+      if (
+        this.newPass.length >= 8 &&
+        this.repeatNewPass.length >= 8 &&
+        this.newPass === this.repeatNewPass
+      ) {
+        alert('Пароль успешно изменен');
+        this.changeDate.changePass = false;
+        console.log(this.repeatNewPass);
+        this.newPass = this.repeatNewPass = '';
       }
       if (this.newPass.length < 8 && this.repeatNewPass.length < 8) {
-        alert('Пароль не должен быть меньше 8 символов')
+        alert('Пароль не должен быть меньше 8 символов');
       }
       if (this.newPass !== this.repeatNewPass) {
-        alert('Пароль несовпадают')
-
+        alert('Пароль несовпадают');
       }
-
-
-    }
+    },
   },
-
-
-}
+};
 </script>
 
 <template>
   <div class="main">
     <div class="avatar">
-      <img v-if="person.gender === 'Мужской' "
-           src="../../assets/images/Avatar/boy.png"
-           alt="Аватарка"
-      >
-      <img v-if="person.gender === 'Женский'"
-           src="../../assets/images/Avatar/girl (3).png"
-           alt="Аватарка"
-      >
+      <img
+        v-if="person.gender === 'Мужской'"
+        src="../../assets/images/Avatar/boy.png"
+        alt="Аватарка"
+      />
+      <img
+        v-if="person.gender === 'Женский'"
+        src="../../assets/images/Avatar/girl (3).png"
+        alt="Аватарка"
+      />
       <p v-if="person.gender === ''">Загрузка аватара...</p>
     </div>
     <div class="date_person_fio">
-      <div class="name"><label>Имя:</label>&nbsp;
+      <div class="name">
+        <label>Имя:</label>&nbsp;
         <!-- <div v-html="htmlContent"></div> -->
         <input
-            type="text"
-            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-            :disabled="!edit"
-            v-model="person.name"
-        >
+          type="text"
+          :class="{ InputChangeNO: !edit, InputChange: edit }"
+          :disabled="!edit"
+          v-model="person.name"
+        />
       </div>
       <div class="lastName">
         <label>Фамилия:</label>&nbsp;
         <input
-            type="text"
-            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-            :disabled="!edit"
-            v-model="person.lastname"
-        >
+          type="text"
+          :class="{ InputChangeNO: !edit, InputChange: edit }"
+          :disabled="!edit"
+          v-model="person.lastname"
+        />
       </div>
       <div class="patronymic">
         <label>Отчество:</label>&nbsp;
         <input
-            type="text"
-            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-            :disabled="!edit"
-            v-model="person.patronymic"
-        >
+          type="text"
+          :class="{ InputChangeNO: !edit, InputChange: edit }"
+          :disabled="!edit"
+          v-model="person.patronymic"
+        />
       </div>
     </div>
-
 
     <div class="date_person_birthday_gender">
       <p>Пол: {{ person.gender }}</p>
       <div v-if="edit" class="input-container">
         <label>Дата рождения:</label>&nbsp;
-        <input type="date" class="styled-input" v-model="person.birthday">
+        <input type="date" class="styled-input" v-model="person.birthday" />
       </div>
       <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
     </div>
-
 
     <div class="date_person_class">
       <div v-if="person.student === true">
         <label>Класс</label>&nbsp;
         <input
-            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-            type="text"
-            :disabled="!edit"
-            :value="person.class"
-        >
+          :class="{ InputChangeNO: !edit, InputChange: edit }"
+          type="text"
+          :disabled="!edit"
+          :value="person.class"
+        />
       </div>
       <div v-if="person.student === false">
         <label>Учитель по</label>&nbsp;
         <input
-            :class="{ 'InputChangeNO': !edit, 'InputChange': edit }"
-            type="text"
-            :disabled="!edit"
-            v-model="person.item"
-        >
+          :class="{ InputChangeNO: !edit, InputChange: edit }"
+          type="text"
+          :disabled="!edit"
+          v-model="person.item"
+        />
       </div>
     </div>
 
@@ -157,53 +160,34 @@ export default {
     </div>
 
     <div class="change_profile">
-      <div
-          class="change_password"
-          v-if="edit === false"
-      >
+      <div class="change_password" v-if="edit === false">
         <button
-            v-if="changeDate.changePass === false"
-            @click="changeDate.changePass = true"
-            class="editBtn"
-        >Изменить пароль
+          v-if="changeDate.changePass === false"
+          @click="changeDate.changePass = true"
+          class="editBtn"
+        >
+          Изменить пароль
         </button>
         <div v-if="changeDate.changePass === true" class="passwords">
-          <label>Введите пароль</label><input type="password" class="passwords__pass">
-          <label>Введите новый</label><input type="password" class="passwords__pass" v-model="newPass">
-          <label>повторите новый пароль</label><input type="password" class="passwords__pass" v-model="repeatNewPass">
+          <label>Введите пароль</label><input type="password" class="passwords__pass" />
+          <label>Введите новый</label
+          ><input type="password" class="passwords__pass" v-model="newPass" />
+          <label>повторите новый пароль</label
+          ><input type="password" class="passwords__pass" v-model="repeatNewPass" />
           <button class="editBtn" @click="changePass()">Подтвердить изменение</button>
-          <button
-              @click="changeDate.changePass = false"
-              class="editBtn"
-          >Отмена
-          </button>
+          <button @click="changeDate.changePass = false" class="editBtn">Отмена</button>
         </div>
       </div>
-      <div
-          class="edit_profile"
-          v-if="changeDate.changePass === false"
-      >
-        <button
-            @click="edit = true"
-            v-if="edit === false"
-            class="editBtn"
-        >Изменить профиль
+      <div class="edit_profile" v-if="changeDate.changePass === false">
+        <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
+        <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
+          Подтвердить изменения
         </button>
-        <button
-            v-show="edit === true"
-            @click="changeInfoAboutUSer()"
-            class="editBtn"
-        >Подтвердить изменения
-        </button>
-        <button
-            v-show="edit === true"
-            @click="edit = false"
-            class="editBtn"
-        >Отмена изменения
+        <button v-show="edit === true" @click="edit = false" class="editBtn">
+          Отмена изменения
         </button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -267,7 +251,9 @@ export default {
   border: 1px solid #c7fdff;
   border-radius: 4px;
   font-size: 1.1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:focus {
     outline: none;
@@ -279,7 +265,6 @@ export default {
     border-color: darken($accentColor, 10%);
   }
 }
-
 
 .change_profile {
   margin-top: 1rem;
@@ -293,7 +278,7 @@ export default {
   border-radius: 1.5rem;
   border: 1px solid $accentColor;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     background-color: #c7fdff;
@@ -311,14 +296,14 @@ export default {
 
   &__pass {
     width: 13rem;
-    padding: .5rem;
+    padding: 0.5rem;
     border: none;
     outline: none;
     border-radius: 1rem;
     font-size: 1.1rem;
   }
 }
-button{
+button {
   font-family: Visitor;
 }
 </style>

@@ -4,34 +4,24 @@
       <h2 class="positive__title">Почему именно <span>мы?</span></h2>
 
       <div class="positive__content">
-        <div
-          class="positive__content-item"
-          v-for="plus in positive"
-        >
-
+        <div class="positive__content-item" v-for="plus in positive">
           <div class="positive__content-text">
-            <p
-              class="positive__item-title"
-              @click="show()"
-            > {{ plus.title }}</p>
-            <p class="positive__item-title"> {{ plus.subtitle }}</p>
-
+            <p class="positive__item-title" @click="show()">{{ plus.title }}</p>
+            <p class="positive__item-title">{{ plus.subtitle }}</p>
           </div>
 
           <img
             :src="require('../assets/images/positive/' + plus.img)"
             alt="InfoImg"
             class="positive__item-img"
-          >
+          />
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -39,7 +29,7 @@ export default {
         {
           title: 'Не стандартные',
           subtitle: 'задачи',
-          img: "comp.png"
+          img: 'comp.png',
         },
         {
           title: 'Задания проверенные экспертами',
@@ -47,38 +37,36 @@ export default {
         },
         {
           title: 'Система достижений',
-          img: 'awards.png'
+          img: 'awards.png',
         },
         {
           title: 'Инновационные',
           subtitle: 'материалы',
-          img: 'materials.png'
-        }
-      ]
-    }
+          img: 'materials.png',
+        },
+      ],
+    };
   },
 
   methods: {
     show() {
-      console.log(this.positive)
-    }
+      console.log(this.positive);
+    },
   },
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
 
 .positive {
-
   &__title {
     margin-top: 8.125rem;
     font-size: 2rem;
     margin-bottom: 2rem;
 
     span {
-      color: #00DFCC;
+      color: #00dfcc;
     }
   }
 
@@ -88,7 +76,7 @@ export default {
     justify-content: space-between;
     gap: 2rem;
 
-    @media (min-width: 300px) and (max-width: 1200px){
+    @media (min-width: 300px) and (max-width: 1200px) {
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
@@ -108,18 +96,15 @@ export default {
       margin-bottom: 3.125rem;
       height: 18.75rem;
       border-radius: 1rem;
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:hover {
         transform: scale(1.1);
       }
-
-
     }
   }
 
   &__item {
-
     &-title {
       display: flex;
       margin: 0.5rem;
@@ -136,8 +121,7 @@ export default {
       z-index: -10;
       width: 100%;
       border-radius: 1rem;
-      transition: all .3s;
-
+      transition: all 0.3s;
     }
   }
 }
