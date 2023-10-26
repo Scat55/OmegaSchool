@@ -15,11 +15,15 @@ export default {
 
     <p class="task__name">{{ task.task_test }}</p>
     <p class="task__description">{{ task.task_description }}</p>
+    <!-- <div v-for="question in task.questions"></div> -->
   </div>
 </template>
 
 <style scoped lang="scss">
 .task {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   background-color: #fff;
   padding: 20px;
   border-radius: 1rem;

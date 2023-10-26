@@ -26,6 +26,7 @@ export default {
         },
       })
       .then((response) => {
+        console.log(response.data);
         this.tasks = response.data;
       });
   },
@@ -36,7 +37,7 @@ export default {
 <template>
   <div>
     <h1>TaskToCheckTeacher</h1>
-    <div v-for="task in tasks.tests">
+    <div v-for="task in tasks">
       <StatusTaskToCheckeTeacher :key="task.id" :task="task" />
     </div>
   </div>
