@@ -5,19 +5,19 @@ const fs = require('fs');
 class Store {
     constructor() {
         // Функция, которая будет генерировать путь к папке, в которую будут сохраняться загруженные файлы
-        this.getUploadsPath = () => {
-
-            const today = new Date();
-            const year = today.getFullYear().toString();
-            const month = (today.getMonth() + 1).toString().padStart(2, '0');
-            const day = today.getDate().toString().padStart(2, '0');
-            return path.join(__dirname, 'uploads', `${year}`);
-        };
+        // this.getUploadsPath = () => {
+        //
+        //     const today = new Date();
+        //     const year = today.getFullYear().toString();
+        //     const month = (today.getMonth() + 1).toString().padStart(2, '0');
+        //     const day = today.getDate().toString().padStart(2, '0');
+        //     return path.join(__dirname, 'uploads', `${year}`);
+        // };
 
         // Объект storage, который задает папку для сохранения загруженных файлов и их имена.
         this.storage = multer.diskStorage({
             destination: (req, file, cb) => {
-                const uploadsPath = this.getUploadsPath();
+                const uploadsPath = path.join('uploads', `${req.user_id}`);;
                 if (!fs.existsSync(uploadsPath)) {
                     fs.mkdirSync(uploadsPath, { recursive: true });
                 }
@@ -28,7 +28,7 @@ class Store {
                 const year = today.getFullYear().toString();
                 const month = (today.getMonth() + 1).toString().padStart(2, '0');
                 const day = today.getDate().toString().padStart(2, '0');
-                const filename = `${day}_${month}_${year}_${this.transliterate(file.originalname)}`;
+                const filename = `${day}_${month}_${year}_${req.user_id}_${this.transliterate(file.originalname)}`;
                 cb(null, filename);
             },
         });
