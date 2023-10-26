@@ -18,17 +18,17 @@ export default {
       return this.$store.getters.filterCheckedTask(false)
     }
   },
-  // mounted() {
-  //   this.token = JSON.parse(localStorage.getItem('local'))
-  //   axios.get('/api/getTasksForExpert', {
-  //     headers: {
-  //       'Authorization': `Bearer ${this.token.token}`,
-  //     },
-  //   }).then(response => {
-  //     this.tasks = response.data
-  //   })
-  //
-  // }
+  mounted() {
+    this.token = JSON.parse(localStorage.getItem('local'))
+    axios.get('/api/getTasksForExpert', {
+      headers: {
+        'Authorization': `Bearer ${this.token.token}`,
+      },
+    }).then(response => {
+      this.tasks = response.data
+    })
+
+  }
 }
 // TODO: комонент задачи
 </script>
