@@ -34,7 +34,11 @@ export default {
         <div class="achivment">
           <div class="achivka">
             <img src="../../assets/images/prizes/0.png" alt="sa"/>
-            <p>Text</p>
+            <div>
+              <p>title</p>
+              <p>Условия</p>
+              <p>Стутус: </p>
+            </div>
           </div>
         </div>
       </div>
@@ -111,9 +115,20 @@ export default {
 
 .achivka {
   display: flex;
+  align-items: center;
+
+  &>div {
+    display: flex;
+    flex-direction: column;
+
+    &>p {
+      margin-left: 15px;
+    }
+  }
 
   &>img {
     width: 15%;
+
   }
 }
 </style>
