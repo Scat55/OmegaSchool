@@ -66,36 +66,37 @@ export default {
         email: email,
         password: password
       }).then(response => {
-          if (response.data.message === "Неправильный пароль"){
-            alert(response.data.message)
-            this.email = this.pass = ''
-          } else {
-            this.token = response.data.token
+        try {
+          this.token = response.data.token
 
-            axios(`/api/user_inf_email/${this.email}`, {
-              method: 'GET',
-              headers: {
-                'Authorization': `Bearer ${this.token}`,
-                'Content-Type': 'application/json'
-              },
+          axios(`/api/user_inf_email/${this.email}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${this.token}`,
+              'Content-Type': 'application/json'
+            },
 
-            }).then(response => {
-             try {
-               this.userID = response.data.user.user_id
-               store.state.isAuth = true
-               this.$router.push(`/profile/${response.data.user.user_id}`)
-               console.log(this.userID)
-               const local = {
-                 userID: this.userID,
-                 token: this.token,
-                 isAuth: store.state.isAuth
-               }
-               localStorage.setItem('local', JSON.stringify(local))
-             } catch (e){
-               alert(e)
-             }
-            })
-          }
+          }).then(response => {
+            try {
+              this.userID = response.data.user.user_id
+              store.state.isAuth = true
+              this.$router.push(`/profile/${response.data.user.user_id}`)
+              console.log(this.userID)
+              const local = {
+                userID: this.userID,
+                token: this.token,
+                isAuth: store.state.isAuth
+              }
+              localStorage.setItem('local', JSON.stringify(local))
+            } catch (e){
+              alert(e)
+            }
+          })
+        } catch (e){
+          alert(response.data.message)
+          this.email = this.pass = ''
+        }
+
       })
 
     },
