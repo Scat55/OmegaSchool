@@ -384,7 +384,7 @@ class User_controller {
             const {task_test, task_description, classes,  options} = req.params;
             const questions = task_test
             const {files} = req.body;
-            console.log(files)
+            console.log(req.params)
 
             if (!options) {
                 return res.status(400).json({error: 'Options are missing'});
@@ -416,12 +416,15 @@ class User_controller {
 
             // Insert options
             for (const option of parsedOptions) {
-                const {option_text, is_correct} = option;
+                const { text: option_text, checked: is_correct } = option;
+                console.log(option_text, is_correct)
                 const insertOptionQuery = `
                 INSERT INTO options (text, is_correct, question_id)
                 VALUES ($1, $2, $3);
             `;
+
                 const optionValues = [option_text, is_correct, questionId];
+
                 await db.query(insertOptionQuery, optionValues);
             }
             // console.log(req.files)
