@@ -1,3 +1,4 @@
+a
 <template>
   <div class="container">
     <div class="task__info">
@@ -7,7 +8,7 @@
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
       <!-- {{ info.add_file }} -->
-      <p @click="downloadFiles()">Скачать</p>
+      <a :href="this.url" :download="this.fileName" @click="downloadFiles()">Скачать</a>
     </div>
   </div>
 </template>
@@ -21,32 +22,46 @@ export default {
       token: '',
       info: '',
       fileName: '',
+      url: '',
+      blob: '',
     };
   },
 
   methods: {
+    // Скачивание файла
     downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
       axios
         .get(`/api/download/${this.fileName}`, {
-          headers: { Authorization: `Bearer ${this.token.token}` },
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            // responseType: 'blob',
+            // 'Content-Type': 'application/pdf',
+          },
         })
         .then((response) => {
-          console.log(response.data);
+          this.file = response.data;
+          this.blob = new Blob([this.file], { type: 'application/pdf' });
+          this.url = URL.createObjectURL(this.blob);
+          URL.revokeObjectURL(this.url);
+          console.log(this.blob);
         });
     },
+    // Получаем имя файла
     getNameFiles() {
       axios
         .get('/api/list_all_files/', {
           headers: { Authorization: `Bearer ${this.token.token}` },
         })
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
+          this.fileName = response.data.userFiles;
         });
     },
   },
 
   mounted() {
+    // Получение информации о задаче по id
     this.token = JSON.parse(localStorage.getItem('local'));
     axios
       .get(`/api/getTasksForExpertbyID/${this.id}`, {
@@ -55,7 +70,6 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.info = response.data;
-        this.fileName = response.data.add_file;
       });
 
     this.getNameFiles();
