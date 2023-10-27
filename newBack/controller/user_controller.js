@@ -155,76 +155,76 @@ class User_controller {
         }
     }
 
-    async add_level_1_test(req, res) {
-
-        // Разбираем JSON-объект из запроса
-        const {task_test, task_description, add_file, classes, questions} = req.body;
-        const user_id = req.user_id
-
-        if (!Array.isArray(questions)) {
-            return res.status(400).json({error: 'Questions should be an array'});
-        }
-
-        // Вставляем данные теста в базу данных
-        const insertTestQuery = `
-    INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING test_id;
-  `;
-        const testValues = [user_id, task_test, task_description, add_file, classes];
-
-        // Отправляем запрос и получаем ID вставленного теста
-        db.query(insertTestQuery, testValues)
-            .then((testResult) => {
-                const testId = testResult.rows[0].test_id;
-
-                // Вставляем вопросы и варианты ответов
-                questions.forEach((question) => {
-                    const {question_text, options} = question;
-
-                    // Вставляем данные вопроса
-                    const insertQuestionQuery = `
-          INSERT INTO questions (text, test_id)
-          VALUES ($1, $2)
-          RETURNING question_id;
-        `;
-
-                    const questionValues = [question_text, testId];
-
-                    // Отправляем запрос и получаем ID вставленного вопроса
-                    db.query(insertQuestionQuery, questionValues)
-                        .then((questionResult) => {
-                            const questionId = questionResult.rows[0].question_id;
-                            // console.log(req.body)
-                            // Вставляем варианты ответовs
-                            for (let question in questions) {
-                                const {option_text, is_correct} = questions[question];
-                                // console.log(question)
-                                // Вставляем данные варианта ответа
-                                const insertOptionQuery = `
-                INSERT INTO options (text, is_correct, question_id)
-                VALUES ($1, $2, $3);
-              `;
-                                const optionValues = [option_text, is_correct, questionId];
-
-                                // Отправляем запрос для вставки варианта ответа
-                                db.query(insertOptionQuery, optionValues);
-                            }
-                            ;
-                        })
-                        .catch((error) => {
-                            console.error('Ошибка при вставке вопроса:', error.message);
-                        });
-                });
-
-                // Отправляем ответ об успешном добавлении теста
-                res.json({message: 'Тест успешно добавлен'});
-            })
-            .catch((error) => {
-                console.error('Ошибка при вставке теста:', error.message);
-                res.status(500).json({error: 'Ошибка на сервере'});
-            });
-    };
+  //   async add_level_1_test(req, res) {
+  //
+  //       // Разбираем JSON-объект из запроса
+  //       const {task_test, task_description, add_file, classes, questions} = req.body;
+  //       const user_id = req.user_id
+  //
+  //       if (!Array.isArray(questions)) {
+  //           return res.status(400).json({error: 'Questions should be an array'});
+  //       }
+  //
+  //       // Вставляем данные теста в базу данных
+  //       const insertTestQuery = `
+  //   INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
+  //   VALUES ($1, $2, $3, $4, $5)
+  //   RETURNING test_id;
+  // `;
+  //       const testValues = [user_id, task_test, task_description, add_file, classes];
+  //
+  //       // Отправляем запрос и получаем ID вставленного теста
+  //       db.query(insertTestQuery, testValues)
+  //           .then((testResult) => {
+  //               const testId = testResult.rows[0].test_id;
+  //
+  //               // Вставляем вопросы и варианты ответов
+  //               questions.forEach((question) => {
+  //                   const {question_text, options} = question;
+  //
+  //                   // Вставляем данные вопроса
+  //                   const insertQuestionQuery = `
+  //         INSERT INTO questions (text, test_id)
+  //         VALUES ($1, $2)
+  //         RETURNING question_id;
+  //       `;
+  //
+  //                   const questionValues = [question_text, testId];
+  //
+  //                   // Отправляем запрос и получаем ID вставленного вопроса
+  //                   db.query(insertQuestionQuery, questionValues)
+  //                       .then((questionResult) => {
+  //                           const questionId = questionResult.rows[0].question_id;
+  //                           // console.log(req.body)
+  //                           // Вставляем варианты ответовs
+  //                           for (let question in questions) {
+  //                               const {option_text, is_correct} = questions[question];
+  //                               // console.log(question)
+  //                               // Вставляем данные варианта ответа
+  //                               const insertOptionQuery = `
+  //               INSERT INTO options (text, is_correct, question_id)
+  //               VALUES ($1, $2, $3);
+  //             `;
+  //                               const optionValues = [option_text, is_correct, questionId];
+  //
+  //                               // Отправляем запрос для вставки варианта ответа
+  //                               db.query(insertOptionQuery, optionValues);
+  //                           }
+  //                           ;
+  //                       })
+  //                       .catch((error) => {
+  //                           console.error('Ошибка при вставке вопроса:', error.message);
+  //                       });
+  //               });
+  //
+  //               // Отправляем ответ об успешном добавлении теста
+  //               res.json({message: 'Тест успешно добавлен'});
+  //           })
+  //           .catch((error) => {
+  //               console.error('Ошибка при вставке теста:', error.message);
+  //               res.status(500).json({error: 'Ошибка на сервере'});
+  //           });
+  //   };
 
     async getTasksForExpert(req, res) {
         try {
@@ -381,7 +381,8 @@ class User_controller {
             // Parse data from the request
 
 
-            const {task_test, task_description, classes, questions, options} = req.params;
+            const {task_test, task_description, classes,  options} = req.params;
+            const questions = task_test
             const {files} = req.body;
             console.log(files)
 
