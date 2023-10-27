@@ -64,52 +64,9 @@ export default {
           },
         },
       );
-
       this.nameTask = this.descriptionTask = this.class = '';
-
-      // await fetch(`/api/uploads`, {
-      //   method: "POST",
-      //   // mode: "cors",
-      //   headers: {
-      //     'Authorization': `Bearer ${this.token.token}`
-      //   },
-      //
-      //   body: formData
-      // })
     },
 
-    // sendTest(event) {
-    //   const formData = new FormData();
-    //   const file = this.$refs.fileInput.files[0]
-    //   const data = {
-    //     task_test: this.nameTask,
-    //     task_description: this.descriptionTask,
-    //     questions: this.checkboxes,
-    //   };
-    //
-    //   formData.append('data', JSON.stringify(data)); // Конвертировать объект данных в строку JSON
-    //
-    //   if (Array.isArray(this.file)) {
-    //     file.forEach((file, index) => {
-    //       formData.append(`files[${index}]`, file);
-    //     });
-    //   } else {
-    //     formData.append('files', file);
-    //   }
-    //
-    //   this.token = JSON.parse(localStorage.getItem('local'));
-    //
-    //   axios.post('/api/uploads_file/', formData, {
-    //     headers: {
-    //       'Authorization': `Bearer ${this.token.token}` ,
-    //       'Content-Type': 'multipart/form-data' // Исправленный Content-Type
-    //     }
-    //   }).then(response => {
-    //     console.log(response.data);
-    //   }).catch(error => {
-    //     console.error("Error uploading files:", error);
-    //   });
-    // },
 
     deleteCheckBox() {
       this.checkboxes = [
