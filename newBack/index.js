@@ -8,7 +8,7 @@ const authRouter = require('./routes/auth.routes')
 const {secret} = require('./config')
 
 const PORT = process.env.PORT || 8070
-const IP = '0.0.0.0'
+// const IP = '0.0.0.0'
 
 
 const app = express();
@@ -27,6 +27,6 @@ app.use('/api', userRouter)
 app.use('/auth', authRouter)
 
 
-app.listen(PORT, IP, ()=>console.log(`server started on port ${PORT} and listen ip ${IP}`))
+app.listen(PORT, ()=>console.log(`server started on port ${PORT} and listen ip`))
 
 
