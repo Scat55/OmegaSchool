@@ -1,15 +1,33 @@
 <template>
   <div class="container">
-    <div class="task__info">{{ id }}</div>
+    <div class="task__info">
+      {{ id }},
+      {{ info.test_id }}
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
       id: this.$route.params.id,
+      token: '',
+      info: '',
     };
+  },
+
+  mounted() {
+    this.token = JSON.parse(localStorage.getItem('local'));
+    axios
+      .get(`/api/getTasksForExpertbyID/${this.id}`, {
+        headers: { Authorization: `Bearer ${this.token.token}` },
+      })
+      .then((response) => {
+        console.log(response.data);
+        this.info = response.data;
+      });
   },
 };
 </script>
