@@ -1,4 +1,3 @@
-a
 <template>
   <div class="container">
     <div class="task__info">
