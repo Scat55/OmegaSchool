@@ -33,18 +33,14 @@ export default {
       this.token = JSON.parse(localStorage.getItem('local'));
       axios
         .get(`/api/download/${this.fileName}`, {
+          responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,
-            // responseType: 'blob',
-            // 'Content-Type': 'application/pdf',
           },
         })
         .then((response) => {
-          this.file = response.data;
-          this.blob = new Blob([this.file], { type: 'application/pdf' });
-          this.url = URL.createObjectURL(this.blob);
-          URL.revokeObjectURL(this.url);
-          console.log(this.blob);
+          let blob = new Blob([response.data], { type: 'application/octet-stream' });
+          this.url = URL.createObjectURL(blob);
         });
     },
     // Получаем имя файла
