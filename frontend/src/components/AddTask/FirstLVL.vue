@@ -54,13 +54,9 @@ export default {
 
       console.log(this.file);
       await axios.post(
-        '/api/add_level_1_test/',
-        {
-          task_test,
-          task_description,
-          questions,
-          files,
-        },
+        `/api/add_level_1_test_with_files/${task_test}/${task_description}/11/${questions}/:options/`,
+
+        files,
         {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
