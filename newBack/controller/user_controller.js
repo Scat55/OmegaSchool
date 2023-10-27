@@ -236,45 +236,14 @@ class User_controller {
         FROM level_1_tests
         WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1);
     `;
-            const testsResult = await db.query(testsSql, [user_id]);
 
-            // Запрос для questions
-            const questionsSql = `
-        SELECT q.*
-        FROM questions q
-        JOIN level_1_tests t ON q.test_id = t.test_id
-        WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
-    `;
-            const questionsResult = await db.query(questionsSql, [user_id]);
+            const optionsResult = await db.query(testsSql, [user_id]);
 
-            // Запрос для options
-            const optionsSql = `
-        SELECT o.*
-        FROM options o
-        JOIN questions q ON o.question_id = q.question_id
-        JOIN level_1_tests t ON q.test_id = t.test_id
-        WHERE (t.ver_1_id IS NULL OR t.ver_1_id != $1) AND (t.ver_2_id IS NULL OR t.ver_2_id != $1);
-    `;
-            const optionsResult = await db.query(optionsSql, [user_id]);
-
-            const formattedResponse = testsResult.rows.map(test => {
-                const relatedQuestions = questionsResult.rows.filter(q => q.test_id === test.test_id);
-                return {
+            const formattedResponse = optionsResult.rows.map(test => {
+                    return {
                     tast_id: test.test_id, // предполагаю что это поле у вас в базе данных
                     task_test: test.task_test, // предполагаю что это поле у вас в базе данных
-                    task_description: test.task_description, // предполагаю что это поле у вас в базе данных
-                    add_file: test.add_file, // предполагаю что это поле у вас в базе данных
-                    classes: test.classes, // предполагаю что это поле у вас в базе данных
-                    questions: relatedQuestions.map(question => {
-                        const relatedOptions = optionsResult.rows.filter(option => option.question_id === question.question_id);
-                        return {
-                            question_text: question.question_text, // предполагаю что это поле у вас в базе данных
-                            options: relatedOptions.map(option => ({
-                                option_text: option.text, // предполагаю что это поле у вас в базе данных
-                                is_correct: option.is_correct // предполагаю что это поле у вас в базе данных
-                            }))
-                        }
-                    })
+
                 }
             });
 
