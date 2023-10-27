@@ -67,7 +67,6 @@ export default {
       this.nameTask = this.descriptionTask = this.class = '';
     },
 
-
     deleteCheckBox() {
       this.checkboxes = [
         { text: '', checked: false },
