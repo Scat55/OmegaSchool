@@ -1,26 +1,15 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const {join} = require("path");
 
 class Store {
     constructor() {
-        // Функция, которая будет генерировать путь к папке, в которую будут сохраняться загруженные файлы
-        // this.getUploadsPath = () => {
-        //
-        //     const today = new Date();
-        //     const year = today.getFullYear().toString();
-        //     const month = (today.getMonth() + 1).toString().padStart(2, '0');
-        //     const day = today.getDate().toString().padStart(2, '0');
-        //     return path.join(__dirname, 'uploads', `${year}`);
-        // };
-
         // Объект storage, который задает папку для сохранения загруженных файлов и их имена.
         this.storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 const uploadsPath = path.join('uploads', `${req.user_id}`);
-                if (!fs.existsSync(uploadsPath)) {
-                    fs.mkdirSync(uploadsPath, { recursive: true });
-                }
+                if (!fs.existsSync(uploadsPath)) { fs.mkdirSync(uploadsPath, { recursive: true }); }
                 cb(null, uploadsPath);
             },
             filename: (req, file, cb) => {
@@ -28,7 +17,8 @@ class Store {
                 const year = today.getFullYear().toString();
                 const month = (today.getMonth() + 1).toString().padStart(2, '0');
                 const day = today.getDate().toString().padStart(2, '0');
-                const filename = `${day}_${month}_${year}_${req.user_id}_${this.transliterate(file.originalname)}`;
+                file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+                const filename = `${day}_${month}_${year}_${req.user_id}_${file.originalname}`;
                 cb(null, filename);
             },
         });
@@ -56,6 +46,16 @@ class Store {
             }
             next();
         };
+
+        // Функция, которая будет генерировать путь к папке, в которую будут сохраняться загруженные файлы
+        this.getUploadsPath = () => {
+
+            const today = new Date();
+            const year = today.getFullYear().toString();
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const day = today.getDate().toString().padStart(2, '0');
+            return path.join(__dirname, 'uploads', `${year}`);
+        };
     }
 
     transliterate(text) {
@@ -73,4 +73,34 @@ class Store {
 
 }
 
+// class InitFile {
+//     constructor() {
+//         this.init = (req, res) => {
+//             try {
+//                 const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
+//                 console.log(fileNames);
+//
+//                 const user_id = req.user_id;
+//                 console.log(user_id);
+//
+//                 const math_path = join('./uploads', `${user_id}`);
+//                 console.log(math_path);
+//
+//             } catch (error) { return res.status(500).send({message: 'Ошибка инициализации файла'}); }
+//         }
+//
+//         this.read = (req, res) => {
+//             try {
+//                 const files = fs.readdirSync(math_path);
+//                 // Проверка, соответствует ли какое-либо из имен файлов
+//                 const userFiles = files.filter((fileName) => { return fileNames.some(name => fileName.includes(name)); });
+//
+//                 if (userFiles.length === 0) { return res.status(404).send({message: 'Файлы не найдены'}); }
+//
+//             } catch (error) { return res.status(500).send({message: 'Ошибка сервера'}); }
+//         }
+//     }
+// }
+
 module.exports = new Store();
+// module.exports = new InitFile();
