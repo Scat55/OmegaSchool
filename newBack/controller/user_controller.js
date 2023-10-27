@@ -521,9 +521,6 @@ class User_controller {
                 const absolutePath = resolve(math_path, userFiles[0]);
                 return res.sendFile(absolutePath);
             } else {
-                // Если найдено несколько файлов, вы можете упаковать их в архив и отправить архив
-                // или предоставить ссылки для загрузки каждого файла отдельно.
-                // Здесь я просто отправлю имена файлов в качестве примера.
                 // Создаем архив и отправляем его пользователю
                 const archive = archiver('zip');
                 res.attachment('files.zip'); // это задает имя файла для скачивания
