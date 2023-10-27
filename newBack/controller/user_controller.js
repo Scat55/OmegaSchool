@@ -459,7 +459,11 @@ class User_controller {
             }
 
             const files = fs.readdirSync(math_path);
-            return res.send({ files });
+
+            const userFiles = files.filter((fileName) => {
+                return fileName.split('_')[4];
+            });
+            return res.send({ userFiles });
 
         } catch (error) {
             console.error("Произошла ошибка при поиске файлов:", error);
