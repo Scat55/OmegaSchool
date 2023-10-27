@@ -506,7 +506,7 @@ class User_controller {
             const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
             console.log(fileNames);
 
-            const math_path = path.join('./uploads', `${req.user_id}`);
+            const math_path = join('./uploads', `${req.user_id}`);
 
             // Проверка существования каталога
             if (!fs.existsSync(math_path)) { return res.status(404).send({message: 'Каталог не найден'}); }
@@ -519,27 +519,14 @@ class User_controller {
 
             // Если найден только один файл, отправляет его напрямую
             if (userFiles.length === 1) {
-                const absolutePath = path.resolve(math_path, userFiles[0]);
-                const fileExtension = path.extname(userFiles[0]);
-
-                // Устанавливаем заголовок в зависимости от расширения файла
-                if (fileExtension === ".pdf") {
-                    res.setHeader('Content-Type', 'application/pdf');
-                } else {
-                    res.setHeader('Content-Type', 'application/octet-stream');
-                }
-
-                res.setHeader('Content-Disposition', 'attachment; filename=' + userFiles[0]);
-
+                const absolutePath = resolve(math_path, userFiles[0]);
                 return res.sendFile(absolutePath);
             } else {
                 // Создаем архив и отправляем его пользователю
                 const archive = archiver('zip');
-
-                res.setHeader('Content-Type', 'application/zip');
                 res.attachment('files.zip'); // это задает имя файла для скачивания
 
-                userFiles.forEach(file => { archive.file(path.join(math_path, file), { name: file }); });
+                userFiles.forEach(file => { archive.file(join(math_path, file), { name: file }); });
 
                 archive.finalize();
                 archive.pipe(res);
