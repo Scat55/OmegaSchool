@@ -502,44 +502,30 @@ class User_controller {
             const math_path = join('./uploads', `${req.user_id}`);
 
             // Проверка существования каталога
-            if (!fs.existsSync(math_path)) {
-                return res.status(404).send({message: 'Каталог не найден'});
-            }
+            if (!fs.existsSync(math_path)) { return res.status(404).send({message: 'Каталог не найден'}); }
 
             const files = fs.readdirSync(math_path);
-            const userFiles = files.filter((fileName) => {
-                // Проверка, соответствует ли какое-либо из имен файлов
-                return fileNames.some(name => fileName.includes(name));
-            });
+            // Проверка, соответствует ли какое-либо из имен файлов
+            const userFiles = files.filter((fileName) => { return fileNames.some(name => fileName.includes(name)); });
 
-            if (userFiles.length === 0) {
-                return res.status(404).send({message: 'Файлы не найдены'});
-            }
+            if (userFiles.length === 0) { return res.status(404).send({message: 'Файлы не найдены'}); }
 
-            // Если найден только один файл, отправьте его напрямую
+            // Если найден только один файл, отправляет его напрямую
             if (userFiles.length === 1) {
                 const absolutePath = resolve(math_path, userFiles[0]);
                 return res.sendFile(absolutePath);
             } else {
-                // Если найдено несколько файлов, вы можете упаковать их в архив и отправить архив
-                // или предоставить ссылки для загрузки каждого файла отдельно.
-                // Здесь я просто отправлю имена файлов в качестве примера.
                 // Создаем архив и отправляем его пользователю
                 const archive = archiver('zip');
                 res.attachment('files.zip'); // это задает имя файла для скачивания
 
-                userFiles.forEach(file => {
-                    archive.file(join(math_path, file), { name: file });
-                });
+                userFiles.forEach(file => { archive.file(join(math_path, file), { name: file }); });
 
                 archive.finalize();
                 archive.pipe(res);
             }
 
-        } catch (error) {
-            console.error(error);
-            return res.status(500).send({message: 'Ошибка сервера'});
-        }
+        } catch (error) { return res.status(500).send({message: 'Ошибка сервера'}); }
     }
 
 }
