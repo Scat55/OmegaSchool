@@ -6,8 +6,20 @@
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
-      <!-- {{ info.add_file }} -->
-      <a :href="this.url" :download="this.fileName" @click="downloadFiles()">Скачать</a>
+
+      <div class="dop">
+        <p>Дополнительные файлы</p>
+        <img src="../assets/images/arrow.png" alt="Arrow" @click="changeStatus()" />
+      </div>
+
+      <div v-show="isShow">
+        <div v-for="file in fileName">
+          <p>{{ file }}</p>
+        </div>
+        <a :href="url" :download="fileName" @click="downloadFiles()" class="downloadLink"
+          >Скачать</a
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -23,14 +35,19 @@ export default {
       fileName: '',
       url: '',
       blob: '',
+      isShow: false,
     };
   },
 
   methods: {
+    changeStatus() {
+      this.isShow = !this.isShow;
+      // this.url = URL.createObjectURL(this.blob);
+    },
     // Скачивание файла
-    downloadFiles() {
+    async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
-      axios
+      await axios
         .get(`/api/download/${this.fileName}`, {
           responseType: 'blob',
           headers: {
@@ -38,8 +55,8 @@ export default {
           },
         })
         .then((response) => {
-          let blob = new Blob([response.data], { type: 'application/octet-stream' });
-          this.url = URL.createObjectURL(blob);
+          this.blob = new Blob([response.data], { type: 'application/octet-stream' });
+          this.url = URL.createObjectURL(this.blob);
         });
     },
     // Получаем имя файла
@@ -94,5 +111,13 @@ export default {
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
+}
+.dop {
+  display: flex;
+  gap: 0.5rem;
+}
+.downloadLink {
+  margin-top: 1rem;
+  text-decoration: none;
 }
 </style>
