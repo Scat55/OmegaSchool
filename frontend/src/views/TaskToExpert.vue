@@ -7,7 +7,7 @@
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
       <!-- {{ info.add_file }} -->
-      <a href="#" download="info.add_file">Скачать</a>
+      <p @click="downloadFiles()">Скачать</p>
     </div>
   </div>
 </template>
@@ -20,7 +20,30 @@ export default {
       id: this.$route.params.id,
       token: '',
       info: '',
+      fileName: '',
     };
+  },
+
+  methods: {
+    downloadFiles() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      axios
+        .get(`/api/download/${this.fileName}`, {
+          headers: { Authorization: `Bearer ${this.token.token}` },
+        })
+        .then((response) => {
+          console.log(response.data);
+        });
+    },
+    getNameFiles() {
+      axios
+        .get('/api/list_all_files/', {
+          headers: { Authorization: `Bearer ${this.token.token}` },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    },
   },
 
   mounted() {
@@ -32,7 +55,10 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.info = response.data;
+        this.fileName = response.data.add_file;
       });
+
+    this.getNameFiles();
   },
 };
 </script>
