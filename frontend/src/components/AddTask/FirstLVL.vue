@@ -1,12 +1,12 @@
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       checkboxes: [
-        {text: '', checked: false},
-        {text: '', checked: false}
+        { text: '', checked: false },
+        { text: '', checked: false },
       ],
       // Для загрузки файлов
       selectedFiles: [],
@@ -25,13 +25,13 @@ export default {
   },
   methods: {
     addCheckbox() {
-      this.checkboxes.push({text: '', checked: false});
+      this.checkboxes.push({ text: '', checked: false });
     },
     toggleWindow() {
       this.isWindowOpen = !this.isWindowOpen;
     },
     removeCheckbox(index) {
-      this.checkboxes.splice(index, 1)
+      this.checkboxes.splice(index, 1);
     },
     // Обработка форма и отправка данных с нее
     async sendTest(event) {
@@ -43,30 +43,33 @@ export default {
       const task_description = this.descriptionTask;
       const questions = this.checkboxes;
 
-      const files = this.$refs.fileInput.files[0]
+      const files = this.$refs.fileInput.files[0];
       // console.log("Название файла:", files.name);
       // console.log(full)
 
-      this.token = JSON.parse(localStorage.getItem('local'))
+      this.token = JSON.parse(localStorage.getItem('local'));
 
       // formData.append('data', data)
-      formData.append('files', files)
+      formData.append('files', files);
 
-      console.log(this.file)
-      await axios.post('/api/add_level_1_test/',
-          {
-            task_test,
-            task_description,
-            questions,
-            files
-          }, {
-            headers: {
-              'Authorization': `Bearer ${this.token.token}`,
-              'Content-Type': 'application/json'
-            }
-          })
+      console.log(this.file);
+      await axios.post(
+        '/api/add_level_1_test/',
+        {
+          task_test,
+          task_description,
+          questions,
+          files,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-      this.nameTask = this.descriptionTask = this.class = ''
+      this.nameTask = this.descriptionTask = this.class = '';
 
       // await fetch(`/api/uploads`, {
       //   method: "POST",
@@ -114,10 +117,10 @@ export default {
 
     deleteCheckBox() {
       this.checkboxes = [
-        {text: '', checked: false},
-        {text: '', checked: false}
-      ]
-      this.selectedFiles = []
+        { text: '', checked: false },
+        { text: '', checked: false },
+      ];
+      this.selectedFiles = [];
     },
     // Для загрузки файлов
     handleFileChange(event) {
@@ -145,12 +148,13 @@ export default {
       // Удаляем файл из списка выбранных файлов по индексу
       this.selectedFiles.splice(index, 1);
     },
-
   },
   computed: {
     // Для загрузки файлов
     buttonText() {
-      return this.selectedFiles.length > 0 ? `Выбрано файлов ${this.selectedFiles.length}` : 'Выберите файлы';
+      return this.selectedFiles.length > 0
+        ? `Выбрано файлов ${this.selectedFiles.length}`
+        : 'Выберите файлы';
     },
   },
 
@@ -168,7 +172,6 @@ export default {
   //   })
   // }
 };
-
 </script>
 
 <template>
@@ -176,7 +179,7 @@ export default {
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания" v-model="nameTask">
+        <input type="text" placeholder="Введите название задания" v-model="nameTask" />
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
@@ -190,8 +193,14 @@ export default {
           <div>
             <label for="fileInput" class="custom-file-upload">
               <span>{{ buttonText }}</span>
-              <input type="file" id="fileInput" ref="fileInput" multiple @change="handleFileChange"
-                     accept="application/pdf ,.docx">
+              <input
+                type="file"
+                id="fileInput"
+                ref="fileInput"
+                multiple
+                @change="handleFileChange"
+                accept="application/pdf ,.docx"
+              />
             </label>
             <div class="list_task_file">
               <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
@@ -219,20 +228,32 @@ export default {
             {{ isWindowOpen === false ? 'Показать инструкцию' : 'Скрыть инструкцию' }}
           </button>
           <div v-if="isWindowOpen">
-            <p>Тут будет инструкци как использовать чекбоксы. Нажать на кнопку "добавить чекбокс" добавит один чекбокс в
-              инпут надо будет ввести значение. Те которые правильные варианты ответа нужно будет ответить нажам на
-              чекбокс</p>
+            <p>
+              Тут будет инструкци как использовать чекбоксы. Нажать на кнопку "добавить чекбокс"
+              добавит один чекбокс в инпут надо будет ввести значение. Те которые правильные
+              варианты ответа нужно будет ответить нажам на чекбокс
+            </p>
           </div>
         </div>
         <!--  Вот здесь начинается блок с checkbox    -->
         <div class="shablonZadaniaFirst__option_answers">
-          <button @click="addCheckbox" type="button" v-if="checkboxes.length !== 6">Добавить чекбокс</button>
+          <button @click="addCheckbox" type="button" v-if="checkboxes.length !== 6">
+            Добавить чекбокс
+          </button>
           <div v-for="(checkbox, index) in checkboxes" :key="index">
             <div class="shablonZadaniaFirst__checkbox_item">
               <label>{{ index + 1 }})&nbsp;</label>
-              <input class="shablonZadaniaFirst__checkbox_item_check" type="checkbox" v-model="checkbox.checked"
-                     :id="'checkbox-' + index"/>
-              <input class="shablonZadaniaFirst__checkbox_item_input" type="text" v-model="checkbox.text"/>
+              <input
+                class="shablonZadaniaFirst__checkbox_item_check"
+                type="checkbox"
+                v-model="checkbox.checked"
+                :id="'checkbox-' + index"
+              />
+              <input
+                class="shablonZadaniaFirst__checkbox_item_input"
+                type="text"
+                v-model="checkbox.text"
+              />
               <button @click="removeCheckbox(index)" type="button">X</button>
             </div>
           </div>
@@ -247,12 +268,10 @@ export default {
   </form>
 </template>
 
-
 <style scoped lang="scss">
 @import '../../assets/styles/vars';
 
 .shablonZadaniaFirst {
-
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -271,13 +290,11 @@ export default {
       border-radius: 1rem;
       border: none;
       padding: 8px;
-      outline: none
+      outline: none;
     }
   }
 
   &__description_task {
-
-
     & > p {
       margin: 0 0 10px 0;
       text-align: center;
@@ -290,7 +307,7 @@ export default {
       margin-bottom: 10px;
       padding: 8px;
       border-radius: 1rem;
-      outline: none
+      outline: none;
     }
   }
 
@@ -301,21 +318,15 @@ export default {
       margin: 0 0 10px 0;
       text-align: center;
     }
-
-    & > input {
-
-    }
-
   }
 
   &__window {
-
     & > button {
       width: 100%;
       padding: 5px;
       margin-bottom: 10px;
       border-radius: 1rem;
-      border: none
+      border: none;
     }
 
     & > div {
@@ -327,31 +338,25 @@ export default {
       padding: 10px;
       border-radius: 1rem;
     }
-
   }
 
-
   &__option_answers {
-
-
     & > button {
       width: 100%;
       padding: 5px;
       margin-bottom: 10px;
       border-radius: 1rem;
-      border: none
+      border: none;
     }
   }
 
   &__checkbox_item {
-
     margin: 10px 0;
     display: flex;
     align-items: center;
 
     &_check {
       margin-right: 3px;
-
     }
 
     &_input {
@@ -363,7 +368,7 @@ export default {
 
       &:focus {
         border: none;
-        outline: none
+        outline: none;
       }
     }
 
@@ -374,9 +379,7 @@ export default {
       border-radius: 4px;
       border: none;
     }
-
   }
-
 
   &__btn_send {
     width: 100%;
@@ -384,8 +387,6 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-
-
 }
 
 .btn {
@@ -395,10 +396,10 @@ export default {
   outline: none;
   border: none;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
-    background-color: #00DFCC;
+    background-color: #00dfcc;
   }
 }
 
@@ -409,7 +410,7 @@ export default {
   outline: none;
   border: none;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     background-color: #ff6e6e;
@@ -430,7 +431,7 @@ export default {
   background-color: #0056b3;
 }
 
-.custom-file-upload input[type="file"] {
+.custom-file-upload input[type='file'] {
   display: none;
 }
 
