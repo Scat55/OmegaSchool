@@ -6,6 +6,8 @@
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
+      <!-- {{ info.add_file }} -->
+      <a href="#" download="info.add_file">Скачать</a>
     </div>
   </div>
 </template>

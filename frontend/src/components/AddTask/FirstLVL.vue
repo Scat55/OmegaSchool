@@ -41,7 +41,7 @@ export default {
       // const full = event.target.files[0]
       const task_test = this.nameTask;
       const task_description = this.descriptionTask;
-      const questions = this.checkboxes;
+      const questions = encodeURIComponent(JSON.stringify(this.checkboxes));
 
       const files = this.$refs.fileInput.files[0];
       // console.log("Название файла:", files.name);
@@ -52,15 +52,16 @@ export default {
       // formData.append('data', data)
       formData.append('files', files);
 
-      console.log(this.file);
+      console.log(files);
       await axios.post(
-        `/api/add_level_1_test_with_files/${task_test}/${task_description}/11/${questions}/:options/`,
-
-        files,
+        `/api/add_level_1_test_with_files/${task_test}/${task_description}/11/${questions}/`,
+        {
+          files: files,
+        },
         {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
           },
         },
       );
