@@ -20,7 +20,7 @@ export default {
       file: '',
       token: '',
       newFile: '',
-      // files: []
+      files: [],
     };
   },
   methods: {
@@ -38,33 +38,30 @@ export default {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
 
       const formData = new FormData();
-      // const full = event.target.files[0]
       const task_test = this.nameTask;
       const task_description = this.descriptionTask;
       const questions = encodeURIComponent(JSON.stringify(this.checkboxes));
 
-      const files = this.$refs.fileInput.files[0];
-      // console.log("Название файла:", files.name);
-      // console.log(full)
+      this.files = this.$refs.fileInput.files;
+
+      let allFiles = Object.values(this.files).map((el) => {
+        return el;
+      });
 
       this.token = JSON.parse(localStorage.getItem('local'));
-
-      // formData.append('data', data)
-      formData.append('files', files);
-
-      console.log(files);
-      await axios.post(
-        `/api/add_level_1_test_with_files/${task_test}/${task_description}/11/${questions}/`,
-        {
-          files: files,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
+      console.log(allFiles);
+      // await axios.post(
+      //   `/api/add_level_1_test_with_files/${task_test}/${task_description}/11/${questions}/`,
+      //   {
+      //     files: formData,
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${this.token.token}`,
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   },
+      // );
       this.nameTask = this.descriptionTask = this.class = '';
     },
 
