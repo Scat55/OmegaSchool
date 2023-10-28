@@ -50,18 +50,16 @@ export default {
 
       this.token = JSON.parse(localStorage.getItem('local'));
       console.log(allFiles);
-      // await axios.post(
-      //   `/api/add_level_1_test_with_files/${task_test}/${task_description}/11/${questions}/`,
-      //   {
-      //     files: formData,
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${this.token.token}`,
-      //       'Content-Type': 'multipart/form-data',
-      //     },
-      //   },
-      // );
+      await axios.post(
+        `/api/add_level_1/${task_test}/${task_description}/11/${questions}/`,
+        allFiles,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
       this.nameTask = this.descriptionTask = this.class = '';
     },
 
