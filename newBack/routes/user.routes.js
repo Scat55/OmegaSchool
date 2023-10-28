@@ -26,6 +26,7 @@ router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userContro
 //маршрут для ручной загрузки файла или файлов получения файла.
 router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.uploads)
 router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.array('files'), userController.addTestAndUpload)
+router.post('/add_level_1/:task_test/:task_description/:classes/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.any(), userController.addTestAndUpload)
 
 //маршрут для получения файла или файлов.
 //Поиск всех файлов, загруженных пользователем

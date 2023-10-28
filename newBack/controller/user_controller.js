@@ -378,11 +378,9 @@ class User_controller {
 
     async addTestAndUpload(req, res) {
         try {
-            // Parse data from the request
-
-
             const {task_test, task_description, classes,  options} = req.params;
             const questions = task_test
+
             const {files} = req.body;
             console.log(req.params)
 

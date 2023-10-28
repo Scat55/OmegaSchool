@@ -2,6 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const {join} = require("path");
+const {transcode} = require("buffer");
 
 class Store {
     constructor() {
@@ -66,6 +67,10 @@ class Store {
             ф: 'f', х: 'kh', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'sch', ы: 'y',
             э: 'e', ю: 'yu', я: 'ya',
             ' ': '_',
+            '[': '_',
+            ']': '_',
+            '{': '_',
+            '}': '_',
         };
 
         return text.split('').map(char => { return rusToEngTranslit[char] || char;}).join('');
