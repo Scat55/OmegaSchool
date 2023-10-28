@@ -12,13 +12,11 @@
         <img src="../assets/images/arrow.png" alt="Arrow" @click="changeStatus()" />
       </div>
 
-      <div v-show="isShow">
+      <div>
         <div v-for="file in fileName">
           <p>{{ file }}</p>
         </div>
-        <a :href="url" :download="fileName" @click="downloadFiles()" class="downloadLink"
-          >Скачать</a
-        >
+        <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
       </div>
     </div>
   </div>
@@ -36,14 +34,11 @@ export default {
       url: '',
       blob: '',
       isShow: false,
+      file: '',
     };
   },
 
   methods: {
-    changeStatus() {
-      this.isShow = !this.isShow;
-      // this.url = URL.createObjectURL(this.blob);
-    },
     // Скачивание файла
     async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -55,8 +50,11 @@ export default {
           },
         })
         .then((response) => {
-          this.blob = new Blob([response.data], { type: 'application/octet-stream' });
+          this.blob = new Blob([response.data], { type: 'application/pdf' });
           this.url = URL.createObjectURL(this.blob);
+          const a = document.querySelector('.downloadLink');
+          a.href = this.url;
+          a.download = this.fileName;
         });
     },
     // Получаем имя файла
@@ -69,6 +67,11 @@ export default {
           console.log(response.data);
           this.fileName = response.data.userFiles;
         });
+    },
+    changeStatus() {
+      this.isShow = !this.isShow;
+
+      console.log(this.blob);
     },
   },
 
