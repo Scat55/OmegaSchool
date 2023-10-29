@@ -9,10 +9,16 @@
 
       <div class="dop">
         <p>Дополнительные файлы</p>
-        <img src="../assets/images/arrow.png" alt="Arrow" @click="changeStatus()" />
+        <img
+          class="arrow__img"
+          :class="{ rotate: isShow }"
+          src="../assets/images/arrow.png"
+          alt="Arrow"
+          @click="changeStatus()"
+        />
       </div>
 
-      <div>
+      <div v-if="isShow">
         <p>{{ info.add_file }}</p>
         <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
       </div>
@@ -120,5 +126,11 @@ export default {
 .downloadLink {
   margin-top: 1rem;
   text-decoration: none;
+}
+.arrow__img {
+  transition: all 0.3s;
+}
+.rotate {
+  transform: rotate(-180deg);
 }
 </style>
