@@ -291,6 +291,7 @@ class User_controller {
                 test_description: test.task_description,
                 add_file: test.add_file,
                 classes: test.classes,
+                add_img: test.add_img,
                 questions: questionsWithOptions
             };
 
