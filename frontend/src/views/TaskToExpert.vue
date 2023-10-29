@@ -101,8 +101,10 @@ export default {
           test_id: test_id,
         },
         {
-          Authorization: `Bearer ${this.token.token}`,
-          'Content-Type': 'application/json',
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'application/json'
+          }
         },
       );
     },
