@@ -302,6 +302,57 @@ class User_controller {
         }
     }
 
+    async getTasksForTeacherByID(req, res){
+        const testId = req.params.testID;
+        try {
+            // Fetch the main test information
+            const testQuery = 'SELECT test_id, task_test, task_description, add_file, classes, ver_1, ver_1_masseg, ver_2, ver_2_masseg FROM level_1_tests WHERE test_id = $1';
+            const testResult = await db.query(testQuery, [testId]);
+
+            if (testResult.rowCount === 0) {
+                return res.status(404).json({ error: 'Task not found' });
+            }
+
+            const test = testResult.rows[0];
+
+            // Fetch questions related to the test
+            const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
+            const questionsResult = await db.query(questionsQuery, [testId]);
+
+            const questionsWithOptions = await Promise.all(questionsResult.rows.map(async (question) => {
+                // For each question, fetch the related answer options
+                const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
+                const optionsResult = await db.query(optionsQuery, [question.question_id]);
+
+                return {
+                    question_text: question.text,
+                    options: optionsResult.rows
+                };
+            }));
+
+            // Format the final response
+            const formattedResponse = {
+                test_id: test.test_id,
+                test_text: test.task_test,
+                test_description: test.task_description,
+                add_file: test.add_file,
+                classes: test.classes,
+                ver_1: test.ver_1, // Added
+                ver_1_message: test.ver_1_masseg, // Added
+                ver_2: test.ver_2, // Added
+                ver_2_message: test.ver_2_masseg, // Added
+                questions: questionsWithOptions
+            };
+
+            res.json(formattedResponse);
+
+        } catch (error) {
+            console.error('Error executing SQL query:', error.message);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+
+
     async updateTestByExpert(req, res){
     console.log(req.body);
     console.log(req.user_id);
@@ -338,6 +389,34 @@ class User_controller {
         res.status(500).json({ error: 'Ошибка на сервере' });
     }
 }
+    async getTasksForTeacher(req, res){
+        try {
+            const user_id = req.user_id;
+
+            // Запрос для level_1_tests
+            const testsSql = `
+        SELECT *
+        FROM level_1_tests
+        WHERE user_id = $1;
+    `;
+
+            const optionsResult = await db.query(testsSql, [user_id]);
+
+            const formattedResponse = optionsResult.rows.map(test => {
+                return {
+                    tast_id: test.test_id, // предполагаю что это поле у вас в базе данных
+                    task_test: test.task_test, // предполагаю что это поле у вас в базе данных
+
+                }
+            });
+
+            res.json(formattedResponse);
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
 
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
