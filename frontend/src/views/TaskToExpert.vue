@@ -19,7 +19,7 @@
       </div>
 
       <div v-if="isShow">
-        <p>{{ info.add_file }}</p>
+        <p>{{ changeName }}</p>
         <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
       </div>
     </div>
@@ -41,7 +41,11 @@ export default {
       file: '',
     };
   },
-
+  computed: {
+    changeName() {
+      return this.info.add_file.split('_')[4];
+    },
+  },
   methods: {
     // Скачивание файла
     async downloadFiles() {
@@ -62,16 +66,16 @@ export default {
         });
     },
     // Получаем имя файла
-    getNameFiles() {
-      axios
-        .get('/api/list_all_files/', {
-          headers: { Authorization: `Bearer ${this.token.token}` },
-        })
-        .then((response) => {
-          console.log(response.data);
-          this.fileName = response.data.userFiles;
-        });
-    },
+    // getNameFiles() {
+    //   axios
+    //     .get('/api/list_all_files/', {
+    //       headers: { Authorization: `Bearer ${this.token.token}` },
+    //     })
+    //     .then((response) => {
+    //       console.log(response.data);
+    //       this.fileName = response.data.userFiles;
+    //     });
+    // },
     changeStatus() {
       this.isShow = !this.isShow;
 
@@ -91,7 +95,7 @@ export default {
         this.info = response.data;
       });
 
-    this.getNameFiles();
+    // this.getNameFiles();
   },
 };
 </script>
