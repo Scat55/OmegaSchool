@@ -381,8 +381,11 @@ class User_controller {
             const {task_test, task_description, classes,  options} = req.params;
             const questions = task_test
 
-            const {files} = req.body;
+            const {files} = req.files;
+            console.log(req.body)
+            console.log(req.files)
             console.log(req.params)
+            console.log(req.files)
 
             if (!options) {
                 return res.status(400).json({error: 'Options are missing'});
@@ -430,7 +433,7 @@ class User_controller {
             if (!req.files || req.files.length === 0) {
                 throw new Error('Пожалуйста, загрузите файл');
             }
-            const filePaths = req.files.map(file => file.path);
+            const filePaths = req.files.map(file => file.originalname);
             const filesString = filePaths.join(',');
 
             // Update the database record with file paths
