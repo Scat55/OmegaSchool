@@ -5,6 +5,10 @@
       <p>{{ info.test_description }}</p>
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
+        <img
+          src="../../../newBack/uploads/2c9df029-d6e4-4c90-9c74-fc76c33db4ef/29_10_2023_2c9df029-d6e4-4c90-9c74-fc76c33db4ef_1624471309_34-phonoteka_org-p-oboi-minimalizm-priroda-krasivo-34.jpg"
+          alt="Image"
+        />
       </div>
 
       <div class="dop">
@@ -62,6 +66,9 @@ export default {
       valChek: '',
       message: '',
     };
+  },
+  computed: {
+    addImage() {},
   },
   methods: {
     // Скачивание файла
