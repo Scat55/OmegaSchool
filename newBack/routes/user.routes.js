@@ -17,17 +17,23 @@ router.get('/user_inf_email/:email',userMiddleware, userController.getUserDataFo
 router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformation)
 router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.additionalData)
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
-router.get('/get_level_1_test',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
+router.get('/get_level_1_testForExpert',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
+router.get('/getTasksForExpertByID/:testID',roleMiddleware(['Эксперт']), userController.getTasksForExpertbyID)
+router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
 
-router.get('/getTasksForExpertbyID/:testID',roleMiddleware(['Эксперт']), userController.getTasksForExpertbyID)
-//  ,roleMiddleware(['Эксперт'])
+router.get('/getTasksForTeacherByID/:testID',roleMiddleware(['Учитель']), userController.getTasksForTeacherByID)
+router.get('/get_level_1_testForTeacher',roleMiddleware(['Учитель']), userController.getTasksForTeacher)
+
+//
+//
+//
+//
+//
 //маршруты для работы с файлами
-router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)
 //маршрут для ручной загрузки файла или файлов получения файла.
 router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.uploads)
 router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.array('files'), userController.addTestAndUpload)
 router.post('/add_level_1/:task_test/:task_description/:classes/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.any(), userController.addTestAndUpload)
-
 //маршрут для получения файла или файлов.
 //Поиск всех файлов, загруженных пользователем
 router.get('/list_all_files', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.listUserFiles);
