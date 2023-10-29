@@ -152,7 +152,7 @@ export default {
                 ref="fileInput"
                 multiple
                 @change="handleFileChange"
-                accept="application/pdf ,.docx"
+                accept="application/pdf"
               />
             </label>
             <div class="list_task_file">
