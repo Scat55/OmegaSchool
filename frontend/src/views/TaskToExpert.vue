@@ -19,7 +19,7 @@
       </div>
 
       <div v-if="isShow">
-        <p>{{ changeName }}</p>
+        <p>{{ this.info.add_file }}</p>
         <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
       </div>
     </div>
@@ -41,17 +41,17 @@ export default {
       file: '',
     };
   },
-  computed: {
-    changeName() {
-      return this.info.add_file.split('_')[4];
-    },
-  },
+  // computed: {
+  //   changeName() {
+  //     return this.info.add_file.split('_')[4];
+  //   },
+  // },
   methods: {
     // Скачивание файла
     async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios
-        .get(`/api/download/${this.fileName}`, {
+        .get(`/api/download/${this.info.add_file}`, {
           responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,
@@ -65,21 +65,8 @@ export default {
           a.download = this.fileName;
         });
     },
-    // Получаем имя файла
-    // getNameFiles() {
-    //   axios
-    //     .get('/api/list_all_files/', {
-    //       headers: { Authorization: `Bearer ${this.token.token}` },
-    //     })
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       this.fileName = response.data.userFiles;
-    //     });
-    // },
     changeStatus() {
       this.isShow = !this.isShow;
-
-      console.log(this.blob);
     },
   },
 
@@ -94,8 +81,6 @@ export default {
         console.log(response.data);
         this.info = response.data;
       });
-
-    // this.getNameFiles();
   },
 };
 </script>
