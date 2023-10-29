@@ -152,7 +152,7 @@ export default {
                 ref="fileInput"
                 multiple
                 @change="handleFileChange"
-                accept="application/pdf"
+                accept="application/pdf, .jpg,.jpeg,.png"
               />
             </label>
             <div class="list_task_file">
