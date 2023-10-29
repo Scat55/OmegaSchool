@@ -21,7 +21,7 @@ export default {
   mounted() {
     this.token = JSON.parse(localStorage.getItem('local'));
     axios
-      .get('/api/get_level_1_test', {
+      .get('/api/get_level_1_testForExpert', {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
         },
