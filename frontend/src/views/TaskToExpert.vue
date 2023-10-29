@@ -90,6 +90,7 @@ export default {
     handler() {
       console.log(this.valChek, this.message);
       this.token = JSON.parse(localStorage.getItem('local'));
+      const profileID = JSON.parse(localStorage.getItem('local'));
       const ver = this.valChek;
       const ver_masseg = this.message;
       const test_id = this.id;
@@ -103,10 +104,12 @@ export default {
         {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         },
       );
+      alert('Спасибо за оценку');
+      this.$router.push(`/profile/${profileID.userID}`);
     },
   },
 

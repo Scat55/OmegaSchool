@@ -461,12 +461,6 @@ class User_controller {
             const {task_test, task_description, classes,  options} = req.params;
             const questions = task_test
 
-            const {files} = req.files;
-            console.log(req.body)
-            console.log(req.files)
-            console.log(req.params)
-            console.log(req.files)
-
             if (!options) {
                 return res.status(400).json({error: 'Options are missing'});
             }
@@ -477,11 +471,11 @@ class User_controller {
 
             // Insert test data into the database
             const insertTestQuery = `
-            INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes, add_img)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING test_id;
         `;
-            const testValues = [user_id, task_test, task_description, null, classes];
+            const testValues = [user_id, task_test, task_description, null, classes, null];
             const testResult = await db.query(insertTestQuery, testValues);
             const testId = testResult.rows[0].test_id;
 
@@ -513,18 +507,27 @@ class User_controller {
             if (!req.files || req.files.length === 0) {
                 throw new Error('Пожалуйста, загрузите файл');
             }
-            const filePaths = req.files.map(file => file.originalname);
-            const filesString = filePaths.join(',');
+            let pdfPath = null;
+            let imgPath = null;
 
-            // Update the database record with file paths
-            const updateQuery = 'UPDATE level_1_tests SET add_file = $1 WHERE test_id = $2';
-            const updateValues = [filesString, testId];
+            for (const file of req.files) {
+                if (file.mimetype === 'application/pdf') {
+                    pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+                } else if (file.mimetype.startsWith('image/')) {
+                    imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+                }
+            }
+
+            // Обновление записей в базе данных с путями к файлам
+            const updateQuery = 'UPDATE level_1_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
+            const updateValues = [pdfPath, imgPath, testId];
+
             await db.query(updateQuery, updateValues);
 
-            return res.send({message: 'Тест и файлы успешно добавлены'});
+            return res.send({ message: 'Тест и файлы успешно добавлены' });
         } catch (error) {
             console.error(error.message);
-            res.status(500).json({error: 'Ошибка на сервере'});
+            res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
 

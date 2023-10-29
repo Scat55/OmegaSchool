@@ -78,34 +78,4 @@ class Store {
 
 }
 
-// class InitFile {
-//     constructor() {
-//         this.init = (req, res) => {
-//             try {
-//                 const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
-//                 console.log(fileNames);
-//
-//                 const user_id = req.user_id;
-//                 console.log(user_id);
-//
-//                 const math_path = join('./uploads', `${user_id}`);
-//                 console.log(math_path);
-//
-//             } catch (error) { return res.status(500).send({message: 'Ошибка инициализации файла'}); }
-//         }
-//
-//         this.read = (req, res) => {
-//             try {
-//                 const files = fs.readdirSync(math_path);
-//                 // Проверка, соответствует ли какое-либо из имен файлов
-//                 const userFiles = files.filter((fileName) => { return fileNames.some(name => fileName.includes(name)); });
-//
-//                 if (userFiles.length === 0) { return res.status(404).send({message: 'Файлы не найдены'}); }
-//
-//             } catch (error) { return res.status(500).send({message: 'Ошибка сервера'}); }
-//         }
-//     }
-// }
-
 module.exports = new Store();
-// module.exports = new InitFile();

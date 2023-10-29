@@ -59,7 +59,13 @@ export default {
           },
         },
       );
+      alert('Задание успешно загружено');
       this.nameTask = this.descriptionTask = this.class = '';
+
+      for (let i = 0; i < this.checkboxes.length; i++) {
+        this.checkboxes[i].text = '';
+        this.checkboxes[i].checked = false;
+      }
     },
 
     deleteCheckBox() {
@@ -146,7 +152,7 @@ export default {
                 ref="fileInput"
                 multiple
                 @change="handleFileChange"
-                accept="application/pdf ,.docx"
+                accept="application/pdf, .jpg,.jpeg,.png"
               />
             </label>
             <div class="list_task_file">
@@ -161,13 +167,13 @@ export default {
             </div>
           </div>
           <div>
-            <select class="files">
+            <!-- <select class="files">
               <option disabled selected>-- Прикрепите файл --</option>
               <option>Файл2</option>
               <option>Файл3</option>
               <option>Файл4</option>
               <option>Файл5</option>
-            </select>
+            </select> -->
           </div>
         </div>
         <div class="shablonZadaniaFirst__window">
