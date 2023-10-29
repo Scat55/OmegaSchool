@@ -22,6 +22,26 @@
         <p>{{ this.info.add_file }}</p>
         <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
       </div>
+
+      <div class="estimation">
+        <p>Оцените задание (1-на доработку. 2-отлично):</p>
+        <form class="estimation__form" @submit.prevent="handler()">
+          <label class="estimation__label">
+            <input type="radio" value="1" name="2" id="1" v-model="valChek" />1</label
+          >
+          <label class="estimation__label">
+            <input type="radio" value="2" name="2" id="2" v-model="valChek" />2</label
+          >
+          <textarea
+            name="message"
+            placeholder="Обратная связь по заданию"
+            class="estimation__message"
+            v-model="message"
+            v-if="this.valChek === '1'"
+          ></textarea>
+          <button class="estimation__btn" type="submit">Отправить</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -39,13 +59,10 @@ export default {
       blob: '',
       isShow: false,
       file: '',
+      valChek: '',
+      message: '',
     };
   },
-  // computed: {
-  //   changeName() {
-  //     return this.info.add_file.split('_')[4];
-  //   },
-  // },
   methods: {
     // Скачивание файла
     async downloadFiles() {
@@ -65,8 +82,13 @@ export default {
           a.download = this.fileName;
         });
     },
+    // Появление файла
     changeStatus() {
       this.isShow = !this.isShow;
+    },
+    // Обработка формы
+    handler() {
+      console.log(this.valChek, this.message);
     },
   },
 
@@ -121,5 +143,48 @@ export default {
 }
 .rotate {
   transform: rotate(-180deg);
+}
+.estimation {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.estimation__input {
+  width: 4.2rem;
+  outline: none;
+  padding: 0.625rem;
+  border-radius: 0.3rem;
+  border: 1px solid #000;
+}
+.estimation__label {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.2rem;
+}
+.estimation__message {
+  width: 40rem;
+  height: 8rem;
+  outline: none;
+  margin-top: 1rem;
+  padding: 0.625rem;
+  border-radius: 0.3rem;
+  border: 1px solid #000;
+  resize: none;
+}
+.estimation__btn {
+  display: block;
+  width: 8rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.625rem;
+  cursor: pointer;
+  background-color: #5eb6ff;
+  transition: all 0.3s;
+  color: #fff;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 </style>
