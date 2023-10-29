@@ -89,6 +89,22 @@ export default {
     // Обработка формы
     handler() {
       console.log(this.valChek, this.message);
+      this.token = JSON.parse(localStorage.getItem('local'));
+      const ver = this.valChek;
+      const ver_masseg = this.message;
+      const test_id = this.id;
+      axios.post(
+        '/api/updateTestByExpert',
+        {
+          ver: ver,
+          ver_masseg: ver_masseg,
+          test_id: test_id,
+        },
+        {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json',
+        },
+      );
     },
   },
 
