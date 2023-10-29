@@ -42,17 +42,16 @@ export default {
       const task_description = this.descriptionTask;
       const questions = encodeURIComponent(JSON.stringify(this.checkboxes));
 
-      this.files = this.$refs.fileInput.files;
+      this.files = this.$refs.fileInput.files[0];
 
-      let allFiles = Object.values(this.files).map((el) => {
-        return el;
-      });
+      // let allFiles = Object.values(this.files).map((el) => {
+      //   return el;
+      // });
 
       this.token = JSON.parse(localStorage.getItem('local'));
-      console.log(allFiles);
       await axios.post(
         `/api/add_level_1/${task_test}/${task_description}/11/${questions}/`,
-        allFiles,
+        { files: this.files },
         {
           headers: {
             Authorization: `Bearer ${this.token.token}`,

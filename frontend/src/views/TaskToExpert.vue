@@ -13,9 +13,7 @@
       </div>
 
       <div>
-        <div v-for="file in fileName">
-          <p>{{ file }}</p>
-        </div>
+        <p>{{ info.add_file }}</p>
         <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
       </div>
     </div>
