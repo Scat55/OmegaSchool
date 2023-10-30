@@ -287,22 +287,46 @@ class User_controller {
         const testId = req.params.testID;
 
         try {
-            // Fetch the main test information
-            const testQuery = 'SELECT * FROM level_1_tests WHERE test_id = $1';
-            const testResult = await db.query(testQuery, [testId]);
+            let test;
+            let testLevel;
+            let testQuery;
 
-            if (testResult.rowCount === 0) {
-                return res.status(404).json({ error: 'Task not found' });
+            // Проверяем наличие теста в таблице level_1_tests
+            testQuery = 'SELECT * FROM level_1_tests WHERE test_id = $1';
+            let testResult = await db.query(testQuery, [testId]);
+
+            if (testResult.rowCount > 0) {
+                test = testResult.rows[0];
+                testLevel = 'level_1_tests';
+            } else {
+                // Проверяем наличие теста в таблице level_2_tests
+                testQuery = 'SELECT * FROM level_2_tests WHERE test_id = $1';
+                testResult = await db.query(testQuery, [testId]);
+
+                if (testResult.rowCount > 0) {
+                    test = testResult.rows[0];
+                    testLevel = 'level_2_tests';
+                } else {
+                    // Проверяем наличие теста в таблице level_3_tests
+                    testQuery = 'SELECT * FROM level_3_tests WHERE test_id = $1';
+                    testResult = await db.query(testQuery, [testId]);
+
+                    if (testResult.rowCount > 0) {
+                        test = testResult.rows[0];
+                        testLevel = 'level_3_tests';
+                    } else {
+                        // Тест не найден ни в одной из таблиц
+                        return res.status(404).json({ error: 'Task not found' });
+                    }
+                }
             }
 
-            const test = testResult.rows[0];
-
-            // Fetch questions related to the test
+            // Запрос вопросов, связанных с тестом
             const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
             const questionsResult = await db.query(questionsQuery, [testId]);
 
+            // Извлекаем варианты ответов для каждого вопроса
             const questionsWithOptions = await Promise.all(questionsResult.rows.map(async (question) => {
-                // For each question, fetch the related answer options
                 const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
                 const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
@@ -312,8 +336,10 @@ class User_controller {
                 };
             }));
 
-            // Format the final response
+            // Форматирование итогового ответа
             const formattedResponse = {
+                level: testLevel,
+                user_id: test.user_id,
                 test_id: test.test_id,
                 test_text: test.task_test,
                 test_description: test.task_description,
@@ -331,6 +357,7 @@ class User_controller {
             res.status(500).json({ error: 'Server error' });
         }
     }
+
 
     async getTasksForTeacherByID(req, res){
         const testId = req.params.testID;
