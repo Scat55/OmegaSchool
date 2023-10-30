@@ -132,11 +132,8 @@ export default {
         console.log(response.data);
         this.info = response.data;
         this.addIMG = response.data.add_img;
+        this.userID = response.data.user_id;
       });
-
-    const local = JSON.parse(localStorage.getItem('local'));
-    this.userID = local.userID;
-    console.log(this.userID);
   },
 };
 </script>
