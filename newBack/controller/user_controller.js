@@ -231,21 +231,49 @@ class User_controller {
             const user_id = req.user_id;
 
             // Запрос для level_1_tests
-            const testsSql = `
-        SELECT *
-        FROM level_1_tests
-        WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
-    `;
+            const level1TestsSql = `
+            SELECT *
+            FROM level_1_tests
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
+        `;
 
-            const optionsResult = await db.query(testsSql, [user_id]);
+            // Запрос для level_2_tests
+            const level2TestsSql = `
+            SELECT *
+            FROM level_2_tests
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
+        `;
 
-            const formattedResponse = optionsResult.rows.map(test => {
-                    return {
-                    tast_id: test.test_id, // предполагаю что это поле у вас в базе данных
-                    task_test: test.task_test, // предполагаю что это поле у вас в базе данных
+            // Запрос для level_3_tests
+            const level3TestsSql = `
+            SELECT *
+            FROM level_3_tests
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
+        `;
 
-                }
-            });
+            // Выполнение запросов для каждого уровня
+            const level1OptionsResult = await db.query(level1TestsSql, [user_id]);
+            const level2OptionsResult = await db.query(level2TestsSql, [user_id]);
+            const level3OptionsResult = await db.query(level3TestsSql, [user_id]);
+
+            // Формирование ответа
+            const formattedResponse = [
+                ...level1OptionsResult.rows.map(test => ({
+                    task_id: test.test_id,
+                    task_test: test.task_test,
+                    level: 1
+                })),
+                ...level2OptionsResult.rows.map(test => ({
+                    task_id: test.test_id,
+                    task_test: test.task_test,
+                    level: 2
+                })),
+                ...level3OptionsResult.rows.map(test => ({
+                    task_id: test.test_id,
+                    task_test: test.task_test,
+                    level: 3
+                }))
+            ];
 
             res.json(formattedResponse);
 
@@ -291,6 +319,7 @@ class User_controller {
                 test_description: test.task_description,
                 add_file: test.add_file,
                 classes: test.classes,
+                subject: test.subject,
                 add_img: test.add_img,
                 questions: questionsWithOptions
             };
