@@ -26,6 +26,16 @@ app.use(express.json())
 app.use('/api', userRouter)
 app.use('/auth', authRouter)
 
+const customHeadersAppLevel = function (req, res, next) {
+    req.headers['Custom-UUID'] = ''; // Устанавливаем кастомный заголовок 'Custom-UUID' с вашим UUID
+    next();
+};
+
+app.use(customHeadersAppLevel);
+
+
+app.use(customHeadersAppLevel);
+
 
 app.listen(PORT, ()=>console.log(`server started on port ${PORT} and listen ip`))
 

@@ -761,11 +761,9 @@ class User_controller {
     download(req, res) {
         try {
 
-            const {key} = req.body
+            const key = req.headers['custom-uuid'];
 
             console.log(key)
-            console.log(req.key)
-
 
             const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
             console.log(fileNames);
