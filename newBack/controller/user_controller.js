@@ -760,10 +760,17 @@ class User_controller {
 
     download(req, res) {
         try {
+
+            const {key} = req.body
+
+            console.log(key)
+            console.log(req.key)
+
+
             const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
             console.log(fileNames);
 
-            const math_path = join('./uploads', `${req.user_id}`);
+            const math_path = join('./uploads', `${key}`);
 
             // Проверка существования каталога
             if (!fs.existsSync(math_path)) { return res.status(404).send({message: 'Каталог не найден'}); }
