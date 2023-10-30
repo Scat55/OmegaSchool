@@ -234,7 +234,7 @@ class User_controller {
             const testsSql = `
         SELECT *
         FROM level_1_tests
-        WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1);
+        WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
     `;
 
             const optionsResult = await db.query(testsSql, [user_id]);
@@ -352,7 +352,6 @@ class User_controller {
             res.status(500).json({ error: 'Server error' });
         }
     }
-
 
     async updateTestByExpert(req, res){
     console.log(req.body);
@@ -620,7 +619,6 @@ class User_controller {
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
-
 
     //Эта функция будет возвращать список всех файлов, загруженных конкретным пользователем.
     async listUserFiles(req, res) {
