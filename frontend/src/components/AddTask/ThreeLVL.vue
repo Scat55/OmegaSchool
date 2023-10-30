@@ -1,5 +1,25 @@
 <script>
 export default {
+  props: {
+    selectedValue: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    selectedClass: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    selectedItems: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+  },
   date() {
     return {
       score: 5,

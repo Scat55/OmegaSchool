@@ -87,8 +87,18 @@ export default {
       :selectedClass="selectedClass"
       :selectedItems="selectedItems"
     />
-    <TwoLVL v-show="selectedValue === '2'" />
-    <ThreeLVL v-show="selectedValue === '3'" />
+    <TwoLVL
+      v-show="selectedValue === '2'"
+      :selectedValue="selectedValue"
+      :selectedClass="selectedClass"
+      :selectedItems="selectedItems"
+    />
+    <ThreeLVL
+      v-show="selectedValue === '3'"
+      :selectedValue="selectedValue"
+      :selectedClass="selectedClass"
+      :selectedItems="selectedItems"
+    />
   </div>
 </template>
 
