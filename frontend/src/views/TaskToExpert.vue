@@ -6,7 +6,7 @@
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
         <img
-          v-if="addIMG !== null"
+          v-if="addIMG !== ''"
           :src="' ../../../newBack/uploads/' + userID + '/' + addIMG"
           alt="Image"
         />
@@ -25,7 +25,10 @@
 
       <div v-if="isShow">
         <p>{{ this.info.add_file }}</p>
-        <a class="downloadLink"><button @click="downloadFiles()">Скачать</button></a>
+        <a v-if="this.info.add_file !== null" class="downloadLink"
+          ><button @click="downloadFiles()">Скачать</button></a
+        >
+        <p v-else>Файлов нет</p>
       </div>
 
       <div class="estimation">
@@ -96,12 +99,14 @@ export default {
     },
     // Обработка формы
     handler() {
-      console.log(this.valChek, this.message);
       this.token = JSON.parse(localStorage.getItem('local'));
       const profileID = JSON.parse(localStorage.getItem('local'));
-      const ver = this.valChek;
-      const ver_masseg = this.message;
+      let ver = this.valChek;
+      let ver_masseg = this.message;
       const test_id = this.id;
+      if (ver === '2') {
+        ver_masseg = '';
+      }
       axios.post(
         '/api/updateTestByExpert',
         {
@@ -117,7 +122,8 @@ export default {
         },
       );
       alert('Спасибо за оценку');
-      this.$router.push(`/profile/${profileID.userID}`);
+      console.log(ver, ver_masseg);
+      // this.$router.push(`/profile/${profileID.userID}`);
     },
   },
 
@@ -164,6 +170,7 @@ export default {
 .dop {
   display: flex;
   gap: 0.5rem;
+  margin-top: 1rem;
 }
 .downloadLink {
   margin-top: 1rem;
