@@ -1,8 +1,20 @@
 <template>
   <div class="container">
     <div class="task__info">
-      <p>{{ info.test_text }}</p>
-      <p>{{ info.test_description }}</p>
+      <div class="task__main-info">
+        <div class="task__main-info-text">
+          <p class="task__main-info-title">{{ info.test_text }}</p>
+
+          <div class="task__main-info-student">
+            <p>Класс - {{ info.classes }}</p>
+            <p>{{ info.subject }}</p>
+          </div>
+        </div>
+      </div>
+      <p class="task__main-info-descr">
+        {{ info.test_description }}
+      </p>
+
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
         <img
@@ -160,6 +172,24 @@ export default {
   background: white;
   overflow: hidden;
   transition: all 0.3s;
+}
+.task__main-info {
+  &-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-title {
+    margin-bottom: 2rem;
+  }
+  &-descr {
+    line-height: 180%;
+  }
+  &-student {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 .options {
   display: flex;
