@@ -32,9 +32,13 @@ router.get('/get_level_1_testForTeacher',roleMiddleware(['Учитель']), use
 //маршруты для работы с файлами
 //маршрут для ручной загрузки файла или файлов получения файла.
 router.post('/uploads/', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.uploads)
-router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.array('files'), userController.addTestAndUpload)
-router.post('/add_level_1/:task_test/:task_description/:classes/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.any(), userController.addTestAndUpload)
-//маршрут для получения файла или файлов.
+router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:subject/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.array('files'), userController.addTestAndUpload)
+router.post('/add_level_1/:task_test/:task_description/:classes/:subject/:options', roleMiddleware(['Учитель','Эксперт']), store.upload.any(), userController.addTestAndUpload)
+
+router.post('/add_level_2/:task_test/:task_description/:task_hint/:task_answer/:classes/:subject', roleMiddleware(['Учитель','Эксперт']), store.upload.any(), userController.addTest2AndUpload)
+router.post('/add_level_3/:task_test/:task_description/:classes/:subject', roleMiddleware(['Учитель','Эксперт']), store.upload.any(), userController.addTest3AndUpload)
+
+//Маршрут для получения файла или файлов.
 //Поиск всех файлов, загруженных пользователем
 router.get('/list_all_files', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.listUserFiles);
 router.post('/delete_user_files/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.deleteUserFiles);

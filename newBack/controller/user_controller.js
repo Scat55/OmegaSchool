@@ -458,7 +458,7 @@ class User_controller {
 
     async addTestAndUpload(req, res) {
         try {
-            const {task_test, task_description, classes,  options} = req.params;
+            const {task_test, task_description, classes,  options, subject} = req.params;
             const questions = task_test
 
             if (!options) {
@@ -471,11 +471,11 @@ class User_controller {
 
             // Insert test data into the database
             const insertTestQuery = `
-            INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes, add_img)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes,subject, add_img)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING test_id;
         `;
-            const testValues = [user_id, task_test, task_description, null, classes, null];
+            const testValues = [user_id, task_test, task_description, null, classes, subject, null];
             const testResult = await db.query(insertTestQuery, testValues);
             const testId = testResult.rows[0].test_id;
 
@@ -530,6 +530,97 @@ class User_controller {
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
+
+    async addTest2AndUpload(req,res){
+        try {
+        const {task_test, task_description, task_hint, task_answer, classes, subject} = req.params;
+
+
+        const user_id = req.user_id;
+
+        const insertTestQuery = `
+            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING test_id;
+        `;
+
+        const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject];
+        const testResult = await db.query(insertTestQuery, testValues);
+        const testId = testResult.rows[0].test_id;
+
+
+        if (!req.files || req.files.length === 0) {
+            throw new Error('Пожалуйста, загрузите файл');
+        }
+        let pdfPath = null;
+        let imgPath = null;
+
+        for (const file of req.files) {
+            if (file.mimetype === 'application/pdf') {
+                pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+            } else if (file.mimetype.startsWith('image/')) {
+                imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+            }
+        }
+
+        // Обновление записей в базе данных с путями к файлам
+        const updateQuery = 'UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
+        const updateValues = [pdfPath, imgPath, testId];
+
+        await db.query(updateQuery, updateValues);
+
+        return res.send({ message: 'Тест и файлы успешно добавлены' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+    async addTest3AndUpload(req,res){
+        try {
+
+            const {task_test, task_description, classes, subject} = req.params;
+
+            const user_id = req.user_id;
+
+            const insertTestQuery = `
+            INSERT INTO level_3_tests (user_id, task_test, task_description, classes, subject)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING test_id;
+        `;
+
+            const testValues = [user_id, task_test, task_description, classes, subject];
+            const testResult = await db.query(insertTestQuery, testValues);
+            const testId = testResult.rows[0].test_id;
+
+
+            if (!req.files || req.files.length === 0) {
+                throw new Error('Пожалуйста, загрузите файл');
+            }
+            let pdfPath = null;
+            let imgPath = null;
+
+            for (const file of req.files) {
+                if (file.mimetype === 'application/pdf') {
+                    pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+                } else if (file.mimetype.startsWith('image/')) {
+                    imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+                }
+            }
+
+            // Обновление записей в базе данных с путями к файлам
+            const updateQuery = 'UPDATE level_3_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
+            const updateValues = [pdfPath, imgPath, testId];
+
+            await db.query(updateQuery, updateValues);
+
+            return res.send({ message: 'Тест и файлы успешно добавлены' });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
 
     //Эта функция будет возвращать список всех файлов, загруженных конкретным пользователем.
     async listUserFiles(req, res) {
