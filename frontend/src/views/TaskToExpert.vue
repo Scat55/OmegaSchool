@@ -95,6 +95,7 @@ export default {
           responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,
+            'Custom-UUID': this.userID,
           },
         })
         .then((response) => {
