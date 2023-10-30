@@ -7,7 +7,7 @@
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
         <img
           v-if="addIMG !== null"
-          :src="' ../../../newBack/uploads/' + userID + '/' + '29_10_2023_' + userID + '_' + addIMG"
+          :src="' ../../../newBack/uploads/' + userID + '/' + addIMG"
           alt="Image"
         />
       </div>
@@ -70,9 +70,7 @@ export default {
       addIMG: '',
     };
   },
-  computed: {
-    addImage() {},
-  },
+
   methods: {
     // Скачивание файла
     async downloadFiles() {
@@ -138,6 +136,7 @@ export default {
 
     const local = JSON.parse(localStorage.getItem('local'));
     this.userID = local.userID;
+    console.log(this.userID);
   },
 };
 </script>

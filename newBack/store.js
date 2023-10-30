@@ -19,7 +19,7 @@ class Store {
                 const month = (today.getMonth() + 1).toString().padStart(2, '0');
                 const day = today.getDate().toString().padStart(2, '0');
                 file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
-                const filename = `${day}_${month}_${year}_${req.user_id}_${file.originalname}`;
+                const filename = `${file.originalname}`;
                 cb(null, filename);
             },
         });
@@ -28,7 +28,7 @@ class Store {
         this.upload = multer({
             storage: this.storage,
             fileFilter: (req, file, cb) => {
-                const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
                 if (!allowedTypes.includes(file.mimetype)) {
                     const error = new Error('Неподдерживаемый тип файлов. Выберите из pdf, jpeg, png, msword.');
                     error.statusCode = 400;
