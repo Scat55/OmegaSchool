@@ -6,7 +6,8 @@
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
         <img
-          src="../../../newBack/uploads/2c9df029-d6e4-4c90-9c74-fc76c33db4ef/29_10_2023_2c9df029-d6e4-4c90-9c74-fc76c33db4ef_1624471309_34-phonoteka_org-p-oboi-minimalizm-priroda-krasivo-34.jpg"
+          v-if="addIMG !== null"
+          :src="' ../../../newBack/uploads/' + userID + '/' + '29_10_2023_' + userID + '_' + addIMG"
           alt="Image"
         />
       </div>
@@ -65,6 +66,8 @@ export default {
       file: '',
       valChek: '',
       message: '',
+      userID: '',
+      addIMG: '',
     };
   },
   computed: {
@@ -130,7 +133,11 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.info = response.data;
+        this.addIMG = response.data.add_img;
       });
+
+    const local = JSON.parse(localStorage.getItem('local'));
+    this.userID = local.userID;
   },
 };
 </script>
