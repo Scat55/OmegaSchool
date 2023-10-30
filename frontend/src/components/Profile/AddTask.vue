@@ -11,7 +11,7 @@ export default {
   },
   data() {
     return {
-      selectedValue: 'oneLVL',
+      selectedValue: '1',
       rules: '',
       selectedClass: '',
       selectedItems: '',
@@ -21,15 +21,15 @@ export default {
   watch: {
     selectedValue(rules) {
       switch (this.selectedValue) {
-        case 'oneLVL':
+        case '1':
           this.rules =
             'За задание дается 1 балл. Предполагает вопрос в котором есть вариант ответов.';
           break;
-        case 'twoLVL':
+        case '2':
           this.rules =
             'За задание дается максимум 3 балла. Предполагается вопрос с развернутым ответом, где ответ проверяет учитель.';
           break;
-        case 'threeLVL':
+        case '3':
           this.rules = 'Проектная работа. Дается только тема и необходимые материалы.';
           break;
         default:
@@ -49,9 +49,9 @@ export default {
         <div>
           <label>Уровень задачи: </label>
           <select v-model="selectedValue" class="window_Add-level">
-            <option value="oneLVL">1 уровень</option>
-            <option value="twoLVL">2 уровень</option>
-            <option value="threeLVL">3 уровень</option>
+            <option value="1">1 уровень</option>
+            <option value="2">2 уровень</option>
+            <option value="3">3 уровень</option>
           </select>
         </div>
         <div>
@@ -75,15 +75,20 @@ export default {
       <div class="window_Class">
         <label>Для какого класса: </label>
         <select v-model="selectedClass" class="window_Add-level">
-          <option value="9thGrade">9 класс</option>
-          <option value="10thGrade">10 класс</option>
-          <option value="11thGrade">11 класс</option>
+          <option value="8">8 класс</option>
+          <option value="9">9 класс</option>
+          <option value="10">10 класс</option>
         </select>
       </div>
     </div>
-    <FirstLVL v-show="selectedValue === 'oneLVL'" />
-    <TwoLVL v-show="selectedValue === 'twoLVL'" />
-    <ThreeLVL v-show="selectedValue === 'threeLVL'" />
+    <FirstLVL
+      v-show="selectedValue === '1'"
+      :selectedValue="selectedValue"
+      :selectedClass="selectedClass"
+      :selectedItems="selectedItems"
+    />
+    <TwoLVL v-show="selectedValue === '2'" />
+    <ThreeLVL v-show="selectedValue === '3'" />
   </div>
 </template>
 
