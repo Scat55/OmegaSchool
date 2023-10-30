@@ -5,6 +5,11 @@
       <p>{{ info.test_description }}</p>
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
+        <img
+          v-if="addIMG !== null"
+          :src="' ../../../newBack/uploads/' + userID + '/' + '29_10_2023_' + userID + '_' + addIMG"
+          alt="Image"
+        />
       </div>
 
       <div class="dop">
@@ -61,7 +66,12 @@ export default {
       file: '',
       valChek: '',
       message: '',
+      userID: '',
+      addIMG: '',
     };
+  },
+  computed: {
+    addImage() {},
   },
   methods: {
     // Скачивание файла
@@ -123,7 +133,11 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.info = response.data;
+        this.addIMG = response.data.add_img;
       });
+
+    const local = JSON.parse(localStorage.getItem('local'));
+    this.userID = local.userID;
   },
 };
 </script>
