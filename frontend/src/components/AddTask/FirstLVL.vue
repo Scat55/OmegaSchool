@@ -2,6 +2,26 @@
 import axios from 'axios';
 
 export default {
+  props: {
+    selectedValue: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    selectedClass: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+    selectedItems: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+  },
   data() {
     return {
       checkboxes: [
@@ -50,7 +70,7 @@ export default {
 
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios.post(
-        `/api/add_level_1/${task_test}/${task_description}/11/${questions}/`,
+        `/api/add_level_1/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}/${questions}/`,
         { files: this.files },
         {
           headers: {
@@ -60,6 +80,7 @@ export default {
         },
       );
       alert('Задание успешно загружено');
+
       this.nameTask = this.descriptionTask = this.class = '';
 
       for (let i = 0; i < this.checkboxes.length; i++) {
