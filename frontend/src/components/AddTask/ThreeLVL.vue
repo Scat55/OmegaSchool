@@ -20,9 +20,11 @@ export default {
       },
     },
   },
-  date() {
+  data() {
     return {
       score: 5,
+      taskName: '',
+      taskDescription: '',
     };
   },
 
@@ -30,20 +32,36 @@ export default {
     clearForm() {
       console.log('Форма очищена');
     },
+    handler() {
+      alert('Задание успешно загружено');
+      console.log(
+        this.taskName,
+        this.taskDescription,
+        '||',
+        this.selectedClass,
+        this.selectedItems,
+      );
+      this.taskName = this.taskDescription = '';
+    },
   },
 };
 </script>
 
 <template>
-  <form @submit.prevent>
+  <form @submit.prevent="handler">
     <div class="shablonZadaniaThree">
       <div class="name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания" class="name__task" />
+        <input
+          type="text"
+          placeholder="Введите название задания"
+          class="name__task"
+          v-model="taskName"
+        />
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea id="textAreaUsl"></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
         <div class="block">
           <p>Дополнительные материалы:</p>
           <input type="file" id="fileInput" />
@@ -73,12 +91,14 @@ export default {
 
 #textAreaUsl {
   width: 100%;
+  margin-top: 1rem;
   font-size: 1.5rem;
   resize: none;
-  height: 20rem;
-  margin-top: 10px;
+  height: 8rem;
   outline: none;
-  border: none;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  padding: 0.625rem;
 }
 .btn-send {
   width: 100%;
