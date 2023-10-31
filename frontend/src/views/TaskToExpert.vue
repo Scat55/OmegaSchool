@@ -22,6 +22,7 @@
       <img
         v-if="this.info.add_img"
         :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
+        class="image"
         alt="Image"
       />
       <div v-for="question in info.questions" class="options">
@@ -199,6 +200,8 @@ export default {
     line-height: 180%;
     font-size: 1.3rem;
     border-radius: 1rem;
+    color: #000;
+    background: #fff;
   }
   &-student {
     display: flex;
@@ -269,5 +272,8 @@ export default {
   &:hover {
     transform: scale(1.1);
   }
+}
+.image {
+  width: 500px;
 }
 </style>
