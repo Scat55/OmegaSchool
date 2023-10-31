@@ -19,7 +19,7 @@
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
         <img
           v-if="addIMG !== ''"
-          :src="' ../../../newBack/uploads/' + userID + '/' + addIMG"
+          :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
           alt="Image"
         />
       </div>
@@ -109,6 +109,7 @@ export default {
     // Появление файла
     changeStatus() {
       this.isShow = !this.isShow;
+      console.log(' ../../../newBack/uploads/' + this.userID + '/' + this.info.add_img);
     },
     // Обработка формы
     handler() {
@@ -140,7 +141,7 @@ export default {
     },
   },
 
-  mounted() {
+  created() {
     // Получение информации о задаче по id
     this.token = JSON.parse(localStorage.getItem('local'));
     axios
@@ -154,6 +155,8 @@ export default {
         this.userID = response.data.user_id;
       });
   },
+
+  mounted() {},
 };
 </script>
 
