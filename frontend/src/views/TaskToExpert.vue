@@ -14,14 +14,13 @@
       <p class="task__main-info-descr">
         {{ info.test_description }}
       </p>
-
+      <img
+        v-if="this.info.add_img"
+        :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
+        alt="Image"
+      />
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
-        <img
-          v-if="addIMG !== ''"
-          :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
-          alt="Image"
-        />
       </div>
 
       <div class="dop">
@@ -109,7 +108,6 @@ export default {
     // Появление файла
     changeStatus() {
       this.isShow = !this.isShow;
-      console.log(' ../../../newBack/uploads/' + this.userID + '/' + this.info.add_img);
     },
     // Обработка формы
     handler() {
