@@ -410,41 +410,60 @@ class User_controller {
     // }
 
     async updateTestByExpert(req, res){
-    console.log(req.body);
-    console.log(req.user_id);
-    try {
-        const { ver, ver_masseg, test_id } = req.body;
-        const user_id = req.user_id; // предположим, что user_id вы устанавливаете через middleware аутентификации
+        console.log(req.body);
+        console.log(req.user_id);
 
-        const client = await db.connect();
+        try {
+            const { ver, ver_masseg, test_id } = req.body;
+            const user_id = req.user_id; // Используем user_id из middleware аутентификации
 
-        const updateVer1 = `
-      UPDATE level_1_tests
-      SET ver_1 = $1, ver_1_masseg = $2, ver_1_id = $3
-      WHERE test_id = $4 AND ver_1 IS NULL
-      RETURNING test_id
-    `;
+            let testLevel;
+            const testLevels = ['level_1_tests', 'level_2_tests', 'level_3_tests'];
 
-        const result = await client.query(updateVer1, [ver, ver_masseg, user_id, test_id]);
+            const client = await db.connect();
 
-        if (result.rowCount === 0) { // Если обновление для ver_1 не прошло
-            const updateVer2 = `
-        UPDATE level_1_tests
-        SET ver_2 = $1, ver_2_masseg = $2, ver_2_id = $3
-        WHERE test_id = $4 AND ver_2 IS NULL
-      `;
+            // Определяем уровень теста
+            for (let i = 0; i < testLevels.length; i++) {
+                const testQuery = `SELECT * FROM ${testLevels[i]} WHERE test_id = $1`;
+                const testResult = await client.query(testQuery, [test_id]);
 
-            await client.query(updateVer2, [ver, ver_masseg, user_id, test_id]);
+                if (testResult.rowCount > 0) {
+                    testLevel = testLevels[i];
+                    break;
+                }
+            }
+
+            if (!testLevel) {
+                client.release();
+                return res.status(404).json({ error: 'тест не найден!' });
+            }
+
+            // Обновляем данные верификации для соответствующего уровня теста
+            const updateVerQuery = `
+            UPDATE ${testLevel}
+            SET ver_1 = COALESCE(ver_1, $1), ver_1_masseg = COALESCE(ver_1_masseg, $2), ver_1_id = COALESCE(ver_1_id, $3),
+                ver_2 = COALESCE(ver_2, $1), ver_2_masseg = COALESCE(ver_2_masseg, $2), ver_2_id = COALESCE(ver_2_id, $3)
+            WHERE test_id = $4 AND (ver_1 IS NULL OR ver_2 IS NULL)
+            RETURNING test_id;
+        `;
+
+            const result = await client.query(updateVerQuery, [ver, ver_masseg, user_id, test_id]);
+
+            client.release();
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({ error: 'Update failed or test already verified' });
+            }
+
+            res.json({ success: true, test_id: result.rows[0].test_id });
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            client?.release();
+            res.status(500).json({ error: 'Ошибка на сервере' });
         }
-
-        client.release();
-
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Ошибка при выполнении SQL-запроса:', error.message);
-        res.status(500).json({ error: 'Ошибка на сервере' });
     }
-}
+
     async getTasksForTeacher(req, res){
         try {
             const user_id = req.user_id;
