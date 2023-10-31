@@ -21,26 +21,49 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      taskName: '',
+      taskDescription: '',
+      taskAnswer: '',
+      taskHelp: '',
+    };
   },
   methods: {
     clearForm() {
       this.condition = '';
+    },
+    handler() {
+      alert('Задание успешно загружено');
+      console.log(
+        this.taskName,
+        this.taskDescription,
+        this.taskHelp,
+        this.taskAnswer,
+        '||',
+        this.selectedClass,
+        this.selectedItems,
+      );
+      this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
     },
   },
 };
 </script>
 
 <template>
-  <form @submit.prevent>
+  <form @submit.prevent="handler()">
     <div class="shablonZadaniaTwo">
       <div class="name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания" class="name__task" />
+        <input
+          type="text"
+          placeholder="Введите название задания"
+          class="name__task"
+          v-model="taskName"
+        />
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea id="textAreaUsl"></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
         <div>
           <p>Дополнительные материалы:</p>
           <input type="file" id="fileInput" />
@@ -50,34 +73,26 @@ export default {
         <p>
           Введите подсказку -
           <span id="warning"
-            >ВНИМАНИЕ! ЕСЛИ УЧЕНИК ИСПОЛЬЗУЕТ ПОДСКАЗКУ, ОН МОЖЕТ ПОЛУЧИТЬ МАКСИМУМ 2 БАЛЛА. В ТО
-            ВРЕМЯ У ВАС ВО ВКЛАДКЕ "ЗАДАЧИ НА ПРОВЕРКУ ( ОТ УЧЕНИКОВ )" БУДЕТ ПОМЕЧЕНО ИСПОЛЬЗОВАЛ
-            ЛИ УЧЕНИК ПОДСКАЗКУ."</span
+            >Внимание! Если ученик использует подсказку, он может получить максимум 1 балл. в то
+            время у вас во вкладке "задачи на проверку ( от учеников )" будет помечено использовал
+            ли ученик подсказку."</span
           >
         </p>
-        <textarea id="textAreaUsl"></textarea>
-        <div>
-          <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" />
-        </div>
+        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>
       </div>
       <div class="block">
         <p>
           Ответ -
           <span id="warning"
-            >ВНИМАНИЕ! ЕСЛИ УЧЕНИК ИСПОЛЬЗУЕТ ОТВЕТ, ОН ПОЛУЧИТ 0 БАЛЛОВ. В ТО ВРЕМЯ У ВАС ВО
-            ВКЛАДКЕ "ЗАДАЧИ НА ПРОВЕРКУ ( ОТ УЧЕНИКОВ )" БУДЕТ ПОМЕЧЕНО ИСПОЛЬЗОВАЛ ЛИ УЧЕНИК
-            ОТВЕТ."</span
+            >Внимание! Если ученик использует ответ, он получит 0 баллов. в то время у вас во
+            вкладке "задачи на проверку ( от учеников )" будет помечено использовал ли ученик
+            ответ."</span
           >
         </p>
-        <textarea id="answer"></textarea>
-        <div>
-          <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" />
-        </div>
+        <textarea id="answer" v-model="taskAnswer"></textarea>
       </div>
       <div class="btn-send">
-        <button class="btn">Отправить задание на проверку эксперту!</button>
+        <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
         <button class="btn-reset" type="reset">Удалить все!</button>
       </div>
     </div>
@@ -89,18 +104,27 @@ export default {
   width: 100%;
   font-size: 1.5rem;
   resize: none;
-  height: 20rem;
+  height: 8rem;
+  outline: none;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  padding: 0.625rem;
 }
 
 #warning {
   color: white;
+  font-size: 0.7rem;
 }
 
 #answer {
   width: 100%;
   font-size: 1.5rem;
   resize: none;
-  height: 10rem;
+  height: 8rem;
+  outline: none;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  padding: 0.625rem;
 }
 .name__task {
   padding: 0.5rem;
@@ -118,7 +142,6 @@ export default {
 
 .block {
   padding: 10px;
-  border: 3px solid black;
   border-radius: 1.5rem;
   margin: 10px 0;
 }

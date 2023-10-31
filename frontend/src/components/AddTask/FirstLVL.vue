@@ -216,7 +216,7 @@ export default {
           </button>
           <div v-for="(checkbox, index) in checkboxes" :key="index">
             <div class="shablonZadaniaFirst__checkbox_item">
-              <label>{{ index + 1 }})&nbsp;</label>
+              <label>{{ index + 1 }}&nbsp;</label>
               <input
                 class="shablonZadaniaFirst__checkbox_item_check"
                 type="checkbox"
