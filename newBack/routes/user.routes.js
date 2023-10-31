@@ -18,8 +18,11 @@ router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformatio
 router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.additionalData)
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
+router.get('/getTasksForStudent',roleMiddleware(['Ученик']), userController.getTasksForStudent)
+router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksByID)
 router.get('/getTasksForExpertByID/:testID',roleMiddleware(['Эксперт']), userController.getTasksByID)
 router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
+
 
 router.get('/getTasksForTeacherByID/:testID',roleMiddleware(['Учитель']), userController.getTasksByID)
 router.get('/get_level_1_testForTeacher',roleMiddleware(['Учитель']), userController.getTasksForTeacher)
