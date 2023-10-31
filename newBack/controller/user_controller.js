@@ -415,11 +415,10 @@ class User_controller {
 
         try {
             const { ver, ver_masseg, test_id } = req.body;
-            const user_id = req.user_id; // Используем user_id из middleware аутентификации
+            const user_id = req.user_id;
 
             let testLevel;
             const testLevels = ['level_1_tests', 'level_2_tests', 'level_3_tests'];
-
             const client = await db.connect();
 
             // Определяем уровень теста
@@ -438,31 +437,41 @@ class User_controller {
                 return res.status(404).json({ error: 'тест не найден!' });
             }
 
-            // Обновляем данные верификации для соответствующего уровня теста
+            // Обновляем верификацию для найденного уровня теста
             const updateVerQuery = `
             UPDATE ${testLevel}
-            SET ver_1 = COALESCE(ver_1, $1), ver_1_masseg = COALESCE(ver_1_masseg, $2), ver_1_id = COALESCE(ver_1_id, $3),
-                ver_2 = COALESCE(ver_2, $1), ver_2_masseg = COALESCE(ver_2_masseg, $2), ver_2_id = COALESCE(ver_2_id, $3)
-            WHERE test_id = $4 AND (ver_1 IS NULL OR ver_2 IS NULL)
+            SET ver_1 = COALESCE(ver_1, $1), ver_1_masseg = COALESCE(ver_1_masseg, $2), ver_1_id = COALESCE(ver_1_id, $3)
+            WHERE test_id = $4 AND ver_1 IS NULL
             RETURNING test_id;
         `;
 
-            const result = await client.query(updateVerQuery, [ver, ver_masseg, user_id, test_id]);
+            let result = await client.query(updateVerQuery, [ver, ver_masseg, user_id, test_id]);
+
+            if (result.rowCount === 0) {
+                // Если обновление для ver_1 не прошло, пробуем обновить ver_2
+                const updateVer2Query = `
+                UPDATE ${testLevel}
+                SET ver_2 = COALESCE(ver_2, $1), ver_2_masseg = COALESCE(ver_2_masseg, $2), ver_2_id = COALESCE(ver_2_id, $3)
+                WHERE test_id = $4 AND ver_2 IS NULL
+                RETURNING test_id;
+            `;
+
+                result = await client.query(updateVer2Query, [ver, ver_masseg, user_id, test_id]);
+            }
 
             client.release();
 
             if (result.rowCount === 0) {
-                return res.status(404).json({ error: 'Update failed or test already verified' });
+                return res.status(404).json({ error: 'Обновление не выполнено или тест уже проверен' });
             }
 
             res.json({ success: true, test_id: result.rows[0].test_id });
-
         } catch (error) {
             console.error('Ошибка при выполнении SQL-запроса:', error.message);
-            client?.release();
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
+
 
     async getTasksForTeacher(req, res){
         try {
