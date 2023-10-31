@@ -324,7 +324,8 @@ class User_controller {
 
     async getTasksByID(req, res){
         const testId = req.params.testID;
-
+        const typeUser = req.type_user
+        console.log(typeUser)
         try {
             let test;
             let testLevel;
@@ -369,9 +370,18 @@ class User_controller {
                 const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
                 const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
+                // Удаляем поля is_correct, если пользователь - ученик
+                const options = optionsResult.rows.map(option => {
+                    if (typeUser === "Ученик") {
+                        const { is_correct, ...optionWithoutCorrect } = option;
+                        return optionWithoutCorrect;
+                    }
+                    return option;
+                });
+
                 return {
                     question_text: question.text,
-                    options: optionsResult.rows
+                    options: options
                 };
             }));
 
@@ -383,6 +393,8 @@ class User_controller {
                 test_text: test.task_test,
                 test_description: test.task_description,
                 add_file: test.add_file,
+                task_hint:test.task_hint,
+                task_answer:test.task_answer,
                 classes: test.classes,
                 subject: test.subject,
                 add_img: test.add_img,
@@ -396,6 +408,7 @@ class User_controller {
             res.status(500).json({ error: 'Server error' });
         }
     }
+
 
     // async getTasksByID(req, res){
     //     const testId = req.params.testID;

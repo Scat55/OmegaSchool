@@ -32,6 +32,7 @@ module.exports = function (roles) {
             // Проверяем токен и извлекаем роль пользователя
             const { type_user, user_id } = jwt.verify(tokenFromHeaders, secret);
             req.user_id = user_id
+            req.type_user = type_user
             if (!roles.includes(type_user)) {
                 // Если роль пользователя не совпадает с разрешенными ролями, возвращаем ошибку
                 return res.status(403).json({ message: 'У вас нет доступа' });
