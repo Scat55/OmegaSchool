@@ -11,9 +11,14 @@
           </div>
         </div>
       </div>
-      <p class="task__main-info-descr">
-        {{ info.test_description }}
-      </p>
+      <div>
+        <textarea
+          type="text"
+          :value="info.test_description"
+          disabled="disabled"
+          class="task__main-info-descr"
+        ></textarea>
+      </div>
       <img
         v-if="this.info.add_img"
         :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
@@ -134,8 +139,8 @@ export default {
         },
       );
       alert('Спасибо за оценку');
-      console.log(ver, ver_masseg);
-      // this.$router.push(`/profile/${profileID.userID}`);
+      ver_masseg = '';
+      this.$router.push(`/profile/${profileID.userID}`);
     },
   },
 
@@ -185,7 +190,15 @@ export default {
     margin-bottom: 2rem;
   }
   &-descr {
+    width: 100%;
+    overflow: auto;
+    height: 20rem;
+    padding: 0.625rem;
+    outline: none;
+    resize: none;
     line-height: 180%;
+    font-size: 1.3rem;
+    border-radius: 1rem;
   }
   &-student {
     display: flex;
