@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios';
 export default {
   props: {
     selectedValue: {
@@ -26,6 +27,8 @@ export default {
       taskDescription: '',
       taskAnswer: '',
       taskHelp: '',
+      token: '',
+      files: '',
     };
   },
   methods: {
@@ -33,6 +36,27 @@ export default {
       this.condition = '';
     },
     handler() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      const task_test = encodeURIComponent(this.taskName);
+      const task_description = encodeURIComponent(this.taskDescription);
+      const task_help = encodeURIComponent(this.taskHelp);
+      const task_answer = encodeURIComponent(this.taskAnswer);
+
+      this.files = this.$refs.fileInput.files;
+      let allFiles = Object.values(this.files).map((el) => {
+        return el;
+      });
+      axios.post(
+        `/api/add_level_2/${task_test}/${task_description}/${task_help}/${task_answer}/${this.selectedClass}/${this.selectedItems}`,
+        allFiles,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
       alert('Задание успешно загружено');
       console.log(
         this.taskName,
@@ -42,6 +66,8 @@ export default {
         '||',
         this.selectedClass,
         this.selectedItems,
+        '||',
+        allFiles,
       );
       this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
     },
@@ -66,7 +92,7 @@ export default {
         <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
         <div>
           <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" />
+          <input type="file" id="fileInput" ref="fileInput" />
         </div>
       </div>
       <div class="block">

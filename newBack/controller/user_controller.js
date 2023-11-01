@@ -697,9 +697,9 @@ class User_controller {
     async addTestAndUpload(req, res) {
         try {
             const {task_test_coded, task_description_coded, classes,  options, subject} = req.params;
-            const questions = task_test
             const task_test = decodeURIComponent(task_test_coded)
             const task_description = decodeURIComponent(task_description_coded)
+            const questions = task_test
             if (!options) {
                 return res.status(400).json({error: 'Options are missing'});
             }
