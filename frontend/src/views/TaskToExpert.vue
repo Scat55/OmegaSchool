@@ -29,7 +29,10 @@
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
-
+      <div class="answer" v-if="info.task_hint || info.task_answer">
+        <p>Подсказдка - {{ info.task_hint }}</p>
+        <p>Ответ - {{ info.task_answer }}</p>
+      </div>
       <div class="dop">
         <p>Дополнительные файлы</p>
         <img
@@ -284,7 +287,14 @@ export default {
   }
 }
 .image {
-  width: 500px;
+  width: 18.75rem;
   cursor: pointer;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
 }
 </style>
