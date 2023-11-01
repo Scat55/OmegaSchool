@@ -322,6 +322,84 @@ class User_controller {
         }
     }
 
+    async getTasksHintForStudent(req, res) {
+        try{
+            const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
+
+            // Получаем Hint для данного user_id и test_id и записываем что ученик просмотрел его
+            const studentTestsSql = `
+            SELECT test_id, test_level
+            FROM student_solutions
+            WHERE user_id = $1;
+        `;
+
+            // Выполнение запроса к базе данных
+            const studentTestsResult = await db.query(studentTestsSql, [user_id]);
+
+            // Теперь для каждого test_id получим название теста из соответствующей таблицы
+            const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
+                const levelTestSql = `
+                SELECT task_test
+                FROM level_${test.test_level}_tests
+                WHERE test_id = $1;
+            `;
+                console.log([test.test_id])
+                const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+                return {
+                    test_id: test.test_id,
+                    test_level: test.test_level,
+                    test_name: levelTestResult.rows[0]?.task_test || 'Название не найдено'
+                };
+            }));
+
+            // Отправляем результат
+            res.json(testNames);
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+    async getTasksAnswerForStudent(req, res) {
+        try {
+            const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
+
+            // Получаем список test_id и test_level для данного user_id
+            const studentTestsSql = `
+            SELECT test_id, test_level
+            FROM student_solutions
+            WHERE user_id = $1;
+        `;
+
+            // Выполнение запроса к базе данных
+            const studentTestsResult = await db.query(studentTestsSql, [user_id]);
+
+            // Теперь для каждого test_id получим название теста из соответствующей таблицы
+            const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
+                const levelTestSql = `
+                SELECT task_test
+                FROM level_${test.test_level}_tests
+                WHERE test_id = $1;
+            `;
+                console.log([test.test_id])
+                const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+                return {
+                    test_id: test.test_id,
+                    test_level: test.test_level,
+                    test_name: levelTestResult.rows[0]?.task_test || 'Название не найдено'
+                };
+            }));
+
+            // Отправляем результат
+            res.json(testNames);
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
     async getTasksByID(req, res){
         const testId = req.params.testID;
         const typeUser = req.type_user
@@ -527,26 +605,25 @@ class User_controller {
     async getTasksForTeacher(req, res){
         try {
             const user_id = req.user_id;
-
             // Запрос для level_1_tests
             const level1TestsSql = `
             SELECT *
             FROM level_1_tests
-            WHERE user_id == $1;
+            WHERE (user_id = $1);
         `;
 
             // Запрос для level_2_tests
             const level2TestsSql = `
             SELECT *
             FROM level_2_tests
-            WHERE user_id == $1;
+            WHERE user_id = $1;
         `;
 
             // Запрос для level_3_tests
             const level3TestsSql = `
             SELECT *
             FROM level_3_tests
-            WHERE user_id == $1;
+            WHERE user_id = $1;
         `;
 
             // Выполнение запросов для каждого уровня

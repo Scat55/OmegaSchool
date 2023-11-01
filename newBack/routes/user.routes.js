@@ -21,13 +21,15 @@ router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт'
 
 router.get('/getTasksForStudent',roleMiddleware(['Ученик']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksByID)
+router.get('/getTasksHintForStudent',roleMiddleware(['Ученик']), userController.getTasksHintForStudent)
+router.get('/getTasksAnswerForStudent',roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
 
 router.get('/getTasksForExpertByID/:testID',roleMiddleware(['Эксперт']), userController.getTasksByID)
 router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
 
 
 router.get('/getTasksForTeacherByID/:testID',roleMiddleware(['Учитель']), userController.getTasksByID)
-router.get('/get_level_1_testForTeacher',roleMiddleware(['Учитель']), userController.getTasksForTeacher)
+router.get('/getTasksForTeacher',roleMiddleware(['Учитель']), userController.getTasksForTeacher)
 
 //
 //
