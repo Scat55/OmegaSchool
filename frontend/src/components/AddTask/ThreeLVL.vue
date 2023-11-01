@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios';
 export default {
   props: {
     selectedValue: {
@@ -25,6 +26,8 @@ export default {
       score: 5,
       taskName: '',
       taskDescription: '',
+      token: '',
+      files: '',
     };
   },
 
@@ -32,7 +35,29 @@ export default {
     clearForm() {
       console.log('Форма очищена');
     },
+    // Обработка формы
     handler() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+
+      const task_test = encodeURIComponent(this.taskName);
+      const task_description = encodeURIComponent(this.taskDescription);
+
+      this.files = this.$refs.fileInput.files;
+
+      let allFiles = Object.values(this.files).map((el) => {
+        return el;
+      });
+
+      axios.post(
+        `/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
+        allFiles,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
       alert('Задание успешно загружено');
       console.log(
         this.taskName,
@@ -64,7 +89,7 @@ export default {
         <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
         <div class="block">
           <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" />
+          <input type="file" id="fileInput" ref="fileInput" />
         </div>
       </div>
       <div class="btn-send">

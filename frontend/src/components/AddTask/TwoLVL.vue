@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       taskName: '',
-      taskName: '',
+      taskDescription: '',
       taskAnswer: '',
       taskHelp: '',
       token: '',
@@ -38,7 +38,7 @@ export default {
     handler() {
       this.token = JSON.parse(localStorage.getItem('local'));
       const task_test = encodeURIComponent(this.taskName);
-      const task_description = encodeURIComponent(this.taskName);
+      const task_description = encodeURIComponent(this.taskDescription);
       const task_help = encodeURIComponent(this.taskHelp);
       const task_answer = encodeURIComponent(this.taskAnswer);
 
