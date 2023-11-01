@@ -7,6 +7,7 @@ import HomePage from '../views/HomePage.vue';
 import TaskPage from '../views/TaskPage.vue';
 import TaskDetail from '@/components/TaskDetail.vue';
 import taskToExpert from '../views/TaskToExpert';
+import AllTaskTeacher from '../views/AllTaskTeacher';
 import store from '../store/index';
 Vue.use(VueRouter);
 
@@ -57,6 +58,10 @@ const routes = [
   {
     path: '/taskToExpert/:id?',
     component: taskToExpert,
+  },
+  {
+    path: '/taskToTeacher/:id?',
+    component: AllTaskTeacher,
   },
 ];
 

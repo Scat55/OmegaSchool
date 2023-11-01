@@ -1,8 +1,12 @@
 <!-- Тут компанент который выводит все эти задачи которые добавил учитель -->
 <template>
-  <div class="taskTeacher">
-    <p class="taskTeacher__name">{{ task.task_test }}</p>
-    <span>Уровень - {{ task.level }}</span>
+  <div>
+    <router-link :to="'/taskToTeacher/' + task.task_id" class="router2">
+      <div class="taskTeacher">
+        <p class="taskTeacher__name">{{ task.task_test }}</p>
+        <span>Уровень - {{ task.level }}</span>
+      </div>
+    </router-link>
   </div>
 </template>
 
