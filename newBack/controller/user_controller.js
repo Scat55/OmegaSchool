@@ -527,7 +527,6 @@ class User_controller {
     async getTasksForTeacher(req, res){
         try {
             const user_id = req.user_id;
-
             // Запрос для level_1_tests
             const level1TestsSql = `
             SELECT *
