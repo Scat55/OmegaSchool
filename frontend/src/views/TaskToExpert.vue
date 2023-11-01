@@ -24,6 +24,7 @@
         :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
         class="image"
         alt="Image"
+        data-fancybox="gallery"
       />
       <div v-for="question in info.questions" class="options">
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
@@ -73,7 +74,12 @@
 
 <script>
 import axios from 'axios';
+import { Fancybox } from '@fancyapps/ui';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 export default {
+  props: {
+    options: Object,
+  },
   data() {
     return {
       id: this.$route.params.id,
@@ -160,7 +166,11 @@ export default {
       });
   },
 
-  mounted() {},
+  mounted() {
+    Fancybox.bind(this.$refs.container, '[data-fancybox]', {
+      ...(this.options || {}),
+    });
+  },
 };
 </script>
 
@@ -275,5 +285,6 @@ export default {
 }
 .image {
   width: 500px;
+  cursor: pointer;
 }
 </style>
