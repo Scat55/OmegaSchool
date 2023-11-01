@@ -60,7 +60,7 @@ export default {
       const formData = new FormData();
       const task_test = this.nameTask;
       const task_description = this.descriptionTask;
-      const questions = encodeURIComponent(JSON.stringify(this.checkboxes));
+      const questions = JSON.stringify(this.checkboxes);
 
       this.files = this.$refs.fileInput.files;
 

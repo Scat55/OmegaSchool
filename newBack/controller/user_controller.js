@@ -596,8 +596,7 @@ class User_controller {
             const fileDetails = req.files.map(file => ({
                 name: file.originalname,
                 path: file.path
-            }));
-            const test_id = '243fbc4a-2be8-46c4-994c-73ac30eb9b74';
+            }));  
             const filePaths = req.files.map(file => file.path);
             const filesString = filePaths.join(',');
             console.log("Путь к файлу:", fileDetails);
