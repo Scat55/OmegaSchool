@@ -2,70 +2,52 @@
   <div>
     <div class="container">
       <div class="window">
-        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">Открыть меню</div>
+        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">
+          Открыть меню
+        </div>
         <div class="left_div" v-show="ShowMenu === true">
           <div class="tabs">
-            <div
-              class="tab"
-              @click="switchTab('Profile')"
-            >Профиль
-            </div>
+            <div class="tab" @click="switchTab('Profile')">Профиль</div>
             <div
               class="tab"
               v-if="person.student === false"
               @click="switchTab('TaskToCheckStudent')"
-            >Задачи на проверку ( от ученика )
+            >
+              Задачи на проверку ( от ученика )
             </div>
-            <div
-              class="tab"
-              v-if="person.expert === true"
-              @click="switchTab('TaskToCheckTeacher')"
-            >Задачи на проверку ( от учителя )
+            <div class="tab" v-if="person.expert === true" @click="switchTab('TaskToCheckTeacher')">
+              Задачи на проверку ( от учителя )
             </div>
-            <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('MyAddTask')"
-            >Мои добавленные задачи
+            <div class="tab" v-if="person.student === false" @click="switchTab('MyAddTask')">
+              Мои добавленные задачи
             </div>
-            <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('AddTask')"
-            >Добавить задачу
+            <div class="tab" v-if="person.student === false" @click="switchTab('AddTask')">
+              Добавить задачу
             </div>
-            <div
-              class="tab"
-              v-if="person.student === true"
-              @click="switchTab('AchivStud')"
-            >Достижения
+            <div class="tab" v-if="person.student === true" @click="switchTab('AchivStud')">
+              Достижения
             </div>
-            <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('RatingTeach')"
-            >Рейтинг
+            <div class="tab" v-if="person.student === false" @click="switchTab('RatingTeach')">
+              Рейтинг
             </div>
-            <div
-              class="tab"
-              v-if="person.student === true"
-              @click="switchTab('MySolvedTask')"
-            >Мои решенные задачи
+            <div class="tab" v-if="person.student === true" @click="switchTab('MySolvedTask')">
+              Мои решенные задачи
             </div>
             <div class="closeMenu" @click="ShowMenu = !ShowMenu">Закрыть меню</div>
           </div>
         </div>
         <div class="right_div">
-          <Profile
-            v-show="isActiveComponents.Profile === true"
-            :person="person"
-          />
+          <Profile v-show="isActiveComponents.Profile === true" :person="person" />
           <AddTask v-if="isActiveComponents.AddTask === true" />
           <TaskToCheckStudent v-if="isActiveComponents.TaskToCheckStudent === true" />
           <TaskToCheckTeacher v-if="isActiveComponents.TaskToCheckTeacher === true" />
           <MySolvedTask v-if="isActiveComponents.MySolvedTask === true" />
           <MyAddTask v-if="isActiveComponents.MyAddTask === true" />
-          <AchivmentStudent :grades="person.grades" :achievements="person.achievements" v-if="isActiveComponents.AchivStud === true" />
+          <AchivmentStudent
+            :grades="person.grades"
+            :achievements="person.achievements"
+            v-if="isActiveComponents.AchivStud === true"
+          />
           <RatingTeacher v-if="isActiveComponents.RatingTeach === true" />
         </div>
       </div>
@@ -74,18 +56,18 @@
 </template>
 
 <script>
-import Profile from "@/components/Profile/Profile.vue";
-import AchivmentStudent from "@/components/Profile/AchivmentStudent.vue";
-import RatingTeacher from "@/components/Profile/RatingTeacher.vue";
-import MyAddTask from "@/components/Profile/MyAddTask.vue";
-import MySolvedTask from "@/components/Profile/MySolvedTask.vue";
-import TaskToCheckStudent from "@/components/Profile/TaskToCheckStudent.vue";
-import TaskToCheckTeacher from "@/components/Profile/TaskToCheckTeacher.vue";
-import AddTask from "@/components/Profile/AddTask.vue";
+import Profile from '@/components/Profile/Profile.vue';
+import AchivmentStudent from '@/components/Profile/AchivmentStudent.vue';
+import RatingTeacher from '@/components/Profile/RatingTeacher.vue';
+import MyAddTask from '@/components/Profile/MyAddTask.vue';
+import MySolvedTask from '@/components/Profile/MySolvedTask.vue';
+import TaskToCheckStudent from '@/components/Profile/TaskToCheckStudent.vue';
+import TaskToCheckTeacher from '@/components/Profile/TaskToCheckTeacher.vue';
+import AddTask from '@/components/Profile/AddTask.vue';
 import store from '../store/index';
-import { format} from "date-fns";
+import { format } from 'date-fns';
 
-import axios from 'axios'
+import axios from 'axios';
 export default {
   components: {
     AddTask,
@@ -105,14 +87,14 @@ export default {
         lastname: '',
         patronymic: '',
         birthday: '',
-        gender: "",
+        gender: '',
         student: null, // переключатель вкладок
         class: '11',
         item: '',
         email: '',
         expert: null,
         grades: '',
-        achievements: ''
+        achievements: '',
       },
       isActiveComponents: {
         Profile: true,
@@ -124,45 +106,45 @@ export default {
         MySolvedTask: false,
         AddTask: false,
       },
-      ShowMenu: false
+      ShowMenu: false,
       // id: this.$router.currentRoute.params['id'],
       // token: localStorage.getItem('token'),
-    }
+    };
   },
   methods: {
     switchTab(nameTab) {
       for (const key in this.isActiveComponents) {
         this.isActiveComponents[key] = key === nameTab;
       }
+      this.ShowMenu = !this.ShowMenu;
     },
-
   },
   mounted() {
-    let local = localStorage.getItem('local')
-    local = JSON.parse(local)
+    let local = localStorage.getItem('local');
+    local = JSON.parse(local);
 
     axios(`/api/user_inf/${local.userID}`, {
       method: 'GET',
-      headers: {'Authorization': `Bearer ${local.token}`},
-    }).then(response => {
-      this.email = response.data.user.email
-      this.person.email = response.data.user.email
-      this.person.name = response.data.user.first_name
-      this.person.lastname = response.data.user.last_name
-      this.person.patronymic = response.data.user.patronymic
-      this.person.gender = response.data.user.gender
-      this.person.item = response.data.user.item
-      this.person.expert = response.data.user.expert === 'Да'
-      this.person.birthday = format(new Date(response.data.user.birthdate), "dd.MM.yyyy")
+      headers: { Authorization: `Bearer ${local.token}` },
+    }).then((response) => {
+      this.email = response.data.user.email;
+      this.person.email = response.data.user.email;
+      this.person.name = response.data.user.first_name;
+      this.person.lastname = response.data.user.last_name;
+      this.person.patronymic = response.data.user.patronymic;
+      this.person.gender = response.data.user.gender;
+      this.person.item = response.data.user.item;
+      this.person.expert = response.data.user.expert === 'Да';
+      this.person.birthday = format(new Date(response.data.user.birthdate), 'dd.MM.yyyy');
       // if (response.data.user.expert === "true") {
       //   // this.person.expert = true
       // }
       this.person.student = response.data.user.type_user === 'Ученик';
       this.person.grades = response.data.grades_teacher;
       this.person.achievements = response.data.achievements;
-    })
+    });
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -229,9 +211,9 @@ export default {
   border-radius: 1rem;
   background: aliceblue;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
-  &:hover{
+  &:hover {
     background-color: #c7fdff;
   }
 }
