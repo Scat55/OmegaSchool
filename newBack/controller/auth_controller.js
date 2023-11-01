@@ -12,7 +12,7 @@ const generateAccesToken = (user_id, type_user, email) =>{
     const payload = {
         user_id,
         type_user,
-        email
+        
     }
     return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
