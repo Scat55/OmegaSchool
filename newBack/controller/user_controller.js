@@ -619,9 +619,10 @@ class User_controller {
 
     async addTestAndUpload(req, res) {
         try {
-            const {task_test, task_description, classes,  options, subject} = req.params;
+            const {task_test_coded, task_description_coded, classes,  options, subject} = req.params;
             const questions = task_test
-
+            const task_test = decodeURIComponent(task_test_coded)
+            const task_description = decodeURIComponent(task_description_coded)
             if (!options) {
                 return res.status(400).json({error: 'Options are missing'});
             }
@@ -694,9 +695,10 @@ class User_controller {
 
     async addTest2AndUpload(req,res){
         try {
-        const {task_test, task_description, task_hint, task_answer, classes, subject} = req.params;
+        const {task_test_coded, task_description_coded, task_hint, task_answer, classes, subject} = req.params;
 
-
+        const task_test = decodeURIComponent(task_test_coded)
+        const task_description = decodeURIComponent(task_description_coded)
         const user_id = req.user_id;
 
         const insertTestQuery = `
@@ -740,8 +742,9 @@ class User_controller {
     async addTest3AndUpload(req,res){
         try {
 
-            const {task_test, task_description, classes, subject} = req.params;
-
+            const {task_test_coded, task_description_coded, classes, subject} = req.params;
+            const task_test = decodeURIComponent(task_test_coded)
+            const task_description = decodeURIComponent(task_description_coded)
             const user_id = req.user_id;
 
             const insertTestQuery = `
