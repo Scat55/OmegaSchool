@@ -297,7 +297,6 @@ export default {
   border: 2px solid $lightBlueColor;
   padding: 10px;
   border-radius: 1rem;
-  width: 100%;
 }
 
 .div1 {
@@ -310,7 +309,7 @@ export default {
   border: 2px solid $lightBlueColor;
   padding: 10px;
   border-radius: 1rem;
-  width: 100%;
+  // width: 100%;
 }
 
 .div3 {
@@ -319,7 +318,6 @@ export default {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 100rem;
 
   @media (min-width: 250px) and (max-width: 1285px) {
     gap: 2rem;
