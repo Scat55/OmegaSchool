@@ -1,8 +1,8 @@
 <template>
   <div>
     <!--  Тут все задачи которые добавил учитель. И проверенные и не проверенные -->
-    <h1>MyAddTask</h1>
-    <AddTaskChecked v-for="task in $store.state.Temp.addTask" :key="task.id" :task="task" />
+    <h1>Мои добавленные задачи:</h1>
+    <AddTaskChecked v-for="task in info" :key="task.id" :task="task" />
   </div>
 </template>
 
@@ -21,16 +21,20 @@ export default {
   mounted() {
     this.token = JSON.parse(localStorage.getItem('local'));
     axios
-      .get(`/apigetTasksForTeacherByID`, {
+      .get(`/api/getTasksForTeacher`, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
         },
       })
       .then((response) => {
-        console.log(response.data);
+        this.info = response.data;
       });
   },
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+h1 {
+  margin-bottom: 2rem;
+}
+</style>
