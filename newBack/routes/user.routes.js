@@ -19,10 +19,14 @@ router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','У
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
 
+
 router.get('/getTasksForStudent',roleMiddleware(['Ученик']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksByID)
-router.get('/getTasksHintForStudent',roleMiddleware(['Ученик']), userController.getTasksHintForStudent)
-router.get('/getTasksAnswerForStudent',roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
+
+
+router.post('/getTasksHintForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksHintForStudent)
+router.post('/getTasksAnswerForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
+
 
 router.get('/getTasksForExpertByID/:testID',roleMiddleware(['Эксперт']), userController.getTasksByID)
 router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
