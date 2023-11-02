@@ -323,38 +323,36 @@ class User_controller {
     }
 
     async getTasksHintForStudent(req, res) {
-        try{
-            const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
+        try {
+            const user_id = req.user_id;
+            const test_id = req.params.testID;
+            console.log(test_id, user_id);
 
-            // Получаем Hint для данного user_id и test_id и записываем что ученик просмотрел его
-            const studentTestsSql = `
-            SELECT test_id, test_level
-            FROM student_solutions
-            WHERE user_id = $1;
+            // SQL to get the hint for the test
+            const studentTestsHintSql = `
+            SELECT task_hint
+            FROM level_2_tests
+            WHERE test_id = $1;
         `;
 
-            // Выполнение запроса к базе данных
-            const studentTestsResult = await db.query(studentTestsSql, [user_id]);
+            // SQL to update the hint check status
+            const studentTestsHintCheckSql = `
+            UPDATE student_solutions
+            SET check_hint = 'Да'
+            WHERE user_id = $1 AND test_id = $2;       
+        `;
 
-            // Теперь для каждого test_id получим название теста из соответствующей таблицы
-            const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
-                const levelTestSql = `
-                SELECT task_test
-                FROM level_${test.test_level}_tests
-                WHERE test_id = $1;
-            `;
-                console.log([test.test_id])
-                const levelTestResult = await db.query(levelTestSql, [test.test_id]);
-                return {
-                    test_id: test.test_id,
-                    test_level: test.test_level,
-                    test_name: levelTestResult.rows[0]?.task_test || 'Название не найдено'
-                };
-            }));
+            // Execute the query to get the hint
+            const studentTestsHintResult = await db.query(studentTestsHintSql, [test_id]);
 
-            // Отправляем результат
-            res.json(testNames);
-
+            // If a hint exists, update the check status
+            if (studentTestsHintResult.rows.length > 0) {
+                await db.query(studentTestsHintCheckSql, [user_id, test_id]);
+                // Send the hint back to the client
+                res.json(studentTestsHintResult.rows[0]);
+            } else {
+                res.status(404).json({ error: 'Подсказка не найдена' });
+            }
         } catch (error) {
             console.error('Ошибка при выполнении SQL-запроса:', error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
@@ -363,37 +361,35 @@ class User_controller {
 
     async getTasksAnswerForStudent(req, res) {
         try {
-            const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
+            const user_id = req.user_id;
+            const test_id = req.params.testID;
+            console.log(test_id, user_id);
 
-            // Получаем список test_id и test_level для данного user_id
-            const studentTestsSql = `
-            SELECT test_id, test_level
-            FROM student_solutions
-            WHERE user_id = $1;
+            // SQL to get the hint for the test
+            const studentTestsHintSql = `
+            SELECT task_answer
+            FROM level_2_tests
+            WHERE test_id = $1;
         `;
 
-            // Выполнение запроса к базе данных
-            const studentTestsResult = await db.query(studentTestsSql, [user_id]);
+            // SQL to update the hint check status
+            const studentTestsHintCheckSql = `
+            UPDATE student_solutions
+            SET check_answer = 'Да'
+            WHERE user_id = $1 AND test_id = $2;       
+        `;
 
-            // Теперь для каждого test_id получим название теста из соответствующей таблицы
-            const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
-                const levelTestSql = `
-                SELECT task_test
-                FROM level_${test.test_level}_tests
-                WHERE test_id = $1;
-            `;
-                console.log([test.test_id])
-                const levelTestResult = await db.query(levelTestSql, [test.test_id]);
-                return {
-                    test_id: test.test_id,
-                    test_level: test.test_level,
-                    test_name: levelTestResult.rows[0]?.task_test || 'Название не найдено'
-                };
-            }));
+            // Execute the query to get the hint
+            const studentTestsHintResult = await db.query(studentTestsHintSql, [test_id]);
 
-            // Отправляем результат
-            res.json(testNames);
-
+            // If a hint exists, update the check status
+            if (studentTestsHintResult.rows.length > 0) {
+                await db.query(studentTestsHintCheckSql, [user_id, test_id]);
+                // Send the hint back to the client
+                res.json(studentTestsHintResult.rows[0]);
+            } else {
+                res.status(404).json({ error: 'Ответ не найдена' });
+            }
         } catch (error) {
             console.error('Ошибка при выполнении SQL-запроса:', error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
