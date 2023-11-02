@@ -3,7 +3,12 @@
     <!--  Тут все задачи которые добавил учитель. И проверенные и не проверенные -->
     <h1>Мои добавленные задачи:</h1>
     <AddTaskChecked v-for="task in paginatedData" :key="task.id" :task="task" />
-    <button @click="nextPage">Next</button><button @click="prevPage">Last</button>
+    <div class="buttons">
+      <button class="buttons__btn" @click="prevPage" :disabled="pageNumber == 0">Назад</button
+      ><button class="buttons__btn" @click="nextPage" :disabled="pageNumber >= pageCount - 1">
+        Вперед
+      </button>
+    </div>
   </div>
 </template>
 
@@ -17,8 +22,8 @@ export default {
     return {
       info: [],
       token: '',
-      pageNumber: 1,
-      size: 8,
+      pageNumber: 0,
+      size: 10,
     };
   },
   computed: {
@@ -28,7 +33,7 @@ export default {
       // редакция переводчика спасибо комментаторам
       return Math.ceil(l / s);
       // оригинал
-      // return Math.floor(l/s);
+      // return Math.floor(l / s);
     },
     paginatedData() {
       const start = this.pageNumber * this.size,
@@ -63,7 +68,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../../assets/styles/vars.scss';
 h1 {
   margin-bottom: 2rem;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+
+  &__btn {
+    padding: 0.625rem;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
 }
 </style>
