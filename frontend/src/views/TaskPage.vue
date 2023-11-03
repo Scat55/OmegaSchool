@@ -90,8 +90,25 @@
 
 <script>
 import TaskList from '@/components/TaskList.vue';
-
+import axios from 'axios';
 export default {
+  components: {
+    TaskList,
+  },
+  data() {
+    return {
+      selectedTopic: '',
+      selectedLVL: '',
+      selectedClass: '',
+      selectedStatus: '',
+      searchQuery: '',
+      currentPage: 1,
+      tasksPerPage: 12,
+      filterSee: false,
+      token: '',
+      tasks: '',
+    };
+  },
   computed: {
     hasActiveFilters() {
       return (
@@ -104,7 +121,7 @@ export default {
     },
 
     zadania() {
-      return this.$store.state.Temp.zadania;
+      return this.tasks;
     },
     filteredTasks() {
       let filtered = this.zadania;
@@ -141,21 +158,6 @@ export default {
     totalPages() {
       return Math.ceil(this.filteredTasks.length / this.tasksPerPage);
     },
-  },
-  components: {
-    TaskList,
-  },
-  data() {
-    return {
-      selectedTopic: '',
-      selectedLVL: '',
-      selectedClass: '',
-      selectedStatus: '',
-      searchQuery: '',
-      currentPage: 1,
-      tasksPerPage: 12,
-      filterSee: false,
-    };
   },
 
   methods: {
@@ -236,6 +238,20 @@ export default {
 
   created() {
     this.getFiltersFromLocalStorage();
+  },
+
+  mounted() {
+    this.token = JSON.parse(localStorage.getItem('local'));
+    axios
+      .get(`/api/getTasksForStudent`, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'applications/json',
+        },
+      })
+      .then((response) => {
+        this.tasks = response.data;
+      });
   },
 };
 </script>
