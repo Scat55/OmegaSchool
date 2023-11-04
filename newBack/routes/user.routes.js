@@ -25,6 +25,7 @@ router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт'
 
 router.get('/getTasksForStudent',roleMiddleware(['Ученик']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksByID)
+router.post('/getAnswerByStudent/:testID',roleMiddleware(['Ученик']), userController.getAnswerByStudent)
 
 
 router.post('/getTasksHintForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksHintForStudent)

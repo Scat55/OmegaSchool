@@ -412,6 +412,36 @@ class User_controller {
         }
     }
 
+    async getAnswerByStudent (req,res){
+        const userId = req.user_id;
+        const testId  = req.params.testID;
+        const {options} = req.body; // Предполагается, что userId и testId также отправляются в теле запроса
+        console.log('id',userId)
+        console.log('test',testId)
+        console.log('варианты', options)
+        // Обрабатываем массив вариантов ответов
+        const optionsString = options.map(option =>
+            option.is_correct ? `*${option.option_text}` : option.option_text
+        ).join(' ');
+
+        try {
+            // Сохраняем обработанную строку в базу данных
+            const insertOptionsSql = `
+        UPDATE student_solutions
+        SET student_solution = $3
+        WHERE user_id = $1 AND test_id = $2;
+      `;
+
+            // Выполнение запроса на вставку обработанных вариантов ответов
+            await db.query(insertOptionsSql, [userId, testId, optionsString]);
+
+            res.status(200).json({ message: 'Ответы успешно сохранены' });
+        } catch (error) {
+            console.error('Ошибка при выполнении запроса к базе данных:', error);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
     async getTasksByID(req, res){
         const testId = req.params.testID;
         const typeUser = req.type_user
@@ -498,6 +528,7 @@ class User_controller {
             res.status(500).json({ error: 'Server error' });
         }
     }
+
 
 
     // async getTasksByID(req, res){
