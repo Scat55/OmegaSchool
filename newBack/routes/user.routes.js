@@ -3,6 +3,7 @@ const router = new Router()
 
 const db = require("../db");
 const store = require('../store')
+const mail = require('../mail')
 const {existsSync, renameSync} = require("fs");
 const {join} = require("path");
 
@@ -10,6 +11,8 @@ const userController = require("../controller/user_controller")
 const userMiddleware = require('../middlewaree/userMiddlewaer');
 const roleMiddleware = require('../middlewaree/roleMiddlewaer')
 const {isUUID} = require("validator");
+const jwt = require("jsonwebtoken");
+const {secret} = require("../config");
 
 router.get('/user_list', userController.getUserList)
 router.get('/user_id/:email',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.getUserIDForEmail)
@@ -54,5 +57,33 @@ router.post('/add_level_3/:task_test_coded/:task_description_coded/:classes/:sub
 router.get('/list_all_files', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.listUserFiles);
 router.post('/delete_user_files/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.deleteUserFiles);
 router.get('/download/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
+
+router.get('/verify_email/:code/', roleMiddleware(['Ученик','Эксперт','Учитель']),  async (req, res) => {
+    const {user_id} = jwt.decode(req.session.token, secret)
+
+    //сохранения кода в бд
+    await mail.saveVerificationCode(user_id, user_id)
+
+    //пользователь получает код
+    await mail.transporter.sendMail({
+        from: 'omegalspu@gmail.com',
+        to: 'siniukovnikita@gmail.com',
+        subject: 'Подтверждение Email',
+        html: `Пожалуйста, кликните <a href="http://omega-lspu.ru/verify-email?code=${user_id}&user=${user_id}">здесь</a>, чтобы подтвердить ваш email.`
+    }, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+
+    //проверка кода подтверждения с базой
+    const isValid = await mail.checkVerificationCode(user_id, user_id);
+
+    if (isValid) { await mail.setUserEmailVerified(user_id);
+        res.send('Email успешно подтвержден!');
+    } else { res.status(400).send('Неверный код подтверждения.'); }
+});
 
 module.exports = router
