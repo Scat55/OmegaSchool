@@ -1,108 +1,216 @@
 <template>
   <div class="container">
-    <router-link to="/task">
-      <p class="back__tasks">Вернуться к списку заданий</p>
-    </router-link>
-    <div class="container__title">
-      <h2>{{ task.title }}</h2>
-    </div>
-    <div class="container__infoTask">
-      <div class="container__infoTask__id">
-        <p>Номер задачи: {{ task.id }}</p>
+    <div class="taskDetal">
+      <router-link to="/task">
+        <p class="taskDetal__back">Вернуться к списку заданий</p>
+      </router-link>
+      <div class="taskDetal__title">
+        <h2>{{ infoTask.title
+        }}</h2>
       </div>
-      <div class="container__infoTask__complexity">Уровень задания: {{ task.complexity }}</div>
-      <div class="container__infoTask__topic">Предмет: {{ task.topic }}</div>
-    </div>
-    <div class="container__bodyTask"><span>Условие задания:</span> {{ task.bodyTask }}</div>
-
-    <!--  Доп.материалы Start  -->
-    <div class="addedFile" v-if="task.addedFile.length !== 0">
-      <p class="files">Дополнительные материалы</p>
+      <div class="taskDetal__infoTask">
+        <p>Название: {{ infoTask.test_text }}</p>
+        <p class="taskDetal__infoTask__complexity">Уровень задания: {{ infoTask.level }}</p>
+        <p class="taskDetal__infoTask__topic">Предмет: {{ infoTask.subject }}</p>
+      </div>
+      <div class="taskDetal__bodyTask"><span>Условие задания:</span> {{ infoTask.test_description }}</div>
       <img
-        @click="showFiles()"
-        src="../assets/images/arrow.png"
-        alt="Arrow"
-        class="files__arrow"
-        :class="{ rotate: isShow }"
+        v-if="this.infoTask.add_img"
+        :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + infoTask.add_img)"
+        class="taskDetal__image"
+        alt="Image"
+        data-fancybox="gallery"
       />
-      <div v-for="file in task.addedFile" v-if="isShow">
-        <a :href="file" :key="file">{{ getFileName(file) }}</a>
-      </div>
-    </div>
-    <!--  END -->
+      <!--  Доп.материалы Start  -->
+      <div class="taskDetal__addedFile">
+        <p class="files">Дополнительные материалы</p>
+        <img
+          @click="showFiles()"
+          src="../assets/images/arrow.png"
+          alt="Arrow"
+          class="files__arrow"
+          :class="{ rotate: isShow }"
+        />
 
-    <!--  Блок только для 1 лвл заданий START  -->
-    <div class="container_answer" v-if="task.complexity === '1'">
+        <div
+          class="taskDetal__infoFile"
+          v-if="isShow"
+        >
+          <p>{{ this.infoTask.add_file }}</p>
+          <a
+            v-if="this.infoTask.add_file !== null"
+            class="downloadLink"
+          ><button @click="downloadFiles()">Скачать</button></a>
+          <p v-else>Файлов нет</p>
+        </div>
+      </div>
+      <!--  END -->
+
+      <!-- Чекбоксы -->
+
+      <div
+        class="taskDetal__questions"
+        v-for="options in this.infoTask.questions"
+      >
+
+        <ul class="taskDetal__list">
+          <li
+            class="taskDetal__question"
+            v-for="question in options.options"
+          >
+
+            {{ question.text }} - <input
+              type="checkbox"
+              name="question.text"
+              :value="question.text"
+              ref="checkAnswer"
+              @click="test"
+            >
+          </li>
+        </ul>
+      </div>
+
+
+      <!--  Блок только для 1 лвл заданий START  -->
+      <!-- <div
+      class="container_answer"
+      v-if="task.complexity === '1'"
+    >
       <p>Варианты ответов. Выберите верный ответ(-ы):</p>
-      <div v-for="(chP, index) in task.checkPoint" :key="index">
+      <div
+        v-for="(chP, index) in task.checkPoint"
+        :key="index"
+      >
         <div class="itemAnswer">
-          <input type="checkbox" :value="chP.text" v-model="userChecks[index]" /><label>{{
+          <input
+            type="checkbox"
+            :value="chP.text"
+            v-model="userChecks[index]"
+          /><label>{{
             chP.text
           }}</label>
         </div>
       </div>
-    </div>
-    <!--  END -->
+    </div> -->
+      <!--  END -->
 
-    <div class="container_button">
-      <button class="container_button-btn" @click="checkAnswer">Проверить</button>
-      <button class="container_button-btn" @click="helpMe">Взять подсказку</button>
-      <button class="container_button-btn" @click="showMeAnswer">Показать ответ</button>
+      <!-- <div class="container_button">
+      <button
+        class="container_button-btn"
+        @click="checkAnswer"
+      >Проверить</button>
+      <button
+        class="container_button-btn"
+        @click="helpMe"
+      >Взять подсказку</button>
+      <button
+        class="container_button-btn"
+        @click="showMeAnswer"
+      >Показать ответ</button>
+    </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import { Fancybox } from '@fancyapps/ui';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 export default {
+  props: {
+    options: Object,
+  },
   data() {
     return {
+      id: this.$route.params.id,
       userChecks: [],
       // chPt: this.task.checkPoint,
       isShow: false,
+      infoTask: '',
+      teachrID: '',
+      valChek: ''
     };
   },
+  // computed: {
+  //   task() {
+  //     return this.infoTask = this.id;
+  //   },
+  // },
   methods: {
-    initializeUserChecks() {
-      this.userChecks = this.task.checkPoint.map(() => false);
+    test() {
+      // const answer = this.$refs.checkAnswer.map(el => {
+      //   return el._value
+      // })
+      console.log(this.$refs.checkAnswer._value)
+
+
     },
-    getFileName(url) {
-      return url.substring(url.lastIndexOf('/') + 1);
+    // Скачивание файла
+    async downloadFiles() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      await axios
+        .get(`/api/download/${this.infoTask.add_file}`, {
+          responseType: 'blob',
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Custom-UUID': this.teachrID,
+          },
+        })
+        .then((response) => {
+          this.blob = new Blob([response.data], { type: 'application/pdf' });
+          this.url = URL.createObjectURL(this.blob);
+          const a = document.querySelector('.downloadLink');
+          a.href = this.url;
+          a.download = this.fileName;
+        });
     },
-    checkAnswer() {
-      this.task.status = true;
-      let isCorrect = true;
-      for (let i = 0; i < this.task.checkPoint.length; i++) {
-        if (this.userChecks[i] !== this.task.checkPoint[i].checked) {
-          isCorrect = false;
-          break;
-        }
-      }
-      if (isCorrect) {
-        alert('Верно! Вы получили 2 балла.');
-      } else {
-        alert('Неверно. Вы получили 0 баллов.');
-      }
-    },
-    helpMe() {},
-    showMeAnswer() {},
+    // initializeUserChecks() {
+    //   this.userChecks = this.infoTask.checkPoint.map(() => false);
+    // },
+    // getFileName(url) {
+    //   return url.substring(url.lastIndexOf('/') + 1);
+    // },
+    // checkAnswer() {
+    //   this.task.status = true;
+    //   let isCorrect = true;
+    //   for (let i = 0; i < this.infoTask.checkPoint.length; i++) {
+    //     if (this.userChecks[i] !== this.task.checkPoint[i].checked) {
+    //       isCorrect = false;
+    //       break;
+    //     }
+    //   }
+    //   if (isCorrect) {
+    //     alert('Верно! Вы получили 2 балла.');
+    //   } else {
+    //     alert('Неверно. Вы получили 0 баллов.');
+    //   }
+    // },
+    helpMe() { },
+    showMeAnswer() { },
     showFiles() {
       this.isShow = !this.isShow;
     },
   },
-  created() {
-    this.initializeUserChecks();
-  },
-
-  // props: {
-  //   task: {
-  //     type: Object,
-  //     required: true
-  //   }
+  // created() {
+  //   this.initializeUserChecks();
   // },
-  computed: {
-    task() {
-      return this.$store.state.Temp.zadania.find((t) => t.id.toString() === this.$route.params.id);
-    },
+
+  mounted() {
+    this.token = JSON.parse(localStorage.getItem('local'));
+    axios.get(`/api/getTasksForStudent/${this.id}`, {
+      headers: {
+        Authorization: `Bearer ${this.token.token}`,
+        'Content-Type': 'application/json',
+      },
+    }).then(response => {
+      console.log(response.data)
+      this.infoTask = response.data
+      this.teachrID = response.data.user_id
+    });
+
+    Fancybox.bind(this.$refs.container, '[data-fancybox]', {
+      ...(this.options || {}),
+    });
   },
 };
 </script>
@@ -110,10 +218,12 @@ export default {
 <style scoped lang="scss">
 @import '../assets/styles/vars.scss';
 
-.container {
+.taskDetal {
   margin-top: 80px;
   background: white;
-  padding: 10px;
+  // padding-top: .625rem;
+  // padding-left: 1rem;
+  padding: .625rem 0.625rem 1rem 1rem;
   border-radius: 1rem;
   border: 2px solid #487fb8;
 
@@ -126,15 +236,16 @@ export default {
     justify-content: space-around;
     flex-wrap: wrap;
     margin: 10px 0;
-
-    &__id {
-    }
   }
 
   &__bodyTask {
+    margin-top: 4rem;
+
+    display: flex;
+    flex-direction: column;
     line-height: 160%;
 
-    & > span {
+    &>span {
       font-weight: bold;
     }
   }
@@ -150,10 +261,12 @@ export default {
       border-radius: 1rem;
       border: none;
       cursor: pointer;
+
       &:first-child {
         background-color: $accentColor;
         color: #fff;
       }
+
       &:nth-child(2) {
         background-color: $lightBlueColor;
         color: #fff;
@@ -164,27 +277,53 @@ export default {
       }
     }
   }
-}
 
-.addedFile {
-  padding: 15px 0 10px 0;
-  text-decoration: none;
-
-  & > p {
-    margin-bottom: 5px;
-  }
-
-  & > div > a {
-    text-decoration: none;
-    color: inherit;
+  &__back {
+    background-color: $accentColor;
     display: inline-block;
-    padding: 5px 0;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    color: #fff;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    transition: all 0.3s;
 
     &:hover {
-      text-decoration: underline;
+      transform: scale(0.95);
+      cursor: pointer;
     }
   }
+
+  &__addedFile {
+    margin-top: 1rem;
+  }
+
+  &__infoFile {
+    margin-top: 2rem;
+  }
+
+  &__image {
+    margin-top: 1rem;
+    width: 18.75rem;
+    cursor: pointer;
+  }
+
+  &__questions {
+    margin-top: 1rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__question {
+
+    list-style: none;
+  }
 }
+
 
 .container_answer {
   //padding: 5px 0 15px 0;
@@ -199,26 +338,12 @@ export default {
   display: flex;
   align-items: center;
 
-  & > input {
+  &>input {
     margin-right: 5px;
   }
 }
 
-.back__tasks {
-  background-color: $accentColor;
-  display: inline-block;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  color: #fff;
-  border-radius: 1rem;
-  font-size: 0.7rem;
-  transition: all 0.3s;
 
-  &:hover {
-    transform: scale(0.95);
-    cursor: pointer;
-  }
-}
 
 .files {
   display: inline-block;
@@ -229,6 +354,7 @@ export default {
     margin-left: 1rem;
   }
 }
+
 .rotate {
   transform: rotate(-180deg);
 }
