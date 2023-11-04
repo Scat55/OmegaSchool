@@ -289,7 +289,7 @@ class User_controller {
 
             // Получаем список test_id и test_level для данного user_id
             const studentTestsSql = `
-        SELECT test_id, test_level
+        SELECT test_id, test_level, decided
         FROM student_solutions
         WHERE user_id = $1;
     `;
@@ -313,7 +313,8 @@ class User_controller {
                         complexity: test.test_level,
                         title: testDetails.task_test,
                         class: testDetails.classes,
-                        topic: testDetails.subject
+                        topic: testDetails.subject,
+                        status: test.decided
                     };
                 } else {
                     return {
@@ -321,7 +322,8 @@ class User_controller {
                         complexity: test.test_level,
                         title: 'Название не найдено',
                         class: 'Класс не найден',
-                        topic: 'Предмет не найден'
+                        topic: 'Предмет не найден',
+                        status: 'Предмет не найден'
                     };
                 }
             }));
