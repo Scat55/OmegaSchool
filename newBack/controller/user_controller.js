@@ -309,19 +309,19 @@ class User_controller {
                 if (levelTestResult.rows.length > 0) {
                     const testDetails = levelTestResult.rows[0];
                     return {
-                        test_id: test.test_id,
-                        test_level: test.test_level,
-                        test_name: testDetails.task_test,
-                        classes: testDetails.classes,
-                        subject: testDetails.subject
+                        id: test.test_id,
+                        complexity: test.test_level,
+                        title: testDetails.task_test,
+                        class: testDetails.classes,
+                        topic: testDetails.subject
                     };
                 } else {
                     return {
-                        test_id: test.test_id,
-                        test_level: test.test_level,
-                        test_name: 'Название не найдено',
-                        classes: 'Класс не найден',
-                        subject: 'Предмет не найден'
+                        id: test.test_id,
+                        complexity: test.test_level,
+                        title: 'Название не найдено',
+                        class: 'Класс не найден',
+                        topic: 'Предмет не найден'
                     };
                 }
             }));
