@@ -289,10 +289,10 @@ class User_controller {
 
             // Получаем список test_id и test_level для данного user_id
             const studentTestsSql = `
-            SELECT test_id, test_level
-            FROM student_solutions
-            WHERE user_id = $1;
-        `;
+        SELECT test_id, test_level
+        FROM student_solutions
+        WHERE user_id = $1;
+    `;
 
             // Выполнение запроса к базе данных
             const studentTestsResult = await db.query(studentTestsSql, [user_id]);
@@ -300,17 +300,30 @@ class User_controller {
             // Теперь для каждого test_id получим название теста из соответствующей таблицы
             const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
                 const levelTestSql = `
-                SELECT task_test
-                FROM level_${test.test_level}_tests
-                WHERE test_id = $1;
-            `;
-            console.log([test.test_id])
+            SELECT task_test, classes, subject
+            FROM level_${test.test_level}_tests
+            WHERE test_id = $1;
+        `;
+                console.log([test.test_id]); // Убедитесь, что этот console.log нужен для отладки
                 const levelTestResult = await db.query(levelTestSql, [test.test_id]);
-                return {
-                    test_id: test.test_id,
-                    test_level: test.test_level,
-                    test_name: levelTestResult.rows[0]?.task_test || 'Название не найдено'
-                };
+                if (levelTestResult.rows.length > 0) {
+                    const testDetails = levelTestResult.rows[0];
+                    return {
+                        test_id: test.test_id,
+                        test_level: test.test_level,
+                        test_name: testDetails.task_test,
+                        classes: testDetails.classes,
+                        subject: testDetails.subject
+                    };
+                } else {
+                    return {
+                        test_id: test.test_id,
+                        test_level: test.test_level,
+                        test_name: 'Название не найдено',
+                        classes: 'Класс не найден',
+                        subject: 'Предмет не найден'
+                    };
+                }
             }));
 
             // Отправляем результат
@@ -322,6 +335,7 @@ class User_controller {
         }
     }
 
+//передать предмет класс сложность название и т.д.
     async getTasksHintForStudent(req, res) {
         try {
             const user_id = req.user_id;
@@ -359,7 +373,7 @@ class User_controller {
         }
     }
 
-    async getTasksAnswerForStudent(req, res) {
+    async getTasksAnswerForStudent(req, res) {ы
         try {
             const user_id = req.user_id;
             const test_id = req.params.testID;
