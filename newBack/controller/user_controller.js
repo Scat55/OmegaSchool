@@ -427,7 +427,7 @@ class User_controller {
 
             if (testResult.rowCount > 0) {
                 test = testResult.rows[0];
-                testLevel = 'level_1_tests';
+                testLevel = '1';
             } else {
                 // Проверяем наличие теста в таблице level_2_tests
                 testQuery = 'SELECT * FROM level_2_tests WHERE test_id = $1';
@@ -435,7 +435,7 @@ class User_controller {
 
                 if (testResult.rowCount > 0) {
                     test = testResult.rows[0];
-                    testLevel = 'level_2_tests';
+                    testLevel = '2';
                 } else {
                     // Проверяем наличие теста в таблице level_3_tests
                     testQuery = 'SELECT * FROM level_3_tests WHERE test_id = $1';
@@ -443,7 +443,7 @@ class User_controller {
 
                     if (testResult.rowCount > 0) {
                         test = testResult.rows[0];
-                        testLevel = 'level_3_tests';
+                        testLevel = '3';
                     } else {
                         // Тест не найден ни в одной из таблиц
                         return res.status(404).json({ error: 'Task not found' });
