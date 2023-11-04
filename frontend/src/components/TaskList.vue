@@ -6,8 +6,11 @@ export default {
 
 <template>
   <div class="task_task">
-    <router-link :to="'/task/' + task.id" class="task_title">{{ task.title }} </router-link>
-    <p class="task_status_name">Статус: {{ task.status === false ? 'Не решено' : 'Решено' }}</p>
+    <router-link
+      :to="'/task/' + task.id"
+      class="task_title"
+    >{{ task.title }} </router-link>
+    <p class="task_status_name">Статус: {{ task.status }}</p>
     <div class="task_body">
       <p class="task_topic">Предмет: {{ task.topic }}</p>
       <p class="task_class">Класс: {{ task.class }}</p>
@@ -70,5 +73,4 @@ export default {
 
 .task_complexity {
   text-align: right;
-}
-</style>
+}</style>

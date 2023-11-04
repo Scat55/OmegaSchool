@@ -31,9 +31,9 @@
                     class="topic-section"
                   >
                     <option value="">Все уровни</option>
-                    <option value="1">1 LVL</option>
-                    <option value="2">2 LVL</option>
-                    <option value="3">3 LVL</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                 </div>
                 <div class="filter__topic-filter">
@@ -59,9 +59,9 @@
                     class="topic-section"
                   >
                     <option value="">Не указан</option>
-                    <option value="9">8 класс</option>
-                    <option value="10">9 класс</option>
-                    <option value="11">10 класс</option>
+                    <option value="8">8 класс</option>
+                    <option value="9">9 класс</option>
+                    <option value="10">10 класс</option>
                   </select>
                 </div>
                 <div class="filter__status_filter">
@@ -71,8 +71,8 @@
                     class="topic-section"
                   >
                     <option value="">Не выбран</option>
-                    <option :value="false">Не решено</option>
-                    <option :value="true">Решено</option>
+                    <option value="Не решено">Не решено</option>
+                    <option value="Решено">Решено</option>
                   </select>
                 </div>
               </div>
@@ -116,7 +116,6 @@
             @click="goToNextPage"
             :disabled="currentPage === totalPages"
           >→</button>
-
         </div>
       </div>
     </div>
@@ -162,18 +161,22 @@ export default {
       let filtered = this.tasks;
 
       if (this.selectedTopic) {
-        filtered = filtered.filter((task) => task.topic === this.selectedTopic);
+        return (filtered = filtered.filter((task) => task.topic === this.selectedTopic));
       }
 
       if (this.selectedLVL) {
-        filtered = filtered.filter((task) => task.complexity === this.selectedLVL);
+        return (filtered = filtered.filter((task) => task.complexity == this.selectedLVL));
       }
       if (this.selectedClass) {
-        filtered = filtered.filter((task) => task.class === this.selectedClass);
+        filtered = filtered.filter((task) => {
+          return task.class === this.selectedClass;
+        });
       }
 
       if (this.selectedStatus !== '') {
-        filtered = filtered.filter((task) => task.status === this.selectedStatus);
+        filtered = filtered.filter((task) => {
+          return task.status === this.selectedStatus;
+        });
       }
 
       if (this.searchQuery) {
@@ -271,7 +274,9 @@ export default {
     },
   },
 
-  created() {
+  created() { },
+
+  mounted() {
     this.getFiltersFromLocalStorage();
     this.token = JSON.parse(localStorage.getItem('local'));
     axios
@@ -284,10 +289,6 @@ export default {
       .then((response) => {
         this.tasks = response.data;
       });
-  },
-
-  mounted() {
-
   },
 };
 </script>
