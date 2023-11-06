@@ -51,6 +51,7 @@
       <div
         class="taskDetal__questions"
         v-for="options in this.infoTask.questions"
+        v-if="infoTask.level == 1"
       >
 
         <ul class="taskDetal__list">
@@ -64,11 +65,74 @@
               name="question.text"
               :value="question.text"
               ref="checkAnswer"
-              @click="test"
             >
           </li>
         </ul>
       </div>
+
+      <!-- Решение начало -->
+      <div
+        class="taskDetal__answer"
+        v-if="infoTask.level == 2 || infoTask.level == 3"
+      >
+        <textarea
+          class="taskDetal__infoAnswer"
+          placeholder="Введите ваш ответ"
+          v-model="infoArea"
+        ></textarea>
+        <input
+          type="file"
+          class="taskDetal__file"
+          ref="file"
+          multiple
+        >
+      </div>
+      <!-- Решение конец -->
+
+      <!-- Подсказка начало -->
+      <div
+        class="taskDetal__hitn"
+        v-if="hint"
+      >
+        <p>{{ infoTask.task_hint }}</p>
+      </div>
+      <!-- Подсказка конец -->
+
+      <!-- Ответ начало -->
+
+      <div
+        class="taskDetal__answer"
+        v-if="answer"
+      >
+        <p>{{ infoTask.task_answer }}</p>
+
+      </div>
+      <!-- Ответ конец -->
+
+      <!-- Кнопки  начало -->
+      <div
+        class="taskDetal__buttons"
+        v-if="infoTask.level == 2 || infoTask.level == 3"
+      >
+        <button
+          class="taskDetal__btn"
+          @click="sendLevelTwoTest"
+        >Отправить</button>
+        <button
+          class="taskDetal__btn"
+          @click="showHint"
+        >Взять подсказку</button>
+        <button
+          class="taskDetal__btn"
+          @click="showAnswer"
+        >Показать ответ</button>
+      </div>
+      <button
+        class="taskDetal__button"
+        v-if="infoTask.level == 1"
+      >Отправить</button>
+      <!-- Кнопки конец -->
+
 
 
       <!--  Блок только для 1 лвл заданий START  -->
@@ -128,7 +192,13 @@ export default {
       isShow: false,
       infoTask: '',
       teachrID: '',
-      valChek: ''
+      valChek: '',
+      answer: false,
+      isCorrect: '',
+      infoArea: '',
+      hint: false,
+      testID: '',
+      file: ''
     };
   },
   // computed: {
@@ -138,12 +208,31 @@ export default {
   // },
   methods: {
     test() {
-      // const answer = this.$refs.checkAnswer.map(el => {
-      //   return el._value
+      console.log(this.infoArea)
+
+    },
+    sendLevelOneTest() { },
+    sendLevelTwoTest() {
+      // this.token = JSON.parse(localStorage.getItem('local'));
+      // axios.post(`/api/getAnswerByStudent2/${this.testID}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${this.token.token}`,
+      //   },
       // })
-      console.log(this.$refs.checkAnswer._value)
 
-
+      this.file = this.$refs.file.files;
+      let allFiles = Object.values(this.file).map((el) => {
+        return el;
+      });
+      console.log(allFiles)
+    },
+    showAnswer() {
+      this.hint = false
+      this.answer = true
+    },
+    showHint() {
+      this.answer = false
+      this.hint = true
     },
     // Скачивание файла
     async downloadFiles() {
@@ -171,10 +260,10 @@ export default {
     //   return url.substring(url.lastIndexOf('/') + 1);
     // },
     // checkAnswer() {
-    //   this.task.status = true;
+    //   // this.task.status = true;
     //   let isCorrect = true;
-    //   for (let i = 0; i < this.infoTask.checkPoint.length; i++) {
-    //     if (this.userChecks[i] !== this.task.checkPoint[i].checked) {
+    //   for (let i = 0; i < this.infoTask.questions[0].options.length; i++) {
+    //     if (this.userChecks[i] !== this.infoTask.questions[i].checked) {
     //       isCorrect = false;
     //       break;
     //     }
@@ -206,6 +295,7 @@ export default {
       console.log(response.data)
       this.infoTask = response.data
       this.teachrID = response.data.user_id
+      this.testID = response.data.test_id
     });
 
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
@@ -321,6 +411,59 @@ export default {
   &__question {
 
     list-style: none;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  &__btn {
+    padding: .625rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 1px solid #000;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__button {
+    margin-top: 1rem;
+    padding: .625rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 1px solid #000;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__answer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  &__infoAnswer {
+    padding: .625rem;
+    resize: none;
+    border-radius: 1rem;
+    width: 27rem;
+    height: 10rem;
+  }
+
+  &__hitn {
+    margin-top: 1rem;
   }
 }
 
