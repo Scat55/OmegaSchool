@@ -448,6 +448,8 @@ class User_controller {
         const testId = req.params.testID;
         const student_solution = req.params.student_solution; // Предполагается, что userId и testId также отправляются в теле запроса
 
+        console.log('student_solution', student_solution)
+
         try {
             // Сохраняем обработанную строку в базу данных
             const insertOptionsSql = `
@@ -908,12 +910,12 @@ class User_controller {
         const user_id = req.user_id;
 
         const insertTestQuery = `
-            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject)
+            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING test_id;
         `;
 
-        const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject];
+        const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
         const testResult = await db.query(insertTestQuery, testValues);
         const testId = testResult.rows[0].test_id;
 
