@@ -66,21 +66,26 @@
               :value="question.text"
               ref="checkAnswer"
             >
-
           </li>
-
         </ul>
       </div>
 
-
       <!-- Решение начало -->
-
-      <div class="taskDetal__answer">
+      <div
+        class="taskDetal__answer"
+        v-if="infoTask.level == 2 || infoTask.level == 3"
+      >
         <textarea
           class="taskDetal__infoAnswer"
           placeholder="Введите ваш ответ"
           v-model="infoArea"
         ></textarea>
+        <input
+          type="file"
+          class="taskDetal__file"
+          ref="file"
+          multiple
+        >
       </div>
       <!-- Решение конец -->
 
@@ -100,6 +105,7 @@
         v-if="answer"
       >
         <p>{{ infoTask.task_answer }}</p>
+
       </div>
       <!-- Ответ конец -->
 
@@ -110,7 +116,7 @@
       >
         <button
           class="taskDetal__btn"
-          @click="test"
+          @click="sendLevelTwoTest"
         >Отправить</button>
         <button
           class="taskDetal__btn"
@@ -191,7 +197,8 @@ export default {
       isCorrect: '',
       infoArea: '',
       hint: false,
-      testID: ''
+      testID: '',
+      file: ''
     };
   },
   // computed: {
@@ -201,30 +208,23 @@ export default {
   // },
   methods: {
     test() {
-
-      // console.log(this.$refs.checkAnswer)
-      // this.$refs.checkAnswer.map(el => {
-      //   console.log(el.value)
-      // })
-
-      // for (let i = 0; i < this.$refs.checkAnswer.length; i++) {
-      //   console.log(this.$refs.checkAnswer[i].checked)
-      //   if (this.userChecks[i] !== this.$refs.checkAnswer[i].checked) {
-      //     this.isCorrect = false;
-      //     break;
-      //   }
-      // }
       console.log(this.infoArea)
 
     },
     sendLevelOneTest() { },
     sendLevelTwoTest() {
-      this.token = JSON.parse(localStorage.getItem('local'));
-      axios.post(`/api/getAnswerByStudent2/${this.testID}`, {
-        headers: {
-          Authorization: `Bearer ${this.token.token}`,
-        },
-      })
+      // this.token = JSON.parse(localStorage.getItem('local'));
+      // axios.post(`/api/getAnswerByStudent2/${this.testID}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${this.token.token}`,
+      //   },
+      // })
+
+      this.file = this.$refs.file.files;
+      let allFiles = Object.values(this.file).map((el) => {
+        return el;
+      });
+      console.log(allFiles)
     },
     showAnswer() {
       this.hint = false
@@ -448,6 +448,9 @@ export default {
   }
 
   &__answer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     margin-top: 1rem;
   }
 
