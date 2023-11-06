@@ -449,7 +449,6 @@ class User_controller {
         const student_solution = req.params.student_solution; // Предполагается, что userId и testId также отправляются в теле запроса
 
         console.log('student_solution', student_solution)
-
         try {
             // Сохраняем обработанную строку в базу данных
             const insertOptionsSql = `
