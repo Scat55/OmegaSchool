@@ -198,7 +198,8 @@ export default {
       infoArea: '',
       hint: false,
       testID: '',
-      file: ''
+      file: '',
+      token: ''
     };
   },
   // computed: {
@@ -213,17 +214,22 @@ export default {
     },
     sendLevelOneTest() { },
     sendLevelTwoTest() {
-      // this.token = JSON.parse(localStorage.getItem('local'));
-      // axios.post(`/api/getAnswerByStudent2/${this.testID}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${this.token.token}`,
-      //   },
-      // })
+      this.token = JSON.parse(localStorage.getItem('local'));
+
 
       this.file = this.$refs.file.files;
       let allFiles = Object.values(this.file).map((el) => {
         return el;
       });
+
+      axios.post(`/api/getAnswerByStudent2/${this.testID}/${this.infoArea}`,
+        allFiles,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+          },
+        })
+
       console.log(allFiles)
     },
     showAnswer() {

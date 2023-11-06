@@ -459,9 +459,9 @@ class User_controller {
             // Выполнение запроса на вставку обработанных вариантов ответов
             await db.query(insertOptionsSql, [userId, testId, student_solution]);
 
-            // if (!req.files || req.files.length === 0) {
-            //     throw new Error('Пожалуйста, загрузите файл');
-            // }
+            if (!req.files || req.files.length === 0) {
+                throw new Error('Пожалуйста, загрузите файл');
+            }
 
             let pdfPath = null;
             let imgPath = null;
