@@ -517,7 +517,7 @@ class User_controller {
             }
 
             // Обновление записей в базе данных с путями к файлам
-            const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img = $2 WHERE test_id = $3 and user_id = $4';
+            const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
             const updateValues = [pdfPath, imgPath, testId, userId];
 
             await db.query(updateQuery, updateValues);
