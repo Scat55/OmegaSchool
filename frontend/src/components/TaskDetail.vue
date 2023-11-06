@@ -64,12 +64,12 @@
               name="question.text"
               :value="question.text"
               ref="checkAnswer"
-              @click="test"
             >
+
           </li>
+
         </ul>
       </div>
-
 
       <!--  Блок только для 1 лвл заданий START  -->
       <!-- <div
@@ -128,7 +128,9 @@ export default {
       isShow: false,
       infoTask: '',
       teachrID: '',
-      valChek: ''
+      valChek: '',
+      answer: '',
+      isCorrect: ''
     };
   },
   // computed: {
@@ -138,11 +140,19 @@ export default {
   // },
   methods: {
     test() {
-      // const answer = this.$refs.checkAnswer.map(el => {
-      //   return el._value
-      // })
-      console.log(this.$refs.checkAnswer._value)
 
+      // console.log(this.$refs.checkAnswer)
+      // this.$refs.checkAnswer.map(el => {
+      //   console.log(el.value)
+      // })
+
+      for (let i = 0; i < this.$refs.checkAnswer.length; i++) {
+        console.log(this.$refs.checkAnswer[i].checked)
+        if (this.userChecks[i] !== this.$refs.checkAnswer[i].checked) {
+          this.isCorrect = false;
+          break;
+        }
+      }
 
     },
     // Скачивание файла
@@ -171,10 +181,10 @@ export default {
     //   return url.substring(url.lastIndexOf('/') + 1);
     // },
     // checkAnswer() {
-    //   this.task.status = true;
+    //   // this.task.status = true;
     //   let isCorrect = true;
-    //   for (let i = 0; i < this.infoTask.checkPoint.length; i++) {
-    //     if (this.userChecks[i] !== this.task.checkPoint[i].checked) {
+    //   for (let i = 0; i < this.infoTask.questions[0].options.length; i++) {
+    //     if (this.userChecks[i] !== this.infoTask.questions[i].checked) {
     //       isCorrect = false;
     //       break;
     //     }
