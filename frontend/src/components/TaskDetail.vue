@@ -227,6 +227,7 @@ export default {
         {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
           },
         })
 
