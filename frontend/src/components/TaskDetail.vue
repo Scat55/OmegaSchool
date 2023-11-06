@@ -191,6 +191,7 @@ export default {
       isCorrect: '',
       infoArea: '',
       hint: false,
+      testID: ''
     };
   },
   // computed: {
@@ -216,8 +217,14 @@ export default {
       console.log(this.infoArea)
 
     },
-    sendLevelOneTest() {
-
+    sendLevelOneTest() { },
+    sendLevelTwoTest() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      axios.post(`/api/getAnswerByStudent2/${this.testID}`, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+        },
+      })
     },
     showAnswer() {
       this.hint = false
@@ -288,6 +295,7 @@ export default {
       console.log(response.data)
       this.infoTask = response.data
       this.teachrID = response.data.user_id
+      this.testID = response.data.test_id
     });
 
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
