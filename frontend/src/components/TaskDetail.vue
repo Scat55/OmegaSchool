@@ -122,7 +122,7 @@
         >Показать ответ</button>
       </div>
       <button
-        class="taskDetal__btn"
+        class="taskDetal__button"
         v-if="infoTask.level == 1"
       >Отправить</button>
       <!-- Кнопки конец -->
@@ -413,6 +413,20 @@ export default {
   }
 
   &__btn {
+    padding: .625rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 1px solid #000;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__button {
+    margin-top: 1rem;
     padding: .625rem;
     background-color: #fff;
     border-radius: 0.5rem;
