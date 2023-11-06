@@ -112,7 +112,7 @@
       <!-- Кнопки  начало -->
       <div
         class="taskDetal__buttons"
-        v-if="infoTask.level == 2 || infoTask.level == 3"
+        v-if="infoTask.level == 2"
       >
         <button
           class="taskDetal__btn"
@@ -131,6 +131,24 @@
         class="taskDetal__button"
         v-if="infoTask.level == 1"
       >Отправить</button>
+
+      <div
+        class="taskDetal__buttons"
+        v-if="infoTask.level == 3"
+      >
+        <button
+          class="taskDetal__btn"
+          @click="sendLevelTwoTest"
+        >Отправить</button>
+        <button
+          class="taskDetal__btn"
+          @click="showHint"
+        >Взять подсказку</button>
+        <button
+          class="taskDetal__btn"
+          @click="showAnswer"
+        >Показать ответ</button>
+      </div>
       <!-- Кнопки конец -->
 
 
@@ -215,8 +233,6 @@ export default {
     sendLevelOneTest() { },
     sendLevelTwoTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
-
-
       this.file = this.$refs.file.files;
       let allFiles = Object.values(this.file).map((el) => {
         return el;
@@ -230,8 +246,22 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         })
+    },
+    sendLevelThreeTest() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      this.file = this.$refs.file.files;
+      let allFiles = Object.values(this.file).map((el) => {
+        return el;
+      });
 
-      console.log(allFiles)
+      axios.post(`/api/getAnswerByStudent3/${this.testID}/${this.infoArea}`,
+        allFiles,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
     },
     showAnswer() {
       this.hint = false
