@@ -2,12 +2,22 @@
   <div>
     <div class="container">
       <div class="window">
-        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">
+        <div
+          class="seeMenu"
+          @click="ShowMenu = !ShowMenu"
+          v-show="ShowMenu === false"
+        >
           Открыть меню
         </div>
-        <div class="left_div" v-show="ShowMenu === true">
+        <div
+          class="left_div"
+          v-show="ShowMenu === true"
+        >
           <div class="tabs">
-            <div class="tab" @click="switchTab('Profile')">Профиль</div>
+            <div
+              class="tab"
+              @click="switchTab('Profile')"
+            >Профиль</div>
             <div
               class="tab"
               v-if="person.student === false"
@@ -15,29 +25,59 @@
             >
               Задачи на проверку ( от ученика )
             </div>
-            <div class="tab" v-if="person.expert === true" @click="switchTab('TaskToCheckTeacher')">
+            <div
+              class="tab"
+              v-if="person.expert === true"
+              @click="switchTab('TaskToCheckTeacher')"
+            >
               Задачи на проверку ( от учителя )
             </div>
-            <div class="tab" v-if="person.student === false" @click="switchTab('MyAddTask')">
+            <div
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('MyAddTask')"
+            >
               Мои добавленные задачи
             </div>
-            <div class="tab" v-if="person.student === false" @click="switchTab('AddTask')">
+            <div
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('AddTask')"
+            >
               Добавить задачу
             </div>
-            <div class="tab" v-if="person.student === true" @click="switchTab('AchivStud')">
+            <div
+              class="tab"
+              v-if="person.student === true"
+              @click="switchTab('AchivStud')"
+            >
               Достижения
             </div>
-            <div class="tab" v-if="person.student === false" @click="switchTab('RatingTeach')">
+            <div
+              class="tab"
+              v-if="person.student === false"
+              @click="switchTab('RatingTeach')"
+            >
               Рейтинг
             </div>
-            <div class="tab" v-if="person.student === true" @click="switchTab('MySolvedTask')">
+            <div
+              class="tab"
+              v-if="person.student === true"
+              @click="switchTab('MySolvedTask')"
+            >
               Мои решенные задачи
             </div>
-            <div class="closeMenu" @click="ShowMenu = !ShowMenu">Закрыть меню</div>
+            <div
+              class="closeMenu"
+              @click="ShowMenu = !ShowMenu"
+            >Закрыть меню</div>
           </div>
         </div>
         <div class="right_div">
-          <Profile v-show="isActiveComponents.Profile === true" :person="person" />
+          <Profile
+            v-show="isActiveComponents.Profile === true"
+            :person="person"
+          />
           <AddTask v-if="isActiveComponents.AddTask === true" />
           <TaskToCheckStudent v-if="isActiveComponents.TaskToCheckStudent === true" />
           <TaskToCheckTeacher v-if="isActiveComponents.TaskToCheckTeacher === true" />
@@ -52,6 +92,7 @@
         </div>
       </div>
     </div>
+    <ChatBot />
   </div>
 </template>
 
@@ -63,6 +104,7 @@ import MyAddTask from '@/components/Profile/MyAddTask.vue';
 import MySolvedTask from '@/components/Profile/MySolvedTask.vue';
 import TaskToCheckStudent from '@/components/Profile/TaskToCheckStudent.vue';
 import TaskToCheckTeacher from '@/components/Profile/TaskToCheckTeacher.vue';
+import ChatBot from '@/components/ChatBot.vue';
 import AddTask from '@/components/Profile/AddTask.vue';
 import store from '../store/index';
 import { format } from 'date-fns';
@@ -78,6 +120,7 @@ export default {
     Profile,
     AchivmentStudent,
     RatingTeacher,
+    ChatBot
   },
   data() {
     return {
