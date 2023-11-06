@@ -51,6 +51,7 @@
       <div
         class="taskDetal__questions"
         v-for="options in this.infoTask.questions"
+        v-if="infoTask.level == 1"
       >
 
         <ul class="taskDetal__list">
@@ -70,6 +71,63 @@
 
         </ul>
       </div>
+
+
+      <!-- Решение начало -->
+
+      <div class="taskDetal__answer">
+        <textarea
+          class="taskDetal__infoAnswer"
+          placeholder="Введите ваш ответ"
+          v-model="infoArea"
+        ></textarea>
+      </div>
+      <!-- Решение конец -->
+
+      <!-- Подсказка начало -->
+      <div
+        class="taskDetal__hitn"
+        v-if="hint"
+      >
+        <p>{{ infoTask.task_hint }}</p>
+      </div>
+      <!-- Подсказка конец -->
+
+      <!-- Ответ начало -->
+
+      <div
+        class="taskDetal__answer"
+        v-if="answer"
+      >
+        <p>{{ infoTask.task_answer }}</p>
+      </div>
+      <!-- Ответ конец -->
+
+      <!-- Кнопки  начало -->
+      <div
+        class="taskDetal__buttons"
+        v-if="infoTask.level == 2 || infoTask.level == 3"
+      >
+        <button
+          class="taskDetal__btn"
+          @click="test"
+        >Отправить</button>
+        <button
+          class="taskDetal__btn"
+          @click="showHint"
+        >Взять подсказку</button>
+        <button
+          class="taskDetal__btn"
+          @click="showAnswer"
+        >Показать ответ</button>
+      </div>
+      <button
+        class="taskDetal__btn"
+        v-if="infoTask.level == 1"
+      >Отправить</button>
+      <!-- Кнопки конец -->
+
+
 
       <!--  Блок только для 1 лвл заданий START  -->
       <!-- <div
@@ -129,8 +187,10 @@ export default {
       infoTask: '',
       teachrID: '',
       valChek: '',
-      answer: '',
-      isCorrect: ''
+      answer: false,
+      isCorrect: '',
+      infoArea: '',
+      hint: false,
     };
   },
   // computed: {
@@ -146,14 +206,26 @@ export default {
       //   console.log(el.value)
       // })
 
-      for (let i = 0; i < this.$refs.checkAnswer.length; i++) {
-        console.log(this.$refs.checkAnswer[i].checked)
-        if (this.userChecks[i] !== this.$refs.checkAnswer[i].checked) {
-          this.isCorrect = false;
-          break;
-        }
-      }
+      // for (let i = 0; i < this.$refs.checkAnswer.length; i++) {
+      //   console.log(this.$refs.checkAnswer[i].checked)
+      //   if (this.userChecks[i] !== this.$refs.checkAnswer[i].checked) {
+      //     this.isCorrect = false;
+      //     break;
+      //   }
+      // }
+      console.log(this.infoArea)
 
+    },
+    sendLevelOneTest() {
+
+    },
+    showAnswer() {
+      this.hint = false
+      this.answer = true
+    },
+    showHint() {
+      this.answer = false
+      this.hint = true
     },
     // Скачивание файла
     async downloadFiles() {
@@ -331,6 +403,42 @@ export default {
   &__question {
 
     list-style: none;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  &__btn {
+    padding: .625rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 1px solid #000;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__answer {
+    margin-top: 1rem;
+  }
+
+  &__infoAnswer {
+    padding: .625rem;
+    resize: none;
+    border-radius: 1rem;
+    width: 27rem;
+    height: 10rem;
+  }
+
+  &__hitn {
+    margin-top: 1rem;
   }
 }
 
