@@ -61,32 +61,50 @@ router.get('/list_all_files', roleMiddleware(['Ученик','Эксперт','�
 router.post('/delete_user_files/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.deleteUserFiles);
 router.get('/download/:file_names', roleMiddleware(['Ученик','Эксперт','Учитель']), userController.download);
 
-router.get('/verify_email/:code/', roleMiddleware(['Ученик','Эксперт','Учитель']),  async (req, res) => {
-    const {user_id} = jwt.decode(req.session.token, secret)
+router.get('/verify_email/:email/', async (req, res) => {
+    try {
+        const email = req.params.email;
 
-    //сохранения кода в бд
-    await mail.saveVerificationCode(user_id, user_id)
+        // Выводим для отладки
+        console.log(email);
 
-    //пользователь получает код
-    await mail.transporter.sendMail({
-        from: 'omegalspu@gmail.com',
-        to: 'siniukovnikita@gmail.com',
-        subject: 'Подтверждение Email',
-        html: `Пожалуйста, кликните <a href="http://omega-lspu.ru/verify-email?code=${user_id}&user=${user_id}">здесь</a>, чтобы подтвердить ваш email.`
-    }, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
+        // Генерируем код подтверждения
+        const verificationCode = await mail.generateVerificationCode();
+
+        // Отправляем письмо с кодом подтверждения
+        try {
+            console.log('sendVerificationEmail', email, verificationCode)
+            const verificationLink = `http://localhost:8070/verify-email/${email}/${verificationCode}`;
+
+            mail.transporter.sendMail({
+                from: 'omegalspu@gmail.com',
+                to: email,
+                subject: 'Подтверждение Email',
+                html: `Пожалуйста, кликните <a href="${verificationLink}">здесь</a>, чтобы подтвердить ваш email.`
+            });
+
+            await mail.saveVerificationCode(email, verificationCode);
+            console.log('Email успешно отправлен');
+        } catch (error) {
+            console.error('Ошибка при отправке email:', error);
+            throw error;
         }
-    });
 
-    //проверка кода подтверждения с базой
-    const isValid = await mail.checkVerificationCode(user_id, user_id);
-
-    if (isValid) { await mail.setUserEmailVerified(user_id);
-        res.send('Email успешно подтвержден!');
-    } else { res.status(400).send('Неверный код подтверждения.'); }
+        res.send('Письмо с кодом подтверждения отправлено на ваш email.');
+    } catch (error) {
+        console.error('Ошибка при обработке запроса на подтверждение email:', error);
+        res.status(500).send('Произошла ошибка при обработке запроса.');
+    }
 });
+router.get('/verify_email/:email/:code/', async (req, res) => {
+    const verificationCode = req.params.code;
+    const email = req.params.email;
+
+    await mail.checkVerificationCode(email, verificationCode);
+    await mail.setUserEmailVerified(email);
+    console.log('Email успешно отправлен 2');
+
+    res.send('Аккаунт активирован');
+})
 
 module.exports = router
