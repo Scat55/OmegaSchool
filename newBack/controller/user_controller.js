@@ -443,9 +443,11 @@ class User_controller {
     }
 
     async getAnswerByStudent2 (req,res) {
+
         const userId = req.user_id;
+        console.log(userId)
         const testId = req.params.testID;
-        const student_solution = req.body; // Предполагается, что userId и testId также отправляются в теле запроса
+        const student_solution = req.params.student_solution; // Предполагается, что userId и testId также отправляются в теле запроса
 
 
         try {
@@ -459,29 +461,28 @@ class User_controller {
             // Выполнение запроса на вставку обработанных вариантов ответов
             await db.query(insertOptionsSql, [userId, testId, student_solution]);
 
-            //     if (!req.files || req.files.length === 0) {
-            //         throw new Error('Пожалуйста, загрузите файл');
-            //     }
-            //     let pdfPath = null;
-            //     let imgPath = null;
-            //
-            //     for (const file of req.files) {
-            //         if (file.mimetype === 'application/pdf') {
-            //             pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-            //         } else if (file.mimetype.startsWith('image/')) {
-            //             imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-            //         }
-            //     }
-            //
-            //     // Обновление записей в базе данных с путями к файлам
-            //     const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img = $2 WHERE test_id = $3 and user_id = $4';
-            //     const updateValues = [pdfPath, imgPath, testId, userId];
-            //
-            //     await db.query(updateQuery, updateValues);
-            //
-            //
-            //     res.status(200).json({message: 'Ответы и файлы успешно сохранены'});
-             } catch (error) {
+            // if (!req.files || req.files.length === 0) {
+            //     throw new Error('Пожалуйста, загрузите файл');
+            // }
+
+            let pdfPath = null;
+            let imgPath = null;
+
+            for (const file of req.files) {
+                if (file.mimetype === 'application/pdf') { pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
+                } else if (file.mimetype.startsWith('image/')) { imgPath = file.originalname; }  // или любой другой путь, где вы сохраняете файл
+            }
+
+            // Обновление записей в базе данных с путями к файлам
+            const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img = $2 WHERE test_id = $3 and user_id = $4';
+            const updateValues = [pdfPath, imgPath, testId, userId];
+
+            await db.query(updateQuery, updateValues);
+
+
+            res.status(200).json({message: 'Ответы и файлы успешно сохранены'});
+
+        } catch (error) {
             console.error('Ошибка при выполнении запроса к базе данных:', error);
             res.status(500).json({error: 'Ошибка на сервере'});
         }
@@ -587,7 +588,6 @@ class User_controller {
                 });
 
                 return {
-                    question_text: question.text,
                     options: options
                 };
             }));
