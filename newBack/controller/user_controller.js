@@ -788,6 +788,67 @@ class User_controller {
         }
     }
 
+    async getTasksForTeacherByStudent(req, res){
+        try {
+            const user_id = req.user_id;
+
+            // Запрос для получения test_id, где test_level = 2 или 3
+            const TestsSql = `
+        SELECT test_id
+        FROM student_solutions
+        WHERE (student_solution IS NOT NULL) AND (test_level = 2 OR test_level = 3);
+        `;
+
+            // Получаем список test_id для уровней 2 и 3
+            const testIdsResult = await db.query(TestsSql);
+            const testIds = testIdsResult.rows.map(row => row.test_id);
+
+            // Формируем ответ, используя полученные test_id
+            const tasks = [];
+
+            for (let test_id of testIds) {
+                // Получаем данные для уровня 2
+                const level2TestsSql = `
+            SELECT *
+            FROM level_2_tests
+            WHERE test_id = $1;
+            `;
+                const level2OptionsResult = await db.query(level2TestsSql, [test_id]);
+
+                if (level2OptionsResult.rows.length > 0) {
+                    tasks.push(...level2OptionsResult.rows.map(test => ({
+                        task_id: test.test_id,
+                        task_test: test.task_test,
+                        level: 2
+                    })));
+                }
+
+                // Получаем данные для уровня 3
+                const level3TestsSql = `
+            SELECT *
+            FROM level_3_tests
+            WHERE test_id = $1;
+            `;
+                const level3OptionsResult = await db.query(level3TestsSql, [test_id]);
+
+                if (level3OptionsResult.rows.length > 0) {
+                    tasks.push(...level3OptionsResult.rows.map(test => ({
+                        task_id: test.test_id,
+                        task_test: test.task_test,
+                        level: 3
+                    })));
+                }
+            }
+
+            res.json(tasks);
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
+
+
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
             if (err) {

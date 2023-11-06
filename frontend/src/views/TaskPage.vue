@@ -72,6 +72,7 @@
                   >
                     <option value="">Не выбран</option>
                     <option value="Не решено">Не решено</option>
+                    <option value="Ожидает проверки">Решено</option>
                     <option value="Решено">Решено</option>
                   </select>
                 </div>
