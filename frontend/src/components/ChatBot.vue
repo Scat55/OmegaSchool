@@ -20,13 +20,12 @@ export default {
     showChat() {
 
 
-
     },
-    created() {
-      setTimeout(() => {
+    mounted() {
+      setTimeout(function () {
         this.chat = true
-        console.log("OK")
-      }, 1000);
+      }.bind(this), 2000)
+
     },
 
 

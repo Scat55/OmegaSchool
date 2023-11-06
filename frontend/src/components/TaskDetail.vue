@@ -138,7 +138,7 @@
       >
         <button
           class="taskDetal__btn"
-          @click="sendLevelTwoTest"
+          @click="sendLevelThreeTest"
         >Отправить</button>
         <button
           class="taskDetal__btn"
