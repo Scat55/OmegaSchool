@@ -1,9 +1,6 @@
 <template>
   <div>
-    <router-link
-      :to="'/taskToChek/' + info.task_id"
-      class="router2"
-    >
+    <router-link :to="'/taskToChek/' + info.task_id + '/' + info.user_id" class="router2">
       <div class="taskTeacher">
         <p class="taskTeacher__name">{{ info.task_test }}</p>
         <span>Уровень - {{ info.level }}</span>
