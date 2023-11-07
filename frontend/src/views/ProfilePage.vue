@@ -88,12 +88,16 @@
             :achievements="person.achievements"
             v-if="isActiveComponents.AchivStud === true"
           />
-          <RatingTeacher v-if="isActiveComponents.RatingTeach === true" />
+          <RatingTeacher 
+          :grades="person.grades"
+           v-if="isActiveComponents.RatingTeach === true" 
+           />
         </div>
       </div>
     </div>
     <!-- <ChatBot /> -->
   </div>
+
 </template>
 
 <script>
