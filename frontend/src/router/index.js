@@ -66,7 +66,7 @@ const routes = [
     component: AllTaskTeacher,
   },
   {
-    path: '/taskToChek/:id?',
+    path: '/taskToChek/:id/:userID',
     component: CheckingTasksPage,
   },
 ];
