@@ -6,8 +6,9 @@
           <p class="task__main-info-title">{{ info.test_text }}</p>
 
           <div class="task__main-info-student">
-            <p>Класс - {{ info.level }}</p>
+            <p>Уровень - {{ info.level }}</p>
             <p>{{ info.subject }}</p>
+            <p>Класс - {{ info.classes }}</p>
           </div>
         </div>
       </div>
