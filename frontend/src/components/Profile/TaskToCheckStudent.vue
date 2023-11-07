@@ -80,36 +80,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.studentTask {
-
-  &__tasks {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-  }
-
-  &__info {
-    display: flex;
-    justify-content: space-between;
-    background-color: #fff;
-    border-radius: 0.5rem;
-    border: 1px solid #000;
-    padding: .625rem;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      transform: scale(1.03);
-    }
-
-    &__name {
-      font-size: 1.1rem;
-    }
-  }
-}
-
 .buttons {
   display: flex;
   align-items: center;
