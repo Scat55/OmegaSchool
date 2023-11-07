@@ -600,8 +600,6 @@ class User_controller {
                 test_text: test.task_test,
                 test_description: test.task_description,
                 add_file: test.add_file,
-                task_hint:test.task_hint,
-                task_answer:test.task_answer,
                 classes: test.classes,
                 subject: test.subject,
                 add_img: test.add_img,
