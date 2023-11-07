@@ -730,6 +730,37 @@ class User_controller {
         }
     }
 
+    async updateTestByTeacher(req, res) {
+        try {
+            const testId = req.params.testID;
+            const student_id = req.params.userID; // ID студента, чье задание оценивается
+            const user_id = req.user_id; // ID учителя, оценивающего задание
+            const { opt_score, text_solution } = req.body; // Исправлено на деструктуризацию объекта
+
+            // Обновляем оценку задания в таблице student_solutions
+            const updateSolutionQuery = `
+            UPDATE student_solutions
+            SET opt_score = $1, user_id_ver = $2, correct_solution = $3
+            WHERE user_id = $4 AND test_id = $5
+            RETURNING test_id;
+        `;
+
+            const result = await db.query(updateSolutionQuery, [opt_score, user_id, text_solution, student_id, testId]);
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({ error: 'Задание не найдено или уже оценено' });
+            }
+
+            res.json({ success: true, test_id: result.rows[0].test_id, message: "Задание успешно оценено" });
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+
+
+
 
     async getTasksForTeacher(req, res){
         try {
@@ -889,7 +920,9 @@ class User_controller {
             } else {
                 // If no solution is found, you can decide how you want to handle this
                 // For example, you might want to return a different message or structure
-                studentSolution = {}; // or set it to null, or do not include it at all
+                studentSolution = {
+                    student_solution: undefined
+                };
             }
 
             // Format the final response
