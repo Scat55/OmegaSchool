@@ -38,9 +38,9 @@ router.get('/getTasksForExpertByID/:testID',roleMiddleware(['Эксперт']), 
 router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
 
 
-router.get('/getTasksForTeacherByID/:testID',roleMiddleware(['Учитель']), userController.getTasksByID)
+router.get('/getTasksForTeacherByID/:testID',roleMiddleware(['Учитель','Эксперт']), userController.getTasksByID)
 router.get('/getTasksForTeacher',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForTeacher)
-router.get('/getTasksForTeacherByStudent',roleMiddleware(['Учитель']), userController.getTasksForTeacherByStudent)
+router.get('/getTasksForTeacherByStudent',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForTeacherByStudent)
 //router.get('/getTasksForTeacherByStudentByID/:testID',roleMiddleware(['Учитель']), userController.getTasksForTeacherByStudentByID)
 //
 //
