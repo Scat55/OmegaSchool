@@ -127,7 +127,21 @@ export default {
     },
     // Обработка формы
     handler() {
-      console.log(this.message);
+      const opt_score = this.valChek;
+      const text_solution = this.message;
+      axios.post(
+        `/api/updateTestByTeacher/${this.id}/${this.userID}`,
+        {
+          opt_score: opt_score,
+          text_solution: text_solution,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+          },
+        },
+      );
+      console.log(opt_score);
     },
   },
 
