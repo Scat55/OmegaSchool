@@ -41,7 +41,7 @@ router.post('/updateTestByExpert',roleMiddleware(['Эксперт']), userContro
 router.get('/getTasksForTeacherByID/:testID',roleMiddleware(['Учитель','Эксперт']), userController.getTasksByID)
 router.get('/getTasksForTeacher',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForTeacher)
 router.get('/getTasksForTeacherByStudent',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForTeacherByStudent)
-//router.get('/getTasksForTeacherByStudentByID/:testID',roleMiddleware(['Учитель']), userController.getTasksForTeacherByStudentByID)
+router.get('/getTasksForTeacherByStudentByID/:testID/:userID',roleMiddleware(['Учитель']), userController.getTasksForTeacherByStudentByID)
 //
 //
 //

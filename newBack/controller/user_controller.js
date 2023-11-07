@@ -606,6 +606,7 @@ class User_controller {
                 subject: test.subject,
                 add_img: test.add_img,
                 questions: questionsWithOptions
+
             };
 
             res.json(formattedResponse);
@@ -792,32 +793,35 @@ class User_controller {
         try {
             const user_id = req.user_id;
 
-            // Запрос для получения test_id, где test_level = 2 или 3
+            // Запрос для получения test_id и user_id, где test_level = 2 или 3
             const TestsSql = `
-        SELECT test_id
-        FROM student_solutions
-        WHERE (student_solution IS NOT NULL) AND (test_level = 2 OR test_level = 3);
+            SELECT test_id, user_id
+            FROM student_solutions
+            WHERE (student_solution IS NOT NULL) AND (test_level = 2 OR test_level = 3);
         `;
 
-            // Получаем список test_id для уровней 2 и 3
+            // Получаем список test_id и user_id для уровней 2 и 3
             const testIdsResult = await db.query(TestsSql);
-            const testIds = testIdsResult.rows.map(row => row.test_id);
 
-            // Формируем ответ, используя полученные test_id
+            // Формируем ответ, используя полученные test_id и user_id
             const tasks = [];
 
-            for (let test_id of testIds) {
+            for (let row of testIdsResult.rows) {
+                const test_id = row.test_id;
+                const user_id = row.user_id; // Записываем user_id из результатов запроса
+
                 // Получаем данные для уровня 2
                 const level2TestsSql = `
-            SELECT *
-            FROM level_2_tests
-            WHERE test_id = $1;
+                SELECT *
+                FROM level_2_tests
+                WHERE test_id = $1;
             `;
                 const level2OptionsResult = await db.query(level2TestsSql, [test_id]);
 
                 if (level2OptionsResult.rows.length > 0) {
                     tasks.push(...level2OptionsResult.rows.map(test => ({
                         task_id: test.test_id,
+                        user_id: user_id, // Добавляем user_id в объект задачи
                         task_test: test.task_test,
                         level: 2
                     })));
@@ -825,15 +829,16 @@ class User_controller {
 
                 // Получаем данные для уровня 3
                 const level3TestsSql = `
-            SELECT *
-            FROM level_3_tests
-            WHERE test_id = $1;
+                SELECT *
+                FROM level_3_tests
+                WHERE test_id = $1;
             `;
                 const level3OptionsResult = await db.query(level3TestsSql, [test_id]);
 
                 if (level3OptionsResult.rows.length > 0) {
                     tasks.push(...level3OptionsResult.rows.map(test => ({
                         task_id: test.test_id,
+                        user_id: user_id, // Добавляем user_id в объект задачи
                         task_test: test.task_test,
                         level: 3
                     })));
@@ -848,6 +853,73 @@ class User_controller {
         }
     }
 
+
+    async getTasksForTeacherByStudentByID(req, res) {
+        const testId = req.params.testID;
+        const userID = req.params.userID;
+
+        try {
+            let test;
+            let testLevel;
+            let testResult;
+            let studentSolution;
+
+            // Try to fetch from level_2_tests first
+            testResult = await db.query('SELECT * FROM level_2_tests WHERE test_id = $1', [testId]);
+
+            if (testResult.rowCount > 0) {
+                test = testResult.rows[0];
+                testLevel = '2';
+            } else {
+                // If not found, try to fetch from level_3_tests
+                testResult = await db.query('SELECT * FROM level_3_tests WHERE test_id = $1', [testId]);
+
+                if (testResult.rowCount > 0) {
+                    test = testResult.rows[0];
+                    testLevel = '3';
+                } else {
+                    // If not found in either, return error
+                    return res.status(404).json({ error: 'Task not found' });
+                }
+            }
+
+            // Fetch the student's solution
+            const studentSolutionsResult = await db.query('SELECT * FROM student_solutions WHERE test_id = $1 AND user_id = $2', [testId, userID]);
+
+            if (studentSolutionsResult.rowCount > 0) {
+                studentSolution = studentSolutionsResult.rows[0];
+            } else {
+                // If no solution is found, you can decide how you want to handle this
+                // For example, you might want to return a different message or structure
+                studentSolution = {}; // or set it to null, or do not include it at all
+            }
+
+            // Format the final response
+            const formattedResponse = {
+                level: testLevel,
+                user_id: userID, // assuming userID should come from params, as it is more specific
+                test_id: test.test_id,
+                test_text: test.task_test,
+                add_file: test.add_file,
+                task_hint: test.task_hint,
+                task_answer: test.task_answer,
+                classes: test.classes,
+                subject: test.subject,
+                add_img: test.add_img,
+                // Include the student solution details
+                checked: studentSolution.checked, // Replace with actual column name
+                check_hint: studentSolution.check_hint, // Replace with actual column name
+                check_answer: studentSolution.check_answer, // Replace with actual column name
+                add_img_by_student: studentSolution.add_img_by_student, // Replace with actual column name
+                add_file_by_student: studentSolution.add_file_by_student // Replace with actual column name
+            };
+
+            res.json(formattedResponse);
+        } catch (error) {
+            console.error('Error executing SQL query:', error.message);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
 
     async uploads(req, res) {
         store.upload.array('files')(req, res, async (err) => { // Предположим, что вы загружаете несколько файлов под именем "files"
