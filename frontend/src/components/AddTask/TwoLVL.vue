@@ -92,7 +92,7 @@ export default {
         <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
         <div>
           <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" ref="fileInput" />
+          <input type="file" id="fileInput" ref="fileInput" multiple />
         </div>
       </div>
       <div class="block">
