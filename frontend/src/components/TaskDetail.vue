@@ -246,6 +246,9 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         })
+      alert("Задание отпралено на проверку")
+      this.infoArea = ''
+      this.$router.push('/task')
     },
     sendLevelThreeTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -262,6 +265,9 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         })
+      alert("Задание отпралено на проверку")
+      this.infoArea = ''
+      this.$router.push('/task')
     },
     showAnswer() {
       this.hint = false

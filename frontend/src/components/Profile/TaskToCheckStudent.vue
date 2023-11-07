@@ -3,30 +3,67 @@
     <h3>Задачи на проверку от ученика</h3>
 
     <div class="studentTask__tasks">
-      <div
-        v-for="task in info"
+      <StatusTaskToCheckedStudent
+        v-for="(info, idx) in paginatedData"
+        :key="idx"
+        :info="info"
         class="studentTask__info"
-      >
-        <p>{{ task.task_test }}</p>
-        <p>Уровень - {{ task.level }}</p>
+      />
 
-      </div>
+    </div>
+    <div class="buttons">
+      <button
+        class="buttons__btn"
+        @click="prevPage"
+        :disabled="pageNumber == 0"
+      >Назад</button><button
+        class="buttons__btn"
+        @click="nextPage"
+        :disabled="pageNumber >= pageCount - 1"
+      >
+        Вперед
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import StatusTaskToCheckedStudent from '../TaskToCheckeStudent/StatusTaskToCheckedStudent.vue';
 export default {
+  components: {
+    StatusTaskToCheckedStudent
+  },
   data() {
     return {
       token: '',
-      info: ''
+      info: '',
+      pageNumber: 0,
+      size: 10,
     }
   },
-
+  computed: {
+    pageCount() {
+      let l = this.info.length,
+        s = this.size;
+      // редакция переводчика спасибо комментаторам
+      return Math.ceil(l / s);
+      // оригинал
+      // return Math.floor(l / s);
+    },
+    paginatedData() {
+      const start = this.pageNumber * this.size,
+        end = start + this.size;
+      return this.info.slice(start, end);
+    },
+  },
   methods: {
-
+    nextPage() {
+      this.pageNumber++;
+    },
+    prevPage() {
+      this.pageNumber--;
+    },
   },
 
   mounted() {
@@ -37,30 +74,24 @@ export default {
       },
     }).then(response => {
       this.info = response.data
-      console.log(response.data)
     })
   },
 }
 </script>
 
 <style scoped lang="scss">
-.studentTask {
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
 
-  &__tasks {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-  }
-
-  &__info {
-    display: flex;
-    justify-content: space-between;
+  &__btn {
+    padding: 0.625rem;
     background-color: #fff;
-    border-radius: 0.5rem;
     border: 1px solid #000;
-    padding: .625rem;
+    border-radius: 0.5rem;
     cursor: pointer;
   }
 }
