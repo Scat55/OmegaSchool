@@ -71,7 +71,6 @@
             placeholder="Обратная связь по заданию"
             class="estimation__message"
             v-model="message"
-            v-if="this.valChek === '1'"
           ></textarea>
           <button class="estimation__btn" type="submit">Отправить</button>
         </form>
