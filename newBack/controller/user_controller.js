@@ -375,7 +375,7 @@ class User_controller {
         }
     }
 
-    async getTasksAnswerForStudent(req, res) {ы
+    async getTasksAnswerForStudent(req, res) {
         try {
             const user_id = req.user_id;
             const test_id = req.params.testID;

@@ -5,15 +5,16 @@
         <p class="taskDetal__back">Вернуться к списку заданий</p>
       </router-link>
       <div class="taskDetal__title">
-        <h2>{{ infoTask.title
-        }}</h2>
+        <h2>{{ infoTask.title }}</h2>
       </div>
       <div class="taskDetal__infoTask">
         <p>Название: {{ infoTask.test_text }}</p>
         <p class="taskDetal__infoTask__complexity">Уровень задания: {{ infoTask.level }}</p>
         <p class="taskDetal__infoTask__topic">Предмет: {{ infoTask.subject }}</p>
       </div>
-      <div class="taskDetal__bodyTask"><span>Условие задания:</span> {{ infoTask.test_description }}</div>
+      <div class="taskDetal__bodyTask">
+        <span>Условие задания:</span> {{ infoTask.test_description }}
+      </div>
       <img
         v-if="this.infoTask.add_img"
         :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + infoTask.add_img)"
@@ -32,15 +33,11 @@
           :class="{ rotate: isShow }"
         />
 
-        <div
-          class="taskDetal__infoFile"
-          v-if="isShow"
-        >
+        <div class="taskDetal__infoFile" v-if="isShow">
           <p>{{ this.infoTask.add_file }}</p>
-          <a
-            v-if="this.infoTask.add_file !== null"
-            class="downloadLink"
-          ><button @click="downloadFiles()">Скачать</button></a>
+          <a v-if="this.infoTask.add_file !== null" class="downloadLink"
+            ><button @click="downloadFiles()">Скачать</button></a
+          >
           <p v-else>Файлов нет</p>
         </div>
       </div>
@@ -53,105 +50,52 @@
         v-for="options in this.infoTask.questions"
         v-if="infoTask.level == 1"
       >
-
         <ul class="taskDetal__list">
-          <li
-            class="taskDetal__question"
-            v-for="question in options.options"
-          >
-
-            {{ question.text }} - <input
-              type="checkbox"
-              name="question.text"
-              :value="question.text"
-              ref="checkAnswer"
-            >
+          <li class="taskDetal__question" v-for="question in options.options">
+            {{ question.text }} -
+            <input type="checkbox" name="question.text" :value="question.text" ref="checkAnswer" />
           </li>
         </ul>
       </div>
 
       <!-- Решение начало -->
-      <div
-        class="taskDetal__answer"
-        v-if="infoTask.level == 2 || infoTask.level == 3"
-      >
+      <div class="taskDetal__answer" v-if="infoTask.level == 2 || infoTask.level == 3">
         <textarea
           class="taskDetal__infoAnswer"
           placeholder="Введите ваш ответ"
           v-model="infoArea"
         ></textarea>
-        <input
-          type="file"
-          class="taskDetal__file"
-          ref="file"
-          multiple
-        >
+        <input type="file" class="taskDetal__file" ref="file" multiple />
       </div>
       <!-- Решение конец -->
 
       <!-- Подсказка начало -->
-      <div
-        class="taskDetal__hitn"
-        v-if="hint"
-      >
-        <p>{{ infoTask.task_hint }}</p>
+      <div class="taskDetal__hitn" v-if="hint">
+        <p>{{ this.hint }}</p>
       </div>
       <!-- Подсказка конец -->
 
       <!-- Ответ начало -->
 
-      <div
-        class="taskDetal__answer"
-        v-if="answer"
-      >
-        <p>{{ infoTask.task_answer }}</p>
-
+      <div class="taskDetal__answer" v-if="answer">
+        <p>{{ this.answer }}</p>
       </div>
       <!-- Ответ конец -->
 
       <!-- Кнопки  начало -->
-      <div
-        class="taskDetal__buttons"
-        v-if="infoTask.level == 2"
-      >
-        <button
-          class="taskDetal__btn"
-          @click="sendLevelTwoTest"
-        >Отправить</button>
-        <button
-          class="taskDetal__btn"
-          @click="showHint"
-        >Взять подсказку</button>
-        <button
-          class="taskDetal__btn"
-          @click="showAnswer"
-        >Показать ответ</button>
+      <div class="taskDetal__buttons" v-if="infoTask.level == 2">
+        <button class="taskDetal__btn" @click="sendLevelTwoTest">Отправить</button>
+        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
+        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
-      <button
-        class="taskDetal__button"
-        v-if="infoTask.level == 1"
-      >Отправить</button>
+      <button class="taskDetal__button" v-if="infoTask.level == 1">Отправить</button>
 
-      <div
-        class="taskDetal__buttons"
-        v-if="infoTask.level == 3"
-      >
-        <button
-          class="taskDetal__btn"
-          @click="sendLevelThreeTest"
-        >Отправить</button>
-        <button
-          class="taskDetal__btn"
-          @click="showHint"
-        >Взять подсказку</button>
-        <button
-          class="taskDetal__btn"
-          @click="showAnswer"
-        >Показать ответ</button>
+      <div class="taskDetal__buttons" v-if="infoTask.level == 3">
+        <button class="taskDetal__btn" @click="sendLevelThreeTest">Отправить</button>
+        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
+        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
       <!-- Кнопки конец -->
-
-
 
       <!--  Блок только для 1 лвл заданий START  -->
       <!-- <div
@@ -211,13 +155,13 @@ export default {
       infoTask: '',
       teachrID: '',
       valChek: '',
-      answer: false,
+      answer: '',
       isCorrect: '',
       infoArea: '',
-      hint: false,
+      hint: '',
       testID: '',
       file: '',
-      token: ''
+      token: '',
     };
   },
   // computed: {
@@ -227,10 +171,9 @@ export default {
   // },
   methods: {
     test() {
-      console.log(this.infoArea)
-
+      console.log(this.infoArea);
     },
-    sendLevelOneTest() { },
+    sendLevelOneTest() {},
     sendLevelTwoTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
       this.file = this.$refs.file.files;
@@ -238,17 +181,15 @@ export default {
         return el;
       });
 
-      axios.post(`/api/getAnswerByStudent2/${this.testID}/${this.infoArea}`,
-        allFiles,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-      alert("Задание отпралено на проверку")
-      this.infoArea = ''
-      this.$router.push('/task')
+      axios.post(`/api/getAnswerByStudent2/${this.testID}/${this.infoArea}`, allFiles, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Задание отпралено на проверку');
+      this.infoArea = '';
+      this.$router.push('/task');
     },
     sendLevelThreeTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -257,25 +198,49 @@ export default {
         return el;
       });
 
-      axios.post(`/api/getAnswerByStudent3/${this.testID}/${this.infoArea}`,
-        allFiles,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-      alert("Задание отпралено на проверку")
-      this.infoArea = ''
-      this.$router.push('/task')
+      axios.post(`/api/getAnswerByStudent3/${this.testID}/${this.infoArea}`, allFiles, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Задание отпралено на проверку');
+      this.infoArea = '';
+      this.$router.push('/task');
     },
     showAnswer() {
-      this.hint = false
-      this.answer = true
+      this.token = JSON.parse(localStorage.getItem('local'));
+      axios
+        .post(
+          `/api/getTasksAnswerForStudent/${this.testID}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((response) => {
+          this.answer = response.data.task_answer;
+        });
     },
     showHint() {
-      this.answer = false
-      this.hint = true
+      this.token = JSON.parse(localStorage.getItem('local'));
+      axios
+        .post(
+          `/api/getTasksHintForStudent/${this.testID}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((response) => {
+          this.hint = response.data.task_hint;
+        });
     },
     // Скачивание файла
     async downloadFiles() {
@@ -317,8 +282,8 @@ export default {
     //     alert('Неверно. Вы получили 0 баллов.');
     //   }
     // },
-    helpMe() { },
-    showMeAnswer() { },
+    helpMe() {},
+    showMeAnswer() {},
     showFiles() {
       this.isShow = !this.isShow;
     },
@@ -329,17 +294,19 @@ export default {
 
   mounted() {
     this.token = JSON.parse(localStorage.getItem('local'));
-    axios.get(`/api/getTasksForStudent/${this.id}`, {
-      headers: {
-        Authorization: `Bearer ${this.token.token}`,
-        'Content-Type': 'application/json',
-      },
-    }).then(response => {
-      console.log(response.data)
-      this.infoTask = response.data
-      this.teachrID = response.data.user_id
-      this.testID = response.data.test_id
-    });
+    axios
+      .get(`/api/getTasksForStudent/${this.id}`, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        this.infoTask = response.data;
+        this.teachrID = response.data.user_id;
+        this.testID = response.data.test_id;
+      });
 
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
@@ -356,7 +323,7 @@ export default {
   background: white;
   // padding-top: .625rem;
   // padding-left: 1rem;
-  padding: .625rem 0.625rem 1rem 1rem;
+  padding: 0.625rem 0.625rem 1rem 1rem;
   border-radius: 1rem;
   border: 2px solid #487fb8;
 
@@ -378,7 +345,7 @@ export default {
     flex-direction: column;
     line-height: 160%;
 
-    &>span {
+    & > span {
       font-weight: bold;
     }
   }
@@ -452,7 +419,6 @@ export default {
   }
 
   &__question {
-
     list-style: none;
   }
 
@@ -464,12 +430,12 @@ export default {
   }
 
   &__btn {
-    padding: .625rem;
+    padding: 0.625rem;
     background-color: #fff;
     border-radius: 0.5rem;
     cursor: pointer;
     border: 1px solid #000;
-    transition: all .3s;
+    transition: all 0.3s;
 
     &:hover {
       transform: scale(1.1);
@@ -478,12 +444,12 @@ export default {
 
   &__button {
     margin-top: 1rem;
-    padding: .625rem;
+    padding: 0.625rem;
     background-color: #fff;
     border-radius: 0.5rem;
     cursor: pointer;
     border: 1px solid #000;
-    transition: all .3s;
+    transition: all 0.3s;
 
     &:hover {
       transform: scale(1.1);
@@ -498,7 +464,7 @@ export default {
   }
 
   &__infoAnswer {
-    padding: .625rem;
+    padding: 0.625rem;
     resize: none;
     border-radius: 1rem;
     width: 27rem;
@@ -509,7 +475,6 @@ export default {
     margin-top: 1rem;
   }
 }
-
 
 .container_answer {
   //padding: 5px 0 15px 0;
@@ -524,12 +489,10 @@ export default {
   display: flex;
   align-items: center;
 
-  &>input {
+  & > input {
     margin-right: 5px;
   }
 }
-
-
 
 .files {
   display: inline-block;
