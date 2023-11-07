@@ -905,6 +905,7 @@ class User_controller {
                 subject: test.subject,
                 add_img: test.add_img,
                 // Include the student solution details
+                answer_student: studentSolution.student_solution,
                 checked: studentSolution.checked, // Replace with actual column name
                 check_hint: studentSolution.check_hint, // Replace with actual column name
                 check_answer: studentSolution.check_answer, // Replace with actual column name
