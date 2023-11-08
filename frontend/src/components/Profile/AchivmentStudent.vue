@@ -33,7 +33,7 @@ export default {
     </div>
     <div class="achievement_body">
       <div class="selected item1" v-show="selectedItem === ''">
-<AchivkaShablon title="В гробу" st-atus="Не получено" conditions="Условия" img-alt="Текст" img-src="../../assets/images/prizes/0.png"/>
+        
       </div>
       <div class="selected item2" v-show="selectedItem === 'Биология'">
         <p>Твой балл по Биологии {{ grades[0].biology }}</p>

@@ -84,12 +84,12 @@
           <MySolvedTask v-if="isActiveComponents.MySolvedTask === true" />
           <MyAddTask v-if="isActiveComponents.MyAddTask === true" />
           <AchivmentStudent
-            :grades="person.grades"
+            :grades="person.grades_student"
             :achievements="person.achievements"
             v-if="isActiveComponents.AchivStud === true"
           />
           <RatingTeacher 
-          :grades="person.grades"
+          :grades="person.grades_teacher"
            v-if="isActiveComponents.RatingTeach === true" 
            />
         </div>
@@ -140,7 +140,8 @@ export default {
         item: '',
         email: '',
         expert: null,
-        grades: '',
+        grades_student: '',
+        grades_teacher: '',
         achievements: '',
       },
       isActiveComponents: {
@@ -187,7 +188,8 @@ export default {
       //   // this.person.expert = true
       // }
       this.person.student = response.data.user.type_user === 'Ученик';
-      this.person.grades = response.data.grades_teacher;
+      this.person.grades_teacher = response.data.grades_teacher;
+      this.person.grades_student = response.data.grades;
       this.person.achievements = response.data.achievements;
     });
   },
