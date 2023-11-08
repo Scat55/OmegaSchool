@@ -137,6 +137,11 @@ export default {
   gap: 20px;
 
   .achievement-card {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
     flex: 1 1 calc(33.333% - 20px);
     display: flex;
     flex-direction: column;
@@ -145,9 +150,9 @@ export default {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 1;
     &.inactive {
-      opacity: 0.5;
+      //opacity: 0.5;
+      filter: grayscale(100%);
       pointer-events: none;
     }
 
@@ -184,12 +189,6 @@ export default {
   .achievement-card {
     flex-basis: 100%;
     max-width: 100%;
-    opacity: 1;
-
-    &.inactive {
-      opacity: 0.1;
-      pointer-events: none;
-    }
   }
 }
 
