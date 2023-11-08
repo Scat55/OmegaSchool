@@ -22,7 +22,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="achievement_main">
     <div class="achievement_title">
       <p>Витрина достижений</p>
       <select v-model="selectedItem">
@@ -317,6 +317,13 @@ export default {
 </template>
 
 <style scoped lang="scss">
+.achievement_main {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .achievement_title {
   text-align: center;
 
