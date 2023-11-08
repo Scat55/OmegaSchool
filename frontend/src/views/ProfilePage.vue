@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-    <!-- <ChatBot /> -->
+    <ChatBot />
   </div>
 
 </template>
