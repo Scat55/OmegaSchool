@@ -8,7 +8,7 @@
         @click="ChangeIsVisible"
       />
 
-      <form class="chat__form" v-if="isVisible">
+      <form class="chat__form">
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
@@ -17,18 +17,21 @@
               <p class="chat__form-message">{{ message }}</p>
             </div>
 
-            <div class="chat__form-user">
-              <p class="chat__form-message">{{ myMessage }}</p>
+            <div class="chat__form-user" v-if="newMessage.length">
+              <div class="chat__form-message" v-for="mess in newMessage">{{ mess }}</div>
               <img src="../assets/images/robot_chat.png" alt="Robot" class="chat__form-img" />
             </div>
           </div>
         </div>
-        <input
-          type="text"
-          class="chat__message"
-          placeholder="Введите ваше сообщение"
-          v-model="myMessage"
-        />
+        <div class="send">
+          <input
+            type="text"
+            class="chat__input"
+            placeholder="Введите ваше сообщение"
+            v-model="myMessage"
+          />
+          <p @click="sendMessage" class="chat__push">Click</p>
+        </div>
       </form>
     </div>
   </div>
@@ -42,16 +45,21 @@ export default {
       isVisible: false,
       message: 'Hello',
       myMessage: '',
+      newMessage: [],
     };
   },
   methods: {
     showChat() {
       setTimeout(() => {
         this.chat = true;
-      }, 5000);
+      });
     },
     ChangeIsVisible() {
       this.isVisible = !this.isVisible;
+    },
+    sendMessage() {
+      this.newMessage.push(this.myMessage);
+      this.myMessage = '';
     },
   },
   mounted() {
@@ -125,16 +133,23 @@ export default {
 
     flex: 0;
   }
-  &__message {
-    flex: 0;
-    // display: inline-block;
-    align-content: space-around;
+  &__input {
+    width: 80%;
+    padding: 0.625rem;
+    border-radius: 0.5rem;
+    border: 1px solid #000;
+    outline: none;
+  }
+  &__push {
+    font-size: 0.5rem;
   }
 }
-
-.test {
-  position: fixed;
-  bottom: 20rem;
-  right: 0;
+.send {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  p {
+    cursor: pointer;
+  }
 }
 </style>
