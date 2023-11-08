@@ -110,6 +110,7 @@ export default {
 
     &-message {
       font-size: 0.7rem;
+      word-wrap: break-word;
     }
   }
   &__img {
