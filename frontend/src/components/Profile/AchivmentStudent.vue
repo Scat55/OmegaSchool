@@ -37,28 +37,28 @@ export default {
         <div class="my_achivment">
           <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">В путь к знаниям!</h4>
+            <p class="achievement-text"> Ваш первый балл заложил основу стремления к обучению. Это только начало!</p>
           </div>
           <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">100 баллов набрано!</h4>
+            <p class="achievement-text"> 100 баллов - и вы уже доказали свою усердность. Продолжайте в том же духе!</p>
           </div>
           <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">500 баллов за плечами!</h4>
+            <p class="achievement-text">Собрав 500 баллов, вы показываете истинную жажду знаний. Вперед к новым вершинам!</p>
           </div>
           <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">1000 баллов - впечатляет!</h4>
+            <p class="achievement-text">Вы достигли рубежа в 1000 баллов! Ваши знания и усилия заслуживают восхищения.</p>
           </div>
           <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">7000 баллов - покорение вершин!</h4>
+            <p class="achievement-text">7000 баллов! Ваше имя будет вписано в анналы учебных достижений.</p>
           </div>
         </div>
       </div>
@@ -388,6 +388,7 @@ export default {
 
 .title {
   margin-bottom: 10px;
+  text-align: center;
 }
 
 @media (max-width: 767px) {
