@@ -8,7 +8,7 @@
         @click="ChangeIsVisible"
       />
 
-      <form class="chat__form">
+      <form class="chat__form" v-if="isVisible">
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
@@ -48,7 +48,7 @@ export default {
     showChat() {
       setTimeout(() => {
         this.chat = true;
-      });
+      }, 5000);
     },
     ChangeIsVisible() {
       this.isVisible = !this.isVisible;
