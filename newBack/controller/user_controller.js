@@ -578,14 +578,14 @@ class User_controller {
                 const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
                 const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
-                // Удаляем поля is_correct, если пользователь - ученик
-                const options = optionsResult.rows.map(option => {
-                    if (typeUser === "Ученик") {
-                        const { is_correct, ...optionWithoutCorrect } = option;
-                        return optionWithoutCorrect;
-                    }
-                    return option;
-                });
+                // // Удаляем поля is_correct, если пользователь - ученик
+                // const options = optionsResult.rows.map(option => {
+                //     if (typeUser === "Ученик") {
+                //         const { is_correct, ...optionWithoutCorrect } = option;
+                //         return optionWithoutCorrect;
+                //     }
+                //     return option;
+                // });
 
                 return {
                     options: options
@@ -758,7 +758,59 @@ class User_controller {
         }
     }
 
+    async getTasksForStudentWithOcenka(req, res){
+        try {
+            const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
 
+            // Получаем список test_id и test_level для данного user_id
+            const studentTestsSql = `
+        SELECT test_id, test_level, decided
+        FROM student_solutions
+        WHERE user_id = $1 and decided = 'Решено';
+    `;
+
+            // Выполнение запроса к базе данных
+            const studentTestsResult = await db.query(studentTestsSql, [user_id]);
+
+            // Теперь для каждого test_id получим название теста из соответствующей таблицы
+            const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
+                const levelTestSql = `
+            SELECT task_test, classes, subject
+            FROM level_${test.test_level}_tests
+            WHERE test_id = $1;
+        `;
+                console.log([test.test_id]); // Убедитесь, что этот console.log нужен для отладки
+                const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+                if (levelTestResult.rows.length > 0) {
+                    const testDetails = levelTestResult.rows[0];
+                    return {
+                        id: test.test_id,
+                        complexity: test.test_level,
+                        title: testDetails.task_test,
+                        class: testDetails.classes,
+                        topic: testDetails.subject,
+                        status: test.decided
+                    };
+                } else {
+                    return {
+                        id: test.test_id,
+                        complexity: test.test_level,
+                        title: 'Название не найдено',
+                        class: 'Класс не найден',
+                        topic: 'Предмет не найден',
+                        status: 'Предмет не найден'
+                    };
+                }
+            }));
+
+            // Отправляем результат
+            res.json(testNames);
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
 
 
 
@@ -968,7 +1020,7 @@ class User_controller {
             const fileDetails = req.files.map(file => ({
                 name: file.originalname,
                 path: file.path
-            }));  
+            }));
             const filePaths = req.files.map(file => file.path);
             const filesString = filePaths.join(',');
             console.log("Путь к файлу:", fileDetails);
