@@ -101,6 +101,13 @@ export default {
 </template>
 
 <style scoped lang="scss">
+.main_rait {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .title_my_rating {
   text-align: center;
   font-size: 30px;
@@ -137,11 +144,7 @@ export default {
   gap: 20px;
 
   .achievement-card {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    
+
     flex: 1 1 calc(33.333% - 20px);
     display: flex;
     flex-direction: column;
