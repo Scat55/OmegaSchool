@@ -11,7 +11,9 @@
       <div class="header__logo-lists" v-if="this.$route.path != '/auth'">
         <ul class="header__logo-list">
           <router-link to="/task" class="router">
-            <li v-if="this.$store.state.isAuth" class="header__logo-item">Задания</li>
+            <li v-if="this.$store.state.isAuth && this.type === 'Ученик'" class="header__logo-item">
+              Задания
+            </li>
           </router-link>
           <li
             class="header__logo-item login"
@@ -44,6 +46,7 @@ export default {
     return {
       id: this.$router.currentRoute.params['id'],
       statusMenu: false,
+      type: '',
     };
   },
 
@@ -99,6 +102,12 @@ export default {
       }
       console.log(this.id);
     },
+  },
+
+  mounted() {
+    axios.get('/api/user_list').then((res) => {
+      this.type = res.data;
+    });
   },
 };
 </script>
