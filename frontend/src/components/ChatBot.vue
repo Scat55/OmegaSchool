@@ -19,7 +19,18 @@
 
             <div class="chat__form-user" v-if="newMessage.length">
               <div class="chat__form-message" v-for="mess in newMessage">{{ mess }}</div>
-              <img src="../assets/images/robot_chat.png" alt="Robot" class="chat__form-img" />
+              <img
+                v-if="gender === 'Мужской'"
+                src="../assets/images/Avatar/boy.png"
+                class="chat__form-avatar"
+                alt="Аватарка"
+              />
+              <img
+                v-if="gender === 'Женский'"
+                src="../assets/images/Avatar/girl (3).png"
+                class="chat__form-avatar"
+                alt="Аватарка"
+              />
             </div>
           </div>
         </div>
@@ -39,6 +50,14 @@
 
 <script>
 export default {
+  props: {
+    gender: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
+  },
   data() {
     return {
       chat: false,
@@ -114,11 +133,16 @@ export default {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      gap: 0.5rem;
     }
 
     &-message {
       font-size: 0.7rem;
       word-wrap: break-word;
+    }
+    &-avatar {
+      width: 10%;
+      border-radius: 1rem;
     }
   }
   &__img {
@@ -126,6 +150,7 @@ export default {
     cursor: pointer;
     // z-index: 100;
   }
+
   &__label {
     text-align: center;
     background-color: rgb(26, 193, 248);
