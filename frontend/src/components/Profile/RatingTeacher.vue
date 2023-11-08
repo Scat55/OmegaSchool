@@ -12,7 +12,6 @@ export default {
   },
   data() {
     return {
-
     }
   },
 
@@ -60,6 +59,17 @@ export default {
 
 
     <h2 class="title_my_rating">Мои достижения</h2>
+    <div class="grades_teacher">
+      <p>Количество добавленных заданий: {{ 
+        grades[0].informatics
+         + grades[0].mathematics
+          + grades[0].physics
+           + grades[0].chemistry
+            + grades[0].biology
+             + grades[0].geography
+              + grades[0].technology
+      }}</p>
+    </div>
     <div class="my_achivment">
       <div class="achievement-card">
         <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
@@ -124,10 +134,10 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 20px; // Определяем пространство между карточками
+  gap: 20px;
 
   .achievement-card {
-    flex: 1 1 calc(33.333% - 20px); // каждая карточка занимает 1/3 ширины контейнера минус gap
+    flex: 1 1 calc(33.333% - 20px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -137,17 +147,17 @@ export default {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     opacity: 1;
     &.inactive {
-      opacity: 0.5; // Полупрозрачность для неактивных карточек
-      pointer-events: none; // Отключение взаимодействия с пользователем
+      opacity: 0.5;
+      pointer-events: none;
     }
 
     &:not(:nth-child(3n)) {
-      margin-right: 0; // Убираем margin справа для каждой третьей карточки
+      margin-right: 0;
     }
 
     .achievement-image {
-      width: 100%; // или фиксированный размер, если нужно
-      height: auto; // сохранить пропорции изображения
+      width: 100%;
+      height: auto;
       margin-bottom: 15px;
     }
 
@@ -166,19 +176,19 @@ export default {
   }
 }
 
-@media (max-width: 767px) { // Медиа-запрос для мобильных устройств
+@media (max-width: 767px) {
   .my_achivment {
-    justify-content: center; // Центрируем карточки на маленьких экранах
+    justify-content: center;
   }
 
   .achievement-card {
-    flex-basis: 100%; // Карточки занимают всю ширину на маленьких экранах
-    max-width: 100%; // Ограничиваем максимальную ширину для учета отступов
+    flex-basis: 100%;
+    max-width: 100%;
     opacity: 1;
 
     &.inactive {
-      opacity: 0.1; // Полупрозрачность для неактивных карточек
-      pointer-events: none; // Отключение взаимодействия с пользователем
+      opacity: 0.1;
+      pointer-events: none;
     }
   }
 }
