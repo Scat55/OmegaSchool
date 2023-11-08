@@ -140,31 +140,31 @@ export default {
       <div class="selected item4" v-show="selectedItem === 'Информатика'">
         <p>Твой балл по Информатика {{ grades[0].informatics }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title" >Первое задание создано!</h4>
             <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">25 заданий в арсенале!</h4>
             <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">50 заданий для жаждущих знаний!</h4>
             <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">75 шедевров педагогики!</h4>
             <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">100 заданий - вековой юбилей!</h4>
