@@ -138,7 +138,7 @@ export default {
         </div>
       </div>
       <div class="selected item4" v-show="selectedItem === 'Информатика'">
-        <p>Твой балл по Информатика {{ grades[0].informatics }}</p>
+        <p>Твой балл по Информатике {{ grades[0].informatics }}</p>
         <div class="my_achivment">
           <div :class="['achievement-card', grades[0].informatics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/inform (3).png" alt="achievement.title" class="achievement-image">
@@ -173,7 +173,7 @@ export default {
         </div>
       </div>
       <div class="selected item5" v-show="selectedItem === 'Математика'">
-        <p>Твой балл по Математика {{ grades[0].mathematics }}</p>
+        <p>Твой балл по Математике {{ grades[0].mathematics }}</p>
         <div class="my_achivment">
           <div :class="['achievement-card', grades[0].mathematics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/math (7).png" alt="achievement.title" class="achievement-image">
