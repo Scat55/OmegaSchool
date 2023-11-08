@@ -105,66 +105,66 @@ export default {
       <div class="selected item3" v-show="selectedItem === 'География'">
         <p>Твой балл по Географии {{ grades[0].geography }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].geography >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">Молодой Путешественник</h4>
+            <h4 class="title">Первый балл по географии!</h4>
+            <p class="achievement-text">Вы начали путешествие по картам и континентам, открывая новые уголки мира.</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].geography >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Исследователь Мира</h4>
+            <h4 class="title">50 баллов за картографические открытия!</h4>
+            <p class="achievement-text">50 баллов свидетельствуют о вашем стремлении познать разнообразие нашей планеты.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].geography >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Знаток Регионов</h4>
+            <h4 class="title">250 баллов за исследование Земли!</h4>
+            <p class="achievement-text"> Вы погрузились в изучение климатов, почв и ландшафтов, расширяя свои географические горизонты.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].geography >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Магистр Картографии</h4>
+            <h4 class="title">500 баллов за мастерство в географии!</h4>
+            <p class="achievement-text">С навыками картографа и знатока географических данных вы достигли новых высот в обучении.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].geography >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Географический Гуру</h4>
+            <h4 class="title">1000 баллов за глубокие знания Земли!</h4>
+            <p class="achievement-text">1000 баллов отмечают ваше глубокое понимание физических и культурных ландшафтов нашей планеты.</p>
           </div>
         </div>
       </div>
       <div class="selected item4" v-show="selectedItem === 'Информатика'">
         <p>Твой балл по Информатика {{ grades[0].informatics }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title" >Первое задание создано!</h4>
             <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">25 заданий в арсенале!</h4>
             <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">50 заданий для жаждущих знаний!</h4>
             <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">75 шедевров педагогики!</h4>
             <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].informatics >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title"></h4>
             <h4 class="title">100 заданий - вековой юбилей!</h4>
