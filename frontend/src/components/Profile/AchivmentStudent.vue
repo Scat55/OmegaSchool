@@ -10,9 +10,14 @@ export default {
   data() {
     return {
       selectedItem: '',
+      sum: '',
     };
   },
   methods: {},
+  computed: {},
+  mounted(){
+    this.sum = this.grades[0].informatics + this.grades[0].mathematics + this.grades[0].physics + this.grades[0].chemistry + this.grades[0].biology + this.grades[0].geography + this.grades[0].technology;
+  }
 };
 </script>
 
@@ -33,67 +38,67 @@ export default {
     </div>
     <div class="achievement_body">
       <div class="selected item1" v-show="selectedItem === ''">
-        <p>Количество решенных задач: </p>
+        <p>Общее количество полученных баллов: {{ sum }} </p>
         <div class="my_achivment">
           <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
-          </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
-            <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
-          </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
-            <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
-          </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
-            <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">В путь к знаниям!</h4>
+            <p class="achievement-text"> Ваш первый балл заложил основу стремления к обучению. Это только начало!</p>
           </div>
           <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+            <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
+            <h4 class="achievement-title">100 баллов набрано!</h4>
+            <p class="achievement-text"> 100 баллов - и вы уже доказали свою усердность. Продолжайте в том же духе!</p>
+          </div>
+          <div :class="['achievement-card', sum >= 500 ? '' : 'inactive' ]">
+            <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
+            <h4 class="achievement-title">500 баллов за плечами!</h4>
+            <p class="achievement-text">Собрав 500 баллов, вы показываете истинную жажду знаний. Вперед к новым вершинам!</p>
+          </div>
+          <div :class="['achievement-card', sum >= 1000 ? '' : 'inactive' ]">
+            <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
+            <h4 class="achievement-title">1000 баллов - впечатляет!</h4>
+            <p class="achievement-text">Вы достигли рубежа в 1000 баллов! Ваши знания и усилия заслуживают восхищения.</p>
+          </div>
+          <div :class="['achievement-card', sum >= 7000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">7000 баллов - покорение вершин!</h4>
+            <p class="achievement-text">7000 баллов! Ваше имя будет вписано в анналы учебных достижений.</p>
           </div>
         </div>
       </div>
       <div class="selected item2" v-show="selectedItem === 'Биология'">
         <p>Твой балл по Биологии {{ grades[0].biology }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">Начинающий Натуралист</h4>
-            <h4 class="title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="title">Первый балл по биологии!</h4>
+            <p class="achievement-text">Вы открыли для себя удивительный мир живой природы. Ваше путешествие только начинается!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Исследователь Живой Природы</h4>
+            <h4 class="title" >50 баллов за изучение жизни!</h4>
+            <p class="achievement-text">Получив 50 баллов по биологии, вы погрузились в изучение сложности живых организмов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Эксперт Биодиверситета</h4>
+            <h4 class="title" >250 баллов за понимание биоразнообразия!</h4>
+            <p class="achievement-text"> Ваше знание о живых существах и их экосистемах достигло впечатляющих 250 баллов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Мастер Генетики</h4>
+            <h4 class="title" >500 баллов по биологии!</h4>
+            <p class="achievement-text">Вы достигли уровня понимания сложных биологических процессов и генетических кодов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Биолог-Инноватор</h4>
+            <h4 class="title" >1000 баллов за вклад в науку о жизни!</h4>
+            <p class="achievement-text">С набором в 1000 баллов вы внесли огромный вклад в науку о жизни, открывая новые горизонты для исследований.</p>
           </div>
         </div>
       </div>
@@ -388,6 +393,7 @@ export default {
 
 .title {
   margin-bottom: 10px;
+  text-align: center;
 }
 
 @media (max-width: 767px) {
