@@ -68,7 +68,7 @@ export default {
 
 
     <h2 class="title_my_rating">Мои достижения</h2>
-    <div class="grades_teacher">
+    <div class="grades_teacher countExercise">
       <p>Количество добавленных заданий: {{ sum }}</p>
     </div>
     <div class="my_achivment">
@@ -194,6 +194,10 @@ export default {
     flex-basis: 100%;
     max-width: 100%;
   }
+}
+
+.countExercise p {
+  margin-bottom: 0;
 }
 
 </style>
