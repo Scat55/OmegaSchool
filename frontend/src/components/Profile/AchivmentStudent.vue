@@ -10,9 +10,14 @@ export default {
   data() {
     return {
       selectedItem: '',
+      sum: '',
     };
   },
   methods: {},
+  computed: {},
+  mounted(){
+    this.sum = this.grades[0].informatics + this.grades[0].mathematics + this.grades[0].physics + this.grades[0].chemistry + this.grades[0].biology + this.grades[0].geography + this.grades[0].technology;
+  }
 };
 </script>
 
@@ -33,29 +38,29 @@ export default {
     </div>
     <div class="achievement_body">
       <div class="selected item1" v-show="selectedItem === ''">
-        <p>Количество решенных задач: </p>
+        <p>Общее количество полученных баллов: {{ sum }} </p>
         <div class="my_achivment">
           <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">В путь к знаниям!</h4>
             <p class="achievement-text"> Ваш первый балл заложил основу стремления к обучению. Это только начало!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">100 баллов набрано!</h4>
             <p class="achievement-text"> 100 баллов - и вы уже доказали свою усердность. Продолжайте в том же духе!</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', sum >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">500 баллов за плечами!</h4>
             <p class="achievement-text">Собрав 500 баллов, вы показываете истинную жажду знаний. Вперед к новым вершинам!</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', sum >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">1000 баллов - впечатляет!</h4>
             <p class="achievement-text">Вы достигли рубежа в 1000 баллов! Ваши знания и усилия заслуживают восхищения.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', sum >= 7000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">7000 баллов - покорение вершин!</h4>
             <p class="achievement-text">7000 баллов! Ваше имя будет вписано в анналы учебных достижений.</p>
