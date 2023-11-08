@@ -8,7 +8,7 @@
         @click="ChangeIsVisible"
       />
 
-      <form class="chat__form">
+      <form class="chat__form" @submit.prevent v-if="isVisible">
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
@@ -17,20 +17,8 @@
               <p class="chat__form-message">{{ message }}</p>
             </div>
 
-            <div class="chat__form-user" v-if="newMessage.length">
-              <div class="chat__form-message" v-for="mess in newMessage">{{ mess }}</div>
-              <img
-                v-if="gender === 'Мужской'"
-                src="../assets/images/Avatar/boy.png"
-                class="chat__form-avatar"
-                alt="Аватарка"
-              />
-              <img
-                v-if="gender === 'Женский'"
-                src="../assets/images/Avatar/girl (3).png"
-                class="chat__form-avatar"
-                alt="Аватарка"
-              />
+            <div class="chat__form-user">
+              <UserMessagges :gender="gender" :newMessage="newMessage" v-if="newMessage.length" />
             </div>
           </div>
         </div>
@@ -41,7 +29,9 @@
             placeholder="Введите ваше сообщение"
             v-model="myMessage"
           />
-          <p @click="sendMessage" class="chat__push">Click</p>
+          <button @click="sendMessage" class="chat__push" :disabled="this.myMessage.length === 0">
+            Click
+          </button>
         </div>
       </form>
     </div>
@@ -49,7 +39,11 @@
 </template>
 
 <script>
+import UserMessagges from './UserMessages';
 export default {
+  components: {
+    UserMessagges,
+  },
   props: {
     gender: {
       type: String,
@@ -71,13 +65,13 @@ export default {
     showChat() {
       setTimeout(() => {
         this.chat = true;
-      });
+      }, 5000);
     },
     ChangeIsVisible() {
       this.isVisible = !this.isVisible;
     },
     sendMessage() {
-      this.newMessage.push(this.myMessage);
+      this.newMessage.push({ message: this.myMessage });
       this.myMessage = '';
     },
   },
@@ -107,6 +101,7 @@ export default {
     height: 20rem;
     width: 18rem;
     background-color: #fff;
+    overflow: auto;
 
     &-content {
       flex: 1 0 auto;
@@ -128,27 +123,10 @@ export default {
       width: 3rem;
       margin-left: 0.5rem;
     }
-
-    &-user {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.5rem;
-    }
-
-    &-message {
-      font-size: 0.7rem;
-      word-wrap: break-word;
-    }
-    &-avatar {
-      width: 10%;
-      border-radius: 1rem;
-    }
   }
   &__img {
     width: 30%;
     cursor: pointer;
-    // z-index: 100;
   }
 
   &__label {
@@ -164,6 +142,7 @@ export default {
     border-radius: 0.5rem;
     border: 1px solid #000;
     outline: none;
+    margin-left: 0.3rem;
   }
   &__push {
     font-size: 0.5rem;
@@ -172,9 +151,12 @@ export default {
 .send {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  p {
+  gap: 0.5rem;
+  button {
+    width: 50px;
+    height: 20px;
     cursor: pointer;
+    font-size: 0.8rem;
   }
 }
 </style>
