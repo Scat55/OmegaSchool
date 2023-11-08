@@ -70,35 +70,35 @@ export default {
       <div class="selected item2" v-show="selectedItem === 'Биология'">
         <p>Твой балл по Биологии {{ grades[0].biology }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
             <h4 class="achievement-title">Начинающий Натуралист</h4>
-            <h4 class="title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="title">Первый балл по биологии!</h4>
+            <p class="achievement-text">Вы открыли для себя удивительный мир живой природы. Ваше путешествие только начинается!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Исследователь Живой Природы</h4>
+            <h4 class="title" >50 баллов за изучение жизни!</h4>
+            <p class="achievement-text">Получив 50 баллов по биологии, вы погрузились в изучение сложности живых организмов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Эксперт Биодиверситета</h4>
+            <h4 class="title" >250 баллов за понимание биоразнообразия!</h4>
+            <p class="achievement-text"> Ваше знание о живых существах и их экосистемах достигло впечатляющих 250 баллов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Мастер Генетики</h4>
+            <h4 class="title" >500 баллов по биологии!</h4>
+            <p class="achievement-text">Вы достигли уровня понимания сложных биологических процессов и генетических кодов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].biology >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Биолог-Инноватор</h4>
+            <h4 class="title" >1000 баллов за вклад в науку о жизни!</h4>
+            <p class="achievement-text">С набором в 1000 баллов вы внесли огромный вклад в науку о жизни, открывая новые горизонты для исследований.</p>
           </div>
         </div>
       </div>
