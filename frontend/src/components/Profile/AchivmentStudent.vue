@@ -142,173 +142,173 @@ export default {
         <div class="my_achivment">
           <div :class="['achievement-card', grades[0].informatics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">Новичок Кода</h4>
+            <h4 class="title" >Первый балл по информатике!</h4>
+            <p class="achievement-text"> Вы открыли мир программирования и технологий. Продолжайте исследовать!</p>
           </div>
           <div :class="['achievement-card', grades[0].informatics >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Программист-Практик</h4>
+            <h4 class="title">50 баллов в мире кода!</h4>
+            <p class="achievement-text">Ваши 50 баллов по информатике говорят о настоящем интересе к вычислениям и алгоритмам.</p>
           </div>
           <div :class="['achievement-card', grades[0].informatics >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Архитектор Систем</h4>
+            <h4 class="title">250 баллов информатики!</h4>
+            <p class="achievement-text">Вы показали глубокие знания в информатике, набрав 250 баллов. Ваш путь к цифровому превосходству продолжается.</p>
           </div>
           <div :class="['achievement-card', grades[0].informatics >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Информационный Магистр</h4>
+            <h4 class="title">500 баллов по информатике!</h4>
+            <p class="achievement-text">С 500 баллами вы доказали, что информатика для вас не просто предмет, а страсть.</p>
           </div>
           <div :class="['achievement-card', grades[0].informatics >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Великий Программист</h4>
+            <h4 class="title">1000 баллов кода и логики!</h4>
+            <p class="achievement-text">Ваша целеустремленность и знания вывели вас на рубеж в 1000 баллов по информатике. Вы истинный Великий Программист!</p>
           </div>
         </div>
       </div>
       <div class="selected item5" v-show="selectedItem === 'Математика'">
         <p>Твой балл по Математика {{ grades[0].mathematics }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].mathematics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">Начинающий Счетовод</h4>
+            <h4 class="title">Первый балл по математике!</h4>
+            <p class="achievement-text">Вы открыли дверь в мир чисел и фигур. Пусть каждое уравнение будет решено!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].mathematics >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Геометрический Исследователь</h4>
+            <h4 class="title">50 баллов среди форм и фигур!</h4>
+            <p class="achievement-text">Ваши 50 баллов показывают, что геометрия и алгебра стали вашими друзьями.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].mathematics >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Алгебраический Виртуоз</h4>
+            <h4 class="title">250 баллов абстрактного мышления!</h4>
+            <p class="achievement-text">250 баллов - вы искусно оперируете формулами и теоремами. Продолжайте укреплять свои знания!</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].mathematics >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Властелин Чисел</h4>
+            <h4 class="title">500 баллов в царстве переменных!</h4>
+            <p class="achievement-text">Вы достигли 500 баллов, доказав, что переменные и функции подчиняются вашему уму.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].mathematics >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Математический Гений</h4>
+            <h4 class="title">1000 баллов за теоремы и доказательства!</h4>
+            <p class="achievement-text">С 1000 баллами вы вошли в пантеон математических великих. Ваша логика безупречна!</p>
           </div>
         </div>
       </div>
       <div class="selected item6" v-show="selectedItem === 'Технология'">
         <p>Твой балл по Технологии {{ grades[0].technology }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].technology >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">Инициатор Инноваций</h4>
+            <h4 class="title">Первый балл по технологии!</h4>
+            <p class="achievement-text">Ваши первые шаги в мире технологий задали тон вашему техническому прогрессу.</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].technology >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Техник-Конструктор</h4>
+            <h4 class="title">50 баллов за инженерное искусство!</h4>
+            <p class="achievement-text">Собрав 50 баллов, вы показали свою способность к конструированию и проектированию.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].technology >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Инженер-Изобретатель</h4>
+            <h4 class="title">250 баллов за инновационные разработки!</h4>
+            <p class="achievement-text">Вы доказали свою изобретательность и инженерный талант, достигнув 250 баллов.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].technology >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Технологический Эксперт</h4>
+            <h4 class="title">500 баллов за вклад в будущее!</h4>
+            <p class="achievement-text">С 500 баллами вы стали настоящим экспертом в технологиях, способным воплощать будущее уже сегодня.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].technology >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Пионер Технологий</h4>
+            <h4 class="title">1000 баллов за революционные открытия!</h4>
+            <p class="achievement-text">Ваша страсть и усилия привели к значительным технологическим открытиям, что отмечено 1000 баллами.</p>
           </div>
         </div>
       </div>
       <div class="selected item7" v-show="selectedItem === 'Физика'">
         <p>Твой балл по Физике {{ grades[0].physics }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].physics >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">Наблюдатель Явлений</h4>
+            <h4 class="title" >Первый балл по физике!</h4>
+            <p class="achievement-text">Вселенная полна тайн, и вы только начали их разгадывать. Вперед к открытиям!</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].physics >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Экспериментатор </h4>
+            <h4 class="title">50 баллов законов движения!</h4>
+            <p class="achievement-text">Вы изучили основы и собрали 50 баллов, применяя законы Ньютона в реальности.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].physics >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Мастер Теории</h4>
+            <h4 class="title">250 баллов в мире взаимодействий!</h4>
+            <p class="achievement-text">Энергия и сила стали вашими союзниками на пути к 250 баллам.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].physics >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Астрофизик </h4>
+            <h4 class="title" >500 баллов среди звезд и планет!</h4>
+            <p class="achievement-text">Изучив 500 баллов физики, вы приближаетесь к пониманию тайн Вселенной.</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].physics >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Физик-Теоретик</h4>
+            <h4 class="title">1000 баллов за покорение элементарных частиц!</h4>
+            <p class="achievement-text">Ваши 1000 баллов говорят о глубоком понимании сложнейших явлений физики.</p>
           </div>
         </div>
       </div>
       <div class="selected item8" v-show="selectedItem === 'Химия'">
         <p>Твой балл по Химии {{ grades[0].chemistry }}</p>
         <div class="my_achivment">
-          <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].chemistry >= 1 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >Первое задание создано!</h4>
-            <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+            <h4 class="achievement-title">Юный Алхимик</h4>
+            <h4 class="title" >Первый балл за химические исследования!</h4>
+            <p class="achievement-text">Вы сделали первый шаг к раскрытию секретов веществ и их превращений.</p>
           </div>
-          <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].chemistry >= 50 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >25 заданий в арсенале!</h4>
-            <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+            <h4 class="achievement-title">Лаборант-Аналитик</h4>
+            <h4 class="title" >50 баллов за реакции и вещества!</h4>
+            <p class="achievement-text">С 50 баллами вы уже знаете, как вещества реагируют друг с другом и изменяются.</p>
           </div>
-          <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].chemistry >= 250 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">50 заданий для жаждущих знаний!</h4>
-            <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+            <h4 class="achievement-title">Органический Синтетик</h4>
+            <h4 class="title">250 баллов за молекулярное мастерство!</h4>
+            <p class="achievement-text">Вы углубились в органическую химию и собрали 250 баллов, создавая сложные соединения.</p>
           </div>
-          <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].chemistry >= 500 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title" >75 шедевров педагогики!</h4>
-            <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+            <h4 class="achievement-title">Химик-Инноватор</h4>
+            <h4 class="title" >500 баллов за открытия в химии!</h4>
+            <p class="achievement-text">Ваш вклад в химию огромен, и 500 баллов это подтверждают. Вы настоящий новатор!</p>
           </div>
-          <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
+          <div :class="['achievement-card', grades[0].chemistry >= 1000 ? '' : 'inactive' ]">
             <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
-            <h4 class="achievement-title"></h4>
-            <h4 class="title">100 заданий - вековой юбилей!</h4>
-            <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+            <h4 class="achievement-title">Магистр Элементов</h4>
+            <h4 class="title">1000 баллов за власть над периодической таблицей!</h4>
+            <p class="achievement-text">С 1000 баллами вы достигли мастерства в химии, владея знаниями о каждом элементе.</p>
           </div>
         </div>
       </div>
