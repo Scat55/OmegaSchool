@@ -13,8 +13,7 @@
         <div class="chat__form-content">
           <div class="chat__form-messages">
             <div class="chat__form-robot">
-              <img src="../assets/images/robot_chat.png" alt="Robot" class="chat__form-img" />
-              <p class="chat__form-message">{{ message }}</p>
+              <RobotMessage :message="message" />
             </div>
 
             <div class="chat__form-user">
@@ -40,9 +39,11 @@
 
 <script>
 import UserMessagges from './UserMessages';
+import RobotMessage from './RobotMessage.vue';
 export default {
   components: {
     UserMessagges,
+    RobotMessage,
   },
   props: {
     gender: {
@@ -56,7 +57,7 @@ export default {
     return {
       chat: false,
       isVisible: false,
-      message: 'Hello',
+      message: [],
       myMessage: '',
       newMessage: [],
     };
@@ -117,7 +118,6 @@ export default {
       align-items: center;
       gap: 0.5rem;
       margin-top: 1rem;
-      background-color: rgb(198, 198, 198);
     }
     &-img {
       width: 3rem;
