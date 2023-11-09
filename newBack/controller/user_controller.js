@@ -10,7 +10,7 @@ const store = require('../store')
 const {resolve, join} = require("path");
 const archiver = require('archiver');
 const {fsync} = require("fs");
-
+const { v4: uuidv4 } = require('uuid');
 
 class User_controller {
 
@@ -107,16 +107,27 @@ class User_controller {
         try {
             const { comandName, password, userLogins } = req.body;
 
-
             // Вставка команды
             const insertComandoText = 'INSERT INTO comandos (comand_name, password) VALUES ($1, $2) RETURNING comand_id;';
             const comandoResult = await db.query(insertComandoText, [comandName, password]);
             const comandId = comandoResult.rows[0].comand_id;
 
-            // Вставка пользователей
-            const insertUserCommandText = 'INSERT INTO user_command (comand_id, user_id) VALUES ($1, $2)';
-            for (const login of userLogins) {
-                await db.query(insertUserCommandText, [comandId, login]);
+            for (const email of userLogins) {
+                let userId;
+
+                // Проверяем наличие email в таблице users
+                const res = await db.query('SELECT user_id FROM users WHERE email = $1', [email]);
+                if (res.rows.length > 0) {
+                    // Email найден, используем существующий user_id
+                    userId = res.rows[0].user_id;
+                } else {
+                    // Email не найден, генерируем новый UUID
+                    userId = uuidv4(); // Функция для генерации UUID
+                }
+
+                // Вставляем данные в user_command
+                const insertUserCommandText = 'INSERT INTO user_command (comand_id, user_id) VALUES ($1, $2)';
+                await db.query(insertUserCommandText, [comandId, userId]);
             }
 
             res.status(201).json({ comandId: comandId });
@@ -125,6 +136,7 @@ class User_controller {
             res.status(500).json({ error: error.message });
         }
     }
+
 
     async getUserIDForEmail(req, res) {
         // Извлекаем адрес электронной почты из параметров запроса
