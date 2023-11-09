@@ -130,7 +130,7 @@ export default {
       <p>Пол: {{ person.gender }}</p>
       <div v-if="edit" class="input-container">
         <label>Дата рождения:</label>&nbsp;
-        <input type="text" class="styled-input" v-model="person.birthday" />
+        <input type="date" class="styled-input" v-model="person.birthday" />
       </div>
       <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
     </div>
