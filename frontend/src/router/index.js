@@ -11,6 +11,7 @@ import AllTaskTeacher from '../views/AllTaskTeacher';
 import CheckingTasksPage from '../views/CheckingTasksPage';
 import ComandAuth from '@/views/ComandAuth.vue';
 import ComandPage from '@/views/ComandPage.vue';
+import AuthCom from '../views/AuthCom.vue';
 
 import store from '../store/index';
 Vue.use(VueRouter);
@@ -78,6 +79,10 @@ const routes = [
   {
     path: '/comandPage',
     component: ComandPage,
+  },
+  {
+    path: '/authCom',
+    component: AuthCom,
   },
 ];
 
