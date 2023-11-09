@@ -56,6 +56,7 @@ export default {
           },
         },
       );
+      console.log(this.person.class);
     },
     changePass() {
       if (
@@ -141,7 +142,7 @@ export default {
           :class="{ InputChangeNO: !edit, InputChange: edit }"
           type="text"
           :disabled="!edit"
-          :value="person.class"
+          v-model="person.class"
         />
       </div>
       <div v-if="person.student === false">
