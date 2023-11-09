@@ -570,30 +570,25 @@ class User_controller {
                 }
             }
 
-            // Запрос вопросов, связанных с тестом
             const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
             const questionsResult = await db.query(questionsQuery, [testId]);
 
-            // Извлекаем варианты ответов для каждого вопроса
             const questionsWithOptions = await Promise.all(questionsResult.rows.map(async (question) => {
                 const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
                 const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
-                // Удаляем поля is_correct, если пользователь - ученик
-                const options = optionsResult.rows.map(async option => {
-                    if (typeUser === "Ученик") {
-                        const decidedQuery = 'SELECT decided FROM student_solutions WHERE user_id = $1 AND test_id = $2';
-                        const decidedResult = await db.query(decidedQuery, [userId, testId]);
-                        if (decidedResult.rowCount > 0) {
-                            decidedStatus = decidedResult.rows[0].decided;
-                        }
+                // Если ученик уже решил тест, убираем поле is_correct
+                const options = optionsResult.rows.map(option => {
+                    if (typeUser === "Ученик" && decidedStatus) {
+                        delete option.is_correct;
                     }
                     return option;
                 });
 
                 return {
-                    options: options
+                    options: options  // Включаем варианты ответов
                 };
+
             }));
 
             // Форматирование итогового ответа
