@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import store from '../store/index';
 export default {
   data() {
     return {
@@ -51,6 +52,8 @@ export default {
         return el.name;
       });
       console.log(this.comandName, this.pass, users);
+      store.state.isAuth = true;
+      this.$router.push(`/comandPage`);
     },
   },
 };
