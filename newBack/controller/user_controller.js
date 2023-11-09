@@ -555,6 +555,9 @@ class User_controller {
             let testLevel;
             let testQuery;
             let decidedStatus;
+            const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
+            const questionsResult = await db.query(questionsQuery, [testId]);
+
             // Проверяем наличие теста в таблице level_1_tests
             testQuery = 'SELECT * FROM level_1_tests WHERE test_id = $1';
             let testResult = await db.query(testQuery, [testId]);
@@ -585,50 +588,24 @@ class User_controller {
                 }
             }
 
-            const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
-            const questionsResult = await db.query(questionsQuery, [testId]);
-
             const questionsWithOptions = await Promise.all(questionsResult.rows.map(async (question) => {
                 const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
                 const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
-                // Если ученик уже решил тест, убираем поле is_correct
+                // Map the options and conditionally include 'is_correct'
                 const options = optionsResult.rows.map(option => {
                     if (typeUser === "Ученик" && decidedStatus) {
-                        delete option.is_correct;
+                        // Return only text for students if decidedStatus is true
+                        return { text: option.text };
+                    } else {
+                        // Return both text and is_correct for other user types or if decidedStatus is false
+                        return { text: option.text, is_correct: option.is_correct };
                     }
-                    return option;
                 });
-                // ======================================
-                //  TODO: Должно работать но не приходит is_correct
-                
-                // const questionsWithAnswers = Object.getOwnPropertyNames(question)
-                // const obj = questions.map(el => {
-                //   return question[el]
-                // })
-                // console.log(obj)
-                // ========================
-                
 
-                // const questionsWithAnswers = question.map(question => {
-                //     return question.options.map(option => {
-                //         return {
-                //             text: option.text,
-                //             is_correct: option.is_correct
-                //         };
-                //     });
-                // });
-                // const questions = question.forEach(el => {
-                //   return el
-                // })
-                // console.log(questions)
-
-                const flattenedQuestionsWithAnswers = questionsWithAnswers.flat();
-                return {
-                    options: options  // Включаем варианты ответов
-                };
-
+                return options; // Return the options directly
             }));
+            const flattenedOptions = questionsWithOptions.flat();
 
             // Форматирование итогового ответа
             const formattedResponse = {
@@ -641,7 +618,7 @@ class User_controller {
                 classes: test.classes,
                 subject: test.subject,
                 add_img: test.add_img,
-                questions: flattenedQuestionsWithAnswers,
+                questions:flattenedOptions,
                 decided: decidedStatus
             };
 

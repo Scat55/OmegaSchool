@@ -23,8 +23,8 @@ router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','У
 router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
 router.get('/getTypeOfUser',userController.getTypeOfUser)
 
-router.get('/getTasksForStudent',roleMiddleware(['Ученик']), userController.getTasksForStudent)
-router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksByID)
+router.get('/getTasksForStudent',roleMiddleware(['Ученик','Учитель','Эксперт']), userController.getTasksForStudent)
+router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик','Учитель','Эксперт']), userController.getTasksByID)
 router.post('/getAnswerByStudent1/:testID',roleMiddleware(['Ученик']), userController.getAnswerByStudent1)
 router.post('/getAnswerByStudent2/:testID/:student_solution',roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
 router.post('/getAnswerByStudent3/:testID/:student_solution',roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent3)
