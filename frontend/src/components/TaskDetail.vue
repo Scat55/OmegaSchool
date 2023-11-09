@@ -179,9 +179,9 @@ export default {
   //   },
   // },
   methods: {
-    initializeUserAnswers() {
-      this.userAnswers = this.infoTask.questions.map(() => false);
-  },
+  //   initializeUserAnswers() {
+  //     this.userAnswers = this.infoTask.questions.map(() => false);
+  // },
     test() {
       console.log(this.infoArea);
     },
@@ -323,7 +323,7 @@ export default {
   },
   created() {
     // this.initializeUserChecks();
-    this.initializeUserAnswers();
+    // this.initializeUserAnswers();
   },
 
   mounted() {
