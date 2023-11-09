@@ -171,6 +171,7 @@ export default {
       testID: '',
       file: '',
       token: '',
+      data: '',
     };
   },
   // computed: {
@@ -186,6 +187,7 @@ export default {
       console.log(this.infoArea);
     },
     sendLevelOneTest() {
+      this.token = JSON.parse(localStorage.getItem('local'));
 // const comparisonResult = this.infoTask.questions.map((question, index) => {
     //   return question.is_correct === this.userAnswers[index];
     // });
@@ -202,9 +204,24 @@ export default {
     console.log(allCorrect);
     if (allCorrect) {
       alert('Верно! Вы получили 1 балл.');
+      this.data = { options: 1 };
     } else {
       alert('Неверно. Вы получили 0 баллов.');
+      this.data = { options: 0 };
     }
+
+    axios.post(`/api/getAnswerByStudent1/${this.testID}/`, this.data, {
+      headers: {
+        Authorization: `Bearer ${this.token.token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+      response.data.options = this.data.options;
+    }).catch((error) => {
+      console.log(error);
+    });
 
     },
     sendLevelTwoTest() {
