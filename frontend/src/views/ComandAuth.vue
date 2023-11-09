@@ -1,3 +1,4 @@
+<!-- Регистрация команды -->
 <template>
   <div class="comand">
     <div class="container">
@@ -21,7 +22,11 @@
         <p class="comand__add" @click="addUsers" v-if="lenghtUsers !== 5">
           Добавить участника <span>+</span>
         </p>
+
         <button class="comand__form-btn" type="submit">Регистрация</button>
+        <router-link to="/authCom" class="router">
+          <p class="comand__add auth">Уже есть команда? Войти</p>
+        </router-link>
       </form>
     </div>
   </div>
@@ -154,5 +159,9 @@ export default {
 
 .name {
   font-family: Visitor;
+}
+
+.auth {
+  color: $accentColor;
 }
 </style>
