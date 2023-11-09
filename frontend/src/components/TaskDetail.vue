@@ -54,6 +54,8 @@
 
       <label>{{ index + 1 }}) {{ options.text }}</label>
       <input type="checkbox" :name="`question-${index}`" :value="options.text" v-model="userAnswers[index]" ref="checkAnswer" />
+      
+      <!-- Чекбоксы можно убрать если надо, пока используется для проверки -->
       - {{ options.is_correct }}
 
         <!-- <ul class="taskDetal__list">
@@ -63,8 +65,6 @@
           </li>
         </ul> -->
       </div>
-
-      <button @click="submitAnswers">AWSSD</button>
 
       <!-- Решение начало -->
       <div class="taskDetal__answer" v-if="infoTask.level == 2 || infoTask.level == 3">
@@ -182,14 +182,16 @@ export default {
     initializeUserAnswers() {
       this.userAnswers = this.infoTask.questions.map(() => false);
   },
-  
-  submitAnswers() {
-    // const comparisonResult = this.infoTask.questions.map((question, index) => {
+    test() {
+      console.log(this.infoArea);
+    },
+    sendLevelOneTest() {
+// const comparisonResult = this.infoTask.questions.map((question, index) => {
     //   return question.is_correct === this.userAnswers[index];
     // });
-    const comparisonResult2 = this.infoTask.questions.map((question, index) => {
-      return question.is_correct;
-    });
+    // const comparisonResult2 = this.infoTask.questions.map((question, index) => {
+    //   return question.is_correct;
+    // });
 
     const results = this.userAnswers.map((answer, index) => {
       return answer === this.infoTask.questions[index].is_correct;
@@ -197,18 +199,12 @@ export default {
 
     const allCorrect = results.every(isCorrect => isCorrect);
 
-    console.log(allCorrect, comparisonResult2);
+    console.log(allCorrect);
     if (allCorrect) {
       alert('Верно! Вы получили 1 балл.');
     } else {
       alert('Неверно. Вы получили 0 баллов.');
     }
-
-  },
-    test() {
-      console.log(this.infoArea);
-    },
-    sendLevelOneTest() {
 
     },
     sendLevelTwoTest() {
