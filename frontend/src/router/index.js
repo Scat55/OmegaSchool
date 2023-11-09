@@ -10,6 +10,7 @@ import taskToExpert from '../views/TaskToExpert';
 import AllTaskTeacher from '../views/AllTaskTeacher';
 import CheckingTasksPage from '../views/CheckingTasksPage';
 import ComandAuth from '@/views/ComandAuth.vue';
+import ComandPage from '@/views/ComandPage.vue';
 
 import store from '../store/index';
 Vue.use(VueRouter);
@@ -71,8 +72,12 @@ const routes = [
     component: CheckingTasksPage,
   },
   {
-    path: '/comand/',
+    path: '/comand',
     component: ComandAuth,
+  },
+  {
+    path: '/comandPage',
+    component: ComandPage,
   },
 ];
 

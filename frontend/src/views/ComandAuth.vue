@@ -3,24 +3,24 @@
     <div class="container">
       <form action="#" class="comand__form" @submit.prevent="handler()">
         <p class="comand__form-title">Регистрация команды</p>
+
         <div class="comand__info">
-          <span class="comand__info-name">Почта</span>
-          <input type="email" class="comand__input name" v-model="email" />
+          <span class="comand__info-name">Название команды</span>
+          <input type="text" class="comand__input name" v-model="comandName" />
         </div>
         <div class="comand__info">
           <span class="comand__info-name">Пароль</span>
           <input type="password" class="comand__input" v-model="pass" />
         </div>
-
-        <div class="comand__people">
-          <span class="comand__people-name">Участники</span>
-          <select name="" id="comand__select">
-            <option id="comand__option" v-for="user in users" :key="user.id">
-              {{ user.name }}
-            </option>
-          </select>
+        <span class="comand__people-name">Участники</span>
+        <div class="comand__people" v-for="user in users">
+          <div>
+            <input type="email" class="comand__input name" v-model="user.name" />
+          </div>
         </div>
-
+        <p class="comand__add" @click="addUsers" v-if="lenghtUsers !== 5">
+          Добавить участника <span>+</span>
+        </p>
         <button class="comand__form-btn" type="submit">Регистрация</button>
       </form>
     </div>
@@ -28,21 +28,33 @@
 </template>
 
 <script>
+import store from '../store/index';
 export default {
   data() {
     return {
-      email: '',
+      comandName: '',
       pass: '',
       token: '',
       userID: '',
-      users: [
-        { name: 'Коля', email: '111@mail.ru', id: 0 },
-        { name: 'Дима', email: '123@mail.ru', id: 1 },
-        { name: 'Саня', email: '134@mail.ru', id: 2 },
-        { name: 'Леха', email: '145@mail.ru', id: 3 },
-        { name: 'Никитос', email: '156@mail.ru', id: 4 },
-      ],
+      lenghtUsers: 0,
+      userName: '',
+      users: [],
     };
+  },
+  methods: {
+    addUsers() {
+      this.lenghtUsers += 1;
+      this.users.push({ name: this.userName });
+      // this.userName = '';
+    },
+    handler() {
+      const users = this.users.map((el) => {
+        return el.name;
+      });
+      console.log(this.comandName, this.pass, users);
+      store.state.isAuth = true;
+      this.$router.push(`/comandPage`);
+    },
   },
 };
 </script>
@@ -64,13 +76,15 @@ export default {
     justify-content: center;
     gap: 1.25rem;
     width: 25.5rem;
-    height: 32.5rem;
+    height: 38.5rem;
     margin-top: 2rem;
     border: 2px solid $lightBlueColor;
     border-radius: 1rem;
     padding: 5.75rem;
     box-shadow: 0 0 20px 0px $accentColor;
     background-color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     &-title {
       font-weight: bold;
@@ -127,20 +141,18 @@ export default {
     &-name {
       color: rgba(17, 17, 17, 0.49);
       font-size: 0.9rem;
+      justify-content: start;
     }
+  }
+
+  &__add {
+    font-size: 0.6rem;
+    justify-content: start;
+    cursor: pointer;
   }
 }
 
 .name {
   font-family: Visitor;
-}
-#comand__select {
-  border: none;
-  outline: none;
-  font-size: 1rem;
-}
-
-#comand__option {
-  font-size: 1rem;
 }
 </style>
