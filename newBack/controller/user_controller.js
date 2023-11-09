@@ -103,7 +103,28 @@ class User_controller {
         }
     }
 
+    async CreateComandos(req, res) {
+        try {
+            const { comandName, password, userLogins } = req.body;
 
+
+            // Вставка команды
+            const insertComandoText = 'INSERT INTO comandos (comand_name, password) VALUES ($1, $2) RETURNING comand_id;';
+            const comandoResult = await db.query(insertComandoText, [comandName, password]);
+            const comandId = comandoResult.rows[0].comand_id;
+
+            // Вставка пользователей
+            const insertUserCommandText = 'INSERT INTO user_command (comand_id, user_id) VALUES ($1, $2)';
+            for (const login of userLogins) {
+                await db.query(insertUserCommandText, [comandId, login]);
+            }
+
+            res.status(201).json({ comandId: comandId });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: error.message });
+        }
+    }
 
     async getUserIDForEmail(req, res) {
         // Извлекаем адрес электронной почты из параметров запроса
@@ -430,25 +451,21 @@ class User_controller {
     async getAnswerByStudent1 (req,res){
         const userId = req.user_id;
         const testId  = req.params.testID;
-        const {options} = req.body; // Предполагается, что userId и testId также отправляются в теле запроса
+        const options = req.body;
         console.log('id',userId)
         console.log('test',testId)
         console.log('варианты', options)
-        // Обрабатываем массив вариантов ответов
-        const optionsString = options.map(option =>
-            option.is_correct ? `*${option.option_text}` : option.option_text
-        ).join(' ');
 
         try {
             // Сохраняем обработанную строку в базу данных
             const insertOptionsSql = `
         UPDATE student_solutions
-        SET student_solution = $3
+        SET opt_score = $3
         WHERE user_id = $1 AND test_id = $2;
       `;
 
             // Выполнение запроса на вставку обработанных вариантов ответов
-            await db.query(insertOptionsSql, [userId, testId, optionsString]);
+            await db.query(insertOptionsSql, [userId, testId, options.options]);
 
             res.status(200).json({ message: 'Ответы успешно сохранены' });
         } catch (error) {
