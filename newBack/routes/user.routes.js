@@ -22,6 +22,8 @@ router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','У
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
 router.get('/getTypeOfUser',userController.getTypeOfUser)
+router.post('/CreateComandos', userController.CreateComandos);
+
 
 router.get('/getTasksForStudent',roleMiddleware(['Ученик','Учитель','Эксперт']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик','Учитель','Эксперт']), userController.getTasksByID)
@@ -29,6 +31,7 @@ router.post('/getAnswerByStudent1/:testID',roleMiddleware(['Ученик']), use
 router.post('/getAnswerByStudent2/:testID/:student_solution',roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
 router.post('/getAnswerByStudent3/:testID/:student_solution',roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent3)
 router.get('/getTasksForStudentWithOcenka',roleMiddleware(['Ученик']), userController.getTasksForStudentWithOcenka )
+
 
 router.post('/getTasksHintForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksHintForStudent)
 router.post('/getTasksAnswerForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
