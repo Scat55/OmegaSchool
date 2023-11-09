@@ -44,8 +44,9 @@
           </option>
         </select>
 
-        <button class="reg__form-btn" type="submit">Зарегестрироваться</button>
+        <button class="reg__form-btn" type="submit">Зарегистрироваться</button>
         <p>Есть аккаут? <span class="reg__auth" @click="goToAuth()">Войти</span></p>
+        <p class="reg__auth comand" @click="goToComand">Зарегистрировать команду</p>
       </form>
     </div>
   </div>
@@ -77,6 +78,12 @@ export default {
       this.$store.state.status = false;
       body.style.overflow = '';
       this.$router.push('/auth');
+    },
+    goToComand() {
+      const body = document.querySelector('body');
+      this.$store.state.status = false;
+      body.style.overflow = '';
+      this.$router.push('/comand/');
     },
     changeStatusOnFalse() {
       const body = document.querySelector('body');
@@ -262,5 +269,9 @@ export default {
   margin-top: -10px;
   margin-bottom: -10px;
   font-size: 0.5rem;
+}
+
+.comand {
+  font-size: 0.6rem;
 }
 </style>
