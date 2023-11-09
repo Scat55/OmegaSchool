@@ -91,31 +91,18 @@ class User_controller {
     }
 
     async getTypeOfUser(req, res) {
-        // Извлекаем user_id из параметров запроса
-        const userID = req.user_id;
-
-        // SQL-запрос для получения type_user по user_id
-        const sql = 'SELECT type_user FROM users WHERE user_id = $1';
+        const sql = 'SELECT DISTINCT type_user FROM users'; // Запрос на получение уникальных типов пользователей
 
         try {
-            // Выполняем SQL-запрос и ожидаем результат
-            const result = await db.query(sql, [userID]);
-            // Проверяем, что результат запроса содержит данные
-            if (result.rows.length > 0) {
-                // Извлекаем type_user из первой строки результата
-                const typeUser = result.rows[0].type_user;
-                res.json({ typeUser });
-            } else {
-                // Если пользователь не найден, отправляем соответствующий ответ
-                res.status(404).json({ error: 'Пользователь не найден' });
-            }
-
+            const result = await db.query(sql); // Выполнение запроса без параметров
+            const typesUser = result.rows.map(row => row.type_user);
+            res.json({ typesUser });
         } catch (error) {
-            // Обрабатываем ошибку выполнения SQL-запроса
             console.error('Ошибка при выполнении SQL-запроса:', error.message);
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
+
 
 
     async getUserIDForEmail(req, res) {
