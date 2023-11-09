@@ -9,6 +9,7 @@ import TaskDetail from '@/components/TaskDetail.vue';
 import taskToExpert from '../views/TaskToExpert';
 import AllTaskTeacher from '../views/AllTaskTeacher';
 import CheckingTasksPage from '../views/CheckingTasksPage';
+import ComandAuth from '@/views/ComandAuth.vue';
 
 import store from '../store/index';
 Vue.use(VueRouter);
@@ -68,6 +69,10 @@ const routes = [
   {
     path: '/taskToChek/:id/:userID',
     component: CheckingTasksPage,
+  },
+  {
+    path: '/comand/',
+    component: ComandAuth,
   },
 ];
 
