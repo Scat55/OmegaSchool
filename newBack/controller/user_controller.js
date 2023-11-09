@@ -538,7 +538,7 @@ class User_controller {
             let test;
             let testLevel;
             let testQuery;
-
+            let decidedStatus;
             // Проверяем наличие теста в таблице level_1_tests
             testQuery = 'SELECT * FROM level_1_tests WHERE test_id = $1';
             let testResult = await db.query(testQuery, [testId]);
@@ -578,14 +578,17 @@ class User_controller {
                 const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
                 const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
-                // // Удаляем поля is_correct, если пользователь - ученик
-                // const options = optionsResult.rows.map(option => {
-                //     if (typeUser === "Ученик") {
-                //         const { is_correct, ...optionWithoutCorrect } = option;
-                //         return optionWithoutCorrect;
-                //     }
-                //     return option;
-                // });
+                // Удаляем поля is_correct, если пользователь - ученик
+                const options = optionsResult.rows.map(async option => {
+                    if (typeUser === "Ученик") {
+                        const decidedQuery = 'SELECT decided FROM student_solutions WHERE user_id = $1 AND test_id = $2';
+                        const decidedResult = await db.query(decidedQuery, [userId, testId]);
+                        if (decidedResult.rowCount > 0) {
+                            decidedStatus = decidedResult.rows[0].decided;
+                        }
+                    }
+                    return option;
+                });
 
                 return {
                     options: options
@@ -603,8 +606,8 @@ class User_controller {
                 classes: test.classes,
                 subject: test.subject,
                 add_img: test.add_img,
-                questions: questionsWithOptions
-
+                questions: questionsWithOptions,
+                decided: decidedStatus
             };
 
             res.json(formattedResponse);

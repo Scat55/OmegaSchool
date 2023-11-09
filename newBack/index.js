@@ -21,7 +21,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(express.json())
 
 app.use('/api', userRouter)
 app.use('/auth', authRouter)
@@ -33,8 +32,6 @@ const customHeadersAppLevel = function (req, res, next) {
 
 app.use(customHeadersAppLevel);
 
-
-app.use(customHeadersAppLevel);
 
 
 app.listen(PORT, ()=>console.log(`server started on port ${PORT} and listen ip`))
