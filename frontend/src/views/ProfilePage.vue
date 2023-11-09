@@ -2,22 +2,12 @@
   <div>
     <div class="container">
       <div class="window">
-        <div
-          class="seeMenu"
-          @click="ShowMenu = !ShowMenu"
-          v-show="ShowMenu === false"
-        >
+        <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">
           Открыть меню
         </div>
-        <div
-          class="left_div"
-          v-show="ShowMenu === true"
-        >
+        <div class="left_div" v-show="ShowMenu === true">
           <div class="tabs">
-            <div
-              class="tab"
-              @click="switchTab('Profile')"
-            >Профиль</div>
+            <div class="tab" @click="switchTab('Profile')">Профиль</div>
             <div
               class="tab"
               v-if="person.student === false"
@@ -25,79 +15,48 @@
             >
               Задачи на проверку ( от ученика )
             </div>
-            <div
-              class="tab"
-              v-if="person.expert === true"
-              @click="switchTab('TaskToCheckTeacher')"
-            >
+            <div class="tab" v-if="person.expert === true" @click="switchTab('TaskToCheckTeacher')">
               Задачи на проверку ( от учителя )
             </div>
-            <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('MyAddTask')"
-            >
+            <div class="tab" v-if="person.student === false" @click="switchTab('MyAddTask')">
               Мои добавленные задачи
             </div>
-            <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('AddTask')"
-            >
+            <div class="tab" v-if="person.student === false" @click="switchTab('AddTask')">
               Добавить задачу
             </div>
-            <div
-              class="tab"
-              v-if="person.student === true"
-              @click="switchTab('AchivStud')"
-            >
+            <div class="tab" v-if="person.student === true" @click="switchTab('AchivStud')">
               Достижения
             </div>
-            <div
-              class="tab"
-              v-if="person.student === false"
-              @click="switchTab('RatingTeach')"
-            >
+            <div class="tab" v-if="person.student === false" @click="switchTab('RatingTeach')">
               Рейтинг
             </div>
-            <div
-              class="tab"
-              v-if="person.student === true"
-              @click="switchTab('MySolvedTask')"
-            >
+            <div class="tab" v-if="person.student === true" @click="switchTab('MySolvedTask')">
               Мои решенные задачи
             </div>
-            <div
-              class="closeMenu"
-              @click="ShowMenu = !ShowMenu"
-            >Закрыть меню</div>
+            <div class="closeMenu" @click="ShowMenu = !ShowMenu">Закрыть меню</div>
           </div>
         </div>
         <div class="right_div">
-          <Profile
-            v-show="isActiveComponents.Profile === true"
-            :person="person"
-          />
+          <Profile v-show="isActiveComponents.Profile === true" :person="person" />
           <AddTask v-if="isActiveComponents.AddTask === true" />
           <TaskToCheckStudent v-if="isActiveComponents.TaskToCheckStudent === true" />
           <TaskToCheckTeacher v-if="isActiveComponents.TaskToCheckTeacher === true" />
           <MySolvedTask v-if="isActiveComponents.MySolvedTask === true" />
           <MyAddTask v-if="isActiveComponents.MyAddTask === true" />
           <AchivmentStudent
-            :grades="person.grades"
+            :grades="person.grades_student"
             :achievements="person.achievements"
             v-if="isActiveComponents.AchivStud === true"
           />
-          <RatingTeacher 
-          :grades="person.grades"
-           v-if="isActiveComponents.RatingTeach === true" 
-           />
+          <RatingTeacher
+            :grades="person.grades_teacher"
+            v-if="isActiveComponents.RatingTeach === true"
+          />
         </div>
       </div>
     </div>
-    <!-- <ChatBot /> -->
+    <ChatBot :gender="person.gender" />
   </div>
-
 </template>
 
 <script>
@@ -124,7 +83,7 @@ export default {
     Profile,
     AchivmentStudent,
     RatingTeacher,
-    ChatBot
+    ChatBot,
   },
   data() {
     return {
@@ -140,7 +99,8 @@ export default {
         item: '',
         email: '',
         expert: null,
-        grades: '',
+        grades_student: '',
+        grades_teacher: '',
         achievements: '',
       },
       isActiveComponents: {
@@ -187,7 +147,8 @@ export default {
       //   // this.person.expert = true
       // }
       this.person.student = response.data.user.type_user === 'Ученик';
-      this.person.grades = response.data.grades_teacher;
+      this.person.grades_teacher = response.data.grades_teacher;
+      this.person.grades_student = response.data.grades;
       this.person.achievements = response.data.achievements;
     });
   },

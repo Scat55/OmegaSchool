@@ -44,6 +44,7 @@ export default {
     return {
       id: this.$router.currentRoute.params['id'],
       statusMenu: false,
+      type: '',
     };
   },
 
@@ -99,6 +100,12 @@ export default {
       }
       console.log(this.id);
     },
+  },
+
+  mounted() {
+    // axios.get('/api/user_list').then((res) => {
+    //   this.type = res.data;
+    // });
   },
 };
 </script>
