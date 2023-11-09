@@ -533,6 +533,7 @@ class User_controller {
     async getTasksByID(req, res){
         const testId = req.params.testID;
         const typeUser = req.type_user
+        const userId = req.user_id
         console.log(typeUser)
         try {
             let test;
