@@ -599,14 +599,30 @@ class User_controller {
                     }
                     return option;
                 });
-                const questionsWithAnswers = questions.map(question => {
-                    return question.options.map(option => {
-                        return {
-                            text: option.text,
-                            is_correct: option.is_correct
-                        };
-                    });
-                });
+                // ======================================
+                //  TODO: Должно работать но не приходит is_correct
+                
+                // const questionsWithAnswers = Object.getOwnPropertyNames(question)
+                // const obj = questions.map(el => {
+                //   return question[el]
+                // })
+                // console.log(obj)
+                // ========================
+                
+
+                // const questionsWithAnswers = question.map(question => {
+                //     return question.options.map(option => {
+                //         return {
+                //             text: option.text,
+                //             is_correct: option.is_correct
+                //         };
+                //     });
+                // });
+                // const questions = question.forEach(el => {
+                //   return el
+                // })
+                // console.log(questions)
+
                 const flattenedQuestionsWithAnswers = questionsWithAnswers.flat();
                 return {
                     options: options  // Включаем варианты ответов
