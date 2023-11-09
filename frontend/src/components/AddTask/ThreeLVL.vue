@@ -89,7 +89,7 @@ export default {
         <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
         <div class="block">
           <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" ref="fileInput" multiple/>
+          <input type="file" id="fileInput" ref="fileInput" multiple />
         </div>
       </div>
       <div class="btn-send">
@@ -107,6 +107,7 @@ export default {
 }
 
 .name__task {
+  width: 100%;
   padding: 0.5rem;
   margin-top: 10px;
   border-radius: 0.5rem;

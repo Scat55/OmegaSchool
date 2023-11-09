@@ -154,7 +154,12 @@ export default {
     <div class="shablonZadaniaFirst">
       <div class="shablonZadaniaFirst__name_task">
         <h3>Название задания:</h3>
-        <input type="text" placeholder="Введите название задания" v-model="nameTask" />
+        <input
+          type="text"
+          placeholder="Введите название задания"
+          v-model="nameTask"
+          class="name__task"
+        />
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
@@ -256,16 +261,6 @@ export default {
 
     & > h3 {
       text-align: center;
-    }
-
-    & > input {
-      margin: 10px 0;
-      width: 100%;
-      height: 25px;
-      border-radius: 1rem;
-      border: none;
-      padding: 8px;
-      outline: none;
     }
   }
 
@@ -451,5 +446,14 @@ export default {
     background-color: #fff;
     color: #000;
   }
+}
+.name__task {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 10px;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
 }
 </style>

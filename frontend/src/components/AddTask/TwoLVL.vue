@@ -153,6 +153,7 @@ export default {
   padding: 0.625rem;
 }
 .name__task {
+  width: 100%;
   padding: 0.5rem;
   margin-top: 10px;
   border-radius: 0.5rem;
