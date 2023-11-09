@@ -44,19 +44,27 @@
       <!--  END -->
 
       <!-- Чекбоксы -->
-
+      
       <div
         class="taskDetal__questions"
-        v-for="options in this.infoTask.questions"
+        v-for="options, index in this.infoTask.questions"
         v-if="infoTask.level == 1"
+        :key="index"
       >
-        <ul class="taskDetal__list">
+
+      <label>{{ index + 1 }}) {{ options.text }}</label>
+      <input type="checkbox" :name="`question-${index}`" :value="options.text" v-model="userAnswers[index]" ref="checkAnswer" />
+      - {{ options.is_correct }}
+
+        <!-- <ul class="taskDetal__list">
           <li class="taskDetal__question" v-for="question in options.options">
             {{ question.text }} -
             <input type="checkbox" name="question.text" :value="question.text" ref="checkAnswer" />
           </li>
-        </ul>
+        </ul> -->
       </div>
+
+      <button @click="submitAnswers">AWSSD</button>
 
       <!-- Решение начало -->
       <div class="taskDetal__answer" v-if="infoTask.level == 2 || infoTask.level == 3">
@@ -88,7 +96,7 @@
         <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
         <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
-      <button class="taskDetal__button" v-if="infoTask.level == 1">Отправить</button>
+      <button class="taskDetal__button" v-if="infoTask.level == 1" @click="sendLevelOneTest">Отправить</button>
 
       <div class="taskDetal__buttons" v-if="infoTask.level == 3">
         <button class="taskDetal__btn" @click="sendLevelThreeTest">Отправить</button>
@@ -157,6 +165,7 @@ export default {
       valChek: '',
       answer: '',
       isCorrect: '',
+      userAnswers: [],
       infoArea: '',
       hint: '',
       testID: '',
@@ -170,10 +179,38 @@ export default {
   //   },
   // },
   methods: {
+    initializeUserAnswers() {
+      this.userAnswers = this.infoTask.questions.map(() => false);
+  },
+  
+  submitAnswers() {
+    // const comparisonResult = this.infoTask.questions.map((question, index) => {
+    //   return question.is_correct === this.userAnswers[index];
+    // });
+    const comparisonResult2 = this.infoTask.questions.map((question, index) => {
+      return question.is_correct;
+    });
+
+    const results = this.userAnswers.map((answer, index) => {
+      return answer === this.infoTask.questions[index].is_correct;
+    });
+
+    const allCorrect = results.every(isCorrect => isCorrect);
+
+    console.log(allCorrect, comparisonResult2);
+    if (allCorrect) {
+      alert('Верно! Вы получили 1 балл.');
+    } else {
+      alert('Неверно. Вы получили 0 баллов.');
+    }
+
+  },
     test() {
       console.log(this.infoArea);
     },
-    sendLevelOneTest() {},
+    sendLevelOneTest() {
+
+    },
     sendLevelTwoTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
       this.file = this.$refs.file.files;
@@ -288,9 +325,10 @@ export default {
       this.isShow = !this.isShow;
     },
   },
-  // created() {
-  //   this.initializeUserChecks();
-  // },
+  created() {
+    // this.initializeUserChecks();
+    this.initializeUserAnswers();
+  },
 
   mounted() {
     this.token = JSON.parse(localStorage.getItem('local'));
