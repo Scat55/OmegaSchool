@@ -90,6 +90,34 @@ class User_controller {
         }
     }
 
+    async getTypeOfUser(req, res) {
+        // Извлекаем user_id из параметров запроса
+        const userID = req.user_id;
+
+        // SQL-запрос для получения type_user по user_id
+        const sql = 'SELECT type_user FROM users WHERE user_id = $1';
+
+        try {
+            // Выполняем SQL-запрос и ожидаем результат
+            const result = await db.query(sql, [userID]);
+            // Проверяем, что результат запроса содержит данные
+            if (result.rows.length > 0) {
+                // Извлекаем type_user из первой строки результата
+                const typeUser = result.rows[0].type_user;
+                res.json({ typeUser });
+            } else {
+                // Если пользователь не найден, отправляем соответствующий ответ
+                res.status(404).json({ error: 'Пользователь не найден' });
+            }
+
+        } catch (error) {
+            // Обрабатываем ошибку выполнения SQL-запроса
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+
     async getUserIDForEmail(req, res) {
         // Извлекаем адрес электронной почты из параметров запроса
         const email = req.params.email;
@@ -584,7 +612,15 @@ class User_controller {
                     }
                     return option;
                 });
-
+                const questionsWithAnswers = questions.map(question => {
+                    return question.options.map(option => {
+                        return {
+                            text: option.text,
+                            is_correct: option.is_correct
+                        };
+                    });
+                });
+                const flattenedQuestionsWithAnswers = questionsWithAnswers.flat();
                 return {
                     options: options  // Включаем варианты ответов
                 };
@@ -602,7 +638,7 @@ class User_controller {
                 classes: test.classes,
                 subject: test.subject,
                 add_img: test.add_img,
-                questions: questionsWithOptions,
+                questions: flattenedQuestionsWithAnswers,
                 decided: decidedStatus
             };
 

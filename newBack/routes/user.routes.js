@@ -21,7 +21,7 @@ router.get('/user_inf/:user_id',userMiddleware, userController.getUserInformatio
 router.post('/addition_data',roleMiddleware(['Ученик','Эксперт','Учитель']), userController.additionalData)
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert',roleMiddleware(['Учитель','Эксперт']), userController.getTasksForExpert)
-
+router.get('/getTypeOfUser',roleMiddleware(['Ученик','Эксперт','Учитель']),userController.getTypeOfUser)
 
 router.get('/getTasksForStudent',roleMiddleware(['Ученик']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID',roleMiddleware(['Ученик']), userController.getTasksByID)
