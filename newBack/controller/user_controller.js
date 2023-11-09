@@ -103,7 +103,19 @@ class User_controller {
         }
     }
 
+    async CreateComandos(req, res) {
+        try {
+            const comandName = req.body.comandName;
+            const password = req.body.password; // В реальном приложении пароль должен быть захеширован
 
+            // Вызываем функцию createComando из ComandosService
+            const comandId = await ComandosService.createComando(comandName, password);
+            res.status(201).json({ comandId: comandId });
+        } catch (error) {
+            console.error(error); // Логирование ошибки для отладки
+            res.status(500).json({ error: error.message });
+        }
+    }
 
     async getUserIDForEmail(req, res) {
         // Извлекаем адрес электронной почты из параметров запроса
