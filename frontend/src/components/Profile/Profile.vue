@@ -56,6 +56,7 @@ export default {
           },
         },
       );
+      console.log(this.person.class);
     },
     changePass() {
       if (
@@ -129,19 +130,19 @@ export default {
       <p>Пол: {{ person.gender }}</p>
       <div v-if="edit" class="input-container">
         <label>Дата рождения:</label>&nbsp;
-        <input type="date" class="styled-input" v-model="person.birthday" />
+        <input type="text" class="styled-input" v-model="person.birthday" />
       </div>
       <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
     </div>
 
     <div class="date_person_class">
       <div v-if="person.student === true">
-        <label>Класс</label>&nbsp;
+        <label>Класс: </label>&nbsp;
         <input
           :class="{ InputChangeNO: !edit, InputChange: edit }"
           type="text"
           :disabled="!edit"
-          :value="person.class"
+          v-model="person.class"
         />
       </div>
       <div v-if="person.student === false">

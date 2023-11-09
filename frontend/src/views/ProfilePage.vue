@@ -95,7 +95,7 @@ export default {
         birthday: '',
         gender: '',
         student: null, // переключатель вкладок
-        class: '11',
+        class: '',
         item: '',
         email: '',
         expert: null,
