@@ -83,18 +83,25 @@ export default {
 <template>
   <div class="main">
     <div class="avatar">
-      <img
-        v-if="person.gender === 'Мужской'"
-        src="../../assets/images/Avatar/boy.png"
-        alt="Аватарка"
-      />
-      <img
-        v-if="person.gender === 'Женский'"
-        src="../../assets/images/Avatar/girl (3).png"
-        alt="Аватарка"
-      />
-      <p v-if="person.gender === ''">Загрузка аватара...</p>
+      <div class="avatar__info">
+        <img
+          v-if="person.gender === 'Мужской'"
+          src="../../assets/images/Avatar/boy.png"
+          alt="Аватарка"
+        />
+        <img
+          v-if="person.gender === 'Женский'"
+          src="../../assets/images/Avatar/girl (3).png"
+          alt="Аватарка"
+        />
+        <p v-if="person.gender === ''">Загрузка аватара...</p>
+      </div>
+      <div class="level">
+        <p class="level__text">Уровень</p>
+        <span class="level__info"> - {{ person.level }}</span>
+      </div>
     </div>
+
     <div class="date_person_fio">
       <div class="name">
         <label>Имя:</label>&nbsp;
@@ -229,18 +236,19 @@ export default {
 }
 
 .avatar {
-  display: inline-block;
-  //align-self: flex-end;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 2rem;
   //width: 100%;
-
+}
+.avatar__info {
+  width: 60%;
   & > img {
     border: 2px solid white;
     border-radius: 1rem;
     width: 30%;
   }
 }
-
 .input-container {
   display: flex;
   align-items: center;
@@ -306,5 +314,11 @@ export default {
 }
 button {
   font-family: Visitor;
+}
+.level {
+  font-size: 0.8rem;
+  &__text {
+    display: inline-block;
+  }
 }
 </style>
