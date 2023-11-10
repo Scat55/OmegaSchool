@@ -96,7 +96,7 @@ export default {
         />
         <p v-if="person.gender === ''">Загрузка аватара...</p>
       </div>
-      <div class="level">
+      <div class="level" v-if="person.level !== null">
         <p class="level__text">Уровень</p>
         <span class="level__info"> - {{ person.level }}</span>
       </div>
