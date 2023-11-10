@@ -76,6 +76,7 @@ router.get('/verify_email/:email/', async (req, res) => {
 
     // Генерируем код подтверждения
     const verificationCode = await mail.generateVerificationCode(email);
+
     // Отправляем письмо с кодом подтверждения
     try {
       console.log('sendVerificationEmail', email, verificationCode)
