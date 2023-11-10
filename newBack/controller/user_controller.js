@@ -819,7 +819,7 @@ class User_controller {
 
             // Получаем список test_id и test_level для данного user_id
             const studentTestsSql = `
-        SELECT test_id, test_level, decided
+        SELECT test_id, test_level, decided, decided
         FROM student_solutions
         WHERE user_id = $1 and decided = 'Решено';
     `;
@@ -844,7 +844,9 @@ class User_controller {
                         title: testDetails.task_test,
                         class: testDetails.classes,
                         topic: testDetails.subject,
-                        status: test.decided
+                        status: test.decided,
+                        opt_score: test.opt_score,
+                        decided: test.decided
                     };
                 } else {
                     return {
