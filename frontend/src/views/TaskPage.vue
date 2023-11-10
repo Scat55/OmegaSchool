@@ -17,19 +17,13 @@
             <div>
               <div class="filter__search-bar">
                 <p>Поиск задачи:</p>
-                <input
-                  v-model="searchQuery"
-                  placeholder="Поиск по названию задачи..."
-                />
+                <input v-model="searchQuery" placeholder="Поиск по названию задачи..." />
               </div>
 
               <div class="filter__flex">
                 <div class="filter__complexity_filter">
                   <p>Уровень:</p>
-                  <select
-                    v-model="selectedLVL"
-                    class="topic-section"
-                  >
+                  <select v-model="selectedLVL" class="topic-section">
                     <option value="">Все уровни</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -38,10 +32,7 @@
                 </div>
                 <div class="filter__topic-filter">
                   <p>Предмет:</p>
-                  <select
-                    v-model="selectedTopic"
-                    class="topic-section"
-                  >
+                  <select v-model="selectedTopic" class="topic-section">
                     <option value="">Все предметы</option>
                     <option value="Биология">Биология</option>
                     <option value="География">География</option>
@@ -54,10 +45,7 @@
                 </div>
                 <div class="filter__class_filter">
                   <p>Класс:</p>
-                  <select
-                    v-model="selectedClass"
-                    class="topic-section"
-                  >
+                  <select v-model="selectedClass" class="topic-section">
                     <option value="">Не указан</option>
                     <option value="8">8 класс</option>
                     <option value="9">9 класс</option>
@@ -66,23 +54,17 @@
                 </div>
                 <div class="filter__status_filter">
                   <p>Статус:</p>
-                  <select
-                    v-model="selectedStatus"
-                    class="topic-section"
-                  >
+                  <select v-model="selectedStatus" class="topic-section">
                     <option value="">Не выбран</option>
                     <option value="Не решено">Не решено</option>
-                    <option value="Ожидает проверки">Решено</option>
+                    <!-- <option value="Ожидает проверки">Решено</option> -->
                     <option value="Решено">Решено</option>
                   </select>
                 </div>
               </div>
               <div class="filter__btn">
                 <!--                  <button class="filter__btn__hide" @click="filterSee = !filterSee">Скрыть фильтр</button>-->
-                <button
-                  class="filter__btn__reset"
-                  @click="resetFilter"
-                >Сбросить</button>
+                <button class="filter__btn__reset" @click="resetFilter">Сбросить</button>
               </div>
             </div>
           </div>
@@ -91,32 +73,16 @@
         <!-- Конец фильтра -->
         <!--    Где выводятся задачи    -->
         <div class="div3">
-          <TaskList
-            v-for="task in paginatedTasks"
-            :key="task.id"
-            :task="task"
-          />
+          <TaskList v-for="task in paginatedTasks" :key="task.id" :task="task" />
         </div>
         <!--    Конец этого окна    -->
-        <div
-          v-if="filteredTasks.length === 0"
-          class="no-tasks-message"
-        >
+        <div v-if="filteredTasks.length === 0" class="no-tasks-message">
           Нет задач, соответствующих выбранным фильтрам.
         </div>
-        <div
-          v-if="filteredTasks.length > 0"
-          class="pagination-controls"
-        >
-          <button
-            @click="goToPrevPage"
-            :disabled="currentPage === 1"
-          >←</button>
+        <div v-if="filteredTasks.length > 0" class="pagination-controls">
+          <button @click="goToPrevPage" :disabled="currentPage === 1">←</button>
           <span>Страница {{ currentPage }} из {{ totalPages }}</span>
-          <button
-            @click="goToNextPage"
-            :disabled="currentPage === totalPages"
-          >→</button>
+          <button @click="goToNextPage" :disabled="currentPage === totalPages">→</button>
         </div>
       </div>
     </div>
@@ -275,7 +241,7 @@ export default {
     },
   },
 
-  created() { },
+  created() {},
 
   mounted() {
     this.getFiltersFromLocalStorage();
@@ -314,11 +280,11 @@ export default {
   align-items: center;
   justify-content: center;
 
-  &>span {
+  & > span {
     margin: 0 5px;
   }
 
-  &>button {
+  & > button {
     cursor: pointer;
     width: 25px;
     text-align: center;
@@ -391,7 +357,7 @@ export default {
   background: white;
 
   &__search-bar {
-    &>input {
+    & > input {
       width: 80%;
       padding: 0.7rem;
       outline: none;
@@ -402,7 +368,6 @@ export default {
   }
 
   &__btn {
-
     &__hide,
     &__reset {
       margin: 10px 5px;
