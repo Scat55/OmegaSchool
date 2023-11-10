@@ -44,19 +44,24 @@
       <!--  END -->
 
       <!-- Чекбоксы -->
-      
+
       <div
         class="taskDetal__questions"
-        v-for="options, index in this.infoTask.questions"
+        v-for="(options, index) in this.infoTask.questions"
         v-if="infoTask.level == 1"
         :key="index"
       >
+        <label>{{ index + 1 }}) {{ options.text }}</label>
+        -
+        <input
+          type="checkbox"
+          :name="`question-${index}`"
+          :value="options.text"
+          v-model="userAnswers[index]"
+          ref="checkAnswer"
+        />
 
-      <label>{{ index + 1 }}) {{ options.text }}</label>
-      <input type="checkbox" :name="`question-${index}`" :value="options.text" v-model="userAnswers[index]" ref="checkAnswer" />
-      
-      <!-- Чекбоксы можно убрать если надо, пока используется для проверки -->
-      - {{ options.is_correct }}
+        <!-- Чекбоксы можно убрать если надо, пока используется для проверки -->
 
         <!-- <ul class="taskDetal__list">
           <li class="taskDetal__question" v-for="question in options.options">
@@ -96,7 +101,9 @@
         <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
         <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
-      <button class="taskDetal__button" v-if="infoTask.level == 1" @click="sendLevelOneTest">Отправить</button>
+      <button class="taskDetal__button" v-if="infoTask.level == 1" @click="sendLevelOneTest">
+        Отправить
+      </button>
 
       <div class="taskDetal__buttons" v-if="infoTask.level == 3">
         <button class="taskDetal__btn" @click="sendLevelThreeTest">Отправить</button>
@@ -180,49 +187,50 @@ export default {
   //   },
   // },
   methods: {
-  //   initializeUserAnswers() {
-  //     this.userAnswers = this.infoTask.questions.map(() => false);
-  // },
+    //   initializeUserAnswers() {
+    //     this.userAnswers = this.infoTask.questions.map(() => false);
+    // },
     test() {
       console.log(this.infoArea);
     },
     sendLevelOneTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
-// const comparisonResult = this.infoTask.questions.map((question, index) => {
-    //   return question.is_correct === this.userAnswers[index];
-    // });
-    // const comparisonResult2 = this.infoTask.questions.map((question, index) => {
-    //   return question.is_correct;
-    // });
+      // const comparisonResult = this.infoTask.questions.map((question, index) => {
+      //   return question.is_correct === this.userAnswers[index];
+      // });
+      // const comparisonResult2 = this.infoTask.questions.map((question, index) => {
+      //   return question.is_correct;
+      // });
 
-    const results = this.userAnswers.map((answer, index) => {
-      return answer === this.infoTask.questions[index].is_correct;
-    });
+      const results = this.userAnswers.map((answer, index) => {
+        return answer === this.infoTask.questions[index].is_correct;
+      });
 
-    const allCorrect = results.every(isCorrect => isCorrect);
+      const allCorrect = results.every((isCorrect) => isCorrect);
 
-    console.log(allCorrect);
-    if (allCorrect) {
-      alert('Верно! Вы получили 1 балл.');
-      this.data = { options: 1 };
-    } else {
-      alert('Неверно. Вы получили 0 баллов.');
-      this.data = { options: 0 };
-    }
+      console.log(allCorrect);
+      if (allCorrect) {
+        alert('Верно! Вы получили 1 балл.');
+        this.data = { options: 1 };
+      } else {
+        alert('Неверно. Вы получили 0 баллов.');
+        this.data = { options: 0 };
+      }
 
-    axios.post(`/api/getAnswerByStudent1/${this.testID}/`, this.data, {
-      headers: {
-        Authorization: `Bearer ${this.token.token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-      response.data.options = this.data.options;
-    }).catch((error) => {
-      console.log(error);
-    });
-
+      axios
+        .post(`/api/getAnswerByStudent1/${this.testID}/`, this.data, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          response.data.options = this.data.options;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     sendLevelTwoTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
