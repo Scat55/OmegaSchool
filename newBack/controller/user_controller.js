@@ -472,7 +472,7 @@ class User_controller {
             // Сохраняем обработанную строку в базу данных
             const insertOptionsSql = `
         UPDATE student_solutions
-        SET opt_score = $3
+        SET opt_score = $3, decided = 'Решено'
         WHERE user_id = $1 AND test_id = $2;
       `;
 
