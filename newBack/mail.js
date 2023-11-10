@@ -13,33 +13,35 @@ class Mail {
         });
 
         // Функция для сохранения кода подтверждения в базе данных
-        this.saveVerificationCode = async (user_id, verificationCode) => {
+        this.saveVerificationCode = async (email, verificationCode) => {
             // Здесь вам нужно будет использовать вашего клиента базы данных для сохранения кода
-            const query = 'UPDATE users SET verification_code = $1 WHERE user_id = $2';
-            await db.query(query, [verificationCode, user_id]);
+            const query = 'UPDATE users SET verification_code = $1 WHERE email = $2';
+            await db.query(query, [verificationCode, email]);
         }
 
         // Функция для проверки кода подтверждения
-        this.checkVerificationCode = async (user_id, verificationCode) => {
+        this.checkVerificationCode = async (email, verificationCode) => {
             // Получение кода из базы данных и его проверка
-            const query = 'SELECT verification_code FROM users WHERE user_id = $1';
-            const result = await db.query(query, [user_id]);
+            const query = 'SELECT verification_code FROM users WHERE email = $1';
+            const result = await db.query(query, [email]);
             if (result.rows.length > 0) { return result.rows[0].verification_code === verificationCode; }
 
             return false;
         }
 
         // Функция для установки статуса email на "подтвержденный"
-        this.setUserEmailVerified = async (user_id) => {
-            const query = 'UPDATE users SET verification_code = TRUE WHERE user_id = $1';
-            await db.query(query, [user_id]);
+        this.setUserEmailVerified = async (email) => {
+            const query = 'UPDATE users SET verification_code = TRUE WHERE email = $1';
+            await db.query(query, [email]);
         }
 
     }
 
-    generateVerificationCode(user_id) {
-        const saltRounds = 10; // Уровень соли
-        return bcrypt.hash(user_id, saltRounds);
+    generateVerificationCode(email) {
+        const saltRounds = 10; // Уровень сол
+        console.log(bcrypt.hash(email, saltRounds))
+        return bcrypt.hash(email, 'saltRounds');
+      
     }
 }
 

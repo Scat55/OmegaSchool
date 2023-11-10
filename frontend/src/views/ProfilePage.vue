@@ -102,6 +102,7 @@ export default {
         grades_student: '',
         grades_teacher: '',
         achievements: '',
+        level: null,
       },
       isActiveComponents: {
         Profile: true,
@@ -138,6 +139,7 @@ export default {
       this.person.email = response.data.user.email;
       this.person.name = response.data.user.first_name;
       this.person.lastname = response.data.user.last_name;
+      this.person.level = response.data.user.available_level;
       this.person.patronymic = response.data.user.patronymic;
       this.person.gender = response.data.user.gender;
       this.person.item = response.data.user.item;
