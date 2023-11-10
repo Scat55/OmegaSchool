@@ -136,7 +136,7 @@ export default {
       }
       if (this.selectedClass) {
         filtered = filtered.filter((task) => {
-          return task.class === this.selectedClass;
+          return task.class == this.selectedClass;
         });
       }
 
