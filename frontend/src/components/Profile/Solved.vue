@@ -7,12 +7,10 @@
         <p>Класс - {{ info.class }}</p>
       </div>
       <div class="myTasks__text">
-        <p v-if="info.complexity">Баллы - {{ info.complexity }}</p>
+        <p v-if="info.complexity">Уровень - {{ info.complexity }}</p>
         <p v-else>На проверке...</p>
       </div>
     </div>
-
-    
   </div>
 </template>
 
