@@ -635,7 +635,16 @@ class User_controller {
                 return options; // Return the options directly
             }));
             const flattenedOptions = questionsWithOptions.flat();
+            const decidedQuery = 'SELECT decided FROM student_solutions WHERE user_id = $1 AND test_id = $2';
+            const decidedResult = await db.query(decidedQuery, [userId, testId]);
 
+            if (decidedResult.rowCount > 0) {
+                // Если запись найдена, используем её статус
+                decidedStatus = decidedResult.rows[0].decided;
+            } else {
+                // Если запись не найдена, можно установить стандартное значение или обработать как ошибку
+                decidedStatus = false; // или другое стандартное значение
+            }
             // Форматирование итогового ответа
             const formattedResponse = {
                 level: testLevel,
