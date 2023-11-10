@@ -48,7 +48,7 @@
       <div
         class="taskDetal__questions"
         v-for="(options, index) in this.infoTask.questions"
-        v-if="infoTask.level == 1"
+        v-if="infoTask.level == 1 && infoTask.decided === 'Не решено'"
         :key="index"
       >
         <label>{{ index + 1 }}) {{ options.text }}</label>
@@ -72,7 +72,10 @@
       </div>
 
       <!-- Решение начало -->
-      <div class="taskDetal__answer" v-if="infoTask.level == 2 || infoTask.level == 3">
+      <div
+        class="taskDetal__answer"
+        v-if="(infoTask.level == 2 || infoTask.level == 3) && infoTask.decided === 'Не решено'"
+      >
         <textarea
           class="taskDetal__infoAnswer"
           placeholder="Введите ваш ответ"
@@ -96,12 +99,19 @@
       <!-- Ответ конец -->
 
       <!-- Кнопки  начало -->
-      <div class="taskDetal__buttons" v-if="infoTask.level == 2">
+      <div
+        class="taskDetal__buttons"
+        v-if="infoTask.level == 2 && infoTask.decided === 'Не решено'"
+      >
         <button class="taskDetal__btn" @click="sendLevelTwoTest">Отправить</button>
         <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
         <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
-      <button class="taskDetal__button" v-if="infoTask.level == 1" @click="sendLevelOneTest">
+      <button
+        class="taskDetal__button"
+        v-if="infoTask.level == 1 && infoTask.decided === 'Не решено'"
+        @click="sendLevelOneTest"
+      >
         Отправить
       </button>
 
