@@ -122,6 +122,7 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+      axios.get(`/api/verify_email/${email}`);
     },
     // Обработка формы
     handler() {
