@@ -40,6 +40,7 @@
 <script>
 import UserMessagges from './UserMessages';
 import RobotMessage from './RobotMessage.vue';
+import axios from 'axios';
 export default {
   components: {
     UserMessagges,
@@ -71,8 +72,27 @@ export default {
     ChangeIsVisible() {
       this.isVisible = !this.isVisible;
     },
-    sendMessage() {
+    sendMessage(message) {
       this.newMessage.push({ message: this.myMessage });
+      async function showRobot() {
+        //   await axios
+        //     .post(
+        //       'http://10.10.57.42:8060/bot',
+        //       {
+        //         message: this.myMessage,
+        //       },
+        //       {
+        //         headers: {
+        //           'Content-Type': 'application/json',
+        //         },
+        //       },
+        //     )
+        //     .then((response) => {
+        //       this.message.push({ message: response.data.response });
+        //     });
+        return message;
+      }
+      console.log(showRobot(this.newMessage));
       this.myMessage = '';
     },
   },
