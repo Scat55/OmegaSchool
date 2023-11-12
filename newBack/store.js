@@ -14,12 +14,10 @@ class Store {
                 cb(null, uploadsPath);
             },
             filename: (req, file, cb) => {
-                const today = new Date();
-                const year = today.getFullYear().toString();
-                const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                const day = today.getDate().toString().padStart(2, '0');
                 file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
-                const filename = `${file.originalname}`;
+                let filename = `${file.originalname}`;
+                // let filename = this.transliterate(file.originalname);
+                filename = filename.replace(/\s/g, '_');
                 cb(null, filename);
             },
         });
@@ -59,21 +57,18 @@ class Store {
         };
     }
 
-    transliterate(text) {
-        const rusToEngTranslit = {
+    transliterate = (text) => {
+        const cyrillicToLatin = {
             а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'yo',
             ж: 'zh', з: 'z', и: 'i', й: 'y', к: 'k', л: 'l', м: 'm',
             н: 'n', о: 'o', п: 'p', р: 'r', с: 's', т: 't', у: 'u',
             ф: 'f', х: 'kh', ц: 'ts', ч: 'ch', ш: 'sh', щ: 'sch', ы: 'y',
-            э: 'e', ю: 'yu', я: 'ya',
-            ' ': '_',
-            '[': '_',
-            ']': '_',
-            '{': '_',
-            '}': '_',
+            э: 'e', ю: 'yu', я: 'ya'
         };
 
-        return text.split('').map(char => { return rusToEngTranslit[char] || char;}).join('');
+        return text.split('').map(char => {
+            return cyrillicToLatin[char] || char;
+        }).join('');
     }
 
 }
