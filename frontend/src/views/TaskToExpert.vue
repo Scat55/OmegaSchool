@@ -19,17 +19,24 @@
           class="task__main-info-descr"
         ></textarea>
       </div>
-      <img
-        v-if="this.info.add_img"
-        :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img)"
-        class="image"
-        alt="Image"
-        data-fancybox="gallery"
-      />
-      <div v-for="question in info.questions" class="options">
+      <div v-for="img in splitFiles ">
+        <img
+          :src="require('../../../newBack/uploads/' + info.user_id + '/' + img)"
+          class="image"
+          alt="Image"
+          data-fancybox="gallery"
+        />
+      </div>
+      <div
+        v-for="question in info.questions"
+        class="options"
+      >
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
-      <div class="answer" v-if="info.task_hint || info.task_answer">
+      <div
+        class="answer"
+        v-if="info.task_hint || info.task_answer"
+      >
         <p>Подсказдка - {{ info.task_hint }}</p>
         <p>Ответ - {{ info.task_answer }}</p>
       </div>
@@ -46,21 +53,35 @@
 
       <div v-if="isShow">
         <p>{{ this.info.add_file }}</p>
-        <a v-if="this.info.add_file !== null" class="downloadLink"
-          ><button @click="downloadFiles()">Скачать</button></a
-        >
+        <a
+          v-if="this.info.add_file !== null"
+          class="downloadLink"
+        ><button @click="downloadFiles()">Скачать</button></a>
         <p v-else>Файлов нет</p>
       </div>
 
       <div class="estimation">
         <p>Оцените задание (1-на доработку. 2-отлично):</p>
-        <form class="estimation__form" @submit.prevent="handler()">
+        <form
+          class="estimation__form"
+          @submit.prevent="handler()"
+        >
           <label class="estimation__label">
-            <input type="radio" value="1" name="2" id="1" v-model="valChek" />1</label
-          >
+            <input
+              type="radio"
+              value="1"
+              name="2"
+              id="1"
+              v-model="valChek"
+            />1</label>
           <label class="estimation__label">
-            <input type="radio" value="2" name="2" id="2" v-model="valChek" />2</label
-          >
+            <input
+              type="radio"
+              value="2"
+              name="2"
+              id="2"
+              v-model="valChek"
+            />2</label>
           <textarea
             name="message"
             placeholder="Обратная связь по заданию"
@@ -68,7 +89,10 @@
             v-model="message"
             v-if="this.valChek === '1'"
           ></textarea>
-          <button class="estimation__btn" type="submit">Отправить</button>
+          <button
+            class="estimation__btn"
+            type="submit"
+          >Отправить</button>
         </form>
       </div>
     </div>
@@ -97,9 +121,15 @@ export default {
       message: '',
       userID: '',
       addIMG: '',
+      files: []
     };
   },
+  computed: {
+    splitFiles() {
+      return this.info.add_img.split(',')
 
+    }
+  },
   methods: {
     // Скачивание файла
     async downloadFiles() {
@@ -110,10 +140,11 @@ export default {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
             'Custom-UUID': this.userID,
+
           },
         })
         .then((response) => {
-          this.blob = new Blob([response.data], { type: 'application/pdf' });
+          this.blob = new Blob([response.data], { type: 'application/zip' });
           this.url = URL.createObjectURL(this.blob);
           const a = document.querySelector('.downloadLink');
           a.href = this.url;
@@ -179,6 +210,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
+
 .task__info {
   display: flex;
   flex-direction: column;
@@ -194,15 +226,18 @@ export default {
   overflow: hidden;
   transition: all 0.3s;
 }
+
 .task__main-info {
   &-text {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   &-title {
     margin-bottom: 2rem;
   }
+
   &-descr {
     width: 100%;
     overflow: auto;
@@ -216,38 +251,46 @@ export default {
     color: #000;
     background: #fff;
   }
+
   &-student {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 }
+
 .options {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
 }
+
 .dop {
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
 .downloadLink {
   margin-top: 1rem;
   text-decoration: none;
 }
+
 .arrow__img {
   transition: all 0.3s;
 }
+
 .rotate {
   transform: rotate(-180deg);
 }
+
 .estimation {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+
 .estimation__input {
   width: 4.2rem;
   outline: none;
@@ -255,11 +298,13 @@ export default {
   border-radius: 0.3rem;
   border: 1px solid #000;
 }
+
 .estimation__label {
   display: flex;
   gap: 1rem;
   margin-top: 0.2rem;
 }
+
 .estimation__message {
   width: 40rem;
   height: 8rem;
@@ -270,6 +315,7 @@ export default {
   border: 1px solid #000;
   resize: none;
 }
+
 .estimation__btn {
   display: block;
   width: 8rem;
@@ -286,6 +332,7 @@ export default {
     transform: scale(1.1);
   }
 }
+
 .image {
   width: 18.75rem;
   cursor: pointer;
