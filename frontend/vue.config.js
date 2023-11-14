@@ -3,8 +3,8 @@ module.exports = {
     config.module
       .rule('pdf')
       .test(/\.pdf$/)
-    // .use('file-loader')
-    // .loader('file-loader')
+      .use('file-loader')
+      .loader('file-loader')
   },
   devServer: {
     proxy: 'http://localhost:8070',

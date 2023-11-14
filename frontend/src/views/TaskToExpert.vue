@@ -19,7 +19,10 @@
           class="task__main-info-descr"
         ></textarea>
       </div>
-      <div v-for="img in splitFiles ">
+      <div
+        v-if="info.add_img"
+        v-for="img in splitFiles"
+      >
         <img
           :src="require('../../../newBack/uploads/' + info.user_id + '/' + img)"
           class="image"
@@ -126,8 +129,7 @@ export default {
   },
   computed: {
     splitFiles() {
-      return this.info.add_img.split(',')
-
+      return this.addIMG.split(',')
     }
   },
   methods: {
@@ -144,11 +146,21 @@ export default {
           },
         })
         .then((response) => {
-          this.blob = new Blob([response.data], { type: 'application/zip' });
-          this.url = URL.createObjectURL(this.blob);
-          const a = document.querySelector('.downloadLink');
-          a.href = this.url;
-          a.download = this.fileName;
+          if (response.data.type == 'application/zip') {
+            this.blob = new Blob([response.data], { type: 'application/zip' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+          if (response.data.type == 'application/pdf') {
+            this.blob = new Blob([response.data], { type: 'application/pdf' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+
         });
     },
     // Появление файла
@@ -197,6 +209,7 @@ export default {
         this.info = response.data;
         this.addIMG = response.data.add_img;
         this.userID = response.data.user_id;
+
       });
   },
 
