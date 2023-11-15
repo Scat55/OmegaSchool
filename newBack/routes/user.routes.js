@@ -15,7 +15,8 @@ const jwt = require("jsonwebtoken");
 const { secret } = require("../config");
 
 router.get('/user_list', userController.getUserList)
-router.get('/user_id/:email', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.getUserIDForEmail)
+// roleMiddleware(['Ученик', 'Эксперт', 'Учитель']),
+router.get('/user_id/:email', userController.getUserIDForEmail)
 router.get('/user_inf_email/:email', userMiddleware, userController.getUserDataForEmail)
 router.get('/user_inf/:user_id', userMiddleware, userController.getUserInformation)
 router.post('/addition_data', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.additionalData)

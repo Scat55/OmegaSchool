@@ -1,18 +1,33 @@
 <template>
   <div class="reg">
     <div class="container">
-      <form action="#" class="reg__form" @submit.prevent="handler()">
+      <form
+        action="#"
+        class="reg__form"
+        @submit.prevent="handler()"
+      >
         <p class="reg__form-title">Вход</p>
         <div class="reg__info">
           <span class="reg__info-name">Почта</span>
-          <input type="email" class="reg__input name" v-model="email" />
+          <input
+            type="email"
+            class="reg__input name"
+            v-model="email"
+          />
         </div>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
-          <input type="password" class="reg__input" v-model="pass" />
+          <input
+            type="password"
+            class="reg__input"
+            v-model="pass"
+          />
         </div>
 
-        <button class="reg__form-btn" type="submit">Войти</button>
+        <button
+          class="reg__form-btn"
+          type="submit"
+        >Войти</button>
       </form>
     </div>
   </div>
@@ -62,7 +77,7 @@ export default {
                 this.userID = response.data.user_id;
                 store.state.isAuth = true;
                 this.$router.push(`/profile/${response.data.user_id}`);
-                console.log(this.userID);
+                console.log(userID);
                 const local = {
                   userID: this.userID,
                   token: this.token,
@@ -161,5 +176,4 @@ export default {
 
 .name {
   font-family: Visitor;
-}
-</style>
+}</style>

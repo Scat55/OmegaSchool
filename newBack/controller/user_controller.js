@@ -52,7 +52,7 @@ class User_controller {
   }
 
   async getUserInformation(req, res) {
-
+    console.log(req.body)
     const user_id = req.params.user_id;
     try {
       // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
@@ -144,7 +144,7 @@ class User_controller {
 
     // SQL-запрос для получения user_id по адресу электронной почты
     const sql = 'SELECT user_id FROM users WHERE email = $1';
-
+    console.log(email)
     try {
       // Выполняем SQL-запрос и ожидаем результат с использованием async/await
       const { rows } = await db.query(sql, [email]);
