@@ -18,15 +18,16 @@ router.get('/user_list', userController.getUserList)
 // roleMiddleware(['Ученик', 'Эксперт', 'Учитель']),
 router.get('/user_id/:email',roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.getUserIDForEmail)
 router.get('/user_inf_email/:email', userMiddleware, userController.getUserDataForEmail)
-router.get('/user_inf/:user_id', userMiddleware, userController.getUserInformation)
+//userMiddleware
+router.get('/user_inf/:user_id', userController.getUserInformation)
 router.post('/addition_data', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.additionalData)
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForExpert)
 router.get('/getTypeOfUser', userController.getTypeOfUser)
 router.post('/CreateComandos', userController.CreateComandos);
 
-
-router.get('/getTasksForStudent', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksForStudent)
+// roleMiddleware(['Ученик', 'Учитель', 'Эксперт']),
+router.get('/getTasksForStudent', userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksByID)
 router.post('/getAnswerByStudent1/:testID', roleMiddleware(['Ученик']), userController.getAnswerByStudent1)
 router.post('/getAnswerByStudent2/:testID/:student_solution', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
