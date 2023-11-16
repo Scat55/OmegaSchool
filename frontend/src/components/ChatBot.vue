@@ -1,5 +1,8 @@
 <template>
-  <div class="chat" v-if="chat">
+  <div
+    class="chat"
+    v-if="chat"
+  >
     <div class="chat__content">
       <img
         src="../assets/images/robot_chat.png"
@@ -8,7 +11,11 @@
         @click="ChangeIsVisible"
       />
 
-      <form class="chat__form" @submit.prevent v-if="isVisible">
+      <form
+        class="chat__form"
+        @submit.prevent
+        v-if="isVisible"
+      >
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
@@ -17,7 +24,11 @@
             </div>
 
             <div class="chat__form-user">
-              <UserMessagges :gender="gender" :newMessage="newMessage" v-if="newMessage.length" />
+              <UserMessagges
+                :gender="gender"
+                :newMessage="newMessage"
+                v-if="newMessage.length"
+              />
             </div>
           </div>
         </div>
@@ -28,7 +39,11 @@
             placeholder="Введите ваше сообщение"
             v-model="myMessage"
           />
-          <button @click="sendMessage" class="chat__push" :disabled="this.myMessage.length === 0">
+          <button
+            @click="sendMessage"
+            class="chat__push"
+            :disabled="this.myMessage.length === 0"
+          >
             Click
           </button>
         </div>
@@ -115,6 +130,7 @@ export default {
     right: 0;
     width: 20rem;
   }
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -127,6 +143,7 @@ export default {
     &-content {
       flex: 1 0 auto;
     }
+
     &-messages {
       display: flex;
       flex-direction: column;
@@ -139,11 +156,13 @@ export default {
       gap: 0.5rem;
       margin-top: 1rem;
     }
+
     &-img {
       width: 3rem;
       margin-left: 0.5rem;
     }
   }
+
   &__img {
     width: 30%;
     cursor: pointer;
@@ -156,6 +175,7 @@ export default {
 
     flex: 0;
   }
+
   &__input {
     width: 80%;
     padding: 0.625rem;
@@ -164,19 +184,21 @@ export default {
     outline: none;
     margin-left: 0.3rem;
   }
+
   &__push {
     font-size: 0.5rem;
   }
 }
+
 .send {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
   button {
     width: 50px;
     height: 20px;
     cursor: pointer;
     font-size: 0.8rem;
   }
-}
-</style>
+}</style>
