@@ -14,21 +14,16 @@ const { secret } = require('./config')
 const PORT = process.env.PORT || 8070
 // const IP = '0.0.0.0'
 
-// const redisClient = redis.createClient({
-//   host: '89.223.30.10',
-//   port: 6379
-// });
+const redisClient = redis.createClient({
+  host: '89.223.30.10',
+  port: 6379
+});
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: secret,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
+
 
 
 
@@ -41,8 +36,11 @@ app.use(session({
 //   saveUninitialized: true
 // }));
 
-
-
+app.use(session({
+  secret: secret,
+  resave: false,
+  saveUninitialized: true
+}));
 // app.use(session({
 //   store: new RedisStore({
 //     host: 'omega-lspu.ru',
