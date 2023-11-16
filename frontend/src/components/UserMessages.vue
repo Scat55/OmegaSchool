@@ -2,8 +2,8 @@
   <div class="userMess">
     <div class="userMess__mess">
       <div class="userMess__mess-info">
-        <div class="userMess__text" v-for="(mess, idx) in newMessage" :key="idx">
-          <p class="userMess__message">{{ mess.message }}</p>
+        <div class="userMess__text">
+          <p class="userMess__message">{{ newMessage }}</p>
           <img
             v-if="gender === 'Мужской'"
             src="../assets/images/Avatar/boy.png"
@@ -32,9 +32,9 @@ export default {
       },
     },
     newMessage: {
-      type: Array,
+      type: String,
       default() {
-        return [];
+        return '';
       },
     },
   },
@@ -48,11 +48,13 @@ export default {
     border-radius: 4rem;
     margin-bottom: 1rem;
   }
+
   &__text {
     display: flex;
     align-items: center;
     justify-content: flex-end;
   }
+
   &__message {
     font-size: 0.7rem;
     margin-right: 1rem;

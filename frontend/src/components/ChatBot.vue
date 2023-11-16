@@ -73,41 +73,48 @@ export default {
     return {
       chat: false,
       isVisible: false,
-      message: [],
+      message: '',
       myMessage: '',
-      newMessage: [],
+      newMessage: '',
     };
   },
   methods: {
     showChat() {
       setTimeout(() => {
         this.chat = true;
-      }, 5000);
+      }, 100);
     },
     ChangeIsVisible() {
       this.isVisible = !this.isVisible;
     },
-    sendMessage(message) {
-      this.newMessage.push({ message: this.myMessage });
-      async function showRobot() {
-        //   await axios
-        //     .post(
-        //       'http://10.10.57.42:8060/bot',
-        //       {
-        //         message: this.myMessage,
-        //       },
-        //       {
-        //         headers: {
-        //           'Content-Type': 'application/json',
-        //         },
-        //       },
-        //     )
-        //     .then((response) => {
-        //       this.message.push({ message: response.data.response });
-        //     });
-        return message;
-      }
-      console.log(showRobot(this.newMessage));
+    sendMessage() {
+
+      this.newMessage = this.myMessage;
+      const userMessage = this.newMessage
+
+      axios
+        .post(
+          'https://omega-lspu.ru/bot',
+          {
+            message: userMessage,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((response) => {
+          // this.message.push({ message: response.data });
+          // console.log(this.message)
+          this.message = response.data.response
+
+        });
+
+
+      // console.log(showRobot(this.newMessage));
+
+
       this.myMessage = '';
     },
   },
@@ -201,4 +208,5 @@ export default {
     cursor: pointer;
     font-size: 0.8rem;
   }
-}</style>
+}
+</style>
