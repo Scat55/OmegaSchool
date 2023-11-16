@@ -57,16 +57,99 @@ class User_controller {
     try {
       // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
       const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
-        db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
-        db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
-        db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
-        db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
+        db.query('SELECT * FROM users WHERE user_id = $1', [user_id])
       ]);
 
       // Извлекаем результаты из объектов результата
       const user = userResult.rows[0];
+
+      if (!user) {
+        console.log(`Пользователь с ID ${user_id} не найден`);
+        return res.status(404).json({ message: 'Пользователь не найден' });
+      }
+
+      // Соберите результаты в один объект
+      const userData = {
+        user
+      };
+
+      console.log(`Данные для пользователя с ID ${user_id} найдены`);
+      res.json(userData);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запросов:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
+  }
+
+  async getUserInformation(req, res) {
+    console.log(req.body)
+    const user_id = req.params.user_id;
+    try {
+      // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
+      const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
+        db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id])
+      ]);
+
+      // Извлекаем результаты из объектов результата
       const grades = gradesResult.rows;
+      if (!user) {
+        console.log(`Пользователь с ID ${user_id} не найден`);
+        return res.status(404).json({ message: 'Пользователь не найден' });
+      }
+
+      // Соберите результаты в один объект
+      const userData = {
+        grades
+      };
+
+      console.log(`Данные для пользователя с ID ${user_id} найдены`);
+      res.json(userData);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запросов:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
+  }
+
+  async getUserInformation(req, res) {
+    console.log(req.body)
+    const user_id = req.params.user_id;
+    try {
+      // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
+      const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
+        db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id])
+      ]);
+
+      // Извлекаем результаты из объектов результата
       const achievements = achievementsResult.rows;
+
+      if (!user) {
+        console.log(`Пользователь с ID ${user_id} не найден`);
+        return res.status(404).json({ message: 'Пользователь не найден' });
+      }
+
+      // Соберите результаты в один объект
+      const userData = {
+        achievements
+      };
+
+      console.log(`Данные для пользователя с ID ${user_id} найдены`);
+      res.json(userData);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запросов:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
+  }
+
+  async getUserInformation(req, res) {
+    console.log(req.body)
+    const user_id = req.params.user_id;
+    try {
+      // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
+      const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
+        db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
+      ]);
+
+      // Извлекаем результаты из объектов результата
       const grades_teacher = achievements_teacherResult.rows;
 
       if (!user) {
@@ -76,10 +159,7 @@ class User_controller {
 
       // Соберите результаты в один объект
       const userData = {
-        user,
-        grades,
-        achievements,
-        grades_teacher,
+        grades_teacher
       };
 
       console.log(`Данные для пользователя с ID ${user_id} найдены`);

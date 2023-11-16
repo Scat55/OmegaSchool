@@ -8,6 +8,7 @@ const db = require('../db')
 const {secret} = require('../config')
 const session = require('express-session');
 
+
 const generateAccesToken = (user_id, type_user, email) =>{
     const payload = {
         user_id,
@@ -55,6 +56,7 @@ class Auth_controller {
 
     }
     async login(req, res) {
+        console.log(req.body)
         try {
             // Извлекаем данные из тела запроса
             const { email, password } = req.body;
@@ -78,9 +80,11 @@ class Auth_controller {
 
                     req.session.token = token;
                     console.log('генерируем:',req.session.token)
+
                     req.session.save(() => {
                         res.json({ message: 'Успешная аутентификация', token });
                     });
+
                     // Отправляем JWT токен в ответе
 
                 } else {

@@ -20,7 +20,13 @@ const PORT = process.env.PORT || 8070
 // });
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: true, // или укажите явно разрешенные источники
+  methods: 'GET,POST,PUT,PATCH,DELETE',
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, token, authorization, Authorization',
+  exposedHeaders: 'X-Total-Count',
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
