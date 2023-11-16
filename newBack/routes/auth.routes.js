@@ -6,7 +6,7 @@ const authController = require('../controller/auth_controller')
 
 
 router.post('/registration', authMiddleware.validateRegistration, authController.registration)
-router.post('/login',authMiddleware.validateLogin,  authController.login);
-//authMiddleware.validateLogin,
+router.post('/login', authMiddleware.validateLogin, authController.login);
+//
 
 module.exports = router

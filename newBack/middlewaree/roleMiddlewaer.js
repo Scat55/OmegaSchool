@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const { secret } = require('../config');
 const {log} = require("util");
 const session = require('express-session');
-const role = require('../controller/auth_controller')
 
 
 module.exports = function (roles) {
@@ -27,7 +26,6 @@ module.exports = function (roles) {
 
             // Извлекаем токен из сессии
             const tokenFromSession = req.session.token;
-
                 //Проверяем, совпадают ли токены
             // if (tokenFromHeaders !== tokenFromSession) {
             //     console.log('токен 1 : ', tokenFromHeaders );
