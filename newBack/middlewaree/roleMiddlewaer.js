@@ -7,8 +7,6 @@ const role = require('../controller/auth_controller')
 
 module.exports = function (roles) {
     return function (req, res, next) {
-        console.log('токен 1 : ', req.headers.authorization.split(' ')[2]);
-        console.log('токен 2 : ', req.session.token);
         if (req.method === 'OPTIONS') {
             // Пропускаем запросы с методом OPTIONS
             next();
@@ -24,7 +22,7 @@ module.exports = function (roles) {
 
 
             // Теперь вы можете разбирать заголовок, так как он существует
-            const tokenFromHeaders = authorizationHeader.split(' ')[3];
+            const tokenFromHeaders = authorizationHeader.split(' ')[1];
 
 
             // Извлекаем токен из сессии
@@ -32,8 +30,8 @@ module.exports = function (roles) {
 
                 //Проверяем, совпадают ли токены
             // if (tokenFromHeaders !== tokenFromSession) {
-                console.log('токен 1 : ', tokenFromHeaders );
-                console.log('токен 2 : ', tokenFromSession);
+            //     console.log('токен 1 : ', tokenFromHeaders );
+            //     console.log('токен 2 : ', tokenFromSession);
             //     return res.status(403).json({ message: 'Пользователь не авторизован2' });
             // }
 

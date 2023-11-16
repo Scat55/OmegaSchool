@@ -51,7 +51,7 @@ class User_controller {
     }
   }
 
-  async getUserInformationUser(req, res) {
+  async getUserInformation(req, res) {
     console.log(req.body)
     const user_id = req.params.user_id;
     try {
@@ -81,7 +81,7 @@ class User_controller {
     }
   }
 
-  async getUserInformationgrades(req, res) {
+  async getUserInformation(req, res) {
     console.log(req.body)
     const user_id = req.params.user_id;
     try {
@@ -91,7 +91,7 @@ class User_controller {
       ]);
 
       // Извлекаем результаты из объектов результата
-      const grades = gradesResult.rows[0];
+      const grades = gradesResult.rows;
       if (!user) {
         console.log(`Пользователь с ID ${user_id} не найден`);
         return res.status(404).json({ message: 'Пользователь не найден' });
@@ -110,7 +110,7 @@ class User_controller {
     }
   }
 
-  async getUserInformationachievements(req, res) {
+  async getUserInformation(req, res) {
     console.log(req.body)
     const user_id = req.params.user_id;
     try {
@@ -140,7 +140,7 @@ class User_controller {
     }
   }
 
-  async getUserInformationgrades_teacher(req, res) {
+  async getUserInformation(req, res) {
     console.log(req.body)
     const user_id = req.params.user_id;
     try {
