@@ -1180,46 +1180,26 @@ class User_controller {
     }
   }
 
-  async addTest2AndUpload(req, res) {
+  async addAvatar(req, res) {
     try {
-      const { task_test_coded, task_description_coded, task_hint, task_answer, classes, subject } = req.params;
-
-      const task_test = decodeURIComponent(task_test_coded)
-      const task_description = decodeURIComponent(task_description_coded)
-      const user_id = req.user_id;
-
-      const insertTestQuery = `
-            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-            RETURNING test_id;
-        `;
-
-      const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
-      const testResult = await db.query(insertTestQuery, testValues);
-      const testId = testResult.rows[0].test_id;
-
-
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
       }
-      let pdfPath = null;
-      let imgPath = null;
+      let avatar = null;
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) {
-          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        }
+        if (file.mimetype.startsWith('image/')) {
+          avatar = file.originalname;  // или любой другой путь, где вы сохраняете файл
+        } else res.status(500).json({ error: 'Неверный формат изображения' });
       }
 
       // Обновление записей в базе данных с путями к файлам
-      const updateQuery = 'UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
-      const updateValues = [pdfPath, imgPath, testId];
+      const updateQuery = 'UPDATE level_2_tests SET avatar = $1';
+      const updateValues = [avatar];
 
       await db.query(updateQuery, updateValues);
 
-      return res.send({ message: 'Тест и файлы успешно добавлены' });
+      return res.send({ message: 'Аватар успешно добавлены' });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
