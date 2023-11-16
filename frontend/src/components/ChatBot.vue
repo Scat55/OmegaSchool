@@ -19,9 +19,6 @@
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
-            <div class="chat__form-robot">
-              <RobotMessage :message="message" />
-            </div>
 
             <div class="chat__form-user">
               <UserMessagges
@@ -30,6 +27,11 @@
                 v-if="newMessage.length"
               />
             </div>
+            <div class="chat__form-robot">
+              <RobotMessage :message="message" />
+            </div>
+
+
           </div>
         </div>
         <div class="send">
@@ -105,10 +107,14 @@ export default {
           },
         )
         .then((response) => {
-          // this.message.push({ message: response.data });
-          // console.log(this.message)
-          this.message = response.data.response
-
+          try {
+            // this.message.push({ message: response.data });
+            // console.log(this.message)
+            this.message = response.data.response
+            console.log(this.message)
+          } catch {
+            this.message = 'Оооп... Я сломался'
+          }
         });
 
 

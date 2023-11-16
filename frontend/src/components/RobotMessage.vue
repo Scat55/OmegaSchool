@@ -7,6 +7,7 @@
             src="../assets/images/robot_chat.png"
             class="RobotMess__img"
             alt="Аватарка"
+            v-if="message.length"
           />
           <p class="RobotMess__message">{{ message }}</p>
         </div>
