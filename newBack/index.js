@@ -42,16 +42,6 @@ const customHeadersAppLevel = function (req, res, next) {
 
 app.use(customHeadersAppLevel);
 
-app.get('/set-session', (req, res) => {
-  req.session.user = { username: 'testUser' };
-  res.send('Session set!');
-});
-
-app.get('/get-session', (req, res) => {
-  const user = req.session.user || 'No session data';
-  res.send(`Session data: ${JSON.stringify(user)}`);
-});
-
 app.listen(PORT, () => console.log(`server started on port ${PORT} and listen ip`))
 
 
