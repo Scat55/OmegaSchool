@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { secret } = require('../config');
+const {log} = require("util");
+const session = require('express-session');
+
 
 module.exports = function (roles) {
     return function (req, res, next) {
@@ -12,6 +15,7 @@ module.exports = function (roles) {
 
 
             if (!authorizationHeader) {
+
                 return res.status(403).json({ message: 'Пользователь не авторизован1' });
             }
 
@@ -22,12 +26,12 @@ module.exports = function (roles) {
 
             // Извлекаем токен из сессии
             const tokenFromSession = req.session.token;
-
-
-             //Проверяем, совпадают ли токены
-            if (tokenFromHeaders !== tokenFromSession) {
-                return res.status(403).json({ message: 'Пользователь не авторизован2' });
-            }
+                //Проверяем, совпадают ли токены
+            // if (tokenFromHeaders !== tokenFromSession) {
+            //     console.log('токен 1 : ', tokenFromHeaders );
+            //     console.log('токен 2 : ', tokenFromSession);
+            //     return res.status(403).json({ message: 'Пользователь не авторизован2' });
+            // }
 
             // Проверяем токен и извлекаем роль пользователя
             const { type_user, user_id, email } = jwt.verify(tokenFromHeaders, secret);

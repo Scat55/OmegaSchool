@@ -58,7 +58,7 @@ class Auth_controller {
         try {
             // Извлекаем данные из тела запроса
             const { email, password } = req.body;
-
+            console.log(req.body)
             // Выполняем SQL-запрос, чтобы найти пользователя по email
             const queryResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
 
@@ -77,7 +77,7 @@ class Auth_controller {
                     const token = generateAccesToken(user.user_id,user.type_user,user.email);
 
                     req.session.token = token;
-                    console.log(req.session)
+                    console.log('генерируем:',req.session.token)
                     req.session.save(() => {
                         res.json({ message: 'Успешная аутентификация', token });
                     });
