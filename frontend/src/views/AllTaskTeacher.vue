@@ -21,13 +21,22 @@
       ></textarea>
 
       <!-- Картинка -->
-      <img
-        v-if="this.infoTask.add_img"
-        :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + infoTask.add_img)"
-        class="infoTask__image"
-        alt="Image"
-        data-fancybox="gallery"
-      />
+      <div
+        class="images"
+        id="gallery"
+      >
+        <div
+          v-if="infoTask.add_img"
+          v-for="img in splitFiles"
+        >
+          <img
+            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            class="image"
+            alt="Image"
+            data-fancybox="gallery"
+          />
+        </div>
+      </div>
 
       <!-- Блок с вопросами -->
       <div
@@ -103,7 +112,13 @@ export default {
       userID: '',
       blob: '',
       url: '',
+      addIMG: ''
     };
+  },
+  computed: {
+    splitFiles() {
+      return this.addIMG.split(',')
+    }
   },
   methods: {
     // Скачивание файла
@@ -137,6 +152,7 @@ export default {
       .then((response) => {
         this.infoTask = response.data;
         this.userID = response.data.user_id;
+        this.addIMG = response.data.add_img
       });
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
@@ -238,5 +254,17 @@ export default {
 
 .rotate {
   transform: rotate(-180deg);
+}
+
+.images {
+  display: flex;
+  gap: 1rem;
+  max-width: 10rem;
+  margin-top: 2rem;
+}
+
+.image {
+  width: 10rem;
+  cursor: pointer;
 }
 </style>
