@@ -165,6 +165,13 @@ export default {
   margin-top: 80px;
 }
 
+@media (max-width: 768px) {
+  .container {
+    //width: 100%;
+    padding: 15px;
+  }
+}
+
 .window {
   column-gap: 10px;
   margin: 0 auto;
