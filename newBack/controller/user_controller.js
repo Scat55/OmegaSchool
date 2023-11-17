@@ -334,7 +334,7 @@ class User_controller {
   async getTasksForStudent(req, res) {
     try {
       const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
-
+      console.log(user_id)
       // Получаем список test_id и test_level для данного user_id
       const studentTestsSql = `
         SELECT test_id, test_level, decided
