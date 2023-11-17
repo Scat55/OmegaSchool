@@ -1,5 +1,8 @@
 <template>
-  <div class="chat" v-if="chat">
+  <div
+    class="chat"
+    v-if="chat"
+  >
     <div class="chat__content">
       <img
         src="../assets/images/robot_chat.png"
@@ -8,17 +11,27 @@
         @click="ChangeIsVisible"
       />
 
-      <form class="chat__form" @submit.prevent v-if="isVisible">
+      <form
+        class="chat__form"
+        @submit.prevent
+        v-if="isVisible"
+      >
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
+
+            <div class="chat__form-user">
+              <UserMessagges
+                :gender="gender"
+                :newMessage="newMessage"
+                v-if="newMessage.length"
+              />
+            </div>
             <div class="chat__form-robot">
               <RobotMessage :message="message" />
             </div>
 
-            <div class="chat__form-user">
-              <UserMessagges :gender="gender" :newMessage="newMessage" v-if="newMessage.length" />
-            </div>
+
           </div>
         </div>
         <div class="send">
@@ -28,7 +41,11 @@
             placeholder="Введите ваше сообщение"
             v-model="myMessage"
           />
-          <button @click="sendMessage" class="chat__push" :disabled="this.myMessage.length === 0">
+          <button
+            @click="sendMessage"
+            class="chat__push"
+            :disabled="this.myMessage.length === 0"
+          >
             Click
           </button>
         </div>
@@ -58,41 +75,52 @@ export default {
     return {
       chat: false,
       isVisible: false,
-      message: [],
+      message: '',
       myMessage: '',
-      newMessage: [],
+      newMessage: '',
     };
   },
   methods: {
     showChat() {
       setTimeout(() => {
         this.chat = true;
-      }, 5000);
+      }, 100);
     },
     ChangeIsVisible() {
       this.isVisible = !this.isVisible;
     },
-    sendMessage(message) {
-      this.newMessage.push({ message: this.myMessage });
-      async function showRobot() {
-        //   await axios
-        //     .post(
-        //       'http://10.10.57.42:8060/bot',
-        //       {
-        //         message: this.myMessage,
-        //       },
-        //       {
-        //         headers: {
-        //           'Content-Type': 'application/json',
-        //         },
-        //       },
-        //     )
-        //     .then((response) => {
-        //       this.message.push({ message: response.data.response });
-        //     });
-        return message;
-      }
-      console.log(showRobot(this.newMessage));
+    sendMessage() {
+
+      this.newMessage = this.myMessage;
+      const userMessage = this.newMessage
+
+      axios
+        .post(
+          'https://omega-lspu.ru/bot',
+          {
+            message: userMessage,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((response) => {
+          try {
+            // this.message.push({ message: response.data });
+            // console.log(this.message)
+            this.message = response.data.response
+            console.log(this.message)
+          } catch {
+            this.message = 'Оооп... Я сломался'
+          }
+        });
+
+
+      // console.log(showRobot(this.newMessage));
+
+
       this.myMessage = '';
     },
   },
@@ -115,6 +143,7 @@ export default {
     right: 0;
     width: 20rem;
   }
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -127,6 +156,7 @@ export default {
     &-content {
       flex: 1 0 auto;
     }
+
     &-messages {
       display: flex;
       flex-direction: column;
@@ -139,11 +169,13 @@ export default {
       gap: 0.5rem;
       margin-top: 1rem;
     }
+
     &-img {
       width: 3rem;
       margin-left: 0.5rem;
     }
   }
+
   &__img {
     width: 30%;
     cursor: pointer;
@@ -156,6 +188,7 @@ export default {
 
     flex: 0;
   }
+
   &__input {
     width: 80%;
     padding: 0.625rem;
@@ -164,14 +197,17 @@ export default {
     outline: none;
     margin-left: 0.3rem;
   }
+
   &__push {
     font-size: 0.5rem;
   }
 }
+
 .send {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
   button {
     width: 50px;
     height: 20px;

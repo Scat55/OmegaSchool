@@ -8,6 +8,8 @@
           <p>Класс - {{ infoTask.classes }}</p>
           <p>Предмет - {{ infoTask.subject }}</p>
         </div>
+
+
       </div>
 
       <!-- Описание задания -->
@@ -19,23 +21,41 @@
       ></textarea>
 
       <!-- Картинка -->
-      <img
-        v-if="this.infoTask.add_img"
-        :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + infoTask.add_img)"
-        class="infoTask__image"
-        alt="Image"
-        data-fancybox="gallery"
-      />
+      <div
+        class="images"
+        id="gallery"
+      >
+        <div
+          v-if="infoTask.add_img"
+          v-for="img in splitFiles"
+        >
+          <img
+            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            class="image"
+            alt="Image"
+            data-fancybox="gallery"
+          />
+        </div>
+      </div>
 
       <!-- Блок с вопросами -->
-      <div v-for="question in infoTask.questions" class="infoTask__options">
+      <div
+        v-for="question in infoTask.questions"
+        class="infoTask__options"
+      >
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
 
       <!-- Блок с подсказками -->
-      <p class="infoTask__show" @click="isShowAnswer = !isShowAnswer">Показать подсказки</p>
+      <p
+        class="infoTask__show"
+        @click="isShowAnswer = !isShowAnswer"
+      >Показать подсказки</p>
       <div v-if="isShowAnswer">
-        <div class="infoTask__answer" v-if="infoTask.task_hint || info.task_answer">
+        <div
+          class="infoTask__answer"
+          v-if="infoTask.task_hint || info.task_answer"
+        >
           <p>Подсказдка - {{ infoTask.task_hint }}</p>
           <p>Ответ - {{ infoTask.task_answer }}</p>
         </div>
@@ -54,10 +74,21 @@
 
       <div v-if="isShow">
         <p>{{ infoTask.add_file }}</p>
-        <a v-if="infoTask.add_file !== null" class="downloadLink"
-          ><button @click="downloadFiles()" class="infoTask__btn">Скачать</button></a
-        >
+        <a
+          v-if="infoTask.add_file"
+          class="downloadLink"
+        ><button
+            @click="downloadFiles()"
+            class="infoTask__btn"
+            v-if="infoTask.add_file !== null || infoTask.add_file !== ''"
+          >Скачать</button></a>
         <p v-else>Файлов нет</p>
+      </div>
+
+      <div class="questions">
+        <div v-for="question in infoTask.questions"> {{ question.text }} - <span
+            v-if="question.is_correct === true">Верно</span> <span v-else="question.is_correct === true">Не верно</span>
+        </div>
       </div>
     </div>
   </div>
@@ -81,7 +112,13 @@ export default {
       userID: '',
       blob: '',
       url: '',
+      addIMG: ''
     };
+  },
+  computed: {
+    splitFiles() {
+      return this.addIMG.split(',')
+    }
   },
   methods: {
     // Скачивание файла
@@ -115,6 +152,7 @@ export default {
       .then((response) => {
         this.infoTask = response.data;
         this.userID = response.data.user_id;
+        this.addIMG = response.data.add_img
       });
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
@@ -187,6 +225,7 @@ export default {
     margin-top: 1rem;
     cursor: pointer;
   }
+
   &__arrow {
     transition: all 0.3s;
   }
@@ -206,7 +245,26 @@ export default {
   }
 }
 
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 .rotate {
   transform: rotate(-180deg);
+}
+
+.images {
+  display: flex;
+  gap: 1rem;
+  max-width: 10rem;
+  margin-top: 2rem;
+}
+
+.image {
+  width: 10rem;
+  cursor: pointer;
 }
 </style>

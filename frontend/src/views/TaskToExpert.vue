@@ -20,15 +20,20 @@
         ></textarea>
       </div>
       <div
-        v-if="info.add_img"
-        v-for="img in splitFiles"
+        class="images"
+        id="gallery"
       >
-        <img
-          :src="require('../../../newBack/uploads/' + info.user_id + '/' + img)"
-          class="image"
-          alt="Image"
-          data-fancybox="gallery"
-        />
+        <div
+          v-if="info.add_img"
+          v-for="img in splitFiles"
+        >
+          <img
+            :src="require('../../../newBack/uploads/' + info.user_id + '/' + img)"
+            class="image"
+            alt="Image"
+            data-fancybox="gallery"
+          />
+        </div>
       </div>
       <div
         v-for="question in info.questions"
@@ -59,7 +64,10 @@
         <a
           v-if="this.info.add_file !== null"
           class="downloadLink"
-        ><button @click="downloadFiles()">Скачать</button></a>
+        ><button
+            @click="downloadFiles()"
+            class="btn"
+          >Скачать</button></a>
         <p v-else>Файлов нет</p>
       </div>
 
@@ -216,7 +224,9 @@ export default {
   mounted() {
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
+      groupAttr: false,
     });
+
   },
 };
 </script>
@@ -347,7 +357,7 @@ export default {
 }
 
 .image {
-  width: 18.75rem;
+  width: 10rem;
   cursor: pointer;
 }
 
@@ -356,5 +366,28 @@ export default {
   flex-direction: column;
   gap: 2rem;
   margin-top: 1rem;
+}
+
+.images {
+  display: flex;
+  gap: 1rem;
+  max-width: 10rem;
+}
+
+.btn {
+  padding: .625rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  border-radius: 0.5rem;
+  border: 1px solid #000;
+  transition: all .3s;
+
+  &:hover {
+    background-color: rgba(94, 183, 255, 0.9);
+    color: #fff;
+    border: none;
+  }
 }
 </style>

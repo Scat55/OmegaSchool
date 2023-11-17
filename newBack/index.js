@@ -1,10 +1,8 @@
-
 const express = require('express')
 const session = require('express-session');
 const cors = require('cors');
-const RedisStore = require('connect-redis');
-const redis = require('redis');
-
+const pgSession = require('connect-pg-simple')(session);
+const db = require('./db');
 
 const userRouter = require('./routes/user.routes')
 const authRouter = require('./routes/auth.routes')
@@ -12,45 +10,26 @@ const authRouter = require('./routes/auth.routes')
 const { secret } = require('./config')
 
 const PORT = process.env.PORT || 8070
-// const IP = '0.0.0.0'
-
-const redisClient = redis.createClient({
-  host: '89.223.30.10',
-  port: 6379
-});
-
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
-
-
 // app.use(session({
-//   store: RedisStore({
-//     client: redisClient
-//   }),
 //   secret: secret,
 //   resave: false,
 //   saveUninitialized: true
 // }));
 
 app.use(session({
-  secret: secret,
+  store: new pgSession({
+    pool: db,
+    tableName: 'session', // Название таблицы для хранения сессий
+  }),
+  secret: secret, // Замените на свой секретный ключ
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // Продолжительность сессии в миллисекундах
 }));
-// app.use(session({
-//   store: new RedisStore({
-//     host: 'omega-lspu.ru',
-//     port: 6379
-//   }),
-//   secret: secret,
-//   resave: false,
-//   saveUninitialized: true
-// }));
-
 
 
 app.use('/api', userRouter)
@@ -62,8 +41,6 @@ const customHeadersAppLevel = function (req, res, next) {
 };
 
 app.use(customHeadersAppLevel);
-
-
 
 app.listen(PORT, () => console.log(`server started on port ${PORT} and listen ip`))
 

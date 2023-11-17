@@ -20,15 +20,27 @@
           class="task__main-info-descr"
         ></textarea>
       </div>
-      <img
-        v-if="this.info.add_img_by_student"
-        :src="require('../../../newBack/uploads/' + info.user_id + '/' + info.add_img_by_student)"
-        class="image"
-        alt="Image"
-        data-fancybox="gallery"
-      />
+      <div
+        class="images"
+        id="gallery"
+      >
+        <div
+          v-if="infoTask.add_img"
+          v-for="img in splitFiles"
+        >
+          <img
+            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            class="image"
+            alt="Image"
+            data-fancybox="gallery"
+          />
+        </div>
+      </div>
 
-      <div class="answer" v-if="info.task_hint || info.task_answer">
+      <div
+        class="answer"
+        v-if="info.task_hint || info.task_answer"
+      >
         <p>
           Подсказка бралась - <span>{{ info.check_answer }}</span>
         </p>
@@ -49,31 +61,53 @@
 
       <div v-if="isShow">
         <p>{{ this.info.add_file_by_student }}</p>
-        <a v-if="this.info.add_file_by_student !== null" class="downloadLink"
-          ><button @click="downloadFiles()">Скачать</button></a
-        >
+        <a
+          v-if="this.info.add_file_by_student !== null"
+          class="downloadLink"
+        ><button @click="downloadFiles()">Скачать</button></a>
         <p v-else>Файлов нет</p>
       </div>
 
       <div class="estimation">
         <p>Оцените задание (0 - брал ответ. 1-брал подсказку. 2-решил сам):</p>
-        <form class="estimation__form" @submit.prevent="handler()">
+        <form
+          class="estimation__form"
+          @submit.prevent="handler()"
+        >
           <label class="estimation__label">
-            <input type="radio" value="0" name="2" id="0" v-model="valChek" />0</label
-          >
+            <input
+              type="radio"
+              value="0"
+              name="2"
+              id="0"
+              v-model="valChek"
+            />0</label>
           <label class="estimation__label">
-            <input type="radio" value="1" name="2" id="1" v-model="valChek" />1</label
-          >
+            <input
+              type="radio"
+              value="1"
+              name="2"
+              id="1"
+              v-model="valChek"
+            />1</label>
           <label class="estimation__label">
-            <input type="radio" value="2" name="2" id="2" v-model="valChek" />2</label
-          >
+            <input
+              type="radio"
+              value="2"
+              name="2"
+              id="2"
+              v-model="valChek"
+            />2</label>
           <textarea
             name="message"
             placeholder="Обратная связь по заданию"
             class="estimation__message"
             v-model="message"
           ></textarea>
-          <button class="estimation__btn" type="submit">Отправить</button>
+          <button
+            class="estimation__btn"
+            type="submit"
+          >Отправить</button>
         </form>
       </div>
     </div>
@@ -98,6 +132,7 @@ export default {
       url: '',
       blob: '',
       file: '',
+      addIMG: ''
     };
   },
 
@@ -114,11 +149,21 @@ export default {
           },
         })
         .then((response) => {
-          this.blob = new Blob([response.data], { type: 'application/pdf' });
-          this.url = URL.createObjectURL(this.blob);
-          const a = document.querySelector('.downloadLink');
-          a.href = this.url;
-          a.download = this.fileName;
+          if (response.data.type == 'application/zip') {
+            this.blob = new Blob([response.data], { type: 'application/zip' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+          if (response.data.type == 'application/pdf') {
+            this.blob = new Blob([response.data], { type: 'application/pdf' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+
         });
     },
     // Появление файла
@@ -156,6 +201,8 @@ export default {
       })
       .then((response) => {
         this.info = response.data;
+        this.addIMG = response.data.add_img;
+
         console.log(response.data);
       });
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
@@ -167,6 +214,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
+
 .task__info {
   display: flex;
   flex-direction: column;
@@ -182,15 +230,18 @@ export default {
   overflow: hidden;
   transition: all 0.3s;
 }
+
 .task__main-info {
   &-text {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   &-title {
     margin-bottom: 2rem;
   }
+
   &-descr {
     width: 100%;
     overflow: auto;
@@ -204,38 +255,46 @@ export default {
     color: #000;
     background: #fff;
   }
+
   &-student {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 }
+
 .options {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
 }
+
 .dop {
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
 .downloadLink {
   margin-top: 1rem;
   text-decoration: none;
 }
+
 .arrow__img {
   transition: all 0.3s;
 }
+
 .rotate {
   transform: rotate(-180deg);
 }
+
 .estimation {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+
 .estimation__input {
   width: 4.2rem;
   outline: none;
@@ -243,11 +302,13 @@ export default {
   border-radius: 0.3rem;
   border: 1px solid #000;
 }
+
 .estimation__label {
   display: flex;
   gap: 1rem;
   margin-top: 0.2rem;
 }
+
 .estimation__message {
   width: 40rem;
   height: 8rem;
@@ -258,6 +319,7 @@ export default {
   border: 1px solid #000;
   resize: none;
 }
+
 .estimation__btn {
   display: block;
   width: 8rem;
@@ -274,6 +336,7 @@ export default {
     transform: scale(1.1);
   }
 }
+
 .image {
   width: 18.75rem;
   cursor: pointer;

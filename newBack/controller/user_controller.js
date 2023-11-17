@@ -1226,6 +1226,32 @@ class User_controller {
     }
   }
 
+  async addAvatar(req, res) {
+    try {
+      if (!req.files || req.files.length === 0) {
+        throw new Error('Пожалуйста, загрузите файл');
+      }
+      let avatar = null;
+
+      for (const file of req.files) {
+        if (file.mimetype.startsWith('image/')) {
+          avatar = file.originalname;  // или любой другой путь, где вы сохраняете файл
+        } else res.status(500).json({ error: 'Неверный формат изображения' });
+      }
+
+      // Обновление записей в базе данных с путями к файлам
+      const updateQuery = 'UPDATE level_2_tests SET avatar = $1';
+      const updateValues = [avatar];
+
+      await db.query(updateQuery, updateValues);
+
+      return res.send({ message: 'Аватар успешно добавлены' });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
+  }
+
   async addTest3AndUpload(req, res) {
     try {
 

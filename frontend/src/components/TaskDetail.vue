@@ -13,15 +13,25 @@
         <p class="taskDetal__infoTask__topic">Предмет: {{ infoTask.subject }}</p>
       </div>
       <div class="taskDetal__bodyTask">
-        <span>Условие задания:</span> {{ infoTask.test_description }}
+        <span>Условие задания:</span>
+        <p class="taskDetal__bodyTask-text">{{ infoTask.test_description }}</p>
       </div>
-      <img
-        v-if="this.infoTask.add_img"
-        :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + infoTask.add_img)"
-        class="taskDetal__image"
-        alt="Image"
-        data-fancybox="gallery"
-      />
+      <div
+        class="images"
+        id="gallery"
+      >
+        <div
+          v-if="infoTask.add_img"
+          v-for="img in splitFiles"
+        >
+          <img
+            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            class="image"
+            alt="Image"
+            data-fancybox="gallery"
+          />
+        </div>
+      </div>
       <!--  Доп.материалы Start  -->
       <div class="taskDetal__addedFile">
         <p class="files">Дополнительные материалы</p>
@@ -33,11 +43,15 @@
           :class="{ rotate: isShow }"
         />
 
-        <div class="taskDetal__infoFile" v-if="isShow">
+        <div
+          class="taskDetal__infoFile"
+          v-if="isShow"
+        >
           <p>{{ this.infoTask.add_file }}</p>
-          <a v-if="this.infoTask.add_file !== null" class="downloadLink"
-            ><button @click="downloadFiles()">Скачать</button></a
-          >
+          <a
+            v-if="this.infoTask.add_file !== null"
+            class="downloadLink"
+          ><button @click="downloadFiles()">Скачать</button></a>
           <p v-else>Файлов нет</p>
         </div>
       </div>
@@ -81,19 +95,30 @@
           placeholder="Введите ваш ответ"
           v-model="infoArea"
         ></textarea>
-        <input type="file" class="taskDetal__file" ref="file" multiple />
+        <input
+          type="file"
+          class="taskDetal__file"
+          ref="file"
+          multiple
+        />
       </div>
       <!-- Решение конец -->
 
       <!-- Подсказка начало -->
-      <div class="taskDetal__hitn" v-if="hint">
+      <div
+        class="taskDetal__hitn"
+        v-if="hint"
+      >
         <p>{{ this.hint }}</p>
       </div>
       <!-- Подсказка конец -->
 
       <!-- Ответ начало -->
 
-      <div class="taskDetal__answer" v-if="answer">
+      <div
+        class="taskDetal__answer"
+        v-if="answer"
+      >
         <p>{{ this.answer }}</p>
       </div>
       <!-- Ответ конец -->
@@ -103,9 +128,18 @@
         class="taskDetal__buttons"
         v-if="infoTask.level == 2 && infoTask.decided === 'Не решено'"
       >
-        <button class="taskDetal__btn" @click="sendLevelTwoTest">Отправить</button>
-        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
-        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
+        <button
+          class="taskDetal__btn"
+          @click="sendLevelTwoTest"
+        >Отправить</button>
+        <button
+          class="taskDetal__btn"
+          @click="showHint"
+        >Взять подсказку</button>
+        <button
+          class="taskDetal__btn"
+          @click="showAnswer"
+        >Показать ответ</button>
       </div>
       <button
         class="taskDetal__button"
@@ -115,10 +149,22 @@
         Отправить
       </button>
 
-      <div class="taskDetal__buttons" v-if="infoTask.level == 3">
-        <button class="taskDetal__btn" @click="sendLevelThreeTest">Отправить</button>
-        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
-        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
+      <div
+        class="taskDetal__buttons"
+        v-if="infoTask.level == 3"
+      >
+        <button
+          class="taskDetal__btn"
+          @click="sendLevelThreeTest"
+        >Отправить</button>
+        <button
+          class="taskDetal__btn"
+          @click="showHint"
+        >Взять подсказку</button>
+        <button
+          class="taskDetal__btn"
+          @click="showAnswer"
+        >Показать ответ</button>
       </div>
       <!-- Кнопки конец -->
 
@@ -189,7 +235,13 @@ export default {
       file: '',
       token: '',
       data: '',
+      addIMG: ''
     };
+  },
+  computed: {
+    splitFiles() {
+      return this.addIMG.split(',')
+    }
   },
   // computed: {
   //   task() {
@@ -322,11 +374,21 @@ export default {
           },
         })
         .then((response) => {
-          this.blob = new Blob([response.data], { type: 'application/pdf' });
-          this.url = URL.createObjectURL(this.blob);
-          const a = document.querySelector('.downloadLink');
-          a.href = this.url;
-          a.download = this.fileName;
+          if (response.data.type == 'application/zip') {
+            this.blob = new Blob([response.data], { type: 'application/zip' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+          if (response.data.type == 'application/pdf') {
+            this.blob = new Blob([response.data], { type: 'application/pdf' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+
         });
     },
     // initializeUserChecks() {
@@ -350,8 +412,8 @@ export default {
     //     alert('Неверно. Вы получили 0 баллов.');
     //   }
     // },
-    helpMe() {},
-    showMeAnswer() {},
+    helpMe() { },
+    showMeAnswer() { },
     showFiles() {
       this.isShow = !this.isShow;
     },
@@ -375,6 +437,7 @@ export default {
         this.infoTask = response.data;
         this.teachrID = response.data.user_id;
         this.testID = response.data.test_id;
+        this.addIMG = response.data.add_img;
       });
 
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
@@ -414,8 +477,12 @@ export default {
     flex-direction: column;
     line-height: 160%;
 
-    & > span {
+    &>span {
       font-weight: bold;
+    }
+
+    &-text {
+      margin-top: 2rem;
     }
   }
 
@@ -558,7 +625,7 @@ export default {
   display: flex;
   align-items: center;
 
-  & > input {
+  &>input {
     margin-right: 5px;
   }
 }
@@ -571,6 +638,19 @@ export default {
     transition: all 0.3s;
     margin-left: 1rem;
   }
+}
+
+.images {
+  display: flex;
+  gap: 1rem;
+  max-width: 10rem;
+  margin-top: 2rem;
+
+}
+
+.image {
+  width: 10rem;
+  cursor: pointer;
 }
 
 .rotate {

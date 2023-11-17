@@ -71,13 +71,15 @@ export default {
               headers: {
                 Authorization: `Bearer ${this.token}`,
                 'Content-Type': 'application/json',
+
               },
             }).then((response) => {
+              // console.log(response.data)
               try {
                 this.userID = response.data.user_id;
                 store.state.isAuth = true;
                 this.$router.push(`/profile/${response.data.user_id}`);
-                console.log(userID);
+                // console.log(this.userID);
                 const local = {
                   userID: this.userID,
                   token: this.token,
@@ -89,7 +91,7 @@ export default {
               }
             });
           } catch (e) {
-            alert(response.data.message);
+            alert(response.data.message, 'hjdhd');
             this.email = this.pass = '';
           }
         });
@@ -176,4 +178,5 @@ export default {
 
 .name {
   font-family: Visitor;
-}</style>
+}
+</style>
