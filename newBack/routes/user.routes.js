@@ -26,8 +26,8 @@ router.get('/getTestForExpert', roleMiddleware(['Учитель', 'Экспер�
 router.get('/getTypeOfUser', userController.getTypeOfUser)
 router.post('/CreateComandos', userController.CreateComandos);
 
-// roleMiddleware(['Ученик', 'Учитель', 'Эксперт']),
-router.get('/getTasksForStudent', userController.getTasksForStudent)
+
+router.get('/getTasksForStudent', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksByID)
 router.post('/getAnswerByStudent1/:testID', roleMiddleware(['Ученик']), userController.getAnswerByStudent1)
 router.post('/getAnswerByStudent2/:testID/:student_solution', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
