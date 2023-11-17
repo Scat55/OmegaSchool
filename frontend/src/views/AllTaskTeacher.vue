@@ -8,6 +8,8 @@
           <p>Класс - {{ infoTask.classes }}</p>
           <p>Предмет - {{ infoTask.subject }}</p>
         </div>
+
+
       </div>
 
       <!-- Описание задания -->
@@ -28,14 +30,23 @@
       />
 
       <!-- Блок с вопросами -->
-      <div v-for="question in infoTask.questions" class="infoTask__options">
+      <div
+        v-for="question in infoTask.questions"
+        class="infoTask__options"
+      >
         <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
 
       <!-- Блок с подсказками -->
-      <p class="infoTask__show" @click="isShowAnswer = !isShowAnswer">Показать подсказки</p>
+      <p
+        class="infoTask__show"
+        @click="isShowAnswer = !isShowAnswer"
+      >Показать подсказки</p>
       <div v-if="isShowAnswer">
-        <div class="infoTask__answer" v-if="infoTask.task_hint || info.task_answer">
+        <div
+          class="infoTask__answer"
+          v-if="infoTask.task_hint || info.task_answer"
+        >
           <p>Подсказдка - {{ infoTask.task_hint }}</p>
           <p>Ответ - {{ infoTask.task_answer }}</p>
         </div>
@@ -54,10 +65,21 @@
 
       <div v-if="isShow">
         <p>{{ infoTask.add_file }}</p>
-        <a v-if="infoTask.add_file !== null" class="downloadLink"
-          ><button @click="downloadFiles()" class="infoTask__btn">Скачать</button></a
-        >
+        <a
+          v-if="infoTask.add_file"
+          class="downloadLink"
+        ><button
+            @click="downloadFiles()"
+            class="infoTask__btn"
+            v-if="infoTask.add_file !== null || infoTask.add_file !== ''"
+          >Скачать</button></a>
         <p v-else>Файлов нет</p>
+      </div>
+
+      <div class="questions">
+        <div v-for="question in infoTask.questions"> {{ question.text }} - <span
+            v-if="question.is_correct === true">Верно</span> <span v-else="question.is_correct === true">Не верно</span>
+        </div>
       </div>
     </div>
   </div>
@@ -187,6 +209,7 @@ export default {
     margin-top: 1rem;
     cursor: pointer;
   }
+
   &__arrow {
     transition: all 0.3s;
   }
@@ -204,6 +227,13 @@ export default {
       transform: scale(0.9);
     }
   }
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .rotate {
