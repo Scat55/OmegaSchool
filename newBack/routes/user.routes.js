@@ -40,8 +40,8 @@ router.post('/getTasksHintForStudent/:testID', roleMiddleware(['Ученик']),
 router.post('/getTasksAnswerForStudent/:testID', roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
 
 
-router.get('/getTasksForExpertByID/:testID', roleMiddleware(['Эксперт']), userController.getTasksByID)
-router.post('/updateTestByExpert', roleMiddleware(['Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
+router.get('/getTasksForExpertByID/:testID', roleMiddleware(['Ученик','Учитель','Эксперт']), userController.getTasksByID)
+router.post('/updateTestByExpert', roleMiddleware(['Ученик','Учитель','Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
 
 
 router.get('/getTasksForTeacherByID/:testID', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksByID)
