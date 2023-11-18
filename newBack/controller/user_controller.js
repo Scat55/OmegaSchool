@@ -1218,10 +1218,9 @@ class User_controller {
 
   async addTest3AndUpload(req, res) {
     try {
-
       const { task_test_coded, task_description_coded, classes, subject } = req.params;
-      const task_test = decodeURIComponent(task_test_coded)
-      const task_description = decodeURIComponent(task_description_coded)
+      const task_test = decodeURIComponent(task_test_coded);
+      const task_description = decodeURIComponent(task_description_coded);
       const user_id = req.user_id;
 
       const insertTestQuery = `
@@ -1234,7 +1233,8 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-      const { pdfPath, imgPath } = store.work_with_files(req, res);
+      // Используйте await для работы с файлами
+      const { pdfPath, imgPath } = await store.work_with_files(req, res);
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE level_3_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
@@ -1248,6 +1248,7 @@ class User_controller {
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+
 
   //Эта функция будет возвращать список всех файлов, загруженных конкретным пользователем.
   async listUserFiles(req, res) {
