@@ -186,7 +186,8 @@ export default {
           },
         },
       );
-      console.log(opt_score);
+      alert('Спасибо за оценку')
+      this.$router.push(`/profile/${this.token.userID}`)
     },
   },
 
