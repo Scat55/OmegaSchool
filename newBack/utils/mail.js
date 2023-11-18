@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const db = require('./db')
+const db = require('../db')
 const crypto = require('crypto');
 const bcrypt = require("bcryptjs");
 class Mail {

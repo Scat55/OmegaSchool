@@ -6,11 +6,12 @@ const fs = require('fs');
 const multer = require('multer');
 const { randomUUID } = require("crypto");
 //const { upload } = require('../multer/multerConfig');
-const store = require('../store')
+const store = require('../utils/store')
 const { resolve, join } = require("path");
 const archiver = require('archiver');
 const { fsync } = require("fs");
 const { v4: uuidv4 } = require('uuid');
+const mail = require("../utils/mail");
 
 class User_controller {
 
@@ -1389,6 +1390,56 @@ class User_controller {
       }
 
     } catch (error) { return res.status(500).send({ message: 'Ошибка сервера' }); }
+  }
+
+  async setEmail(req, res) {
+    try {
+      const email = req.params.email;
+
+      // Выводим для отладки
+      console.log(email);
+
+      // Генерируем код подтверждения
+      const verificationCode = await mail.generateVerificationCode(email);
+
+      // Отправляем письмо с кодом подтверждения
+      try {
+        console.log('sendVerificationEmail', email, verificationCode)
+        const verificationLink = `http://localhost:8080/verify-email/${email}/${verificationCode}`;
+
+        mail.transporter.sendMail({
+          from: 'omegalspu@gmail.com',
+          to: email,
+          subject: 'Подтверждение Email',
+          html: `Пожалуйста, кликните <a href="${verificationLink}">здесь</a>, чтобы подтвердить ваш email.`
+        });
+
+        await mail.saveVerificationCode(email, verificationCode);
+        console.log('Email успешно отправлен');
+      } catch (error) {
+        console.error('Ошибка при отправке email:', error);
+        throw error;
+      }
+
+      await mail.checkVerificationCode(email, verificationCode);
+      await mail.setUserEmailVerified(email);
+
+      res.send('Письмо с кодом подтверждения отправлено на ваш email.');
+    } catch (error) {
+      console.error('Ошибка при обработке запроса на подтверждение email:', error);
+      res.status(500).send('Произошла ошибка при обработке запроса.');
+    }
+  }
+
+  async getEmailCode(req, res) {
+    const verificationCode = req.params.code;
+    const email = req.params.email;
+
+    await mail.checkVerificationCode(email, verificationCode);
+    await mail.setUserEmailVerified(email);
+    console.log('Email успешно отправлен 2');
+
+    res.send('Аккаунт активирован');
   }
 
 }
