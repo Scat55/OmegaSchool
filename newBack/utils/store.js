@@ -33,6 +33,9 @@ class Store {
 
         this.work_with_files = (req, res) => {
             try {
+
+                if (!req.files || req.files.length === 0) { throw new Error('Пожалуйста, загрузите файл');}
+
                 let pdfFiles = [];
                 let imageFiles = [];
 
@@ -48,8 +51,7 @@ class Store {
                 // Возвращаем значения
                 return { pdfPath, imgPath };
             } catch (error) {
-                // Ловим ошибку и передаем ее выше
-                throw new Error('Ошибка при обработке файлов');
+                throw new Error(error);
             }
         }
     }
