@@ -8,14 +8,17 @@ export default {
   <div class="task_task">
     <router-link
       :to="'/task/' + task.id"
-      class="task_title"
-    >{{ task.title }} </router-link>
-    <p class="task_status_name">Статус: {{ task.status }}</p>
+      class="rout"
+    >
+    <p class="task_title">{{ task.title }}</p>
+    
     <div class="task_body">
+      <p class="task_status_name">Статус: {{ task.status }}</p>
       <p class="task_topic">Предмет: {{ task.topic }}</p>
       <p class="task_class">Класс: {{ task.class }}</p>
       <p class="task_complexity">Уровень: {{ task.complexity }}</p>
     </div>
+  </router-link>
     <!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
   </div>
 </template>
@@ -58,8 +61,13 @@ export default {
   cursor: pointer;
 }
 
+.rout {
+  text-decoration: none;
+  color: inherit;
+}
+
 .task_title {
-  margin-bottom: 1rem;
+  //margin-bottom: 1rem;
   color: white;
   text-decoration: none;
   padding: 10px 5px;
