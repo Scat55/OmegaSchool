@@ -141,7 +141,7 @@ export default {
 }
 
 .rule {
-  margin: 15px 0;
+  margin: 15px 0 25px 0;
   background-color: #f5f5f5;
   padding: 15px;
   border-radius: 1rem;
