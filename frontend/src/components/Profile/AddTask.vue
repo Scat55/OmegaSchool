@@ -61,9 +61,6 @@ export default {
             <option value="3">3 уровень</option>
           </select>
         </div>
-        <div>
-          <p>{{ rules }}</p>
-        </div>
       </div>
       <!--  Выборка предмета  -->
       <div class="window_Items">
@@ -87,6 +84,9 @@ export default {
           <option value="10">10 класс</option>
         </select>
       </div>
+    </div>
+    <div class="rule">
+      <p>{{ rules }}</p>
     </div>
     <FirstLVL
       v-show="selectedValue === '1'"
@@ -137,6 +137,19 @@ export default {
       flex-direction: column;
       justify-content: center;
     }
+  }
+}
+
+.rule {
+  margin: 15px 0;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 1rem;
+}
+
+@media (width < 652px) {
+  .tasks {
+    flex-direction: column;
   }
 }
 </style>
