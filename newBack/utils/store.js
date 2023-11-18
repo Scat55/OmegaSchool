@@ -31,16 +31,7 @@ class Store {
             },
         });
 
-        this.work_with_requred_files = (req, res) => {
-            try {
-                if (!req.files || req.files.length === 0) { throw new Error('Пожалуйста, загрузите файл');}
-
-                this.work_with_files(req, res)
-
-            } catch (error) { res.status(500).json({ error: 'Ошибка при загрузке файлов на сервер' }); }
-        }
-
-        work_with_files = (req, res) => {
+        this.work_with_files = (req, res) => {
             try {
                 let pdfFiles = [];
                 let imageFiles = [];

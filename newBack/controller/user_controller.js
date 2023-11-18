@@ -1176,8 +1176,7 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-      const {pdfPath, imgPath} = store.work_with_files(req, res)
-      console.log(pdfPath, imgPath)
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
 
       // Обновить запись в БД
       const updateQuery = `UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
@@ -1193,20 +1192,17 @@ class User_controller {
 
   async addAvatar(req, res) {
     try {
-      if (!req.files || req.files.length === 0) {
-        throw new Error('Пожалуйста, загрузите файл');
-      }
-      let avatar = null;
+      let { imgPath } = store.work_with_files(req, res);
 
       for (const file of req.files) {
         if (file.mimetype.startsWith('image/')) {
-          avatar = file.originalname;  // или любой другой путь, где вы сохраняете файл
+          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
         } else res.status(500).json({ error: 'Неверный формат изображения' });
       }
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE users SET avatar = $1';
-      const updateValues = [avatar];
+      const updateValues = [imgPath];
 
       await db.query(updateQuery, updateValues);
 
@@ -1235,20 +1231,7 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-      if (!req.files || req.files.length === 0) {
-        throw new Error('Пожалуйста, загрузите файл');
-      }
-      let pdfFiles = [];
-      let imageFiles = [];
-
-      for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
-        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
-      }
-
-      // Объединить имена файлов через запятую
-      const pdfPath = pdfFiles.join(',');
-      const imgPath = imageFiles.join(',');
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE level_3_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
