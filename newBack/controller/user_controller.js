@@ -6,11 +6,12 @@ const fs = require('fs');
 const multer = require('multer');
 const { randomUUID } = require("crypto");
 //const { upload } = require('../multer/multerConfig');
-const store = require('../store')
+const store = require('../utils/store')
 const { resolve, join } = require("path");
 const archiver = require('archiver');
 const { fsync } = require("fs");
 const { v4: uuidv4 } = require('uuid');
+const mail = require("../utils/mail");
 
 class User_controller {
 
@@ -1146,7 +1147,6 @@ class User_controller {
 
         await db.query(insertOptionQuery, optionValues);
       }
-      // console.log(req.files)
 
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
@@ -1155,11 +1155,8 @@ class User_controller {
       let imageFiles = [];
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfFiles.push(file.originalname);
-        } else if (file.mimetype.startsWith('image/')) {
-          imageFiles.push(file.originalname);
-        }
+        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+          else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
       }
 
       // Объединить имена файлов через запятую
@@ -1198,26 +1195,25 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
       }
-      let pdfPath = null;
-      let imgPath = null;
+      let pdfFiles = [];
+      let imageFiles = [];
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) {
-          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        }
+        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
       }
 
-      // Обновление записей в базе данных с путями к файлам
-      const updateQuery = 'UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
-      const updateValues = [pdfPath, imgPath, testId];
+      // Объединить имена файлов через запятую
+      const pdfPath = pdfFiles.join(',');
+      const imgPath = imageFiles.join(',');
 
-      await db.query(updateQuery, updateValues);
+      // Обновить запись в БД
+      const updateQuery = `UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
+
+      const updateValues = [pdfPath, imgPath, testId];
 
       return res.send({ message: 'Тест и файлы успешно добавлены' });
     } catch (error) {
@@ -1240,7 +1236,7 @@ class User_controller {
       }
 
       // Обновление записей в базе данных с путями к файлам
-      const updateQuery = 'UPDATE level_2_tests SET avatar = $1';
+      const updateQuery = 'UPDATE users SET avatar = $1';
       const updateValues = [avatar];
 
       await db.query(updateQuery, updateValues);
@@ -1270,20 +1266,20 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
       }
-      let pdfPath = null;
-      let imgPath = null;
+      let pdfFiles = [];
+      let imageFiles = [];
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) {
-          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        }
+        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
       }
+
+      // Объединить имена файлов через запятую
+      const pdfPath = pdfFiles.join(',');
+      const imgPath = imageFiles.join(',');
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE level_3_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
@@ -1389,6 +1385,56 @@ class User_controller {
       }
 
     } catch (error) { return res.status(500).send({ message: 'Ошибка сервера' }); }
+  }
+
+  async setEmail(req, res) {
+    try {
+      const email = req.params.email;
+
+      // Выводим для отладки
+      console.log(email);
+
+      // Генерируем код подтверждения
+      const verificationCode = await mail.generateVerificationCode(email);
+
+      // Отправляем письмо с кодом подтверждения
+      try {
+        console.log('sendVerificationEmail', email, verificationCode)
+        const verificationLink = `http://localhost:8080/verify-email/${email}/${verificationCode}`;
+
+        mail.transporter.sendMail({
+          from: 'omegalspu@gmail.com',
+          to: email,
+          subject: 'Подтверждение Email',
+          html: `Пожалуйста, кликните <a href="${verificationLink}">здесь</a>, чтобы подтвердить ваш email.`
+        });
+
+        await mail.saveVerificationCode(email, verificationCode);
+        console.log('Email успешно отправлен');
+      } catch (error) {
+        console.error('Ошибка при отправке email:', error);
+        throw error;
+      }
+
+      await mail.checkVerificationCode(email, verificationCode);
+      await mail.setUserEmailVerified(email);
+
+      res.send('Письмо с кодом подтверждения отправлено на ваш email.');
+    } catch (error) {
+      console.error('Ошибка при обработке запроса на подтверждение email:', error);
+      res.status(500).send('Произошла ошибка при обработке запроса.');
+    }
+  }
+
+  async getEmailCode(req, res) {
+    const verificationCode = req.params.code;
+    const email = req.params.email;
+
+    await mail.checkVerificationCode(email, verificationCode);
+    await mail.setUserEmailVerified(email);
+    console.log('Email успешно отправлен 2');
+
+    res.send('Аккаунт активирован');
   }
 
 }
