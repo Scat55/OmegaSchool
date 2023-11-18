@@ -2,6 +2,7 @@
   <div class="comandPage">
     <div class="container">
       <div class="comandPage__info">
+        {{ id }}
         <div class="comandPage__people">
           <p>Название команды</p>
           <div>Участники</div>
@@ -17,12 +18,20 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      id: this.$route.params.is
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
+
 .comandPage {
+
   // display: flex;
   // align-items: center;
   // height: 100%;
@@ -35,11 +44,13 @@ export default {};
     padding: 1.25rem;
     border-radius: 0.5rem;
   }
+
   &__avatar {
     border: 2px solid white;
     border-radius: 1rem;
     width: 20%;
   }
+
   &__people {
     display: flex;
     flex-direction: column;
