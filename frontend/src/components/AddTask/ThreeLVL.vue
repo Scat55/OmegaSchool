@@ -28,6 +28,7 @@ export default {
       taskDescription: '',
       token: '',
       files: '',
+      selectedFiles: [],
     };
   },
 
@@ -42,7 +43,7 @@ export default {
       const task_test = encodeURIComponent(this.taskName);
       const task_description = encodeURIComponent(this.taskDescription);
 
-      this.files = this.$refs.fileInput.files;
+      this.files = this.$refs.fileInputThree.files;
 
       let allFiles = Object.values(this.files).map((el) => {
         return el;
@@ -68,6 +69,39 @@ export default {
       );
       this.taskName = this.taskDescription = '';
     },
+    // Для загрузки файлов
+    handleFileChange() {
+      // При изменении выбранных файлов обновляем список имен файлов
+      const fileInputThree = this.$refs.fileInputThree;
+      const files = fileInputThree.files;
+      const fileNames = [];
+
+      for (let i = 0; i < files.length; i++) {
+        fileNames.push(files[i].name);
+      }
+
+      this.selectedFiles = fileNames;
+      // console.log(event.target.files[0])
+      // this.file = event.target.files[0]
+      // console.log(this.file)
+      // this.file = this.$refs.fileInput.files[0]
+      // this.file = this.$refs.fileInput.files
+      // const allFile = Object.values(this.file)
+      // for (let i = 0; i < allFile.length; i++){
+      //   this.newFile = allFile[i]
+      // }
+    },
+    removeFile(index) {
+      // Удаляем файл из списка выбранных файлов по индексу
+      this.selectedFiles.splice(index, 1);
+    },
+  },
+  computed: {
+    buttonText() {
+      return this.selectedFiles.length > 0
+        ? `Выбрано файлов ${this.selectedFiles.length}`
+        : 'Выберите файлы';
+    },
   },
 };
 </script>
@@ -87,9 +121,39 @@ export default {
       <div class="block">
         <p>Введите условие задания:</p>
         <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
-        <div class="block">
-          <p>Дополнительные материалы:</p>
-          <input type="file" id="fileInput" ref="fileInput" multiple />
+      </div>
+      <div class="add__file">
+        <div>
+          <label for="fileInputThree" class="custom-file-upload">
+            <span>{{ buttonText }}</span>
+            <input
+              type="file"
+              id="fileInputThree"
+              ref="fileInputThree"
+              multiple
+              @change="handleFileChange"
+              accept="application/pdf, .jpg,.jpeg,.png"
+            />
+          </label>
+          <div class="list_task_file">
+            <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
+            <ul>
+              <li v-for="(fileName, index) in selectedFiles" :key="index">
+                <span>{{ index + 1 }}</span>
+                {{ fileName }}
+                <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <!-- <select class="files">
+            <option disabled selected>-- Прикрепите файл --</option>
+            <option>Файл2</option>
+            <option>Файл3</option>
+            <option>Файл4</option>
+            <option>Файл5</option>
+          </select> -->
         </div>
       </div>
       <div class="btn-send">
@@ -156,6 +220,46 @@ export default {
 
   &:hover {
     background-color: #ff6e6e;
+  }
+}
+
+.add__file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-file-upload:hover {
+  background-color: #0056b3;
+}
+
+.custom-file-upload input[type='file'] {
+  display: none;
+}
+
+#btn_del_file {
+  padding: 2px;
+  background: #ff6e6e;
+  color: white;
+  border-radius: 4px;
+  border: none;
+}
+
+.list_task_file {
+  margin: 10px 0;
+
+  & > ul > li {
+    list-style-type: none;
   }
 }
 </style>

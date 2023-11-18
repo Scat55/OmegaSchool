@@ -98,7 +98,7 @@ export default {
       this.selectedFiles = [];
     },
     // Для загрузки файлов
-    handleFileChange(event) {
+    handleFileChange() {
       // При изменении выбранных файлов обновляем список имен файлов
       const fileInput = this.$refs.fileInput;
       const files = fileInput.files;

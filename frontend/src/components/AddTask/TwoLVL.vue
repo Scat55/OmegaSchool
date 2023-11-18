@@ -75,27 +75,27 @@ export default {
         return el;
       });
       axios.post(
-          `/api/add_level_2/${task_test}/${task_description}/${task_help}/${task_answer}/${this.selectedClass}/${this.selectedItems}`,
-          allFiles,
-          {
-            headers: {
-              Authorization: `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data',
-            },
+        `/api/add_level_2/${task_test}/${task_description}/${task_help}/${task_answer}/${this.selectedClass}/${this.selectedItems}`,
+        allFiles,
+        {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
           },
+        },
       );
 
       alert('Задание успешно загружено');
       console.log(
-          this.taskName,
-          this.taskDescription,
-          this.taskHelp,
-          this.taskAnswer,
-          '||',
-          this.selectedClass,
-          this.selectedItems,
-          '||',
-          allFiles,
+        this.taskName,
+        this.taskDescription,
+        this.taskHelp,
+        this.taskAnswer,
+        '||',
+        this.selectedClass,
+        this.selectedItems,
+        '||',
+        allFiles,
       );
       this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
     },
@@ -103,10 +103,10 @@ export default {
   computed: {
     buttonText() {
       return this.selectedFiles.length > 0
-          ? `Выбрано файлов ${this.selectedFiles.length}`
-          : 'Выберите файлы';
+        ? `Выбрано файлов ${this.selectedFiles.length}`
+        : 'Выберите файлы';
     },
-  }
+  },
 };
 </script>
 
@@ -116,10 +116,10 @@ export default {
       <div class="name_task">
         <h3>Название задания:</h3>
         <input
-            type="text"
-            placeholder="Введите название задания"
-            class="name__task"
-            v-model="taskName"
+          type="text"
+          placeholder="Введите название задания"
+          class="name__task"
+          v-model="taskName"
         />
       </div>
       <div class="block">
@@ -127,18 +127,17 @@ export default {
         <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
       </div>
 
-
       <div class="add__file">
         <div>
           <label for="fileInputTwo" class="custom-file-upload">
             <span>{{ buttonText }}</span>
             <input
-                type="file"
-                id="fileInputTwo"
-                ref="fileInputTwo"
-                multiple
-                @change="handleFileChange"
-                accept="application/pdf, .jpg,.jpeg,.png"
+              type="file"
+              id="fileInputTwo"
+              ref="fileInputTwo"
+              multiple
+              @change="handleFileChange"
+              accept="application/pdf, .jpg,.jpeg,.png"
             />
           </label>
           <div class="list_task_file">
@@ -163,12 +162,11 @@ export default {
         </div>
       </div>
 
-
       <div class="block">
         <p>
           Введите подсказку -
           <span id="warning"
-          >Внимание! Если ученик использует подсказку, он может получить максимум 1 балл. в то
+            >Внимание! Если ученик использует подсказку, он может получить максимум 1 балл. в то
             время у вас во вкладке "задачи на проверку ( от учеников )" будет помечено использовал
             ли ученик подсказку."</span
           >
@@ -179,7 +177,7 @@ export default {
         <p>
           Ответ -
           <span id="warning"
-          >Внимание! Если ученик использует ответ, он получит 0 баллов. в то время у вас во
+            >Внимание! Если ученик использует ответ, он получит 0 баллов. в то время у вас во
             вкладке "задачи на проверку ( от учеников )" будет помечено использовал ли ученик
             ответ."</span
           >
@@ -197,7 +195,6 @@ export default {
 <style scoped lang="scss">
 #textAreaUsl {
   width: 100%;
-  font-size: 1.5rem;
   resize: none;
   height: 8rem;
   outline: none;
@@ -213,7 +210,6 @@ export default {
 
 #answer {
   width: 100%;
-  font-size: 1.5rem;
   resize: none;
   height: 8rem;
   outline: none;
