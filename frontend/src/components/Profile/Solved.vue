@@ -7,7 +7,8 @@
         <p>Класс - {{ info.class }}</p>
       </div>
       <div class="myTasks__text">
-        <p v-if="info.complexity">Уровень - {{ info.complexity }}</p>
+        <p info.complexity>Уровень - {{ info.complexity }}</p>
+        <p v-if="info.ocenka">{{ info.ocenka }}</p>
         <p v-else>На проверке...</p>
       </div>
     </div>
@@ -31,6 +32,7 @@ export default {
     border: 1px solid #000;
     border-radius: 0.5rem;
   }
+
   &__text {
     display: flex;
     flex-direction: column;
