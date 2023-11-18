@@ -1176,12 +1176,14 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-      const { pdfPath, imgPath } = store.work_with_files(req, res);
+      // Используйте await для работы с файлами
+      const { pdfPath, imgPath } = await store.work_with_files(req, res);
 
       // Обновить запись в БД
       const updateQuery = `UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
-
       const updateValues = [pdfPath, imgPath, testId];
+
+      await db.query(updateQuery, updateValues);
 
       return res.send({ message: 'Тест и файлы успешно добавлены' });
     } catch (error) {
@@ -1189,6 +1191,7 @@ class User_controller {
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+
 
   async addAvatar(req, res) {
     try {
