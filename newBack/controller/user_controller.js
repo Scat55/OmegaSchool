@@ -821,7 +821,7 @@ class User_controller {
 
       // Получаем список test_id и test_level для данного user_id
       const studentTestsSql = `
-        SELECT test_id, test_level, decided, decided
+        SELECT test_id, test_level, decided, decided, correct_solution
         FROM student_solutions
         WHERE user_id = $1 and decided = 'Решено';
     `;
@@ -832,7 +832,7 @@ class User_controller {
       // Теперь для каждого test_id получим название теста из соответствующей таблицы
       const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
         const levelTestSql = `
-            SELECT task_test, classes, subject
+            SELECT task_test, classes, subject    
             FROM level_${test.test_level}_tests
             WHERE test_id = $1;
         `;
@@ -848,7 +848,8 @@ class User_controller {
             topic: testDetails.subject,
             status: test.decided,
             opt_score: test.opt_score,
-            decided: test.decided
+            decided: test.decided,
+            ocenka: test.correct_solution
           };
         } else {
           return {

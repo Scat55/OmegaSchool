@@ -51,7 +51,10 @@
           <a
             v-if="this.infoTask.add_file !== null"
             class="downloadLink"
-          ><button @click="downloadFiles()">Скачать</button></a>
+          ><button
+              @click="downloadFiles()"
+              class="btn"
+            >Скачать</button></a>
           <p v-else>Файлов нет</p>
         </div>
       </div>
@@ -655,5 +658,22 @@ export default {
 
 .rotate {
   transform: rotate(-180deg);
+}
+
+.btn {
+  padding: .625rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  border-radius: 0.5rem;
+  border: 1px solid #000;
+  transition: all .3s;
+
+  &:hover {
+    background-color: rgba(94, 183, 255, 0.9);
+    color: #fff;
+    border: none;
+  }
 }
 </style>
