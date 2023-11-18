@@ -77,7 +77,7 @@ const routes = [
     component: ComandAuth,
   },
   {
-    path: '/comandPage',
+    path: '/comandPage/:id?',
     component: ComandPage,
   },
   {

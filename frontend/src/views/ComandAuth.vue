@@ -2,29 +2,58 @@
 <template>
   <div class="comand">
     <div class="container">
-      <form action="#" class="comand__form" @submit.prevent="handler()">
+      <form
+        action="#"
+        class="comand__form"
+        @submit.prevent="handler()"
+      >
         <p class="comand__form-title">Регистрация команды</p>
 
         <div class="comand__info">
           <span class="comand__info-name">Название команды</span>
-          <input type="text" class="comand__input name" v-model="comandName" />
+          <input
+            type="text"
+            class="comand__input name"
+            v-model="comandName"
+          />
         </div>
         <div class="comand__info">
           <span class="comand__info-name">Пароль</span>
-          <input type="password" class="comand__input" v-model="pass" />
+          <input
+            type="password"
+            class="comand__input"
+            v-model="pass"
+          />
         </div>
         <span class="comand__people-name">Участники</span>
-        <div class="comand__people" v-for="user in users">
+        <div
+          class="comand__people"
+          v-for="user in users"
+        >
           <div>
-            <input type="email" class="comand__input name" v-model="user.name" />
+            <input
+              type="email"
+              class="comand__input name"
+              v-model="user.name"
+            />
           </div>
         </div>
-        <p class="comand__add" @click="addUsers" v-if="lenghtUsers !== 5">
+        <p
+          class="comand__add"
+          @click="addUsers"
+          v-if="lenghtUsers !== 5"
+        >
           Добавить участника <span>+</span>
         </p>
 
-        <button class="comand__form-btn" type="submit">Регистрация</button>
-        <router-link to="/authCom" class="router">
+        <button
+          class="comand__form-btn"
+          type="submit"
+        >Регистрация</button>
+        <router-link
+          to="/authCom"
+          class="router"
+        >
           <p class="comand__add auth">Уже есть команда? Войти</p>
         </router-link>
       </form>
@@ -34,6 +63,7 @@
 
 <script>
 import store from '../store/index';
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -56,9 +86,23 @@ export default {
       const users = this.users.map((el) => {
         return el.name;
       });
-      console.log(this.comandName, this.pass, users);
-      store.state.isAuth = true;
-      this.$router.push(`/comandPage`);
+      axios.post(`/api/CreateComandos`, {
+        comandName: this.comandName,
+        password: this.pass,
+        userLogins: users
+      }, {
+        header: {
+          'Content-Type': 'app;ication/json'
+        }
+      }).then(res => {
+        console.log(res.data)
+        store.state.isAuth = true;
+        this.$router.push(`/comandPage/${res.data.comandId}`);
+      })
+
+      // console.log(this.comandName, this.pass, users);
+      // 
+
     },
   },
 };

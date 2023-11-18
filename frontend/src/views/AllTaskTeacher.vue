@@ -24,11 +24,9 @@
       <div
         class="images"
         id="gallery"
+        v-if="infoTask.add_img"
       >
-        <div
-          v-if="infoTask.add_img"
-          v-for="img in splitFiles"
-        >
+        <div v-for="img in splitFiles">
           <img
             :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
             class="image"

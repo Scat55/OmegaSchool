@@ -21,7 +21,7 @@ class Store {
         this.upload = multer({
             storage: this.storage,
             fileFilter: (req, file, cb) => {
-                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
                 if (!allowedTypes.includes(file.mimetype)) {
                     const error = new Error('Неподдерживаемый тип файлов. Выберите из pdf, jpeg, png, msword.');
                     error.statusCode = 400;
@@ -30,6 +30,28 @@ class Store {
                 cb(null, true);
             },
         });
+
+        this.work_with_files = (req, res) => {
+            try {
+                let pdfFiles = [];
+                let imageFiles = [];
+
+                for (const file of req.files) {
+                    if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+                    else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
+                }
+
+                // Объединить имена файлов через запятую
+                const pdfPath = pdfFiles.join(',');
+                const imgPath = imageFiles.join(',');
+
+                // Возвращаем значения
+                return { pdfPath, imgPath };
+            } catch (error) {
+                // Ловим ошибку и передаем ее выше
+                throw new Error('Ошибка при обработке файлов');
+            }
+        }
     }
 
 }

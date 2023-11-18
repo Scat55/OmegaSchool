@@ -34,7 +34,6 @@ class Mail {
             const query = 'UPDATE users SET verification_code = TRUE WHERE email = $1';
             await db.query(query, [email]);
         }
-
     }
 
     generateVerificationCode(email) {
