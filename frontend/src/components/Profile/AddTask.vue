@@ -17,9 +17,8 @@ export default {
       selectedItems: '',
     };
   },
-  methods: {},
-  watch: {
-    selectedValue() {
+  methods: {
+    updateRules() {
       switch (this.selectedValue) {
         case '1':
           this.rules =
@@ -36,6 +35,14 @@ export default {
           this.rules = 'у вас не выбран уровень задания.';
       }
     },
+  },
+  watch: {
+    selectedValue() {
+      this.updateRules();
+    },
+  },
+  mounted() {
+    this.updateRules();
   },
 };
 </script>
