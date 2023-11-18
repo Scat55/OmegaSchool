@@ -1,17 +1,10 @@
 const db = require('../db')
-const { validationResult } = require("express-validator");
-const { json } = require("express");
-const jwt = require("jsonwebtoken");
 const fs = require('fs');
-const multer = require('multer');
-const { randomUUID } = require("crypto");
-//const { upload } = require('../multer/multerConfig');
-const store = require('../utils/store')
 const { resolve, join } = require("path");
 const archiver = require('archiver');
-const { fsync } = require("fs");
 const { v4: uuidv4 } = require('uuid');
 const mail = require("../utils/mail");
+const store = require("../utils/store");
 
 class User_controller {
 
@@ -1149,20 +1142,7 @@ class User_controller {
         await db.query(insertOptionQuery, optionValues);
       }
 
-      if (!req.files || req.files.length === 0) {
-        throw new Error('Пожалуйста, загрузите файл');
-      }
-      let pdfFiles = [];
-      let imageFiles = [];
-
-      for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
-          else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
-      }
-
-      // Объединить имена файлов через запятую
-      const pdfPath = pdfFiles.join(',');
-      const imgPath = imageFiles.join(',');
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
 
       // Обновить запись в БД
       const updateQuery = `UPDATE level_1_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
@@ -1196,20 +1176,8 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-      if (!req.files || req.files.length === 0) {
-        throw new Error('Пожалуйста, загрузите файл');
-      }
-      let pdfFiles = [];
-      let imageFiles = [];
-
-      for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
-        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
-      }
-
-      // Объединить имена файлов через запятую
-      const pdfPath = pdfFiles.join(',');
-      const imgPath = imageFiles.join(',');
+      const {pdfPath, imgPath} = store.work_with_files(req, res)
+      console.log(pdfPath, imgPath)
 
       // Обновить запись в БД
       const updateQuery = `UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
