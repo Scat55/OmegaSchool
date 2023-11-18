@@ -1147,7 +1147,6 @@ class User_controller {
 
         await db.query(insertOptionQuery, optionValues);
       }
-      // console.log(req.files)
 
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
@@ -1156,11 +1155,8 @@ class User_controller {
       let imageFiles = [];
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfFiles.push(file.originalname);
-        } else if (file.mimetype.startsWith('image/')) {
-          imageFiles.push(file.originalname);
-        }
+        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+          else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
       }
 
       // Объединить имена файлов через запятую
@@ -1199,26 +1195,25 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
       }
-      let pdfPath = null;
-      let imgPath = null;
+      let pdfFiles = [];
+      let imageFiles = [];
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) {
-          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        }
+        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
       }
 
-      // Обновление записей в базе данных с путями к файлам
-      const updateQuery = 'UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
-      const updateValues = [pdfPath, imgPath, testId];
+      // Объединить имена файлов через запятую
+      const pdfPath = pdfFiles.join(',');
+      const imgPath = imageFiles.join(',');
 
-      await db.query(updateQuery, updateValues);
+      // Обновить запись в БД
+      const updateQuery = `UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
+
+      const updateValues = [pdfPath, imgPath, testId];
 
       return res.send({ message: 'Тест и файлы успешно добавлены' });
     } catch (error) {
@@ -1241,7 +1236,7 @@ class User_controller {
       }
 
       // Обновление записей в базе данных с путями к файлам
-      const updateQuery = 'UPDATE level_2_tests SET avatar = $1';
+      const updateQuery = 'UPDATE users SET avatar = $1';
       const updateValues = [avatar];
 
       await db.query(updateQuery, updateValues);
@@ -1271,20 +1266,20 @@ class User_controller {
       const testResult = await db.query(insertTestQuery, testValues);
       const testId = testResult.rows[0].test_id;
 
-
       if (!req.files || req.files.length === 0) {
         throw new Error('Пожалуйста, загрузите файл');
       }
-      let pdfPath = null;
-      let imgPath = null;
+      let pdfFiles = [];
+      let imageFiles = [];
 
       for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) {
-          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        }
+        if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
+        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
       }
+
+      // Объединить имена файлов через запятую
+      const pdfPath = pdfFiles.join(',');
+      const imgPath = imageFiles.join(',');
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE level_3_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
