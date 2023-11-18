@@ -22,11 +22,9 @@
       <div
         class="images"
         id="gallery"
+        v-if="info.add_img"
       >
-        <div
-          v-if="info.add_img"
-          v-for="img in splitFiles"
-        >
+        <div v-for="img in splitFiles">
           <img
             :src="require('../../../newBack/uploads/' + info.user_id + '/' + img)"
             class="image"
@@ -38,8 +36,8 @@
       <div
         v-for="question in info.questions"
         class="options"
-      > 
-      <div>{{ question.text }} - {{  question.is_correct }}</div>
+      >
+        <div>{{ question.text }} - {{ question.is_correct }}</div>
         <!-- <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div> -->
       </div>
       <div
