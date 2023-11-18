@@ -19,7 +19,7 @@ export default {
   },
   methods: {},
   watch: {
-    selectedValue(rules) {
+    selectedValue() {
       switch (this.selectedValue) {
         case '1':
           this.rules =
