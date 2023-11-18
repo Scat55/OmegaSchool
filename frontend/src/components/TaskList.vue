@@ -42,6 +42,7 @@ export default {
   //margin: 10px;
   display: flex;
   //justify-content: space-between;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
@@ -67,18 +68,21 @@ export default {
 }
 
 .task_title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   //margin-bottom: 1rem;
   color: white;
   text-decoration: none;
-  padding: 10px 5px;
+  padding: 10px 10px;
   font-size: 20px;
   background: $lightBlueColor;
 }
 
 .task_topic {
-  text-align: left;
+  //text-align: left;
 }
 
 .task_complexity {
-  text-align: right;
+  //text-align: right;
 }</style>
