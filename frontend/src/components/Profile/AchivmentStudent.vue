@@ -354,12 +354,14 @@ export default {
 .my_achivment {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
 
   .achievement-card {
 
     flex: 1 1 calc(33.333% - 20px);
+    max-width: calc(33.333% - 20px);
+    min-width: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
