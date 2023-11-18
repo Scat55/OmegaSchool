@@ -91,9 +91,20 @@ export default {
       //   this.newFile = allFile[i]
       // }
     },
+    updateFileList(newFiles) {
+      const newFileList = new DataTransfer(); // Создаем новый объект DataTransfer
+      newFiles.forEach((file) => newFileList.items.add(file)); // Добавляем файлы
+      this.$refs.fileInputThree.files = newFileList.files; // Обновляем файлы в input
+    },
+
     removeFile(index) {
-      // Удаляем файл из списка выбранных файлов по индексу
-      this.selectedFiles.splice(index, 1);
+      this.selectedFiles.splice(index, 1); // Удаляем имя файла из списка
+
+      // Удаляем файл из списка файлов в input
+      const remainingFiles = Array.from(this.$refs.fileInputThree.files).filter(
+        (_, fileIndex) => fileIndex !== index,
+      );
+      this.updateFileList(remainingFiles); // Обновляем файлы в input
     },
   },
   computed: {
