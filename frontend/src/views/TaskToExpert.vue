@@ -38,8 +38,9 @@
       <div
         v-for="question in info.questions"
         class="options"
-      >
-        <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
+      > 
+      <div>{{ question.text }} - {{  question.is_correct }}</div>
+        <!-- <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div> -->
       </div>
       <div
         class="answer"
