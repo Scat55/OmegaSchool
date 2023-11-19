@@ -1,10 +1,22 @@
 <template>
   <div class="myTasks__tasks">
     <h1 class="myTasks__title">Мои решенные задачи</h1>
-    <Solved v-for="(info, idx) in paginatedData" :key="idx" :info="info" />
+    <Solved
+      v-if="info.complexity == 2 || info.complexity == 3"
+      v-for="(info, idx) in paginatedData"
+      :key="idx"
+      :info="info"
+    />
     <div class="buttons">
-      <button class="buttons__btn" @click="prevPage" :disabled="pageNumber == 0">Назад</button
-      ><button class="buttons__btn" @click="nextPage" :disabled="pageNumber >= pageCount - 1">
+      <button
+        class="buttons__btn"
+        @click="prevPage"
+        :disabled="pageNumber == 0"
+      >Назад</button><button
+        class="buttons__btn"
+        @click="nextPage"
+        :disabled="pageNumber >= pageCount - 1"
+      >
         Вперед
       </button>
     </div>
@@ -72,6 +84,7 @@ export default {
   &__title {
     margin-bottom: 1rem;
   }
+
   &__tasks {
     display: flex;
     flex-direction: column;
