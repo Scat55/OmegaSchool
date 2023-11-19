@@ -1,7 +1,18 @@
 <script>
 export default {
   props: ['task'],
+  data() {
+    return {
+      likes: 0
+    }
+  },
+  methods: {
+    changeLike() {
+      this.likes++
+    }
+  },
 };
+
 </script>
 
 <template>
@@ -10,16 +21,31 @@ export default {
       :to="'/task/' + task.id"
       class="rout"
     >
-    <p class="task_title">{{ task.title }}</p>
-    
-    <div class="task_body">
-      <p class="task_status_name">Статус: {{ task.status }}</p>
-      <p class="task_topic">Предмет: {{ task.topic }}</p>
-      <p class="task_class">Класс: {{ task.class }}</p>
-      <p class="task_complexity">Уровень: {{ task.complexity }}</p>
+      <p class="task_title">{{ task.title }}</p>
+
+      <div class="task_body">
+        <p class="task_status_name">Статус: {{ task.status }}</p>
+        <p class="task_topic">Предмет: {{ task.topic }}</p>
+        <p class="task_class">Класс: {{ task.class }}</p>
+        <p class="task_complexity">Уровень: {{ task.complexity }}</p>
+
+
+      </div>
+    </router-link>
+    <div class="likes">
+      {{ likes }}
+      <img
+        src="../assets/images/hert.png"
+        alt="Like"
+        class="like"
+        @click.stop="changeLike()"
+      >
     </div>
-  </router-link>
-    <!--    <div class="bodyTask">{{task.bodyTask}}</div> Аннотация-->
+    <!--  
+      <div
+      class="bodyTask"
+    >{{ task.bodyTask }}
+  </div> Аннотация-->
   </div>
 </template>
 
@@ -27,6 +53,7 @@ export default {
 @import '../assets/styles/vars.scss';
 
 .task_task {
+
   border: 2px solid $lightBlueColor;
   border-radius: 1rem;
   margin-bottom: 15px;
@@ -85,4 +112,16 @@ export default {
 
 .task_complexity {
   //text-align: right;
-}</style>
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.like {
+  align-items: flex-end;
+  width: 10%;
+}
+</style>
