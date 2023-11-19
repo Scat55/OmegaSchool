@@ -165,7 +165,7 @@ export default {
           <p>Почта {{ person.email }}</p>
         </div>
         <div class="level" v-if="person.level !== null">
-          <p class="level__text">Уровень</p>
+          <p class="level__text">Мне доступны задания уровня</p>
           <span class="level__info"> - {{ person.level }}</span>
         </div>
       </div>
@@ -257,8 +257,6 @@ export default {
 }
 .avatar__info {
   width: 40%;
-  //display: flex;
-  //justify-content: center;
   & > img {
     border: 2px solid white;
     border-radius: 1rem;
@@ -332,7 +330,7 @@ button {
   font-family: Visitor, serif;
 }
 .level {
-  font-size: 0.8rem;
+  font-size: inherit;
   &__text {
     display: inline-block;
   }
