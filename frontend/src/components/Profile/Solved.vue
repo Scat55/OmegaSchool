@@ -8,9 +8,13 @@
       </div>
       <div class="myTasks__text">
         <p info.complexity>Уровень - {{ info.complexity }}</p>
-        <p v-if="info.opt_score">Комментарий: {{ info.ocenka }}</p>
+
         <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
         <p v-else>На проверке...</p>
+        <div class="comment">
+          <p v-if="info.opt_score">Комментарий:</p>
+          <span class="comment__text">{{ info.ocenka }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -19,6 +23,11 @@
 <script>
 export default {
   props: ['info'],
+  data() {
+    return {
+
+    }
+  },
 };
 </script>
 
@@ -38,6 +47,16 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+  }
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+
+  &__text {
+    width: 12.5rem;
   }
 }
 </style>
