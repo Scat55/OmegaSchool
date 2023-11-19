@@ -131,11 +131,21 @@ export default {
           },
         })
         .then((response) => {
-          this.blob = new Blob([response.data], { type: 'application/pdf' });
-          this.url = URL.createObjectURL(this.blob);
-          const a = document.querySelector('.downloadLink');
-          a.href = this.url;
-          a.download = this.fileName;
+          if (response.data.type == 'application/zip') {
+            this.blob = new Blob([response.data], { type: 'application/zip' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+          if (response.data.type == 'application/pdf') {
+            this.blob = new Blob([response.data], { type: 'application/pdf' });
+            this.url = URL.createObjectURL(this.blob);
+            const a = document.querySelector('.downloadLink');
+            a.href = this.url;
+            a.download = this.fileName;
+          }
+
         });
     },
   },
