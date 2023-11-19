@@ -168,7 +168,7 @@ export default {
     </div>
 
     <div class="change_profile">
-      <div class="change_password" v-if="edit === false">
+      <!-- <div class="change_password" v-if="edit === false">
         <button
           v-if="changeDate.changePass === false"
           @click="changeDate.changePass = true"
@@ -185,7 +185,8 @@ export default {
           <button class="editBtn" @click="changePass()">Подтвердить изменение</button>
           <button @click="changeDate.changePass = false" class="editBtn">Отмена</button>
         </div>
-      </div>
+      </div> -->
+      
       <div class="edit_profile" v-if="changeDate.changePass === false">
         <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
         <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
