@@ -111,16 +111,10 @@ export default {
             // this.message.push({ message: response.data });
             // console.log(this.message)
             this.message = response.data.response
-            console.log(this.message)
           } catch {
             this.message = 'Оооп... Я сломался'
           }
         });
-
-
-      // console.log(showRobot(this.newMessage));
-
-
       this.myMessage = '';
     },
   },
@@ -207,6 +201,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 1rem;
 
   button {
     width: 50px;
