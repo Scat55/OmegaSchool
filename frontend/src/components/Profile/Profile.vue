@@ -213,7 +213,8 @@ export default {
 .main {
   font-size: 2rem;
   width: 100%;
-  height: 100%;
+  min-height: 518px;
+  max-height: 100%;
   line-height: 140%;
   user-select: none;
 }
