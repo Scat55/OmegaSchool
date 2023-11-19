@@ -541,7 +541,6 @@ class User_controller {
 
       await db.query(updateQuery, updateValues);
 
-
       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
     } catch (error) {
       console.error('Ошибка при выполнении запроса к базе данных:', error);
