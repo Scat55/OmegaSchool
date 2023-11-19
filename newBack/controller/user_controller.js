@@ -498,18 +498,7 @@ class User_controller {
       // Выполнение запроса на вставку обработанных вариантов ответов
       await db.query(insertOptionsSql, [userId, testId, student_solution]);
 
-      if (!req.files || req.files.length === 0) {
-        throw new Error('Пожалуйста, загрузите файл');
-      }
-
-      let pdfPath = null;
-      let imgPath = null;
-
-      for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) { imgPath = file.originalname; }  // или любой другой путь, где вы сохраняете файл
-      }
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
@@ -544,16 +533,7 @@ class User_controller {
       // Выполнение запроса на вставку обработанных вариантов ответов
       await db.query(insertOptionsSql, [userId, testId, student_solution]);
 
-      let pdfPath = null;
-      let imgPath = null
-
-      for (const file of req.files) {
-        if (file.mimetype === 'application/pdf') {
-          pdfPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        } else if (file.mimetype.startsWith('image/')) {
-          imgPath = file.originalname;  // или любой другой путь, где вы сохраняете файл
-        }
-      }
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
 
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
