@@ -23,7 +23,7 @@ class Store {
             fileFilter: (req, file, cb) => {
                 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
                 if (!allowedTypes.includes(file.mimetype)) {
-                    const error = new Error('Неподдерживаемый тип файлов. Выберите из pdf, jpeg, png, msword.');
+                    const error = new Error('Неподдерживаемый тип файлов. Выберите из pdf, jpeg, png.');
                     error.statusCode = 400;
                     return cb(error, false);
                 }
@@ -31,17 +31,16 @@ class Store {
             },
         });
 
-        this.work_with_files = (req, res) => {
+        this.required_files = (req) => { if (!req.files || req.files.length === 0) { throw new Error('Пожалуйста, загрузите файл'); } }
+
+        this.work_with_files = (req) => {
             try {
-
-                // if (!req.files || req.files.length === 0) { throw new Error('Пожалуйста, загрузите файл');}
-
                 let pdfFiles = [];
                 let imageFiles = [];
 
                 for (const file of req.files) {
                     if (file.mimetype === 'application/pdf') { pdfFiles.push(file.originalname); }
-                    else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
+                        else if (file.mimetype.startsWith('image/')) { imageFiles.push(file.originalname); }
                 }
 
                 // Объединить имена файлов через запятую
@@ -50,9 +49,8 @@ class Store {
 
                 // Возвращаем значения
                 return { pdfPath, imgPath };
-            } catch (error) {
-                throw new Error(error);
-            }
+
+            } catch (error) { throw new Error(error); }
         }
     }
 
