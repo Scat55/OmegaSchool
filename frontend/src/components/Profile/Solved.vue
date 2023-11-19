@@ -8,7 +8,8 @@
       </div>
       <div class="myTasks__text">
         <p info.complexity>Уровень - {{ info.complexity }}</p>
-        <p v-if="info.ocenka">{{ info.ocenka }}</p>
+        <p v-if="info.opt_score">Комментарий: {{ info.ocenka }}</p>
+        <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
         <p v-else>На проверке...</p>
       </div>
     </div>
@@ -36,7 +37,7 @@ export default {
   &__text {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
 }
 </style>
