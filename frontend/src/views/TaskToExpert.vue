@@ -61,7 +61,7 @@
       <div v-if="isShow">
         <p>{{ this.info.add_file }}</p>
         <a
-          v-if="this.info.add_file !== null"
+          v-if="this.info.add_file"
           class="downloadLink"
         ><button
             @click="downloadFiles()"
