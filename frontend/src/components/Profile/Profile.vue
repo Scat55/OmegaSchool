@@ -84,92 +84,92 @@ export default {
   <div class="main">
     <div class="firstBlock">
       <!-- <div class="avatar"> -->
-        <div class="avatar__info">
-          <img
-            v-if="person.gender === 'Мужской'"
-            src="../../assets/images/Avatar/boy.png"
-            alt="Аватарка"
-          />
-          <img
-            v-if="person.gender === 'Женский'"
-            src="../../assets/images/Avatar/girl (3).png"
-            alt="Аватарка"
-          />
-          <p v-if="person.gender === ''">Загрузка аватара...</p>
-        </div>
+      <div class="avatar__info">
+        <img
+          v-if="person.gender === 'Мужской'"
+          src="../../assets/images/Avatar/boy.png"
+          alt="Аватарка"
+        />
+        <img
+          v-if="person.gender === 'Женский'"
+          src="../../assets/images/Avatar/girl (3).png"
+          alt="Аватарка"
+        />
+        <p v-if="person.gender === ''">Загрузка аватара...</p>
+      </div>
       <!-- </div> -->
-    
+
       <div>
-    <div class="date_person_fio">
-      <div class="name">
-        <label>Имя:</label>&nbsp;
-        <!-- <div v-html="htmlContent"></div> -->
-        <input
-          type="text"
-          :class="{ InputChangeNO: !edit, InputChange: edit }"
-          :disabled="!edit"
-          v-model="person.name"
-        />
-      </div>
-      <div class="lastName">
-        <label>Фамилия:</label>&nbsp;
-        <input
-          type="text"
-          :class="{ InputChangeNO: !edit, InputChange: edit }"
-          :disabled="!edit"
-          v-model="person.lastname"
-        />
-      </div>
-      <div class="patronymic">
-        <label>Отчество:</label>&nbsp;
-        <input
-          type="text"
-          :class="{ InputChangeNO: !edit, InputChange: edit }"
-          :disabled="!edit"
-          v-model="person.patronymic"
-        />
-      </div>
-    </div>
+        <div class="date_person_fio">
+          <div class="name">
+            <label>Имя:</label>&nbsp;
+            <!-- <div v-html="htmlContent"></div> -->
+            <input
+              type="text"
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              :disabled="!edit"
+              v-model="person.name"
+            />
+          </div>
+          <div class="lastName">
+            <label>Фамилия:</label>&nbsp;
+            <input
+              type="text"
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              :disabled="!edit"
+              v-model="person.lastname"
+            />
+          </div>
+          <div class="patronymic">
+            <label>Отчество:</label>&nbsp;
+            <input
+              type="text"
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              :disabled="!edit"
+              v-model="person.patronymic"
+            />
+          </div>
+        </div>
 
-    <div class="date_person_birthday_gender">
-      <p>Пол: {{ person.gender }}</p>
-      <div v-if="edit" class="input-container">
-        <label>Дата рождения:</label>&nbsp;
-        <input type="date" class="styled-input" v-model="person.birthday" />
-      </div>
-      <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
-    </div>
+        <div class="date_person_birthday_gender">
+          <p>Пол: {{ person.gender }}</p>
+          <div v-if="edit" class="input-container">
+            <label>Дата рождения:</label>&nbsp;
+            <input type="date" class="styled-input" v-model="person.birthday" />
+          </div>
+          <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
+        </div>
 
-    <div class="date_person_class">
-      <div v-if="person.student === true">
-        <label>Класс: </label>&nbsp;
-        <input
-          :class="{ InputChangeNO: !edit, InputChange: edit }"
-          type="text"
-          :disabled="!edit"
-          v-model="person.class"
-        />
-      </div>
-      <div v-if="person.student === false">
-        <label>Учитель по</label>&nbsp;
-        <input
-          :class="{ InputChangeNO: !edit, InputChange: edit }"
-          type="text"
-          :disabled="!edit"
-          v-model="person.item"
-        />
-      </div>
-    </div>
+        <div class="date_person_class">
+          <div v-if="person.student === true">
+            <label>Класс: </label>&nbsp;
+            <input
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              type="text"
+              :disabled="!edit"
+              v-model="person.class"
+            />
+          </div>
+          <div v-if="person.student === false">
+            <label>Учитель по</label>&nbsp;
+            <input
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              type="text"
+              :disabled="!edit"
+              v-model="person.item"
+            />
+          </div>
+        </div>
 
-    <div class="date_person_email">
-      <p>Почта {{ person.email }}</p>
+        <div class="date_person_email">
+          <p>Почта {{ person.email }}</p>
+        </div>
+        <div class="level" v-if="person.level !== null">
+          <p class="level__text">Уровень</p>
+          <span class="level__info"> - {{ person.level }}</span>
+        </div>
+      </div>
     </div>
-    <div class="level" v-if="person.level !== null">
-      <p class="level__text">Уровень</p>
-      <span class="level__info"> - {{ person.level }}</span>
-    </div>
-  </div>
-  </div>
     <div class="change_profile">
       <!-- <div class="change_password" v-if="edit === false">
         <button
@@ -189,7 +189,7 @@ export default {
           <button @click="changeDate.changePass = false" class="editBtn">Отмена</button>
         </div>
       </div> -->
-      
+
       <div class="edit_profile" v-if="changeDate.changePass === false">
         <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
         <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
@@ -222,7 +222,8 @@ export default {
   display: flex;
 }
 
-.lastName, .patronymic {
+.lastName,
+.patronymic {
   display: flex;
 }
 
@@ -328,7 +329,7 @@ export default {
   }
 }
 button {
-  font-family: Visitor;
+  font-family: Visitor, serif;
 }
 .level {
   font-size: 0.8rem;
