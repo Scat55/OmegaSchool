@@ -844,8 +844,78 @@ class User_controller {
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+  async likeToDeskriotion(req, res) {
+    try {
+      const test_id = req.params.testID;
+      console.log(test_id);
 
+      // SQL для получения user_id учителя и названия предмета
+      const teacherInfoSql = `
+      SELECT user_id, subject FROM level_1_tests WHERE test_id = $1
+      UNION ALL
+      SELECT user_id, subject FROM level_2_tests WHERE test_id = $1
+      UNION ALL
+      SELECT user_id, subject FROM level_3_tests WHERE test_id = $1;
+    `;
 
+      // Выполнение запроса для получения информации об учителе
+      const teacherInfoResult = await db.query(teacherInfoSql, [test_id]);
+
+      if (teacherInfoResult.rows.length > 0) {
+        const teacher_id = teacherInfoResult.rows[0].user_id;
+        const subject = teacherInfoResult.rows[0].subject;
+
+        // Определение столбца в teacher_grades на основе предмета
+        let gradeColumn;
+        switch (subject) {
+          case 'Информатика':
+            gradeColumn = 'informatics';
+            break;
+          case 'Математика':
+            gradeColumn = 'mathematics';
+            break;
+          case 'Физика':
+            gradeColumn = 'physics';
+            break;
+          case 'Химия':
+            gradeColumn = 'chemistry';
+            break;
+          case 'Биология':
+            gradeColumn = 'biology';
+            break;
+          case 'География':
+            gradeColumn = 'geography';
+            break;
+          case 'Технология':
+            gradeColumn = 'technology';
+            break;
+          default:
+            gradeColumn = null;
+        }
+
+        if (gradeColumn) {
+          // SQL для обновления оценки учителя
+          const updateTeacherGradeSql = `
+          UPDATE teacher_grades
+          SET ${gradeColumn} = ${gradeColumn} + 1
+          WHERE user_id = $1;
+        `;
+
+          // Обновление оценки учителя
+          await db.query(updateTeacherGradeSql, [teacher_id]);
+
+          res.json({ success: 'Оценка обновлена' });
+        } else {
+          res.status(404).json({ error: 'Недействительный предмет' });
+        }
+      } else {
+        res.status(404).json({ error: 'Учитель или предмет не найден' });
+      }
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
+  }
 
   async getTasksForTeacher(req, res) {
     try {
