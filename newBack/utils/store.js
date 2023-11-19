@@ -34,7 +34,7 @@ class Store {
         this.work_with_files = (req, res) => {
             try {
 
-                if (!req.files || req.files.length === 0) { throw new Error('Пожалуйста, загрузите файл');}
+                // if (!req.files || req.files.length === 0) { throw new Error('Пожалуйста, загрузите файл');}
 
                 let pdfFiles = [];
                 let imageFiles = [];
