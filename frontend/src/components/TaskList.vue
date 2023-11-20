@@ -1,14 +1,25 @@
 <script>
+import axios from 'axios'
 export default {
   props: ['task'],
   data() {
     return {
-      likes: 0
+      likes: 0,
+      token: ''
     }
   },
   methods: {
-    changeLike() {
+    async changeLike() {
+      this.token = JSON.parse(localStorage.getItem('local'));
       this.likes++
+      await axios.post(`/api/likeToDeskriotion/${this.task.id}`, {
+
+      }, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json'
+        },
+      })
     }
   },
 };
@@ -24,6 +35,7 @@ export default {
       <p class="task_title">{{ task.title }}</p>
 
       <div class="task_body">
+        {{ task.id }}
         <p class="task_status_name">Статус: {{ task.status }}</p>
         <p class="task_topic">Предмет: {{ task.topic }}</p>
         <p class="task_class">Класс: {{ task.class }}</p>
