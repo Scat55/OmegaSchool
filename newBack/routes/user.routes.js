@@ -1,5 +1,5 @@
-const Router = require('express')
-const router = new Router()
+const express = require("express");
+const router = express.Router();
 
 const userController = require("../controller/user_controller")
 const userMiddleware = require('../middlewaree/userMiddlewaer');
@@ -64,4 +64,57 @@ router.post('/add_avatar', roleMiddleware(['Учитель', 'Эксперт']),
 router.get('/verify_email/:email/', userMiddleware, userController.setEmail);
 router.get('/verify_email/:email/:code/', userMiddleware, userController.getEmailCode)
 
-module.exports = router
+// Маршрут для обновления токена
+router.post('/refresh', async (req, res) => {
+    const { oldToken } = req.body;
+
+    try {
+        const result = await db.one(
+            'SELECT * FROM update_token($1)',
+            [oldToken]
+        );
+
+        // result.new_token содержит новый токен
+        // result.new_refresh_token содержит новый refresh token
+
+        console.log('newToken', result.new_token, 'newRefreshToken', result.new_refresh_token)
+
+        // Отправляем новый токен и refresh token клиенту
+        res.json({
+            newToken: result.new_token,
+            newRefreshToken: result.new_refresh_token,
+        });
+    } catch (error) {
+        console.error('Error refreshing token:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+//На стороне клиента:В клиентском приложении создайте функцию, которая будет отправлять запрос на обновление токена. Эта функция может быть вызвана, когда access token истекает, или при необходимости обновить его.
+// async function refreshAccessToken(oldToken) {
+//     try {
+//         const response = await fetch('/api/refresh', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ oldToken }),
+//         });
+//
+//         if (!response.ok) {
+//             throw new Error('Failed to refresh token');
+//         }
+//
+//         const { newToken, newRefreshToken } = await response.json();
+//
+//         // Используйте новый токен и refresh token в вашем приложении
+//         // Например, обновите их в хранилище состояния или куки
+//
+//         console.log('New Token:', newToken);
+//         console.log('New Refresh Token:', newRefreshToken);
+//     } catch (error) {
+//         console.error('Error refreshing token:', error);
+//     }
+// }
+
+module.exports = router;
