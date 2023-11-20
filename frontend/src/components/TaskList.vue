@@ -35,7 +35,6 @@ export default {
       <p class="task_title">{{ task.title }}</p>
 
       <div class="task_body">
-        {{ task.id }}
         <p class="task_status_name">Статус: {{ task.status }}</p>
         <p class="task_topic">Предмет: {{ task.topic }}</p>
         <p class="task_class">Класс: {{ task.class }}</p>
