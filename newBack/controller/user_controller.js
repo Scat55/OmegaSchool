@@ -342,7 +342,7 @@ class User_controller {
       // Теперь для каждого test_id получим название теста из соответствующей таблицы
       const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
         const levelTestSql = `
-            SELECT task_test, classes, subject
+            SELECT task_test, classes, subject, likes
             FROM level_${test.test_level}_tests
             WHERE test_id = $1;
         `;
@@ -356,7 +356,8 @@ class User_controller {
             title: testDetails.task_test,
             class: testDetails.classes,
             topic: testDetails.subject,
-            status: test.decided
+            status: test.decided,
+            likes: testDetails.likes
           };
         } else {
           return {
@@ -849,73 +850,47 @@ class User_controller {
       const test_id = req.params.testID;
       console.log(test_id);
 
-      // SQL для получения user_id учителя и названия предмета
-      const teacherInfoSql = `
-      SELECT user_id, subject FROM level_1_tests WHERE test_id = $1
+      // SQL для определения уровня теста
+      const testLevelSql = `
+      SELECT 'level_1' as level FROM level_1_tests WHERE test_id = $1
       UNION ALL
-      SELECT user_id, subject FROM level_2_tests WHERE test_id = $1
+      SELECT 'level_2' as level FROM level_2_tests WHERE test_id = $1
       UNION ALL
-      SELECT user_id, subject FROM level_3_tests WHERE test_id = $1;
+      SELECT 'level_3' as level FROM level_3_tests WHERE test_id = $1;
     `;
 
-      // Выполнение запроса для получения информации об учителе
-      const teacherInfoResult = await db.query(teacherInfoSql, [test_id]);
+      // Выполнение запроса для определения уровня теста
+      const testLevelResult = await db.query(testLevelSql, [test_id]);
 
-      if (teacherInfoResult.rows.length > 0) {
-        const teacher_id = teacherInfoResult.rows[0].user_id;
-        const subject = teacherInfoResult.rows[0].subject;
+      if (testLevelResult.rows.length > 0) {
+        const test_level = testLevelResult.rows[0].level;
 
-        // Определение столбца в teacher_grades на основе предмета
-        let gradeColumn;
-        switch (subject) {
-          case 'Информатика':
-            gradeColumn = 'informatics';
-            break;
-          case 'Математика':
-            gradeColumn = 'mathematics';
-            break;
-          case 'Физика':
-            gradeColumn = 'physics';
-            break;
-          case 'Химия':
-            gradeColumn = 'chemistry';
-            break;
-          case 'Биология':
-            gradeColumn = 'biology';
-            break;
-          case 'География':
-            gradeColumn = 'geography';
-            break;
-          case 'Технология':
-            gradeColumn = 'technology';
-            break;
-          default:
-            gradeColumn = null;
+        // SQL для увеличения количества лайков
+        let updateLikesSql;
+        if (test_level === 'level_1') {
+          updateLikesSql = `UPDATE level_1_tests SET likes = likes + 1 WHERE test_id = $1`;
+        } else if (test_level === 'level_2') {
+          updateLikesSql = `UPDATE level_2_tests SET likes = likes + 1 WHERE test_id = $1`;
+        } else if (test_level === 'level_3') {
+          updateLikesSql = `UPDATE level_3_tests SET likes = likes + 1 WHERE test_id = $1`;
         }
 
-        if (gradeColumn) {
-          // SQL для обновления оценки учителя
-          const updateTeacherGradeSql = `
-          UPDATE teacher_grades
-          SET ${gradeColumn} = ${gradeColumn} + 1
-          WHERE user_id = $1;
-        `;
-
-          // Обновление оценки учителя
-          await db.query(updateTeacherGradeSql, [teacher_id]);
-
-          res.json({ success: 'Оценка обновлена' });
+        if (updateLikesSql) {
+          // Увеличение лайков для теста
+          await db.query(updateLikesSql, [test_id]);
+          res.json({ success: 'Лайк добавлен' });
         } else {
-          res.status(404).json({ error: 'Недействительный предмет' });
+          res.status(404).json({ error: 'Уровень теста не найден' });
         }
       } else {
-        res.status(404).json({ error: 'Учитель или предмет не найден' });
+        res.status(404).json({ error: 'Тест не найден' });
       }
     } catch (error) {
       console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+
 
   async getTasksForTeacher(req, res) {
     try {
