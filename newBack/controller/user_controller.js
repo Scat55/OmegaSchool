@@ -571,7 +571,7 @@ class User_controller {
 
       if (testResult.rowCount > 0) {
         test = testResult.rows[0];
-        testLevel = 'level_1_tests';
+        testLevel = '1';
         if (typeUser === "Учитель") {
           additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
         }
@@ -582,7 +582,7 @@ class User_controller {
 
         if (testResult.rowCount > 0) {
           test = testResult.rows[0];
-          testLevel = 'level_2_tests';
+          testLevel = '2';
           if (typeUser === "Учитель") {
             additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
           }
@@ -593,7 +593,7 @@ class User_controller {
 
           if (testResult.rowCount > 0) {
             test = testResult.rows[0];
-            testLevel = 'level_3_tests';
+            testLevel = '3';
             if (typeUser === "Учитель") {
               additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
             }
@@ -663,7 +663,6 @@ class User_controller {
       res.status(500).json({ error: 'Server error' });
     }
   }
-
 
 
   // async getTasksByID(req, res){
