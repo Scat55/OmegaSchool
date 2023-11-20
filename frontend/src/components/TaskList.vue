@@ -1,14 +1,24 @@
 <script>
+import axios from 'axios'
 export default {
   props: ['task'],
   data() {
     return {
-      likes: 0
+      token: ''
     }
   },
   methods: {
-    changeLike() {
-      this.likes++
+    async changeLike() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      this.task.likes++
+      await axios.post(`/api/likeToDeskriotion/${this.task.id}`, {
+
+      }, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json'
+        },
+      })
     }
   },
 };
@@ -33,7 +43,7 @@ export default {
       </div>
     </router-link>
     <div class="likes">
-      {{ likes }}
+      {{ task.likes }}
       <img
         src="../assets/images/hert.png"
         alt="Like"
