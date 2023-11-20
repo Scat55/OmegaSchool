@@ -88,6 +88,23 @@
             v-if="question.is_correct === true">Верно</span> <span v-else="question.is_correct === true">Не верно</span>
         </div>
       </div>
+
+      <div class="mesageExpert">
+        <div class="firstExpert">
+          <p>Оценка первого эксперта: {{ infoTask.ver_1 }}</p>
+          <div class="flex__mess">
+            <p>Сообщение: </p>
+            <span>{{ infoTask.ver_1_masseg }}</span>
+          </div>
+        </div>
+        <div class="secondExpert">
+          <p>Оценка второго эксперта: {{ infoTask.ver_2 }}</p>
+          <div class="flex__mess">
+            <p>Сообщение: </p>
+            <span>{{ infoTask.ver_2_masseg }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -274,5 +291,38 @@ export default {
 .image {
   width: 10rem;
   cursor: pointer;
+}
+
+.mesageExpert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  padding: .625rem;
+}
+
+.flex__mess {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.firstExpert {
+  text-align: center;
+
+  p {
+    line-height: 140%;
+  }
+}
+
+.secondExpert {
+  text-align: center;
+
+  p {
+    line-height: 140%;
+  }
 }
 </style>
