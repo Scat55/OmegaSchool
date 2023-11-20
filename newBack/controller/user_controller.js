@@ -549,48 +549,62 @@ class User_controller {
     }
   }
 
-  async getTasksByID(req, res) {
+  async getTasksByID(req, res){
     const testId = req.params.testID;
-    const typeUser = req.type_user
-    const userId = req.user_id
-    console.log(typeUser)
+    const typeUser = req.type_user;
+    const userId = req.user_id;
+    console.log(typeUser);
+
     try {
       let test;
       let testLevel;
       let testQuery;
       let decidedStatus;
+      let additionalFields = [];
+
       const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
       const questionsResult = await db.query(questionsQuery, [testId]);
 
-      // Проверяем наличие теста в таблице level_1_tests
+      // Check test level in level_1_tests
       testQuery = 'SELECT * FROM level_1_tests WHERE test_id = $1';
       let testResult = await db.query(testQuery, [testId]);
 
       if (testResult.rowCount > 0) {
         test = testResult.rows[0];
-        testLevel = '1';
+        testLevel = 'level_1_tests';
+        if (typeUser === "Учитель") {
+          additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
+        }
       } else {
-        // Проверяем наличие теста в таблице level_2_tests
+        // Check test level in level_2_tests
         testQuery = 'SELECT * FROM level_2_tests WHERE test_id = $1';
         testResult = await db.query(testQuery, [testId]);
 
         if (testResult.rowCount > 0) {
           test = testResult.rows[0];
-          testLevel = '2';
+          testLevel = 'level_2_tests';
+          if (typeUser === "Учитель") {
+            additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
+          }
         } else {
-          // Проверяем наличие теста в таблице level_3_tests
+          // Check test level in level_3_tests
           testQuery = 'SELECT * FROM level_3_tests WHERE test_id = $1';
           testResult = await db.query(testQuery, [testId]);
 
           if (testResult.rowCount > 0) {
             test = testResult.rows[0];
-            testLevel = '3';
+            testLevel = 'level_3_tests';
+            if (typeUser === "Учитель") {
+              additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
+            }
           } else {
-            // Тест не найден ни в одной из таблиц
+            // Task not found in any table
             return res.status(404).json({ error: 'Task not found' });
           }
         }
       }
+
+      // Additional query logic for teacher fields can be added here if needed
 
       const questionsWithOptions = await Promise.all(questionsResult.rows.map(async (question) => {
         const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
@@ -614,13 +628,14 @@ class User_controller {
       const decidedResult = await db.query(decidedQuery, [userId, testId]);
 
       if (decidedResult.rowCount > 0) {
-        // Если запись найдена, используем её статус
+        // If the record is found, use its status
         decidedStatus = decidedResult.rows[0].decided;
       } else {
-        // Если запись не найдена, можно установить стандартное значение или обработать как ошибку
-        decidedStatus = false; // или другое стандартное значение
+        // If the record is not found, you can set a default value or handle it as an error
+        decidedStatus = false; // or another default value
       }
-      // Форматирование итогового ответа
+
+      // Formatting the final response
       const formattedResponse = {
         level: testLevel,
         user_id: test.user_id,
@@ -634,8 +649,12 @@ class User_controller {
         subject: test.subject,
         add_img: test.add_img,
         questions: flattenedOptions,
-        decided: decidedStatus
       };
+
+      // Add additional fields to the response
+      additionalFields.forEach(field => {
+        formattedResponse[field] = test[field];
+      });
 
       res.json(formattedResponse);
 
