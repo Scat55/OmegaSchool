@@ -97,39 +97,7 @@ class User_controller {
     }
   }
 
-  async CreateComandos(req, res) {
-    try {
-      const { comandName, password, userLogins } = req.body;
 
-      // Вставка команды
-      const insertComandoText = 'INSERT INTO comandos (comand_name, password) VALUES ($1, $2) RETURNING comand_id;';
-      const comandoResult = await db.query(insertComandoText, [comandName, password]);
-      const comandId = comandoResult.rows[0].comand_id;
-
-      for (const email of userLogins) {
-        let userId;
-
-        // Проверяем наличие email в таблице users
-        const res = await db.query('SELECT user_id FROM users WHERE email = $1', [email]);
-        if (res.rows.length > 0) {
-          // Email найден, используем существующий user_id
-          userId = res.rows[0].user_id;
-        } else {
-          // Email не найден, генерируем новый UUID
-          userId = uuidv4(); // Функция для генерации UUID
-        }
-
-        // Вставляем данные в user_command
-        const insertUserCommandText = 'INSERT INTO user_command (comand_id, user_id) VALUES ($1, $2)';
-        await db.query(insertUserCommandText, [comandId, userId]);
-      }
-
-      res.status(201).json({ comandId: comandId });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
-  }
 
 
   async getUserIDForEmail(req, res) {
@@ -553,13 +521,12 @@ class User_controller {
     const testId = req.params.testID;
     const typeUser = req.type_user;
     const userId = req.user_id;
-    console.log(typeUser);
+    let decidedStatus;
 
     try {
       let test;
       let testLevel;
       let testQuery;
-      let decidedStatus;
       let additionalFields = [];
 
       const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
@@ -610,18 +577,20 @@ class User_controller {
         const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
         const optionsResult = await db.query(optionsQuery, [question.question_id]);
 
-        // Map the options and conditionally include 'is_correct'
+        // Map the options and conditionally include 'is_correct' and 'decided'
         const options = optionsResult.rows.map(option => {
-          if (typeUser === "Ученик" && decidedStatus) {
-            // Return only text for students if decidedStatus is true
-            return { text: option.text };
-          } else {
-            // Return both text and is_correct for other user types or if decidedStatus is false
-            return { text: option.text, is_correct: option.is_correct };
+          const optionObj = { text: option.text };
+          if (typeUser === "Ученик") {
+            optionObj.decided = decidedStatus;
           }
+          if (!(typeUser === "Ученик" && decidedStatus)) {
+            // Include 'is_correct' only for other user types or if decidedStatus is false
+            optionObj.is_correct = option.is_correct;
+          }
+          return optionObj;
         });
 
-        return options; // Return the options directly
+        return options;
       }));
       const flattenedOptions = questionsWithOptions.flat();
       const decidedQuery = 'SELECT decided FROM student_solutions WHERE user_id = $1 AND test_id = $2';
@@ -649,6 +618,7 @@ class User_controller {
         subject: test.subject,
         add_img: test.add_img,
         questions: flattenedOptions,
+        decided: (typeUser === "Ученик") ? decidedStatus : undefined, // добавьте проверку на тип пользователя
       };
 
       // Add additional fields to the response
@@ -974,7 +944,7 @@ class User_controller {
       const TestsSql = `
             SELECT test_id, user_id
             FROM student_solutions
-            WHERE (student_solution IS NOT NULL) AND (test_level = 2 OR test_level = 3);
+            WHERE (student_solution IS NOT NULL) AND (test_level = 2 OR test_level = 3) and (opt_score IS NULL);
         `;
 
       // Получаем список test_id и user_id для уровней 2 и 3

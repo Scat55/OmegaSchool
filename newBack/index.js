@@ -4,8 +4,9 @@ const cors = require('cors');
 const pgSession = require('connect-pg-simple')(session);
 const db = require('./db');
 
-const userRouter = require('./routes/user.routes')
-const authRouter = require('./routes/auth.routes')
+// const userRouter = require('./routes/user.routes')
+// const authRouter = require('./routes/auth.routes')
+// const comandosroutes = require('./routes/comandos.routes')
 
 const { secret } = require('./config')
 
@@ -29,6 +30,7 @@ app.use(session({
 
 app.use('/api', require("./routes/user.routes"))
 app.use('/auth', require('./routes/auth.routes'))
+app.use('/commands', require('./routes/comandos.routes'))
 
 const customHeadersAppLevel = function (req, res, next) {
   req.headers['Custom-UUID'] = ''; // Устанавливаем кастомный заголовок 'Custom-UUID' с вашим UUID

@@ -16,8 +16,9 @@ router.post('/addition_data', roleMiddleware(['Ученик', 'Эксперт', 
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForExpert)
 router.get('/getTypeOfUser', userController.getTypeOfUser)
-router.post('/CreateComandos', userController.CreateComandos);
 
+//router.post('/CreateComandos', userController.CreateComandos);
+//router.post('/', userController.adduser)
 
 router.get('/getTasksForStudent', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksForStudent)
 router.get('/getTasksForStudent/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksByID)
