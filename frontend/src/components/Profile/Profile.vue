@@ -290,6 +290,7 @@ export default {
   font-family: Visitor, sans-serif;
   outline: none;
   opacity: 1;
+  padding: 3px;
 }
 
 .InputChange {
@@ -326,6 +327,10 @@ select[disabled] {
     border: 2px solid white;
     border-radius: 1rem;
     width: 80%;
+  }
+
+  & > p {
+    margin: auto;
   }
 }
 
