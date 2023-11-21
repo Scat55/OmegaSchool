@@ -3,12 +3,17 @@ const router = express.Router();
 
 //const authMiddleware = require('../middlewaree/authMiddleware');
 const commandosController = require('../controller/comandos_controller')
-const db = require("../db");
-const { v4: uuidv4 } = require("uuid");
+
+
 
 router.post('/create', commandosController.CreateComandos)
 
 router.post('/login', commandosController.LoginComandos)
 
+router.post('/info/:userID',commandosController.InfoComandos)
+
+router.post('/listTask', commandosController.InfoComandos)
+
+router.post('/task/:taskID',commandosController.InfoComandos)
 
 module.exports = router;
