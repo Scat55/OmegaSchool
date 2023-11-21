@@ -101,6 +101,15 @@ export default {
 
       <div>
         <div class="date_person_fio">
+          <div class="lastName">
+            <label>Фамилия:</label>&nbsp;
+            <input
+              type="text"
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              :disabled="!edit"
+              v-model="person.lastname"
+            />
+          </div>
           <div class="name">
             <label>Имя:</label>&nbsp;
             <!-- <div v-html="htmlContent"></div> -->
@@ -109,15 +118,6 @@ export default {
               :class="{ InputChangeNO: !edit, InputChange: edit }"
               :disabled="!edit"
               v-model="person.name"
-            />
-          </div>
-          <div class="lastName">
-            <label>Фамилия:</label>&nbsp;
-            <input
-              type="text"
-              :class="{ InputChangeNO: !edit, InputChange: edit }"
-              :disabled="!edit"
-              v-model="person.lastname"
             />
           </div>
           <div class="patronymic">
@@ -133,9 +133,16 @@ export default {
 
         <div class="date_person_birthday_gender">
           <p>Пол: {{ person.gender }}</p>
-          <div v-if="edit" class="input-container">
+          <div
+            v-if="edit"
+            class="input-container"
+          >
             <label>Дата рождения:</label>&nbsp;
-            <input type="date" class="styled-input" v-model="person.birthday" />
+            <input
+              type="date"
+              class="styled-input"
+              v-model="person.birthday"
+            />
           </div>
           <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
         </div>
@@ -164,7 +171,10 @@ export default {
         <div class="date_person_email">
           <p>Почта {{ person.email }}</p>
         </div>
-        <div class="level" v-if="person.level !== null">
+        <div
+          class="level"
+          v-if="person.level !== null"
+        >
           <p class="level__text">Мне доступны задания уровня</p>
           <span class="level__info"> - {{ person.level }}</span>
         </div>
@@ -190,12 +200,27 @@ export default {
         </div>
       </div> -->
 
-      <div class="edit_profile" v-if="changeDate.changePass === false">
-        <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
-        <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
+      <div
+        class="edit_profile"
+        v-if="changeDate.changePass === false"
+      >
+        <button
+          @click="edit = true"
+          v-if="edit === false"
+          class="editBtn"
+        >Изменить профиль</button>
+        <button
+          v-show="edit === true"
+          @click="changeInfoAboutUSer()"
+          class="editBtn"
+        >
           Подтвердить изменения
         </button>
-        <button v-show="edit === true" @click="edit = false" class="editBtn">
+        <button
+          v-show="edit === true"
+          @click="edit = false"
+          class="editBtn"
+        >
           Отмена изменения
         </button>
       </div>
@@ -256,14 +281,17 @@ export default {
   margin-bottom: 2rem;
   //width: 100%;
 }
+
 .avatar__info {
   width: 40%;
-  & > img {
+
+  &>img {
     border: 2px solid white;
     border-radius: 1rem;
     width: 80%;
   }
 }
+
 .input-container {
   display: flex;
   align-items: center;
@@ -327,13 +355,15 @@ export default {
     font-size: 1.1rem;
   }
 }
+
 button {
   font-family: Visitor, serif;
 }
+
 .level {
   font-size: inherit;
+
   &__text {
     display: inline-block;
   }
-}
-</style>
+}</style>
