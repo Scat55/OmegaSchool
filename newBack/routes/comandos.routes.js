@@ -7,6 +7,8 @@ const db = require("../db");
 const { v4: uuidv4 } = require("uuid");
 
 router.post('/create', commandosController.CreateComandos)
-// router.post('/login', commandosController.loginComac)
+
+router.post('/login', commandosController.LoginComandos)
+
 
 module.exports = router;
