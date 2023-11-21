@@ -1356,9 +1356,9 @@ class User_controller {
     } catch (error) { return res.status(500).send({ message: 'Ошибка сервера' }); }
   }
 
-  async setEmail(req, res) {
+  async setEmail(email) {
     try {
-      const email = req.params.email;
+      // const email = req.params.email;
 
       // Выводим для отладки
       console.log(email);
@@ -1388,10 +1388,10 @@ class User_controller {
       await mail.checkVerificationCode(email, verificationCode);
       await mail.setUserEmailVerified(email);
 
-      res.send('Письмо с кодом подтверждения отправлено на ваш email.');
+      console.log('Письмо с кодом подтверждения отправлено на ваш email.');
     } catch (error) {
       console.error('Ошибка при обработке запроса на подтверждение email:', error);
-      res.status(500).send('Произошла ошибка при обработке запроса.');
+      console.log('Произошла ошибка при обработке запроса.');
     }
   }
 

@@ -10,8 +10,11 @@ const db = require('./db');
 
 const { secret } = require('./config')
 
-const PORT = process.env.PORT || 8070
+// const PORT = process.env.PORT || 8070
+
 const app = express();
+
+app.set('port', 8070);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,4 +42,8 @@ const customHeadersAppLevel = function (req, res, next) {
 
 app.use(customHeadersAppLevel);
 
-app.listen(PORT, () => console.log(`server started on port ${PORT} and listen ip`))
+// app.listen(PORT, () => console.log(`server started on port ${PORT} and listen ip`))
+
+app.listen(app.get('port'), () => {
+  console.log(`Server listening on port ${app.get('port')}`);
+});
