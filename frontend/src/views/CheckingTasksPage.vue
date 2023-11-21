@@ -42,10 +42,10 @@
         v-if="info.task_hint || info.task_answer"
       >
         <p>
-          Подсказка бралась - <span>{{ info.check_answer }}</span>
+          Смотрел подсказку- <span>{{ info.check_answer }}</span>
         </p>
         <p>
-          Ответ брался - <span>{{ info.check_hint }}</span>
+          Смотрел ответ - <span>{{ info.check_hint }}</span>
         </p>
       </div>
       <div class="dop">
@@ -72,7 +72,7 @@
       </div>
 
       <div class="estimation">
-        <p>Оцените задание (0 - брал ответ. 1-брал подсказку. 2-решил сам):</p>
+        <p>Оцените задание (0-смотрел ответ. 1-смотрел подсказку. 2-решил сам):</p>
         <form
           class="estimation__form"
           @submit.prevent="handler()"
