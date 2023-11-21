@@ -2,7 +2,6 @@
   <div class="comandPage">
     <div class="container">
       <div class="comandPage__info">
-        {{ id }}
         <div class="comandPage__people">
           <p>Название команды</p>
           <div>Участники</div>
@@ -21,7 +20,7 @@
 export default {
   data() {
     return {
-      id: this.$route.params.is
+      id: this.$route.params.id
     }
   },
 };
