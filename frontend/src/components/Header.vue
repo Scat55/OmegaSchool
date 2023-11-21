@@ -8,22 +8,44 @@
         v-on:click="goToHomePage()"
       />
 
-      <div class="header__logo-lists" v-if="this.$route.path != '/auth'">
+      <div
+        class="header__logo-lists"
+        v-if="this.$route.path != '/auth' && this.$route.path != '/comand/' && this.$route.path != '/authCom'"
+      >
         <ul class="header__logo-list">
-          <router-link to="/task" class="router">
-            <li v-if="this.$store.state.isAuth" class="header__logo-item">Задания</li>
+          <router-link
+            to="/task"
+            class="router"
+          >
+            <li
+              v-if="this.$store.state.isAuth"
+              class="header__logo-item"
+            >Задания</li>
           </router-link>
           <li
             class="header__logo-item login"
             @click="changeStatusOnTrue()"
             v-if="!this.$store.state.isAuth"
           >
-            <img src="../assets/images/userLog.png" alt="" class="log" />
+            <img
+              src="../assets/images/userLog.png"
+              alt=""
+              class="log"
+            />
             Войти
           </li>
-          <div v-else class="header__logout">
-            <li class="header__logo-item login" @click="changeStatusMenu()">Мой кабинет</li>
-            <div v-if="statusMenu" class="header__logout-list">
+          <div
+            v-else
+            class="header__logout"
+          >
+            <li
+              class="header__logo-item login"
+              @click="changeStatusMenu()"
+            >Мой кабинет</li>
+            <div
+              v-if="statusMenu"
+              class="header__logout-list"
+            >
               <li @click="goToPersonPage()">Кабинет</li>
               <li @click="logout()">Выйти</li>
             </div>
