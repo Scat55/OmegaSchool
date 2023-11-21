@@ -159,12 +159,26 @@ export default {
           </div>
           <div v-if="person.student === false">
             <label>Учитель по</label>&nbsp;
-            <input
+            <!-- <input
               :class="{ InputChangeNO: !edit, InputChange: edit }"
               type="text"
               :disabled="!edit"
               v-model="person.item"
-            />
+            /> -->
+            <select 
+            :class="{ InputChangeNO: !edit, InputChange: edit }"
+             :disabled="!edit" 
+             v-model="person.item"
+             id="selectItemTeacher">
+              <option value="Биология">Биологии</option>
+              <option value="География">Географии</option>
+              <option value="Информатика">Информатике</option>
+              <option value="Математика">Математике</option>
+              <option value="Технология">Технологии</option>
+              <option value="Физика">Физике</option>
+              <option value="Химия">Химии</option>
+            </select>
+
           </div>
         </div>
 
@@ -254,7 +268,7 @@ export default {
 }
 
 .InputChangeNO {
-  color: black;
+  color: black !important;
   background: none;
   border: none;
   font-size: 2rem;
