@@ -59,7 +59,8 @@ export default {
           },
         },
       );
-      console.log(this.person.class);
+      // console.log(this.person.class);
+      location.reload();
     },
     // пока в бете изменение пароля не реализовано
     // changePass() {
