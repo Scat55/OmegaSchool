@@ -248,6 +248,10 @@ export default {
 <style scoped lang="scss">
 @import '../../assets/styles/vars';
 
+* {
+  font-size: 1.5rem;
+}
+
 .flexDiv {
   display: flex;
 }
@@ -274,7 +278,8 @@ export default {
   color: black !important;
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  height: 2rem;
   font-family: Visitor, sans-serif;
   outline: none;
   opacity: 1;
@@ -284,8 +289,9 @@ export default {
   color: black;
   background: #fff;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   width: 50%;
+  height: 2rem;
   font-family: Visitor, sans-serif;
   border-bottom: 1px solid black;
   outline: none;
