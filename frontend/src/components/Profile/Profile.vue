@@ -26,6 +26,7 @@ export default {
       oldPass: '',
       newPass: '',
       repeatNewPass: '',
+      oldItem: '',
     };
   },
   methods: {
@@ -58,23 +59,33 @@ export default {
       );
       console.log(this.person.class);
     },
-    changePass() {
-      if (
-        this.newPass.length >= 8 &&
-        this.repeatNewPass.length >= 8 &&
-        this.newPass === this.repeatNewPass
-      ) {
-        alert('Пароль успешно изменен');
-        this.changeDate.changePass = false;
-        console.log(this.repeatNewPass);
-        this.newPass = this.repeatNewPass = '';
-      }
-      if (this.newPass.length < 8 && this.repeatNewPass.length < 8) {
-        alert('Пароль не должен быть меньше 8 символов');
-      }
-      if (this.newPass !== this.repeatNewPass) {
-        alert('Пароль несовпадают');
-      }
+    // пока в бете изменение пароля не реализовано
+    // changePass() {
+    //   if (
+    //     this.newPass.length >= 8 &&
+    //     this.repeatNewPass.length >= 8 &&
+    //     this.newPass === this.repeatNewPass
+    //   ) {
+    //     alert('Пароль успешно изменен');
+    //     this.changeDate.changePass = false;
+    //     console.log(this.repeatNewPass);
+    //     this.newPass = this.repeatNewPass = '';
+    //   }
+    //   if (this.newPass.length < 8 && this.repeatNewPass.length < 8) {
+    //     alert('Пароль не должен быть меньше 8 символов');
+    //   }
+    //   if (this.newPass !== this.repeatNewPass) {
+    //     alert('Пароль несовпадают');
+    //   }
+    // },
+
+    changeProfile() {
+      this.edit = true;
+      this.oldItem = this.person.item;
+    },
+    changeProfileCancel() {
+      this.edit = false;
+      this.person.item = this.oldItem;
     },
   },
 };
@@ -205,11 +216,13 @@ export default {
       </div> -->
 
       <div class="edit_profile" v-if="changeDate.changePass === false">
-        <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
+        <button @click="changeProfile" v-if="edit === false" class="editBtn">
+          Изменить профиль
+        </button>
         <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
           Подтвердить изменения
         </button>
-        <button v-show="edit === true" @click="edit = false" class="editBtn">
+        <button v-show="edit === true" @click="changeProfileCancel" class="editBtn">
           Отмена изменения
         </button>
       </div>
