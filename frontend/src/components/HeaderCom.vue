@@ -10,7 +10,7 @@
 
       <div
         class="header__logo-lists"
-        v-if="this.$route.path != '/auth' && this.$route.path != '/comand/' && this.$route.path != '/authCom'"
+        v-if="this.$route.path != '/auth'"
       >
         <ul class="header__logo-list">
           <router-link
@@ -20,24 +20,10 @@
             <li
               v-if="this.$store.state.isAuth"
               class="header__logo-item"
-            >Задания</li>
+            >Задания Команды</li>
           </router-link>
-          <li
-            class="header__logo-item login"
-            @click="changeStatusOnTrue()"
-            v-if="!this.$store.state.isAuth"
-          >
-            <img
-              src="../assets/images/userLog.png"
-              alt=""
-              class="log"
-            />
-            Войти
-          </li>
-          <div
-            v-else
-            class="header__logout"
-          >
+
+          <div class="header__logout">
             <li
               class="header__logo-item login"
               @click="changeStatusMenu()"
@@ -73,9 +59,10 @@ export default {
   methods: {
     // Функция оотображения формы регистрации
     changeStatusOnTrue() {
-      const body = document.querySelector('body');
-      store.state.status = true;
-      body.style.overflow = 'hidden';
+      // const body = document.querySelector('body');
+      // store.state.status = true;
+      // body.style.overflow = 'hidden';
+      this.$router.push('/comand/')
     },
     // Выход из личного кабинета
     logout() {

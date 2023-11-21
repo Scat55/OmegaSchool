@@ -2,10 +2,11 @@
   <div id="app">
     <RegForm v-if="this.$store.state.status" />
     <header>
-      <Header />
+      <Header v-if="!this.$store.state.isComandAuth" />
+      <HeaderCom v-if="this.$store.state.isComandAuth" />
     </header>
     <main>
-      <router-view></router-view>
+      <router-view> </router-view>
     </main>
 
     <footer>
@@ -16,19 +17,22 @@
 
 <script>
 import Header from './components/Header'
+import HeaderCom from './components/HeaderCom.vue'
 import RegForm from './components/RegForm.vue'
-import Footer from "@/components/Footer.vue";
-
-export default {
-  components: {
-    Footer,
-    Header,
-    RegForm,
-
-  },
-
-}
-</script>
+import Footer from "@/components/Footer.vue"
+export
+  default
+  {
+    components:
+    {
+      Footer,
+      Header,
+      RegForm,
+      HeaderCom
+    },
+  }
+</script
+      >
 
 <style lang="scss">
 #app {
