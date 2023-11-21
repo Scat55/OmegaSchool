@@ -133,16 +133,9 @@ export default {
 
         <div class="date_person_birthday_gender">
           <p>Пол: {{ person.gender }}</p>
-          <div
-            v-if="edit"
-            class="input-container"
-          >
+          <div v-if="edit" class="input-container">
             <label>Дата рождения:</label>&nbsp;
-            <input
-              type="date"
-              class="styled-input"
-              v-model="person.birthday"
-            />
+            <input type="date" class="styled-input" v-model="person.birthday" />
           </div>
           <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
         </div>
@@ -165,11 +158,12 @@ export default {
               :disabled="!edit"
               v-model="person.item"
             /> -->
-            <select 
-            :class="{ InputChangeNO: !edit, InputChange: edit }"
-             :disabled="!edit" 
-             v-model="person.item"
-             id="selectItemTeacher">
+            <select
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              :disabled="!edit"
+              v-model="person.item"
+              id="selectItemTeacher"
+            >
               <option value="Биология">Биологии</option>
               <option value="География">Географии</option>
               <option value="Информатика">Информатике</option>
@@ -178,17 +172,13 @@ export default {
               <option value="Физика">Физике</option>
               <option value="Химия">Химии</option>
             </select>
-
           </div>
         </div>
 
         <div class="date_person_email">
           <p>Почта {{ person.email }}</p>
         </div>
-        <div
-          class="level"
-          v-if="person.level !== null"
-        >
+        <div class="level" v-if="person.level !== null">
           <p class="level__text">Мне доступны задания уровня</p>
           <span class="level__info"> - {{ person.level }}</span>
         </div>
@@ -214,27 +204,12 @@ export default {
         </div>
       </div> -->
 
-      <div
-        class="edit_profile"
-        v-if="changeDate.changePass === false"
-      >
-        <button
-          @click="edit = true"
-          v-if="edit === false"
-          class="editBtn"
-        >Изменить профиль</button>
-        <button
-          v-show="edit === true"
-          @click="changeInfoAboutUSer()"
-          class="editBtn"
-        >
+      <div class="edit_profile" v-if="changeDate.changePass === false">
+        <button @click="edit = true" v-if="edit === false" class="editBtn">Изменить профиль</button>
+        <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
           Подтвердить изменения
         </button>
-        <button
-          v-show="edit === true"
-          @click="edit = false"
-          class="editBtn"
-        >
+        <button v-show="edit === true" @click="edit = false" class="editBtn">
           Отмена изменения
         </button>
       </div>
@@ -274,6 +249,7 @@ export default {
   font-size: 2rem;
   font-family: Visitor, sans-serif;
   outline: none;
+  opacity: 1;
 }
 
 .InputChange {
@@ -289,6 +265,10 @@ export default {
   padding: 3px;
 }
 
+select[disabled] {
+  appearance: none;
+}
+
 .avatar {
   display: flex;
   justify-content: space-between;
@@ -299,7 +279,7 @@ export default {
 .avatar__info {
   width: 40%;
 
-  &>img {
+  & > img {
     border: 2px solid white;
     border-radius: 1rem;
     width: 80%;
@@ -380,4 +360,9 @@ button {
   &__text {
     display: inline-block;
   }
-}</style>
+}
+
+select[disabled] {
+  color: black;
+}
+</style>
