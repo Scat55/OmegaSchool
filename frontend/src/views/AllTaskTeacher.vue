@@ -306,6 +306,10 @@ export default {
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
+
+  &>span {
+    line-height: 140%;
+  }
 }
 
 .firstExpert {
