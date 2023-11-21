@@ -86,7 +86,7 @@ export default {
       const users = this.users.map((el) => {
         return el.name;
       });
-      axios.post(`/api/CreateComandos`, {
+      axios.post(`/commands/create`, {
         comandName: this.comandName,
         password: this.pass,
         userLogins: users

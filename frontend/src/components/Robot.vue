@@ -12,9 +12,15 @@
             технологий, чтобы учиться с удовольствием и эффективностью. Присоединяйтесь к команде
             передовых мыслителей!
           </p>
-          <button class="robot__btn" @click="changeStatusOnTrue()">Начать заниматься</button>
+          <button
+            class="robot__btn"
+            @click="changeStatusOnTrue()"
+          >Начать заниматься</button>
         </div>
-        <img src="../assets/images/robot/myRobot.png" alt="Robot" />
+        <img
+          src="../assets/images/robot_text_1.png"
+          alt="Robot"
+        />
       </div>
     </div>
   </div>
@@ -53,6 +59,7 @@ export default {
   margin-top: 5rem;
   background-color: #00dfcc;
   padding: 1.625rem;
+
   &__content {
     display: flex;
     align-items: center;
@@ -97,5 +104,4 @@ export default {
       box-shadow: 0 0 3px 3px $lightBlueColor;
     }
   }
-}
-</style>
+}</style>
