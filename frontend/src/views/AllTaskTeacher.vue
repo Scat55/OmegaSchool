@@ -295,12 +295,10 @@ export default {
 
 .mesageExpert {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
   justify-content: center;
   margin-top: 2rem;
-  border: 1px solid #000;
-  border-radius: 0.5rem;
-  padding: .625rem;
 }
 
 .flex__mess {
@@ -311,7 +309,9 @@ export default {
 }
 
 .firstExpert {
-  text-align: center;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  padding: .625rem;
 
   p {
     line-height: 140%;
@@ -319,7 +319,9 @@ export default {
 }
 
 .secondExpert {
-  text-align: center;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  padding: .625rem;
 
   p {
     line-height: 140%;
