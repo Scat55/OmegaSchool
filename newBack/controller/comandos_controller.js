@@ -45,6 +45,28 @@ class Commands_controller{
         }
     }
 
+    async LoginComandos(req,res){
+        try {
+            const { comandName, password } = req.body;
+
+            // Проверка наличия команды по email и паролю
+            const loginComandoText = 'SELECT comand_id FROM comandos WHERE comand_name = $1 AND password = $2';
+            const loginComandoResult = await db.query(loginComandoText, [comandName, password]);
+
+            if (loginComandoResult.rows.length > 0) {
+                // Команда найдена, возвращаем её идентификатор
+                const comandId = loginComandoResult.rows[0].comand_id;
+                res.status(200).json({ comandId: comandId });
+            } else {
+                // Команда не найдена
+                res.status(401).json({ error: 'Неверный email или пароль' });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+
 }
 
 
