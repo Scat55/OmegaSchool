@@ -356,8 +356,9 @@ select[disabled] {
 }
 
 .change_profile {
-  margin-top: 1rem;
+  margin-top: 6rem;
   display: flex;
+  justify-content: center;
 }
 
 .editBtn {
