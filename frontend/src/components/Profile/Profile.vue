@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import Button from '@/UI/Button.vue';
+import { th } from 'date-fns/locale';
 
 export default {
   components: { Button },
@@ -27,6 +28,7 @@ export default {
       newPass: '',
       repeatNewPass: '',
       oldItem: '',
+      oldClass: '',
     };
   },
   methods: {
@@ -82,10 +84,12 @@ export default {
     changeProfile() {
       this.edit = true;
       this.oldItem = this.person.item;
+      this.oldClass = this.person.class;
     },
     changeProfileCancel() {
       this.edit = false;
       this.person.item = this.oldItem;
+      this.person.class = this.oldClass;
     },
   },
 };
@@ -154,12 +158,23 @@ export default {
         <div class="date_person_class">
           <div v-if="person.student === true">
             <label>Класс: </label>&nbsp;
-            <input
+            <!--            <input-->
+            <!--              :class="{ InputChangeNO: !edit, InputChange: edit }"-->
+            <!--              type="text"-->
+            <!--              :disabled="!edit"-->
+            <!--              v-model="person.class"-->
+            <!--            />-->
+            <select
               :class="{ InputChangeNO: !edit, InputChange: edit }"
               type="text"
               :disabled="!edit"
               v-model="person.class"
-            />
+              style="width: 90px"
+            >
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
           </div>
           <div v-if="person.student === false">
             <label>Учитель по</label>&nbsp;
