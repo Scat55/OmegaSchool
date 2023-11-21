@@ -2,24 +2,40 @@
 <template>
   <div class="authComm">
     <div class="container">
-      <form action="#" class="authComm__form" @submit.prevent="handler()">
+      <form
+        action="#"
+        class="authComm__form"
+        @submit.prevent="handler()"
+      >
         <p class="authComm__form-title">Вход</p>
         <div class="authComm__info">
           <span class="authComm__info-name">Название команды</span>
-          <input type="text" class="authComm__input name" v-model="commandName" />
+          <input
+            type="text"
+            class="authComm__input name"
+            v-model="commandName"
+          />
         </div>
         <div class="authComm__info">
           <span class="authComm__info-name">Пароль</span>
-          <input type="password" class="authComm__input" v-model="pass" />
+          <input
+            type="password"
+            class="authComm__input"
+            v-model="pass"
+          />
         </div>
 
-        <button class="authComm__form-btn" type="submit">Войти</button>
+        <button
+          class="authComm__form-btn"
+          type="submit"
+        >Войти</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -29,11 +45,28 @@ export default {
       userID: '',
     };
   },
+  methods: {
+    handler() {
+      axios.post(`/commands/login/`, {
+        comandName: this.commandName,
+        password: this.pass
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => {
+        console.log(res.data)
+        this.$router.push(`/comandPage/${res.data.comandId}`)
+      })
+
+    }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/styles/vars.scss';
+
 .authComm {
   display: flex;
   align-items: center;
