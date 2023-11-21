@@ -1,7 +1,6 @@
 <script>
 import axios from 'axios';
 import Button from '@/UI/Button.vue';
-import { th } from 'date-fns/locale';
 
 export default {
   components: { Button },
@@ -60,7 +59,9 @@ export default {
         },
       );
       // console.log(this.person.class);
-      location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 500);
     },
     // пока в бете изменение пароля не реализовано
     // changePass() {
@@ -158,7 +159,7 @@ export default {
 
         <div class="date_person_class">
           <div v-if="person.student === true">
-            <label>Класс: </label>&nbsp;
+            <label>Класс: </label>
             <!--            <input-->
             <!--              :class="{ InputChangeNO: !edit, InputChange: edit }"-->
             <!--              type="text"-->
@@ -178,7 +179,7 @@ export default {
             </select>
           </div>
           <div v-if="person.student === false">
-            <label>Учитель по</label>&nbsp;
+            <label>Учитель по </label>
             <!-- <input
               :class="{ InputChangeNO: !edit, InputChange: edit }"
               type="text"
@@ -271,8 +272,13 @@ export default {
 }
 
 .lastName,
-.patronymic {
+.patronymic,
+.name {
   display: flex;
+
+  & > input {
+    margin: auto 0;
+  }
 }
 
 .InputChangeNO {
@@ -312,6 +318,8 @@ select[disabled] {
 }
 
 .avatar__info {
+  display: flex;
+  justify-content: center;
   width: 40%;
 
   & > img {
