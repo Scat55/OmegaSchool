@@ -36,7 +36,14 @@ class Mail {
         }
     }
 
-    async generateVerificationCode(email) { return await bcrypt.hash(email, 1);}
+    async generateVerificationCode(email) {
+        const hashedEmail = await bcrypt.hash(email, 1);
+
+        // Удаляем все специальные символы из хэша
+        const verificationCode = hashedEmail.replace(/[/]/g, '');
+
+        return verificationCode;
+    }
 }
 
 module.exports = new Mail();

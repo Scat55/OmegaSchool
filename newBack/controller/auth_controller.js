@@ -24,10 +24,11 @@ class Auth_controller {
             const insertResult = await db.query(insertQuery, [email, hashedPassword, gender, type_user]);
             // Генерируем код подтверждения
             const verificationCode = await mail.generateVerificationCode(email);
+            console.log('verificationCode', verificationCode)
             // Отправляем письмо с кодом подтверждения для локальной разработки
-            const verificationLink = `http://localhost:8070/auth/${email}/${verificationCode}`;
+            // const verificationLink = `http://localhost:8070/auth/${email}/${verificationCode}`;
             // Отправляем письмо с кодом подтверждения для production
-            // const verificationLink = `https://omega-lspu.ru/auth/${email}/${verificationCode}`;
+            const verificationLink = `https://omega-lspu.ru/auth/${email}/${verificationCode}`;
             await mail.transporter.sendMail({
                 from: 'omegalspu@gmail.com', to: email, subject: 'Подтверждение Email',
                 html: `Пожалуйста, кликните <a href="${verificationLink}">здесь</a>, чтобы подтвердить ваш email.`

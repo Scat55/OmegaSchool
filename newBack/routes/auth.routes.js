@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewaree/authMiddleware');
 const authController = require('../controller/auth_controller')
 
 router.post('/registration', authMiddleware.validateRegistration, authController.registration)
-router.post('/login', authMiddleware.validateLogin, authController.login);
 router.get('/:email/:verificationCode', authController.access_email);
+router.post('/login', authMiddleware.validateLogin, authController.login);
 
 module.exports = router;
