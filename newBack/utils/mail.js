@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
 const db = require('../db')
-const crypto = require('crypto');
 const bcrypt = require("bcryptjs");
 class Mail {
     constructor() {
@@ -37,11 +36,11 @@ class Mail {
     }
 
     async generateVerificationCode(email) {
-        const hashedEmail = await bcrypt.hash(email, 1);
-        // Удаляем все специальные символы из хэша
-        const verificationCode = hashedEmail.replace(/[/]/g, '');
-        return verificationCode;
-    }
+            const hashedEmail = await bcrypt.hash(email, 1);
+            // Удаляем все специальные символы из хэша
+            const verificationCode = hashedEmail.replace(/[/?&=;:'"\\|,<>.]/g, '');
+            return verificationCode;
+    };
 }
 
 module.exports = new Mail();
