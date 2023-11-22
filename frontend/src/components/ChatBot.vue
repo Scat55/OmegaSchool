@@ -25,10 +25,15 @@
                 :gender="gender"
                 :newMessage="newMessage"
                 v-if="newMessage.length"
+                class="user_sms"
               />
             </div>
             <div class="chat__form-robot">
-              <RobotMessage :message="message" />
+              <RobotMessage 
+                :message="message"
+                class="robot_sms"
+                v-if="message.length"
+               />
             </div>
 
 
@@ -46,7 +51,7 @@
             class="chat__push"
             :disabled="this.myMessage.length === 0"
           >
-            Click
+          &#10148;
           </button>
         </div>
       </form>
@@ -141,6 +146,8 @@ export default {
   &__form {
     display: flex;
     flex-direction: column;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
     // flex: 0;
     height: 20rem;
     width: 18rem;
@@ -162,6 +169,14 @@ export default {
       align-items: center;
       gap: 0.5rem;
       margin-top: 1rem;
+    }
+
+    &-user {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
     }
 
     &-img {
@@ -197,6 +212,22 @@ export default {
   }
 }
 
+
+.user_sms {
+  background: rgb(26, 193, 248);
+  width: 220px;
+  padding: 10px;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.robot_sms {
+  background: rgb(26, 193, 248);
+  padding: 10px;
+  width: 220px;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
 .send {
   display: flex;
   align-items: center;
@@ -205,9 +236,20 @@ export default {
 
   button {
     width: 50px;
-    height: 20px;
+    height: 38px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    color: white;
+    background-color: rgb(26, 193, 248);
+  }
+
+  input {
+    margin-bottom: 5px;
+    width: 215px;
   }
 }
 </style>
