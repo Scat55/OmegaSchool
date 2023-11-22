@@ -36,6 +36,7 @@
 
 <script>
 import axios from 'axios'
+import store from '../store/index'
 export default {
   data() {
     return {
@@ -43,6 +44,7 @@ export default {
       pass: '',
       token: '',
       userID: '',
+
     };
   },
   methods: {
@@ -56,7 +58,10 @@ export default {
         }
       }).then(res => {
         console.log(res.data)
-        this.$router.push(`/comandPage/${res.data.comandId}`)
+        store.state.isComandAuth = true;
+        this.userID = (localStorage.getItem('comandID'))
+        this.$router.push(`/comandPage/${this.userID}`)
+        localStorage.setItem('comadToken', res.data.token)
       })
 
     }

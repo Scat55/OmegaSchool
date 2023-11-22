@@ -96,8 +96,10 @@ export default {
         }
       }).then(res => {
         console.log(res.data)
-        store.state.isAuth = true;
-        this.$router.push(`/comandPage/${res.data.comandId}`);
+        localStorage.setItem('comandID', res.data.comandId)
+        this.userID = (localStorage.getItem('comandID'))
+
+        this.$router.push(`/authCom`);
       })
 
       // console.log(this.comandName, this.pass, users);

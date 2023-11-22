@@ -17,11 +17,25 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      infoComand: '',
+      tokenComand: ''
     }
+  },
+
+  mounted() {
+    this.tokenComand = localStorage.getItem('comadToken')
+
+    axios.get(`/commands/info`, {
+      headers: {
+        Authorization: `Bearer ${this.tokenComand}`,
+        'Content-Type': 'app;ication/json'
+      }
+    })
   },
 };
 </script>
