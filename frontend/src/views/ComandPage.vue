@@ -3,10 +3,14 @@
     <div class="container">
       <div class="comandPage__info">
         <div class="comandPage__people">
-          <p>Название команды</p>
+          <p v-if="!this.infoComand.comandName">Название не найдено</p>
+          <p v-else>{{ infoComand.comandName }}</p>
           <div>
             <p v-if="!infoComand.users">Участники не найдены</p>
-            <div class="comandInfo">
+            <div
+              class="comandInfo"
+              v-else
+            >
               <div v-for="comand in infoComand.users">
                 <p class="comandEmail">{{ comand.email }}</p>
               </div>
