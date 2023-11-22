@@ -36,12 +36,7 @@ class Mail {
         }
     }
 
-    generateVerificationCode(email) {
-        const saltRounds = 10; // Уровень сол
-        console.log(bcrypt.hash(email, saltRounds))
-        return bcrypt.hash(email, 'saltRounds');
-      
-    }
+    async generateVerificationCode(email) { return await bcrypt.hash(email, 1);}
 }
 
 module.exports = new Mail();

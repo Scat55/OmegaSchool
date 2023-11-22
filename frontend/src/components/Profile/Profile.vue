@@ -26,6 +26,8 @@ export default {
       oldPass: '',
       newPass: '',
       repeatNewPass: '',
+      oldItem: '',
+      oldClass: '',
     };
   },
   methods: {
@@ -56,25 +58,40 @@ export default {
           },
         },
       );
-      console.log(this.person.class);
+      // console.log(this.person.class);
+      setTimeout(() => {
+        location.reload();
+      }, 500);
     },
-    changePass() {
-      if (
-        this.newPass.length >= 8 &&
-        this.repeatNewPass.length >= 8 &&
-        this.newPass === this.repeatNewPass
-      ) {
-        alert('Пароль успешно изменен');
-        this.changeDate.changePass = false;
-        console.log(this.repeatNewPass);
-        this.newPass = this.repeatNewPass = '';
-      }
-      if (this.newPass.length < 8 && this.repeatNewPass.length < 8) {
-        alert('Пароль не должен быть меньше 8 символов');
-      }
-      if (this.newPass !== this.repeatNewPass) {
-        alert('Пароль несовпадают');
-      }
+    // пока в бете изменение пароля не реализовано
+    // changePass() {
+    //   if (
+    //     this.newPass.length >= 8 &&
+    //     this.repeatNewPass.length >= 8 &&
+    //     this.newPass === this.repeatNewPass
+    //   ) {
+    //     alert('Пароль успешно изменен');
+    //     this.changeDate.changePass = false;
+    //     console.log(this.repeatNewPass);
+    //     this.newPass = this.repeatNewPass = '';
+    //   }
+    //   if (this.newPass.length < 8 && this.repeatNewPass.length < 8) {
+    //     alert('Пароль не должен быть меньше 8 символов');
+    //   }
+    //   if (this.newPass !== this.repeatNewPass) {
+    //     alert('Пароль несовпадают');
+    //   }
+    // },
+
+    changeProfile() {
+      this.edit = true;
+      this.oldItem = this.person.item;
+      this.oldClass = this.person.class;
+    },
+    changeProfileCancel() {
+      this.edit = false;
+      this.person.item = this.oldItem;
+      this.person.class = this.oldClass;
     },
   },
 };
@@ -133,48 +150,63 @@ export default {
 
         <div class="date_person_birthday_gender">
           <p>Пол: {{ person.gender }}</p>
-          <div
-            v-if="edit"
-            class="input-container"
-          >
+          <div v-if="edit" class="input-container">
             <label>Дата рождения:</label>&nbsp;
-            <input
-              type="date"
-              class="styled-input"
-              v-model="person.birthday"
-            />
+            <input type="date" class="styled-input" v-model="person.birthday" />
           </div>
           <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
         </div>
 
         <div class="date_person_class">
           <div v-if="person.student === true">
-            <label>Класс: </label>&nbsp;
-            <input
+            <label>Класс: </label>
+            <!--            <input-->
+            <!--              :class="{ InputChangeNO: !edit, InputChange: edit }"-->
+            <!--              type="text"-->
+            <!--              :disabled="!edit"-->
+            <!--              v-model="person.class"-->
+            <!--            />-->
+            <select
               :class="{ InputChangeNO: !edit, InputChange: edit }"
               type="text"
               :disabled="!edit"
               v-model="person.class"
-            />
+              style="width: 90px"
+            >
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
           </div>
           <div v-if="person.student === false">
-            <label>Учитель по</label>&nbsp;
-            <input
+            <label>Учитель по </label>
+            <!-- <input
               :class="{ InputChangeNO: !edit, InputChange: edit }"
               type="text"
               :disabled="!edit"
               v-model="person.item"
-            />
+            /> -->
+            <select
+              :class="{ InputChangeNO: !edit, InputChange: edit }"
+              :disabled="!edit"
+              v-model="person.item"
+              id="selectItemTeacher"
+            >
+              <option value="Биология">Биологии</option>
+              <option value="География">Географии</option>
+              <option value="Информатика">Информатике</option>
+              <option value="Математика">Математике</option>
+              <option value="Технология">Технологии</option>
+              <option value="Физика">Физике</option>
+              <option value="Химия">Химии</option>
+            </select>
           </div>
         </div>
 
         <div class="date_person_email">
           <p>Почта {{ person.email }}</p>
         </div>
-        <div
-          class="level"
-          v-if="person.level !== null"
-        >
+        <div class="level" v-if="person.level !== null">
           <p class="level__text">Мне доступны задания уровня</p>
           <span class="level__info"> - {{ person.level }}</span>
         </div>
@@ -200,27 +232,14 @@ export default {
         </div>
       </div> -->
 
-      <div
-        class="edit_profile"
-        v-if="changeDate.changePass === false"
-      >
-        <button
-          @click="edit = true"
-          v-if="edit === false"
-          class="editBtn"
-        >Изменить профиль</button>
-        <button
-          v-show="edit === true"
-          @click="changeInfoAboutUSer()"
-          class="editBtn"
-        >
+      <div class="edit_profile" v-if="changeDate.changePass === false">
+        <button @click="changeProfile" v-if="edit === false" class="editBtn">
+          Изменить профиль
+        </button>
+        <button v-show="edit === true" @click="changeInfoAboutUSer()" class="editBtn">
           Подтвердить изменения
         </button>
-        <button
-          v-show="edit === true"
-          @click="edit = false"
-          class="editBtn"
-        >
+        <button v-show="edit === true" @click="changeProfileCancel" class="editBtn">
           Отмена изменения
         </button>
       </div>
@@ -230,6 +249,10 @@ export default {
 
 <style scoped lang="scss">
 @import '../../assets/styles/vars';
+
+* {
+  font-size: 1.5rem;
+}
 
 .flexDiv {
   display: flex;
@@ -249,30 +272,43 @@ export default {
 }
 
 .lastName,
-.patronymic {
+.patronymic,
+.name {
   display: flex;
+
+  & > input {
+    margin: auto 0;
+  }
 }
 
 .InputChangeNO {
-  color: black;
+  color: black !important;
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  height: 2rem;
   font-family: Visitor, sans-serif;
   outline: none;
+  opacity: 1;
+  padding: 3px;
 }
 
 .InputChange {
   color: black;
   background: #fff;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   width: 50%;
+  height: 2rem;
   font-family: Visitor, sans-serif;
   border-bottom: 1px solid black;
   outline: none;
   border-radius: 0.5rem;
   padding: 3px;
+}
+
+select[disabled] {
+  appearance: none;
 }
 
 .avatar {
@@ -283,12 +319,18 @@ export default {
 }
 
 .avatar__info {
+  display: flex;
+  justify-content: center;
   width: 40%;
 
-  &>img {
+  & > img {
     border: 2px solid white;
     border-radius: 1rem;
     width: 80%;
+  }
+
+  & > p {
+    margin: auto;
   }
 }
 
@@ -319,8 +361,9 @@ export default {
 }
 
 .change_profile {
-  margin-top: 1rem;
+  margin-top: 6rem;
   display: flex;
+  justify-content: center;
 }
 
 .editBtn {
@@ -366,4 +409,9 @@ button {
   &__text {
     display: inline-block;
   }
-}</style>
+}
+
+select[disabled] {
+  color: black;
+}
+</style>

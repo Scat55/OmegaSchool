@@ -11,7 +11,7 @@ module.exports = function (roles) {
             const tokenFromHeaders = authorizationHeader.split(' ')[1];
             // Извлекаем токен из сессии
             const tokenFromSession = req.session.token;
-             //Проверяем, совпадают ли токены
+            //Проверяем, совпадают ли токены
             if (tokenFromHeaders !== tokenFromSession) { return res.status(403).json({ message: 'Пользователь не авторизован2' }); }
             // Проверяем токен и извлекаем роль пользователя
             const { type_user, user_id, email } = jwt.verify(tokenFromHeaders, secret);
@@ -22,7 +22,6 @@ module.exports = function (roles) {
                 // Если роль пользователя не совпадает с разрешенными ролями, возвращаем ошибку
                 return res.status(403).json({ message: 'У вас нет доступа' });
             }
-            // Если роль пользователя совпадает с разрешенными ролями, продолжаем выполнение запроса
             next();
         } catch (e) { console.log(e); return res.status(403).json({ message: 'Пользователь не авторизован3' }); }
     };

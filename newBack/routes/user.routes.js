@@ -61,7 +61,6 @@ router.get('/download/:file_names', roleMiddleware(['Ученик', 'Экспе�
 
 router.post('/add_avatar', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTestAndUpload)
 
-//Работа с почтой
 router.get('/verify_email/:email/', userMiddleware, userController.setEmail);
 router.get('/verify_email/:email/:code/', userMiddleware, userController.getEmailCode)
 
