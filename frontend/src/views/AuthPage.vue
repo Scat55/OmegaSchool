@@ -62,38 +62,38 @@ export default {
           email: email,
           password: password,
         })
-        .then((response) => {
-          try {
-            this.token = response.data.token;
-
-            axios(`/api/user_id/${this.email}`, {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${this.token}`,
-                'Content-Type': 'application/json',
-
-              },
-            }).then((response) => {
-              // console.log(response.data)
-              try {
-                this.userID = response.data.user_id;
-                store.state.isAuth = true;
-                this.$router.push(`/profile/${response.data.user_id}`);
-                // console.log(this.userID);
-                const local = {
-                  userID: this.userID,
-                  token: this.token,
-                  isAuth: store.state.isAuth,
-                };
-                localStorage.setItem('local', JSON.stringify(local));
-              } catch (e) {
-                alert(e);
-              }
-            });
-          } catch (e) {
-            alert(response.data.message, 'hjdhd');
-            this.email = this.pass = '';
+        .catch((err) => {
+          if (err.response) {
+            alert(err.response.data.message);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
           }
+        })
+        .then((response) => {
+          console.log(response.data)
+          this.token = response.data.token;
+          axios(`/api/user_id/${this.email}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+              'Content-Type': 'application/json',
+            },
+          }).then((response) => {
+
+            this.userID = response.data.user_id;
+            store.state.isAuth = true;
+            this.$router.push(`/profile/${response.data.user_id}`);
+            // console.log(this.userID);
+            const local = {
+              userID: this.userID,
+              token: this.token,
+              isAuth: store.state.isAuth,
+            }
+            localStorage.setItem('local', JSON.stringify(local));
+          });
         });
     },
     // Обработка формы
@@ -106,6 +106,31 @@ export default {
     // this.GET_USERS_FROM_API()
   },
 };
+
+// .then((response) => {
+
+//               this.userID = response.data.user_id;
+//               store.state.isAuth = true;
+//               this.$router.push(`/profile/${response.data.user_id}`);
+//               // console.log(this.userID);
+//               const local = {
+//                 userID: this.userID,
+//                 token: this.token,
+//                 isAuth: store.state.isAuth,
+//               }
+//               localStorage.setItem('local', JSON.stringify(local));
+//             });
+
+// .then((response) => {
+//             this.token = response.data.token;
+//             axios(`/api/user_id/${this.email}`, {
+//               method: 'GET',
+//               headers: {
+//                 Authorization: `Bearer ${this.token}`,
+//                 'Content-Type': 'application/json',
+//               },
+//             })
+//         });
 </script>
 
 <style lang="scss" scoped>
