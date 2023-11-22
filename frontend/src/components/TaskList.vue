@@ -4,15 +4,17 @@ export default {
   props: ['task'],
   data() {
     return {
-      token: ''
+      token: '',
+      isVisibleLikes: true,
+      addLike: ''
     }
   },
   methods: {
     async changeLike() {
       this.token = JSON.parse(localStorage.getItem('local'));
       this.task.likes++
+      this.isVisibleLikes = false
       await axios.post(`/api/likeToDeskriotion/${this.task.id}`, {
-
       }, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
@@ -42,7 +44,10 @@ export default {
 
       </div>
     </router-link>
-    <div class="likes">
+    <div
+      class="likes"
+      v-if="isVisibleLikes"
+    >
       {{ task.likes }}
       <img
         src="../assets/images/hert.png"
@@ -133,5 +138,9 @@ export default {
 .like {
   align-items: flex-end;
   width: 10%;
+}
+
+.likeVisible {
+  display: none;
 }
 </style>
