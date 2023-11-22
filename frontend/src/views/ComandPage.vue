@@ -4,7 +4,14 @@
       <div class="comandPage__info">
         <div class="comandPage__people">
           <p>Название команды</p>
-          <div>Участники</div>
+          <div>
+            <p v-if="!infoComand.users">Участники не найдены</p>
+            <div class="comandInfo">
+              <div v-for="comand in infoComand.users">
+                <p class="comandEmail">{{ comand.email }}</p>
+              </div>
+            </div>
+          </div>
         </div>
         <img
           src="../assets/images/positive/grup.png"
@@ -35,6 +42,8 @@ export default {
         Authorization: `Bearer ${this.tokenComand}`,
         'Content-Type': 'app;ication/json'
       }
+    }).then(res => {
+      this.infoComand = res.data
     })
   },
 };
@@ -69,5 +78,15 @@ export default {
     flex-direction: column;
     gap: 1rem;
   }
+}
+
+.comandInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #000;
+  padding: .625rem;
+  border-radius: 0.5rem;
 }
 </style>
