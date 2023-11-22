@@ -108,10 +108,12 @@ class Commands_controller{
         try {
             // Получение списка user_id из user_command
             const userCommandsResult = await db.query("SELECT user_id, email FROM user_command WHERE comand_id = $1", [command_id]);
+            const comandNameResult = await db.query("SELECT comand_name FROM comandos WHERE comand_id = $1", [command_id]);
+
+            const comandName = comandNameResult.rows[0]
 
             const userCommands = userCommandsResult.rows;
-            console.log(userCommands);
-
+            console.log(comandName);
             let users = []; // Renamed to 'users' for clarity
             for (const userCommand of userCommands) {
                 // Получение информации о пользователе из таблицы user
@@ -133,14 +135,14 @@ class Commands_controller{
                     users.push({
                         user_id: userCommand.user_id,
                         email: userCommand.email,
-                        first_name: 'Логинся ПИДоР',
-                        last_name: 'Логинся ПИДоР',
-                        patronymic: 'Логинся ПИДоР'
+                        first_name: 'NULL',
+                        last_name: 'NULL',
+                        patronymic: 'NULL'
                     });
                 }
             }
 
-            res.status(200).json({ users: users });
+            res.status(200).json({ comandName : comandName.comand_name,users: users });
         } catch (error) {
             console.error("Error in InfoComandos:", error);
             res.status(500).json({ message: "Internal Server Error" });
