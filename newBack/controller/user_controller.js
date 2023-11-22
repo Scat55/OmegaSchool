@@ -301,7 +301,7 @@ class User_controller {
       const studentTestsSql = `
         SELECT test_id, test_level, decided
         FROM student_solutions
-        WHERE user_id = $1;
+        WHERE user_id = $1 ORDER BY test_id desc;
     `;
 
       // Выполнение запроса к базе данных
@@ -833,6 +833,7 @@ class User_controller {
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+
   async likeToDeskriotion(req, res) {
     try {
       const test_id = req.params.testID;
@@ -878,7 +879,6 @@ class User_controller {
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
-
 
   async getTasksForTeacher(req, res) {
     try {
@@ -938,7 +938,7 @@ class User_controller {
 
   async getTasksForTeacherByStudent(req, res) {
     try {
-      const user_id = req.user_id;
+      const user_ID = req.user_id;
 
       // Запрос для получения test_id и user_id, где test_level = 2 или 3
       const TestsSql = `
@@ -961,9 +961,9 @@ class User_controller {
         const level2TestsSql = `
                 SELECT *
                 FROM level_2_tests
-                WHERE test_id = $1;
+                WHERE test_id = $1 and user_id = $2;
             `;
-        const level2OptionsResult = await db.query(level2TestsSql, [test_id]);
+        const level2OptionsResult = await db.query(level2TestsSql, [test_id, user_ID]);
 
         if (level2OptionsResult.rows.length > 0) {
           tasks.push(...level2OptionsResult.rows.map(test => ({
@@ -978,9 +978,9 @@ class User_controller {
         const level3TestsSql = `
                 SELECT *
                 FROM level_3_tests
-                WHERE test_id = $1;
+                WHERE test_id = $1 and user_id = $2;
             `;
-        const level3OptionsResult = await db.query(level3TestsSql, [test_id]);
+        const level3OptionsResult = await db.query(level3TestsSql, [test_id, user_ID]);
 
         if (level3OptionsResult.rows.length > 0) {
           tasks.push(...level3OptionsResult.rows.map(test => ({

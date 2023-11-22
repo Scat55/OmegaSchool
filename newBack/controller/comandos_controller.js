@@ -100,36 +100,51 @@ class Commands_controller{
             // Команда не найдена
             res.status(401).json({ error: 'Неверный email или пароль' });
         }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error.message });
     }
 
-    async InfoComandos(req,res){
+    async InfoComandos(req, res){
+        const command_id = req.user_id; // или как вы получаете command_id
+
         try {
-            const user_id = req.params.userId;
+            // Получение списка user_id из user_command
+            const userCommandsResult = await db.query("SELECT user_id, email FROM user_command WHERE comand_id = $1", [command_id]);
 
-            // Запрос для получения информации о команде по user_id
-            const infoComandosText = `
-            SELECT email
-            FROM user_command
-            WHERE comand_id = $1;
-        `;
-            const infoComandosResult = await db.query(infoComandosText, [user_id]);
+            const userCommands = userCommandsResult.rows;
+            console.log(userCommands);
 
-            if (infoComandosResult.rows.length > 0) {
-                // Команда найдена, возвращаем информацию
-                const comandInfo = infoComandosResult.rows[0];
-                res.status(200).json(comandInfo);
-            } else {
-                // Команда не найдена
-                res.status(404).json({ error: 'Команда не найдена' });
+            let users = []; // Renamed to 'users' for clarity
+            for (const userCommand of userCommands) {
+                // Получение информации о пользователе из таблицы user
+                const userResult = await db.query("SELECT first_name, last_name, patronymic FROM users WHERE user_id = $1", [userCommand.user_id]);
+
+                const userData = userResult.rows[0]; // Renamed to 'userData' for clarity
+                console.log('пользователь', userCommand);
+
+                if (userData) { // Checking if userData is not empty
+                    // Сборка данных пользователя
+                    users.push({
+                        user_id: userCommand.user_id,
+                        email: userCommand.email,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        patronymic: userData.patronymic
+                    });
+                }else {
+                    users.push({
+                        user_id: userCommand.user_id,
+                        email: userCommand.email,
+                        first_name: 'Логинся ПИДоР',
+                        last_name: 'Логинся ПИДоР',
+                        patronymic: 'Логинся ПИДоР'
+                    });
+                }
             }
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
-        }
 
+            res.status(200).json({ users: users });
+        } catch (error) {
+            console.error("Error in InfoComandos:", error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
     }
 }
 
