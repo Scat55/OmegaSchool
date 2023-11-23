@@ -20,14 +20,7 @@
 <script>
 import axios from 'axios';
 export default {
-  props: {
-    message: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-  },
+  props: ['message'],
   mounted() { },
 };
 </script>

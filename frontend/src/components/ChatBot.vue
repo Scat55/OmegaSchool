@@ -116,6 +116,7 @@ export default {
             // this.message.push({ message: response.data });
             // console.log(this.message)
             this.message = response.data.response
+            console.log(this.message)
           } catch {
             this.message = 'Оооп... Я сломался'
           }
@@ -222,7 +223,7 @@ export default {
 }
 
 .robot_sms {
-  background: rgb(140, 163, 170);
+  background: rgb(8, 108, 138);
   padding: 10px;
   width: 220px;
   border-top-right-radius: 1rem;
