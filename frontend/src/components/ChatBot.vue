@@ -22,7 +22,7 @@
 
             <div class="chat__form-user">
               <UserMessagges
-                :gender="gender"
+                :name="name"
                 :newMessage="newMessage"
                 v-if="newMessage.length"
                 class="user_sms"
@@ -69,7 +69,7 @@ export default {
     RobotMessage,
   },
   props: {
-    gender: {
+    name: {
       type: String,
       default() {
         return '';
@@ -222,7 +222,7 @@ export default {
 }
 
 .robot_sms {
-  background: rgb(26, 193, 248);
+  background: rgb(140, 163, 170);
   padding: 10px;
   width: 220px;
   border-top-right-radius: 1rem;
