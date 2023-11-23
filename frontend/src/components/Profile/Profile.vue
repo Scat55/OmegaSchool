@@ -28,6 +28,7 @@ export default {
       repeatNewPass: '',
       oldItem: '',
       oldClass: '',
+      brth: '',
     };
   },
   methods: {
@@ -40,29 +41,41 @@ export default {
       const patronymic = this.person.patronymic;
       const item = this.person.item;
       const classes = this.person.class;
-      const birthdate = this.person.birthday;
-      axios.post(
-        '/api/addition_data',
-        {
-          first_name: first_name,
-          last_name: last_name,
-          patronymic: patronymic,
-          classes: classes,
-          item: item,
-          birthdate: birthdate,
+
+      // Формируем объект для отправки
+      let dataToSend = {
+        first_name: first_name,
+        last_name: last_name,
+        patronymic: patronymic,
+        classes: classes,
+        item: item,
+      };
+
+      // Добавляем дату рождения, только если она равна '01.01.1970'
+      if (this.brth === '01.01.1970') {
+        dataToSend.birthdate = this.person.birthday;
+      } else {
+        let dateString = this.brth;
+        let parts = dateString.split('.');
+        let day = parseInt(parts[0], 10) + 1;
+        let month = parseInt(parts[1], 10) - 1;
+        let year = parseInt(parts[2], 10);
+        dataToSend.birthdate = new Date(year, month, day);
+      }
+
+      // Отправляем данные
+      axios.post('/api/addition_data', dataToSend, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      // console.log(this.person.class);
+      });
+
       setTimeout(() => {
         location.reload();
       }, 500);
     },
+
     // пока в бете изменение пароля не реализовано
     // changePass() {
     //   if (
@@ -87,6 +100,7 @@ export default {
       this.edit = true;
       this.oldItem = this.person.item;
       this.oldClass = this.person.class;
+      this.brth = this.person.birthday;
     },
     changeProfileCancel() {
       this.edit = false;
@@ -150,11 +164,13 @@ export default {
 
         <div class="date_person_birthday_gender">
           <p>Пол: {{ person.gender }}</p>
-          <div v-if="edit" class="input-container">
+          <div v-if="edit && person.birthday === '01.01.1970'" class="input-container">
             <label>Дата рождения:</label>&nbsp;
             <input type="date" class="styled-input" v-model="person.birthday" />
           </div>
-          <p v-if="!edit">Дата рождения: {{ person.birthday }}</p>
+          <p v-if="!edit || person.birthday !== '01.01.1970'">
+            Дата рождения: {{ person.birthday }}
+          </p>
         </div>
 
         <div class="date_person_class">
