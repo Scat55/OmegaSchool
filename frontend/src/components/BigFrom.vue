@@ -1,11 +1,14 @@
 <template>
   <div class="big">
     <div class="container">
-      <p class="big__title">Начние учиться уже сегодня!</p>
-      <p class="big__subtitle">Зарегестируйтесь и получайте знания</p>
+      <p class="big__title">Начните учиться уже сегодня!</p>
+      <p class="big__subtitle">Зарегистрируйтесь и получайте знания</p>
 
       <div class="big__content">
-        <div class="big__content-info" v-if="!statusText">
+        <div
+          class="big__content-info"
+          v-if="!statusText"
+        >
           <p class="big__content-text">
             Обучение может быть не только полезным, но и увлекательным! Попробуйте наши
             образовательные игры и квизы, разработанные для закрепления и проверки знаний в
@@ -17,7 +20,10 @@
             вы найдете единомышленников, готовых поделиться своими знаниями, ответить на ваши
             вопросы и помочь в решении сложных задач.
           </p>
-          <p class="big__content-btn" @click="changeStatusOnTrue()">Войти</p>
+          <p
+            class="big__content-btn"
+            @click="changeStatusOnTrue()"
+          >Войти</p>
         </div>
         <p v-if="statusText">
           y`V 7E`V `B 2r$j$qYt1[F 1`Vt# 31D z7`V1D2$ 85$ q7`NjzR1 w5$ `C t5^3 - `B qEqjzT1D`B5^ iG
@@ -132,5 +138,4 @@ export default {
       margin-top: 3rem;
     }
   }
-}
-</style>
+}</style>
