@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <ChatBot :gender="person.gender" />
+    <ChatBot :name="person.name" />
   </div>
 </template>
 

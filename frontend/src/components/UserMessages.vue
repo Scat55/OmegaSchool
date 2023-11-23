@@ -3,8 +3,9 @@
     <div class="userMess__mess">
       <div class="userMess__mess-info">
         <div class="userMess__text">
+          <p class="userMess__title">{{ name.length > 0 ? name : 'Пользователь' }}</p>
           <p class="userMess__message">{{ newMessage }}</p>
-          <img
+          <!-- <img
             v-if="gender === 'Мужской'"
             src="../assets/images/Avatar/boy.png"
             class="userMess__img"
@@ -15,7 +16,7 @@
             src="../assets/images/Avatar/girl (3).png"
             class="userMess__img"
             alt="Аватарка"
-          />
+          /> -->
         </div>
       </div>
     </div>
@@ -25,7 +26,7 @@
 <script>
 export default {
   props: {
-    gender: {
+    name: {
       type: String,
       default() {
         return '';
@@ -51,13 +52,20 @@ export default {
 
   &__text {
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: flex-end;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 0.6rem;
+    margin-bottom: 5px;
+    color: white;
   }
 
   &__message {
     font-size: 0.7rem;
-    margin-right: 1rem;
+    //margin-right: 1rem;
   }
 }
 </style>

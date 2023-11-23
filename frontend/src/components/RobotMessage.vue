@@ -3,12 +3,13 @@
     <div class="RobotMess__mess">
       <div class="RobotMess__mess-info">
         <div class="RobotMess__text">
-          <img
+          <!-- <img
             src="../assets/images/robot_chat.png"
             class="RobotMess__img"
             alt="Аватарка"
             v-if="message.length"
-          />
+          /> -->
+          <p class="RobotMess__title">Умник</p>
           <p class="RobotMess__message">{{ message }}</p>
         </div>
       </div>
@@ -41,8 +42,16 @@ export default {
 
   &__text {
     display: flex;
-    align-items: center;
+    align-items: start;
+    flex-direction: column;
     justify-content: flex-start;
+
+  }
+
+  &__title {
+    font-size: 0.6rem;
+    margin-bottom: 5px;
+    color: white;
   }
 
   &__message {
