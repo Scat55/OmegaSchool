@@ -278,9 +278,11 @@ export default {
       if (allCorrect) {
         alert('Верно! Вы получили 1 балл.');
         this.data = { options: 1 };
+        this.$router.push('/task');
       } else {
         alert('Неверно. Вы получили 0 баллов.');
         this.data = { options: 0 };
+        this.$router.push('/task');
       }
 
       axios
