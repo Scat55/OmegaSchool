@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="user-select: none;">
     <div class="container">
       <div class="window">
         <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">

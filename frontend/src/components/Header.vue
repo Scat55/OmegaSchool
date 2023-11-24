@@ -137,6 +137,7 @@ export default {
 
 .header {
   color: $whiteColor;
+  user-select: none;
 
   &__logo {
     display: flex;

@@ -46,6 +46,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 1rem 3rem 1rem 3rem;
+  user-select: none;
 
   &__logo {
     &-omega {

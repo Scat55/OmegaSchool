@@ -11,12 +11,12 @@
         />
 
         <div class="reg__info">
-          <span class="reg__info-name">Почта</span>
+          <span class="reg__info-name">Почта<span style="color: red">*</span></span>
           <input type="email" class="reg__input name" v-model.trim="email" />
         </div>
         <small v-if="activeClass" class="activeClass">Поле не должно быть пустым</small>
         <div class="reg__info">
-          <span class="reg__info-name">Пароль</span>
+          <span class="reg__info-name">Пароль<span style="color: red">*</span></span>
           <input type="password" class="reg__input" v-model.trim="pass" />
         </div>
         <small v-if="activeClass" class="activeClass"
@@ -24,7 +24,7 @@
         >
 
         <!--TODO: вот недоделанные селекты-->
-        <p class="select__plase">Ваш пол:</p>
+        <p class="select__plase">Ваш пол:<span style="color: red">*</span></p>
         <select
           id="gender"
           v-model="gender.name"
@@ -36,7 +36,7 @@
             {{ gender.name }}
           </option>
         </select>
-        <p class="select__plase">Ваш статус:</p>
+        <p class="select__plase">Ваш статус:<span style="color: red">*</span></p>
 
         <select name="proffesion" id="proffesion" class="reg__form-prof" v-model="proffesion.name">
           <option class="reg__form-option" v-for="prof in proffesion">
@@ -45,6 +45,9 @@
         </select>
 
         <button class="reg__form-btn" type="submit">Зарегистрироваться</button>
+        <!-- <div>Укажите актуальную электронную почту, на которую будет выслано электронное письмо после нажатия кнопки "Регистрация"</div> -->
+       <span style="font-size: 0.8rem"><span style="color: red">*</span> - обязательные поля</span>
+        <span style="font-size: 0.8rem; text-align: center;">После регистрации проверьте почту</span>
         <p>Есть аккаут? <span class="reg__auth" @click="goToAuth()">Войти</span></p>
         <p class="reg__auth comand" @click="goToComand">Зарегистрировать команду</p>
       </form>
@@ -159,7 +162,7 @@ export default {
     justify-content: center;
     gap: 1.25rem;
     width: 25.5rem;
-    height: 32.5rem;
+    height: 36.5rem;
     border: 2px solid $lightBlueColor;
     border-radius: 1rem;
     padding: 5.75rem;
