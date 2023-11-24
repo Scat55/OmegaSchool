@@ -49,7 +49,7 @@
         >
           <p>{{ this.infoTask.add_file }}</p>
           <a
-            v-if="this.infoTask.add_file !== null"
+            v-if="this.infoTask.add_file !== null && this.infoTask.add_file !== ''"
             class="downloadLink"
           ><button
               @click="downloadFiles()"
