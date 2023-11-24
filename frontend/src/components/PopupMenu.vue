@@ -1,18 +1,20 @@
 <template>
-  <div class="faq">
-    <h2 class="faq-heading">Часто задаваемые вопросы</h2>
-    <ul class="faq-list">
-      <li v-for="item in faqItems" :key="item.id">
-        <div class="question" @click="toggleAnswer(item)">
-          <span>{{ item.question }}</span>
-          <i :class="{ arrow: true, down: item.showAnswer }"></i>
-        </div>
-
-        <div class="answer" v-if="item.showAnswer">
-          <p v-html="item.answer"></p>
-        </div>
-      </li>
-    </ul>
+  <div style="background-color: #487fb8; margin-bottom: 5rem">
+    <div class="container">
+      <h2 class="faq-heading">Часто задаваемые вопросы</h2>
+      <ul class="faq-list">
+        <li v-for="item in faqItems" :key="item.id">
+          <div class="question" @click="toggleAnswer(item)">
+            <span>{{ item.question }}</span>
+            <i :class="{ arrow: true, down: item.showAnswer }"></i>
+          </div>
+  
+          <div class="answer" v-if="item.showAnswer">
+            <p v-html="item.answer"></p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -52,15 +54,16 @@ export default {
 </script>
 
 <style scoped>
-.faq {
-  max-width: 800px;
+.container {
+  user-select: none;
   margin: 0 auto;
-  padding: 20px;
+  padding: 3rem ;
   background-color: #487fb8; /* темно-синий цвет фона */
-  border-radius: 8px;
+
 }
 
 .faq-heading {
+  margin-bottom: 2rem;
   color: #fff; /* белый цвет текста заголовка */
   text-align: center;
 }
@@ -85,7 +88,9 @@ export default {
 .answer {
   padding: 10px;
   margin-top: 10px;
-  border: 1px solid #1a237e; /* темно-синий цвет границы */
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: black;
   border-radius: 5px;
   background-color: #487fb8; /* темно-синий цвет фона ответа */
 }

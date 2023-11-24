@@ -18,6 +18,7 @@
 <style lang="scss" scoped>
 .last {
   margin-top: 4.125rem;
+  margin-bottom: 4.125rem;
 
   &__content {
     display: flex;
