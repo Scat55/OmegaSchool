@@ -223,7 +223,7 @@ export default {
 }
 
 .robot_sms {
-  background: rgb(8, 108, 138);
+  background: #2a7afc;
   padding: 10px;
   width: 220px;
   border-top-right-radius: 1rem;
