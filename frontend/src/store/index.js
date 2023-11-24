@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import Temp from "@/store/TempBD/Temp";
 
 Vue.use(Vuex);
 
@@ -11,7 +10,6 @@ let store = new Vuex.Store({
     users: [],
     isAuth: localStorage.getItem('local'),
     isComandAuth: localStorage.getItem('comand'),
-    Temp,
   },
   getters: {
     USERS(state) {
