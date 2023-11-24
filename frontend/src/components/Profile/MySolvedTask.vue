@@ -2,7 +2,6 @@
   <div class="myTasks__tasks">
     <h1 class="myTasks__title">Мои решенные задачи</h1>
     <Solved
-      v-if="info.complexity == 2 || info.complexity == 3"
       v-for="(info, idx) in paginatedData"
       :key="idx"
       :info="info"
