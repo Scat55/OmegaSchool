@@ -12,6 +12,7 @@ import CheckingTasksPage from '../views/CheckingTasksPage';
 import ComandAuth from '@/views/ComandAuth.vue';
 import ComandPage from '@/views/ComandPage.vue';
 import AuthCom from '../views/AuthCom.vue';
+import ErrorPage from '@/views/ErrorPage.vue'
 
 import store from '../store/index';
 Vue.use(VueRouter);
@@ -84,6 +85,10 @@ const routes = [
     path: '/authCom',
     component: AuthCom,
   },
+  {
+    path: '*',
+    component: ErrorPage
+  }
 ];
 
 const router = new VueRouter({
