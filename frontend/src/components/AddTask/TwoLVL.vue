@@ -109,6 +109,8 @@ export default {
         allFiles,
       );
       this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
+      this.selectedFiles = ''
+
     },
   },
   computed: {
@@ -341,4 +343,5 @@ export default {
   &>ul>li {
     list-style-type: none;
   }
-}</style>
+}
+</style>

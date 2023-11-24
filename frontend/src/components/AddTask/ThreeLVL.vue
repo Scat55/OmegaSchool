@@ -68,6 +68,8 @@ export default {
         this.selectedItems,
       );
       this.taskName = this.taskDescription = '';
+      this.selectedFiles = ''
+
     },
     // Для загрузки файлов
     handleFileChange() {
@@ -294,4 +296,5 @@ export default {
   &>ul>li {
     list-style-type: none;
   }
-}</style>
+}
+</style>
