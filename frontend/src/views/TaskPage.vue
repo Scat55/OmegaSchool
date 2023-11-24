@@ -362,6 +362,7 @@ export default {
 .filter {
   border: 2px solid $lightBlueColor;
   padding: 10px;
+  user-select: none;
   border-radius: 1rem;
   // width: 100%;
 }
