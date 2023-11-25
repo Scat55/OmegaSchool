@@ -1,113 +1,102 @@
 <template>
   <div class="container">
-    <div class="infoTask">
-      <div class="infoTask__titles">
-        <!-- Название задания-->
-        <p>{{ infoTask.test_text }}</p>
-        <div class="infoTask__allInfo">
-          <p>Класс - {{ infoTask.classes }}</p>
-          <p>Предмет - {{ infoTask.subject }}</p>
-        </div>
-
-
-      </div>
-
-      <!-- Описание задания -->
-      <textarea
-        type="text"
-        :value="infoTask.test_description"
-        disabled="disabled"
-        class="infoTask__descr"
-      ></textarea>
-
-      <!-- Картинка -->
-      <div
-        class="images"
-        id="gallery"
-        v-if="infoTask.add_img"
-      >
-        <div v-for="img in splitFiles">
-          <img
-            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
-            class="image"
-            alt="Image"
-            data-fancybox="gallery"
-          />
-        </div>
-      </div>
-
-      <!-- Блок с вопросами -->
-      <div
-        v-for="question in infoTask.questions"
-        class="infoTask__options"
-      >
-        <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
-      </div>
-
-      <!-- Блок с подсказками -->
-      <p
-        class="infoTask__show"
-        @click="isShowAnswer = !isShowAnswer"
-      >Показать подсказки</p>
-      <div v-if="isShowAnswer">
-        <div
-          class="infoTask__answer"
-          v-if="infoTask.task_hint || info.task_answer"
-        >
-          <p>Подсказдка - {{ infoTask.task_hint }}</p>
-          <p>Ответ - {{ infoTask.task_answer }}</p>
-        </div>
-      </div>
-
-      <div class="infoTask__dop">
-        <p>Дополнительные файлы</p>
-        <img
-          class="infoTask__arrow"
-          :class="{ rotate: isShow }"
-          src="../assets/images/arrow.png"
-          alt="Arrow"
-          @click="isShow = !isShow"
-        />
-      </div>
-
-      <div v-if="isShow">
-        <p>{{ infoTask.add_file }}</p>
-        <a
-          v-if="infoTask.add_file"
-          class="downloadLink"
-        ><button
-            @click="downloadFiles()"
-            class="infoTask__btn"
-            v-if="infoTask.add_file !== null || infoTask.add_file !== ''"
-          >Скачать</button></a>
-        <p v-else>Файлов нет</p>
-      </div>
-
-      <div class="questions">
-        <div v-for="question in infoTask.questions"> {{ question.text }} - <span
-            v-if="question.is_correct === true">Верно</span> <span v-else>Не верно</span>
-        </div>
-      </div>
-
-      <div class="mesageExpert">
-        <div class="firstExpert">
-          <p>Оценка первого эксперта: {{ infoTask.ver_1 }}</p>
-          <div class="flex__mess">
-            <p>Сообщение: </p>
-            <span>{{ infoTask.ver_1_masseg }}</span>
-          </div>
-        </div>
-        <div class="secondExpert">
-          <p>Оценка второго эксперта: {{ infoTask.ver_2 }}</p>
-          <div class="flex__mess">
-            <p>Сообщение: </p>
-            <span>{{ infoTask.ver_2_masseg }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="infoTask">
+  <div class="infoTask__titles">
+  <p>{{ infoTask.test_text }}</p>
+  <div class="infoTask__allInfo">
+  <p>Класс - {{ infoTask.classes }}</p>
+  <p>Предмет - {{ infoTask.subject }}</p>
   </div>
-</template>
+  </div>
+  <textarea
+  type="text"
+  :value="infoTask.test_description"
+  disabled="disabled"
+  class="infoTask__descr"
+  ></textarea>
+  <div
+  class="images"
+  id="gallery"
+  v-if="infoTask.add_img"
+  >
+  <div v-for="img in splitFiles">
+  <!-- <img
+  :src="getImageFromZip(img)"
+  class="image"
+  alt="Image"
+  data-fancybox="gallery"
+  /> -->
+  </div>
+  </div>
+  <div
+  v-for="question in infoTask.questions"
+  class="infoTask__options"
+  >
+  <div v-for="option in question.options">{{ option.text }} - {{
+  option.is_correct }}</div>
+  </div>
+  <p
+  class="infoTask__show"
+  @click="isShowAnswer = !isShowAnswer"
+  >Показать подсказки</p>
+  <div v-if="isShowAnswer">
+  <div
+  class="infoTask__answer"
+  v-if="infoTask.task_hint || info.task_answer"
+  >
+  <p>Подсказдка - {{ infoTask.task_hint }}</p>
+  <p>Ответ - {{ infoTask.task_answer }}</p>
+  </div>
+  </div>
+  <div class="infoTask__dop">
+  <p>Дополнительные файлы</p>
+  <img
+  class="infoTask__arrow"
+  :class="{ rotate: isShow }"
+  src="../assets/images/arrow.png"
+  alt="Arrow"
+  @click="isShow = !isShow"
+  />
+  </div>
+  <div v-if="isShow">
+  <p>{{ infoTask.add_file }}</p>
+  <a
+  v-if="infoTask.add_file"
+  class="downloadLink"
+  ><button
+  @click="downloadFiles()"
+  class="infoTask__btn"
+  v-if="infoTask.add_file !== null || infoTask.add_file !==
+  ''"
+  >Скачать</button></a>
+  <p v-else>Файлов нет</p>
+  </div>
+  <div class="questions">
+  <div v-for="question in infoTask.questions"> {{ question.text
+  }} - <span
+  v-if="question.is_correct === true">Верно</span> <span
+  v-else>Не верно</span>
+  </div>
+  </div>
+  <div class="mesageExpert">
+  <div class="firstExpert">
+  <p>Оценка первого эксперта: {{ infoTask.ver_1 }}</p>
+  <div class="flex__mess">
+  <p>Сообщение: </p>
+  <span>{{ infoTask.ver_1_masseg }}</span>
+  </div>
+  </div>
+  <div class="secondExpert">
+  <p>Оценка второго эксперта: {{ infoTask.ver_2 }}</p>
+  <div class="flex__mess">
+  <p>Сообщение: </p>
+  <span>{{ infoTask.ver_2_masseg }}</span>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </template>
 
 <script>
 import axios from 'axios';
@@ -127,20 +116,24 @@ export default {
       userID: '',
       blob: '',
       url: '',
-      addIMG: ''
+      addIMG: '',
+      mass: '',
     };
   },
   computed: {
     splitFiles() {
+      this.mass = this.addIMG.split(',');
       return this.addIMG.split(',')
     }
   },
   methods: {
     // Скачивание файла
     async downloadFiles() {
+      const file = this.infoTask.add_file.split(',')
+      const mass1 = [...this.mass, ...file]
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios
-        .get(`/api/download/${this.infoTask.add_file}`, {
+        .get(`/api/download/${mass1}`, {
           responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,
