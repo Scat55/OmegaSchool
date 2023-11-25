@@ -50,7 +50,7 @@ export default {
       });
 
       axios.post(
-        `/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
+        `https://omega-lspu.ru/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
         allFiles,
         {
           headers: {
