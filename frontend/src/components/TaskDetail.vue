@@ -209,6 +209,18 @@
         @click="showMeAnswer"
       >Показать ответ</button>
     </div> -->
+      <div
+        class="likes"
+        v-if="infoTask.decided === 'Не решено'"
+      >
+        {{ like }}
+        <img
+          src="../assets/images/hert.png"
+          alt="Like"
+          class="like"
+          @click="changeLike"
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -239,7 +251,8 @@ export default {
       file: '',
       token: '',
       data: '',
-      addIMG: ''
+      addIMG: '',
+      like: 0
     };
   },
   computed: {
@@ -258,6 +271,17 @@ export default {
     // },
     test() {
       console.log(this.infoArea);
+    },
+    async changeLike() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+      this.like = 1
+      await axios.post(`/api/likeToDeskriotion/${this.id}`, {
+      }, {
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json'
+        },
+      })
     },
     sendLevelOneTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -679,4 +703,15 @@ export default {
     border: none;
   }
 }
-</style>
+
+.likes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.like {
+  align-items: flex-end;
+  width: 2rem;
+  cursor: pointer;
+}</style>
