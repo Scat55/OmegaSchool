@@ -5,23 +5,21 @@ export default {
   data() {
     return {
       token: '',
-      isVisibleLikes: true,
-      addLike: ''
     }
   },
   methods: {
-    async changeLike() {
-      this.token = JSON.parse(localStorage.getItem('local'));
-      this.task.likes++
-      this.isVisibleLikes = false
-      await axios.post(`/api/likeToDeskriotion/${this.task.id}`, {
-      }, {
-        headers: {
-          Authorization: `Bearer ${this.token.token}`,
-          'Content-Type': 'application/json'
-        },
-      })
-    }
+    // async changeLike() {
+    //   this.token = JSON.parse(localStorage.getItem('local'));
+    //   this.task.likes++
+    //   this.isVisibleLikes = false
+    //   await axios.post(`/api/likeToDeskriotion/${this.task.id}`, {
+    //   }, {
+    //     headers: {
+    //       Authorization: `Bearer ${this.token.token}`,
+    //       'Content-Type': 'application/json'
+    //     },
+    //   })
+    // }
   },
 };
 
@@ -44,16 +42,12 @@ export default {
 
       </div>
     </router-link>
-    <div
-      class="likes"
-      v-if="isVisibleLikes"
-    >
+    <div class="likes">
       {{ task.likes }}
       <img
         src="../assets/images/hert.png"
         alt="Like"
         class="like"
-        @click.stop="changeLike()"
       >
     </div>
     <!--  

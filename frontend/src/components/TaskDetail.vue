@@ -209,6 +209,14 @@
         @click="showMeAnswer"
       >Показать ответ</button>
     </div> -->
+      <div class="likes">
+        <!-- {{ task.likes }} -->
+        <img
+          src="../assets/images/hert.png"
+          alt="Like"
+          class="like"
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -259,6 +267,18 @@ export default {
     test() {
       console.log(this.infoArea);
     },
+    // async changeLike() {
+    //   this.token = JSON.parse(localStorage.getItem('local'));
+    //   this.task.likes++
+    //   this.isVisibleLikes = false
+    //   await axios.post(`/api/likeToDeskriotion/${this.task.id}`, {
+    //   }, {
+    //     headers: {
+    //       Authorization: `Bearer ${this.token.token}`,
+    //       'Content-Type': 'application/json'
+    //     },
+    //   })
+    // },
     sendLevelOneTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
       // const comparisonResult = this.infoTask.questions.map((question, index) => {
@@ -678,5 +698,17 @@ export default {
     color: #fff;
     border: none;
   }
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.like {
+  align-items: flex-end;
+  width: 2rem;
+  cursor: pointer;
 }
 </style>
