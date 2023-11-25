@@ -221,6 +221,17 @@
           @click="changeLike"
         >
       </div>
+      <div
+        class="likes"
+        v-else
+      >
+        {{ this.infoTask.likes }}
+        <img
+          src="../assets/images/hert.png"
+          alt="Like"
+          class="like"
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -714,4 +725,5 @@ export default {
   align-items: flex-end;
   width: 2rem;
   cursor: pointer;
-}</style>
+}
+</style>
