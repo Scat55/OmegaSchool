@@ -21,7 +21,7 @@
       >
         <div v-for="img in splitFiles">
           <img
-            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            :src="require('/img/' + img)"
             class="image"
             alt="Image"
             data-fancybox="gallery"
