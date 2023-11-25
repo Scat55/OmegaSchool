@@ -112,14 +112,16 @@ export default {
           },
         )
         .then((response) => {
-          try {
+          // try {
             // this.message.push({ message: response.data });
             // console.log(this.message)
             this.message = response.data.response
-            console.log(this.message)
-          } catch {
-            this.message = 'Оооп... Я сломался'
-          }
+            // console.log(this.message)
+          // } catch {
+            // this.message = 'Оооп... Я сломался'
+          // }
+        }).catch(error => {
+          this.message = 'Оооп... Я сломался'
         });
       this.myMessage = '';
     },

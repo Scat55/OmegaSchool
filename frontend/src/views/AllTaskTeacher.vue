@@ -85,7 +85,7 @@
 
       <div class="questions">
         <div v-for="question in infoTask.questions"> {{ question.text }} - <span
-            v-if="question.is_correct === true">Верно</span> <span v-else="question.is_correct === true">Не верно</span>
+            v-if="question.is_correct === true">Верно</span> <span v-else>Не верно</span>
         </div>
       </div>
 
