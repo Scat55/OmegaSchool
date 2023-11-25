@@ -467,6 +467,7 @@ class User_controller {
         subject: test.subject,
         add_img: test.add_img,
         questions: flattenedOptions,
+        likes:test.likes,
         decided: (typeUser === "Ученик") ? decidedStatus : undefined, // добавьте проверку на тип пользователя
       };
       // Add additional fields to the response
