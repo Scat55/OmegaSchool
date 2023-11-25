@@ -71,7 +71,7 @@ export default {
       this.token = JSON.parse(localStorage.getItem('local'));
       console.log(allFiles);
       await axios.post(
-        `/api/add_level_1/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}/${questions}/`,
+        `https://omega-lspu.ru/api/add_level_1/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}/${questions}/`,
         allFiles,
         {
           headers: {
