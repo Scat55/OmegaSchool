@@ -1,12 +1,10 @@
 const db = require('../db')
 const fs = require('fs');
-const path = require('path');
 const { resolve, join } = require("path");
 const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../utils/store");
-const { statSync, existsSync, createReadStream, readdirSync } = require('fs');
-const mime = require('mime-types');
+
 class User_controller {
   async getUserList(req, res) {
     try {
@@ -891,60 +889,29 @@ class User_controller {
   download(req, res) {
     try {
       const key = req.headers['custom-uuid'];
-      const fileNames = req.params.file_names.split(',');
-      console.log(fileNames)
-      const mathPath = path.join('./uploads', `${key}/`);
-      console.log(mathPath)
-
-      if (!existsSync(mathPath)) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы не найден' }); }
-
-      const files = readdirSync(mathPath);
-      console.log(files)
-      const userFiles = files.filter((fileName) => {
-        return fileNames.some((name) => fileName.includes(name));
-      });
-
-      console.log(userFiles)
+      console.log(key)
+      const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
+      console.log(fileNames);
+      const math_path = join('./uploads', `${key}`);
+      // Проверка существования каталога
+      if (!fs.existsSync(math_path)) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы не найден' }); }
+      const files = fs.readdirSync(math_path);
+      // Проверка, соответствует ли какое-либо из имен файлов
+      const userFiles = files.filter((fileName) => { return fileNames.some(name => fileName.includes(name)); });
       if (userFiles.length === 0) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' }); }
-
       // Если найден только один файл, отправляет его напрямую
       if (userFiles.length === 1) {
-
-      const mimeType = mime.lookup(fileNames);
-      console.log(mimeType);
-
-        // Send each image as a separate response
-        for (const file of userFiles) {
-          const filePath = join(mathPath, file);
-          const fileData = fs.readFileSync(filePath);
-
-        const mimeType = 'image/png';
-
-          res.status(200).send({
-            filename: file,
-            data: Buffer.from(fileData).toString('base64'),
-            contentType: `${mimeType}`,
-          });
-        }
-
-
-        // const absolutePath = resolve(mathPath, userFiles[0]);
-        // return res.sendFile(absolutePath);
+        const absolutePath = resolve(math_path, userFiles[0]);
+        return res.sendFile(absolutePath);
       } else {
         // Создаем архив и отправляем его пользователю
         const archive = archiver('zip');
         res.attachment('files.zip'); // это задает имя файла для скачивания
-        userFiles.forEach(file => {
-          archive.file(join(mathPath, file), {name: file});
-        });
+        userFiles.forEach(file => { archive.file(join(math_path, file), { name: file }); });
         archive.finalize();
         archive.pipe(res);
       }
-    } catch (error) {
-      console.log(error);
-      return res.status(500).send({ message: 'Ошибка сервера' });
-    }
-
+    } catch (error) { return res.status(500).send({ message: 'Ошибка сервера' }); }
   }
 }
 
