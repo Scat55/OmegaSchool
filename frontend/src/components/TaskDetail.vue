@@ -493,7 +493,6 @@ export default {
         this.addIMG = response.data.add_img;
 
         let nameImage = this.addIMG.split(',')
-        console.log(nameImage);
 
         for (let i = 0; i < nameImage.length; i++) {
           axios.get(`/api/download/${nameImage[i]}`, {
@@ -502,9 +501,7 @@ export default {
               'Custom-UUID': this.teachrID,
             },
           }).then(res => {
-            console.log(res.data);
             this.image = `data:${res.data.contentType};base64,${res.data.data}`
-
             this.images.push(this.image)
 
 
