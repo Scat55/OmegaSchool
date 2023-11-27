@@ -20,11 +20,14 @@
         class="images"
         id="gallery"
       >
-        <div v-if="infoTask.add_img">
+        <div
+          v-if="infoTask.add_img"
+          v-for="img in images"
+        >
 
           <!-- {{ 'newBack/uploads/' + infoTask.user_id + '/' + img }} -->
           <img
-            :src="image"
+            :src="img"
             class="image"
             alt="Image"
             data-fancybox="gallery"
@@ -489,18 +492,24 @@ export default {
         this.testID = response.data.test_id;
         this.addIMG = response.data.add_img;
 
-        axios.get(`/api/download/${this.addIMG}`, {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Custom-UUID': this.teachrID,
-          },
-        }).then(res => {
+        let nameImage = this.addIMG.split(',')
+        console.log(nameImage);
 
-          this.image = `data:${res.data.contentType};base64,${res.data.data}`
+        for (let i = 0; i < nameImage.length; i++) {
+          axios.get(`/api/download/${nameImage[i]}`, {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Custom-UUID': this.teachrID,
+            },
+          }).then(res => {
+            console.log(res.data);
+            this.image = `data:${res.data.contentType};base64,${res.data.data}`
+
+            this.images.push(this.image)
 
 
-        })
-
+          })
+        }
       });
 
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
