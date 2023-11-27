@@ -1,0 +1,21 @@
+<!-- download.htm -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Download files</title>
+</head>
+<body>
+<h1>Download files</h1>
+
+<ul>
+    {% for image in files %}
+    {% if image.type === 'image' %}
+    <img src="{{ image.name }}" alt="Image">
+    {% else %}
+    <a href="{{ image.name }}" download>Download file</a>
+    {% endif %}
+    {% endfor %}
+</ul>
+
+</body>
+</html>
