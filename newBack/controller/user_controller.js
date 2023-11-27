@@ -6,6 +6,7 @@ const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../utils/store");
 const { statSync, existsSync, createReadStream, readdirSync } = require('fs');
+const mime = require('mime-types');
 class User_controller {
   async getUserList(req, res) {
     try {
@@ -905,13 +906,15 @@ class User_controller {
 
       console.log(userFiles)
       if (userFiles.length === 0) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' }); }
+      const mimeType = mime.lookup(fileNames);
+      console.log(mimeType);
 
       // Send each image as a separate response
       for (const file of userFiles) {
         const filePath = join(mathPath, file);
         const fileData = fs.readFileSync(filePath);
 
-        const mimeType = 'image/png';
+        const mimeType = 'image/';
 
         res.status(200).send({
           filename: file,
