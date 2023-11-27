@@ -6,6 +6,7 @@ const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../utils/store");
 const { statSync, existsSync, createReadStream, readdirSync } = require('fs');
+const mime = require('mime-types');
 class User_controller {
   async getUserList(req, res) {
     try {
@@ -906,10 +907,10 @@ class User_controller {
       console.log(userFiles)
       if (userFiles.length === 0) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' }); }
 
-      // Если найден только один файл, отправляет его напрямую
-      if (userFiles.length === 1) {
+      const fileType = mime.lookup(userFiles);
+      console.log('file', fileType)
 
-
+      if (fileType.includes('image')) {
         // Send each image as a separate response
         for (const file of userFiles) {
           const filePath = join(mathPath, file);
@@ -923,12 +924,7 @@ class User_controller {
             contentType: `${mimeType}`,
           });
         }
-
-
-        // const absolutePath = resolve(mathPath, userFiles[0]);
-        // return res.sendFile(absolutePath);
-      } else {
-        // Создаем архив и отправляем его пользователю
+      } else if (fileType === 'application/pdf') {
         const archive = archiver('zip');
         res.attachment('files.zip'); // это задает имя файла для скачивания
         userFiles.forEach(file => {
@@ -936,6 +932,9 @@ class User_controller {
         });
         archive.finalize();
         archive.pipe(res);
+        return res.send('Выбран файл PDF.');
+      } else {
+        return res.status(400).send('Выбран файл другого типа.');
       }
     } catch (error) {
       console.log(error);
