@@ -20,13 +20,11 @@
         class="images"
         id="gallery"
       >
-        <div
-          v-if="infoTask.add_img"
-          v-for="img in splitFiles"
-        >
+        <div v-if="infoTask.add_img">
+
           <!-- {{ 'newBack/uploads/' + infoTask.user_id + '/' + img }} -->
           <img
-            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            :src="image"
             class="image"
             alt="Image"
             data-fancybox="gallery"
@@ -209,6 +207,7 @@
         @click="showMeAnswer"
       >Показать ответ</button>
     </div> -->
+
       <div
         class="likes"
         v-if="infoTask.decided === 'Не решено'"
@@ -231,6 +230,8 @@
           alt="Like"
           class="like"
         >
+
+
       </div>
     </div>
   </div>
@@ -263,12 +264,14 @@ export default {
       token: '',
       data: '',
       addIMG: '',
-      like: 0
+      like: 0,
+      images: [],
+      image: ''
     };
   },
   computed: {
     splitFiles() {
-      return this.addIMG.split(',')
+      return this.image.split(',')
     }
   },
   // computed: {
@@ -293,6 +296,10 @@ export default {
           'Content-Type': 'application/json'
         },
       })
+    },
+    async downloadImages() {
+      this.token = JSON.parse(localStorage.getItem('local'));
+
     },
     sendLevelOneTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -321,7 +328,7 @@ export default {
       }
 
       axios
-        .post(`/api/getAnswerByStudent1/${this.testID}/`, this.data, {
+        .post(`/ api / getAnswerByStudent1 / ${this.testID} / `, this.data, {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
             'Content-Type': 'application/json',
@@ -342,7 +349,7 @@ export default {
         return el;
       });
 
-      axios.post(`/api/getAnswerByStudent2/${this.testID}/${this.infoArea}`, allFiles, {
+      axios.post(`/ api / getAnswerByStudent2 / ${this.testID} / ${this.infoArea}`, allFiles, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
           'Content-Type': 'multipart/form-data',
@@ -359,7 +366,7 @@ export default {
         return el;
       });
 
-      axios.post(`/api/getAnswerByStudent3/${this.testID}/${this.infoArea}`, allFiles, {
+      axios.post(`/ api / getAnswerByStudent3 / ${this.testID} / ${this.infoArea}`, allFiles, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
           'Content-Type': 'multipart/form-data',
@@ -373,7 +380,7 @@ export default {
       this.token = JSON.parse(localStorage.getItem('local'));
       axios
         .post(
-          `/api/getTasksAnswerForStudent/${this.testID}`,
+          `/ api / getTasksAnswerForStudent / ${this.testID}`,
           {},
           {
             headers: {
@@ -390,7 +397,7 @@ export default {
       this.token = JSON.parse(localStorage.getItem('local'));
       axios
         .post(
-          `/api/getTasksHintForStudent/${this.testID}`,
+          `/ api / getTasksHintForStudent / ${this.testID}`,
           {},
           {
             headers: {
@@ -430,6 +437,7 @@ export default {
             a.download = this.fileName;
           }
 
+
         });
     },
     // initializeUserChecks() {
@@ -462,10 +470,12 @@ export default {
   created() {
     // this.initializeUserChecks();
     // this.initializeUserAnswers();
+    this.token = JSON.parse(localStorage.getItem('local'));
+
+
   },
 
   mounted() {
-    this.token = JSON.parse(localStorage.getItem('local'));
     axios
       .get(`/api/getTasksForStudent/${this.id}`, {
         headers: {
@@ -474,17 +484,31 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response.data);
         this.infoTask = response.data;
         this.teachrID = response.data.user_id;
         this.testID = response.data.test_id;
         this.addIMG = response.data.add_img;
+
+        axios.get(`/api/download/${this.addIMG}`, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Custom-UUID': this.teachrID,
+          },
+        }).then(res => {
+
+          this.image = `data:${res.data.contentType};base64,${res.data.data}`
+
+
+        })
+
       });
 
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
     });
+    // console.log(this.addIMG)
   },
+
 };
 </script>
 

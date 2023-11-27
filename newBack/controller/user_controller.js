@@ -1,10 +1,11 @@
 const db = require('../db')
 const fs = require('fs');
+const path = require('path');
 const { resolve, join } = require("path");
 const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../utils/store");
-
+const { statSync, existsSync, createReadStream, readdirSync } = require('fs');
 class User_controller {
   async getUserList(req, res) {
     try {
@@ -33,7 +34,8 @@ class User_controller {
       await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
       console.log('Дополнительные данные успешно обновлены');
       res.status(200).json({ message: 'Дополнительные данные успешно обновлены' });
-    } catch (error) { console.error('Ошибка при обновлении данных:', error);
+    } catch (error) {
+      console.error('Ошибка при обновлении данных:', error);
       res.status(500).json({ message: 'Произошла ошибка при обновлении данных' });
     }
   }
@@ -136,7 +138,8 @@ class User_controller {
       };
       console.log(`Данные для пользователя с Email ${email} найдены`);
       res.json(userData);
-    } catch (error) { console.error('Ошибка при выполнении SQL-запросов:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запросов:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -236,7 +239,8 @@ class User_controller {
       }));
       // Отправляем результат
       res.json(testNames);
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -269,7 +273,8 @@ class User_controller {
       } else {
         res.status(404).json({ error: 'Подсказка не найдена' });
       }
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -301,7 +306,8 @@ class User_controller {
       } else {
         res.status(404).json({ error: 'Ответ не найдена' });
       }
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -323,7 +329,8 @@ class User_controller {
       // Выполнение запроса на вставку обработанных вариантов ответов
       await db.query(insertOptionsSql, [userId, testId, options.options]);
       res.status(200).json({ message: 'Ответы успешно сохранены' });
-    } catch (error) { console.error('Ошибка при выполнении запроса к базе данных:', error);
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса к базе данных:', error);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -348,7 +355,8 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId, userId];
       await db.query(updateQuery, updateValues);
       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
-    } catch (error) { console.error('Ошибка при выполнении запроса к базе данных:', error);
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса к базе данных:', error);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -373,12 +381,13 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId, userId];
       await db.query(updateQuery, updateValues);
       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
-    } catch (error) { console.error('Ошибка при выполнении запроса к базе данных:', error);
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса к базе данных:', error);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
 
-  async getTasksByID(req, res){
+  async getTasksByID(req, res) {
     const testId = req.params.testID;
     const typeUser = req.type_user;
     const userId = req.user_id;
@@ -467,7 +476,7 @@ class User_controller {
         subject: test.subject,
         add_img: test.add_img,
         questions: flattenedOptions,
-        likes:test.likes,
+        likes: test.likes,
         decided: (typeUser === "Ученик") ? decidedStatus : undefined, // добавьте проверку на тип пользователя
       };
       // Add additional fields to the response
@@ -475,7 +484,8 @@ class User_controller {
         formattedResponse[field] = test[field];
       });
       res.json(formattedResponse);
-    } catch (error) { console.error('Error executing SQL query:', error.message);
+    } catch (error) {
+      console.error('Error executing SQL query:', error.message);
       res.status(500).json({ error: 'Server error' });
     }
   }
@@ -493,7 +503,8 @@ class User_controller {
       for (let i = 0; i < testLevels.length; i++) {
         const testQuery = `SELECT * FROM ${testLevels[i]} WHERE test_id = $1`;
         const testResult = await client.query(testQuery, [test_id]);
-        if (testResult.rowCount > 0) { testLevel = testLevels[i];
+        if (testResult.rowCount > 0) {
+          testLevel = testLevels[i];
           break;
         }
       }
@@ -523,7 +534,8 @@ class User_controller {
       client.release();
       if (result.rowCount === 0) { return res.status(404).json({ error: 'Обновление не выполнено или тест уже проверен' }); }
       res.json({ success: true, test_id: result.rows[0].test_id });
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -539,7 +551,8 @@ class User_controller {
       const result = await db.query(updateSolutionQuery, [opt_score, user_id, text_solution, student_id, testId]);
       if (result.rowCount === 0) { return res.status(404).json({ error: 'Задание не найдено или уже оценено' }); }
       res.json({ success: true, test_id: result.rows[0].test_id, message: "Задание успешно оценено" });
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -583,7 +596,8 @@ class User_controller {
       }));
       // Отправляем результат
       res.json(testNames);
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -607,15 +621,16 @@ class User_controller {
         // SQL для увеличения количества лайков
         let updateLikesSql;
         if (test_level === 'level_1') { updateLikesSql = `UPDATE level_1_tests SET likes = likes + 1 WHERE test_id = $1`; }
-          else if (test_level === 'level_2') { updateLikesSql = `UPDATE level_2_tests SET likes = likes + 1 WHERE test_id = $1`; }
-            else if (test_level === 'level_3') { updateLikesSql = `UPDATE level_3_tests SET likes = likes + 1 WHERE test_id = $1`; }
+        else if (test_level === 'level_2') { updateLikesSql = `UPDATE level_2_tests SET likes = likes + 1 WHERE test_id = $1`; }
+        else if (test_level === 'level_3') { updateLikesSql = `UPDATE level_3_tests SET likes = likes + 1 WHERE test_id = $1`; }
         if (updateLikesSql) {
           // Увеличение лайков для теста
           await db.query(updateLikesSql, [test_id]);
           res.json({ success: 'Лайк добавлен' });
         } else { res.status(404).json({ error: 'Уровень теста не найден' }); }
       } else { res.status(404).json({ error: 'Тест не найден' }); }
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -656,7 +671,8 @@ class User_controller {
         }))
       ];
       res.json(formattedResponse);
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -698,7 +714,8 @@ class User_controller {
         }
       }
       res.json(tasks);
-    } catch (error) { console.error('Ошибка при выполнении SQL-запроса:', error.message);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -754,7 +771,8 @@ class User_controller {
         add_file_by_student: studentSolution.add_file_by_student // Replace with actual column name
       };
       res.json(formattedResponse);
-    } catch (error) { console.error('Error executing SQL query:', error.message);
+    } catch (error) {
+      console.error('Error executing SQL query:', error.message);
       res.status(500).json({ error: 'Server error' });
     }
   }
@@ -825,7 +843,7 @@ class User_controller {
     }
   }
 
-//TODO: реализовать логику добавления аватара
+  //TODO: реализовать логику добавления аватара
   async addAvatar(req, res) {
     try {
       let { imgPath } = store.work_with_files(req, res);
@@ -839,7 +857,8 @@ class User_controller {
       const updateValues = [imgPath];
       await db.query(updateQuery, updateValues);
       return res.send({ message: 'Аватар успешно добавлены' });
-    } catch (error) { console.error(error.message);
+    } catch (error) {
+      console.error(error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -861,7 +880,8 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
       return res.send({ message: 'Тест и файлы успешно добавлены' });
-    } catch (error) { console.error(error.message);
+    } catch (error) {
+      console.error(error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
@@ -870,28 +890,40 @@ class User_controller {
   download(req, res) {
     try {
       const key = req.headers['custom-uuid'];
-      console.log(key)
-      const fileNames = req.params.file_names.split(','); // Преобразование строки в массив имен файлов
-      console.log(fileNames);
-      const math_path = join('./uploads', `${key}`);
-      // Проверка существования каталога
-      if (!fs.existsSync(math_path)) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы не найден' }); }
-      const files = fs.readdirSync(math_path);
-      // Проверка, соответствует ли какое-либо из имен файлов
-      const userFiles = files.filter((fileName) => { return fileNames.some(name => fileName.includes(name)); });
+      const fileNames = req.params.file_names.split(',');
+      console.log(fileNames)
+      const mathPath = path.join('./uploads', `${key}/`);
+      console.log(mathPath)
+
+      if (!existsSync(mathPath)) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы не найден' }); }
+
+      const files = readdirSync(mathPath);
+      console.log(files)
+      const userFiles = files.filter((fileName) => {
+        return fileNames.some((name) => fileName.includes(name));
+      });
+
+      console.log(userFiles)
       if (userFiles.length === 0) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' }); }
-      // Если найден только один файл, отправляет его напрямую
-      if (userFiles.length === 1) { const absolutePath = resolve(math_path, userFiles[0]);
-        return res.sendFile(absolutePath);
-      } else {
-        // Создаем архив и отправляем его пользователю
-        const archive = archiver('zip');
-        res.attachment('files.zip'); // это задает имя файла для скачивания
-        userFiles.forEach(file => { archive.file(join(math_path, file), { name: file }); });
-        archive.finalize();
-        archive.pipe(res);
+
+      // Send each image as a separate response
+      for (const file of userFiles) {
+        const filePath = join(mathPath, file);
+        const fileData = fs.readFileSync(filePath);
+
+        const mimeType = 'image/png';
+
+        res.status(200).send({
+          filename: file,
+          data: Buffer.from(fileData).toString('base64'),
+          contentType: `${mimeType}`,
+        });
       }
-    } catch (error) { return res.status(500).send({ message: 'Ошибка сервера' }); }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({ message: 'Ошибка сервера' });
+    }
+
   }
 }
 
