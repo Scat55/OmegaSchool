@@ -905,21 +905,35 @@ class User_controller {
 
       console.log(userFiles)
       if (userFiles.length === 0) { return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' }); }
+
       // Если найден только один файл, отправляет его напрямую
-      if (userFiles.length === 1 && userFiles[0].mimetype.startsWith('image/')) {
-        const filePath = join(mathPath, userFiles[0]);
-        const fileData = fs.readFileSync(filePath);
-        const mimeType = 'image/';
-        res.status(200).send({
-          filename: userFiles[0],
-          data: Buffer.from(fileData).toString('base64'),
-          contentType: `${mimeType}`,
-        });
+      if (userFiles.length === 1) {
+
+
+        // Send each image as a separate response
+        for (const file of userFiles) {
+          const filePath = join(mathPath, file);
+          const fileData = fs.readFileSync(filePath);
+
+          const mimeType = 'image/png';
+
+          res.status(200).send({
+            filename: file,
+            data: Buffer.from(fileData).toString('base64'),
+            contentType: `${mimeType}`,
+          });
+        }
+
+
+        // const absolutePath = resolve(mathPath, userFiles[0]);
+        // return res.sendFile(absolutePath);
       } else {
         // Создаем архив и отправляем его пользователю
         const archive = archiver('zip');
         res.attachment('files.zip'); // это задает имя файла для скачивания
-        userFiles.forEach(file => { archive.file(join(mathPath, file), { name: file }); });
+        userFiles.forEach(file => {
+          archive.file(join(mathPath, file), {name: file});
+        });
         archive.finalize();
         archive.pipe(res);
       }
