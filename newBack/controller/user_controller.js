@@ -28,7 +28,7 @@ class User_controller {
       const { first_name, last_name, patronymic, birthdate, classes, item } = req.body;
       console.log(user_id, first_name, last_name, patronymic, birthdate, classes, item)
       // Создаем SQL-запрос для обновления данных пользователя в таблице users
-      const sql = `UPDATE users
+      const sql = `UPDATE users 
                    SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
                    WHERE user_id = $7`;
       // Используем асинхронный метод для выполнения SQL-запроса
@@ -262,7 +262,7 @@ class User_controller {
       const studentTestsHintCheckSql = `
             UPDATE student_solutions
             SET check_hint = 'Да'
-            WHERE user_id = $1 AND test_id = $2;
+            WHERE user_id = $1 AND test_id = $2;       
         `;
       // Execute the query to get the hint
       const studentTestsHintResult = await db.query(studentTestsHintSql, [test_id]);
@@ -295,7 +295,7 @@ class User_controller {
       const studentTestsHintCheckSql = `
             UPDATE student_solutions
             SET check_answer = 'Да'
-            WHERE user_id = $1 AND test_id = $2;
+            WHERE user_id = $1 AND test_id = $2;       
         `;
       // Execute the query to get the hint
       const studentTestsHintResult = await db.query(studentTestsHintSql, [test_id]);
@@ -824,7 +824,7 @@ class User_controller {
       const task_description = decodeURIComponent(task_description_coded)
       const user_id = req.user_id;
       const insertTestQuery = `
-            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
+            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             RETURNING test_id;`;
 
@@ -887,8 +887,13 @@ class User_controller {
     }
   }
 
+<<<<<<< HEAD
    //res.fs.unlinkSync(filePath); // Удаление файла
    downloadImage(req, res) {
+=======
+  //res.fs.unlinkSync(filePath); // Удаление файла
+  downloadImage(req, res) {
+>>>>>>> fc36f62 (test2)
     try {
       const key = req.headers['custom-uuid'];
       const fileNames = req.params.file_names;
@@ -915,6 +920,7 @@ class User_controller {
       for (const file of userFiles) {
         const filePath = join(mathPath, file);
         const fileType = mime.lookup(filePath);
+<<<<<<< HEAD
         // Send each image as a separate response
         const fileData = fs.readFileSync(filePath);
         const mimeType = 'image/png';
@@ -925,12 +931,28 @@ class User_controller {
           contentType: `${mimeType}`,
         });
       }
+=======
+          // Send each image as a separate response
+          const fileData = fs.readFileSync(filePath);
+          const mimeType = 'image/png';
+
+          res.status(200).send({
+            filename: file,
+            data: Buffer.from(fileData).toString('base64'),
+            contentType: `${mimeType}`,
+          });
+        }
+>>>>>>> fc36f62 (test2)
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: 'Ошибка сервера' });
     }
   }
+<<<<<<< HEAD
    downloadFile(req, res) {
+=======
+  downloadFile(req, res) {
+>>>>>>> fc36f62 (test2)
     try {
       const key = req.headers['custom-uuid'];
       const fileNames = req.params.file_names.split(',');
@@ -952,6 +974,7 @@ class User_controller {
       if (userFiles.length === 0) {
         return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' });
       }
+<<<<<<< HEAD
       const archive = archiver('zip');
       res.attachment('files.zip'); // это задает имя файла для скачивания
       userFiles.forEach((file) => {
@@ -960,6 +983,16 @@ class User_controller {
       archive.finalize();
       archive.pipe(res);
       return res.send('Выбран файл PDF.');
+=======
+          const archive = archiver('zip');
+          res.attachment('files.zip'); // это задает имя файла для скачивания
+          userFiles.forEach((file) => {
+            archive.file(join(mathPath, file), { name: file });
+          });
+          archive.finalize();
+          archive.pipe(res);
+          return res.send('Выбран файл PDF.');
+>>>>>>> fc36f62 (test2)
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: 'Ошибка сервера' });
