@@ -21,7 +21,7 @@ class User_controller {
     }
   }
 
-   async additionalData(req, res) {
+  async additionalData(req, res) {
     try {
       const user_id = req.user_id
       // Извлекаем данные из тела запроса
@@ -41,9 +41,9 @@ class User_controller {
     }
   }
 
-   async getUserInformation(req, res) {
+  async getUserInformation(req, res) {
     console.log(req.body)
-     const user_id = req.params.user_id;
+    const user_id = req.params.user_id;
     try {
       // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
       const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
@@ -77,75 +77,75 @@ class User_controller {
     }
   }
 
-   async getTypeOfUser(req, res) {
+  async getTypeOfUser(req, res) {
     const sql = 'SELECT DISTINCT type_user FROM users'; // Запрос на получение уникальных типов пользователей
-     try {
-       const result = await db.query(sql); // Выполнение запроса без параметров
-       const typesUser = result.rows.map(row => row.type_user);
-       res.json({ typesUser });
-     } catch (error) {
-       console.error('Ошибка при выполнении SQL-запроса:', error.message);
-       res.status(500).json({ error: 'Ошибка на сервере' });
-     }
+    try {
+      const result = await db.query(sql); // Выполнение запроса без параметров
+      const typesUser = result.rows.map(row => row.type_user);
+      res.json({ typesUser });
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
   }
 
-   async getUserIDForEmail(req, res) {
+  async getUserIDForEmail(req, res) {
     // Извлекаем адрес электронной почты из параметров запроса
-     const email = req.params.email;
-     // SQL-запрос для получения user_id по адресу электронной почты
-     const sql = 'SELECT user_id FROM users WHERE email = $1';
-     console.log(email)
-     try {
-       // Выполняем SQL-запрос и ожидаем результат с использованием async/await
-       const { rows } = await db.query(sql, [email]);
-       if (rows.length > 0) {
-         // Если есть результаты запроса, извлекаем user_id
-         const user_id = rows[0].user_id;
-         console.log(`User ID для пользователя с email ${email} найден: ${user_id}`);
-         // Отправляем user_id в формате JSON
-         res.json({ user_id });
-       } else {
-         // Если результаты запроса пусты, отправляем сообщение об ошибке
-         console.log(`User ID для пользователя с email ${email} не найден`);
-         res.status(404).json({ message: 'User ID не найден' });
-       }
-     } catch (error) {
-       // Обрабатываем ошибку выполнения SQL-запроса
-       console.error('Ошибка при выполнении SQL-запроса:', error.message);
-       res.status(500).json({ error: 'Ошибка на сервере' });
-     }
+    const email = req.params.email;
+    // SQL-запрос для получения user_id по адресу электронной почты
+    const sql = 'SELECT user_id FROM users WHERE email = $1';
+    console.log(email)
+    try {
+      // Выполняем SQL-запрос и ожидаем результат с использованием async/await
+      const { rows } = await db.query(sql, [email]);
+      if (rows.length > 0) {
+        // Если есть результаты запроса, извлекаем user_id
+        const user_id = rows[0].user_id;
+        console.log(`User ID для пользователя с email ${email} найден: ${user_id}`);
+        // Отправляем user_id в формате JSON
+        res.json({ user_id });
+      } else {
+        // Если результаты запроса пусты, отправляем сообщение об ошибке
+        console.log(`User ID для пользователя с email ${email} не найден`);
+        res.status(404).json({ message: 'User ID не найден' });
+      }
+    } catch (error) {
+      // Обрабатываем ошибку выполнения SQL-запроса
+      console.error('Ошибка при выполнении SQL-запроса:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
   }
 
-   async getUserDataForEmail(req, res) {
+  async getUserDataForEmail(req, res) {
     const email = req.params.email; // Получите email из параметров запроса.
-     try {
-       const [userResult, achievementsResult, gradesResult, achievements_teacherResult] = await Promise.all([
-         db.query('SELECT * FROM users WHERE email = $1', [email]),
-         db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
-         db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
-         db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
-       ]);
-       // Извлекаем результаты из объектов результата
-       const user = userResult.rows[0];
-       const grades = gradesResult.rows;
-       const achievements = achievementsResult.rows;
-       const grades_teacher = achievements_teacherResult.rows;
-       // Соберите результаты в один объект
-       const userData = {
-         user,
-         achievements,
-         grades,
-         grades_teacher,
-       };
-       console.log(`Данные для пользователя с Email ${email} найдены`);
-       res.json(userData);
-     } catch (error) {
-       console.error('Ошибка при выполнении SQL-запросов:', error.message);
-       res.status(500).json({ error: 'Ошибка на сервере' });
-     }
+    try {
+      const [userResult, achievementsResult, gradesResult, achievements_teacherResult] = await Promise.all([
+        db.query('SELECT * FROM users WHERE email = $1', [email]),
+        db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+        db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+        db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
+      ]);
+      // Извлекаем результаты из объектов результата
+      const user = userResult.rows[0];
+      const grades = gradesResult.rows;
+      const achievements = achievementsResult.rows;
+      const grades_teacher = achievements_teacherResult.rows;
+      // Соберите результаты в один объект
+      const userData = {
+        user,
+        achievements,
+        grades,
+        grades_teacher,
+      };
+      console.log(`Данные для пользователя с Email ${email} найдены`);
+      res.json(userData);
+    } catch (error) {
+      console.error('Ошибка при выполнении SQL-запросов:', error.message);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
   }
 
-   async getTasksForExpert(req, res) {
+  async getTasksForExpert(req, res) {
     try {
       const user_id = req.user_id;
       // Запрос для level_1_tests
@@ -195,7 +195,7 @@ class User_controller {
     }
   }
 
-   async getTasksForStudent(req, res) {
+  async getTasksForStudent(req, res) {
     try {
       const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
       console.log(user_id)
@@ -246,8 +246,8 @@ class User_controller {
     }
   }
 
-   //передать предмет класс сложность название и т.д.
-   async getTasksHintForStudent(req, res) {
+  //передать предмет класс сложность название и т.д.
+  async getTasksHintForStudent(req, res) {
     try {
       const user_id = req.user_id;
       const test_id = req.params.testID;
@@ -280,7 +280,7 @@ class User_controller {
     }
   }
 
-   async getTasksAnswerForStudent(req, res) {
+  async getTasksAnswerForStudent(req, res) {
     try {
       const user_id = req.user_id;
       const test_id = req.params.testID;
@@ -313,82 +313,82 @@ class User_controller {
     }
   }
 
-   async getAnswerByStudent1(req, res) {
+  async getAnswerByStudent1(req, res) {
     const userId = req.user_id;
     const testId = req.params.testID;
     const options = req.body;
     console.log('id', userId)
-     console.log('test', testId)
-     console.log('варианты', options)
-     try {
+    console.log('test', testId)
+    console.log('варианты', options)
+    try {
       // Сохраняем обработанную строку в базу данных
-       const insertOptionsSql = `
+      const insertOptionsSql = `
         UPDATE student_solutions
         SET opt_score = $3, decided = 'Решено'
         WHERE user_id = $1 AND test_id = $2;
       `;
-       // Выполнение запроса на вставку обработанных вариантов ответов
-       await db.query(insertOptionsSql, [userId, testId, options.options]);
-       res.status(200).json({ message: 'Ответы успешно сохранены' });
+      // Выполнение запроса на вставку обработанных вариантов ответов
+      await db.query(insertOptionsSql, [userId, testId, options.options]);
+      res.status(200).json({ message: 'Ответы успешно сохранены' });
     } catch (error) {
       console.error('Ошибка при выполнении запроса к базе данных:', error);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
 
-   async getAnswerByStudent2(req, res) {
+  async getAnswerByStudent2(req, res) {
     const userId = req.user_id;
     const testId = req.params.testID;
     const student_solution = req.params.student_solution; // Предполагается, что userId и testId также отправляются в теле запроса
-     console.log('student_solution', student_solution)
-     try {
-       // Сохраняем обработанную строку в базу данных
-       const insertOptionsSql = `
+    console.log('student_solution', student_solution)
+    try {
+      // Сохраняем обработанную строку в базу данных
+      const insertOptionsSql = `
         UPDATE student_solutions
         SET student_solution = $3
         WHERE user_id = $1 AND test_id = $2;
       `;
-       // Выполнение запроса на вставку обработанных вариантов ответов
-       await db.query(insertOptionsSql, [userId, testId, student_solution]);
-       const { pdfPath, imgPath } = store.work_with_files(req, res);
-       // Обновление записей в базе данных с путями к файлам
-       const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
-       const updateValues = [pdfPath, imgPath, testId, userId];
-       await db.query(updateQuery, updateValues);
-       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
-     } catch (error) {
-       console.error('Ошибка при выполнении запроса к базе данных:', error);
-       res.status(500).json({ error: 'Ошибка на сервере' });
-     }
+      // Выполнение запроса на вставку обработанных вариантов ответов
+      await db.query(insertOptionsSql, [userId, testId, student_solution]);
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
+      // Обновление записей в базе данных с путями к файлам
+      const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
+      const updateValues = [pdfPath, imgPath, testId, userId];
+      await db.query(updateQuery, updateValues);
+      res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса к базе данных:', error);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
   }
 
 
-   async getAnswerByStudent3(req, res) {
+  async getAnswerByStudent3(req, res) {
     const userId = req.user_id;
     const testId = req.params.testID;
     const student_solution = req.params.student_solution; // Предполагается, что userId и testId также отправляются в теле запроса
-     try {
-       // Сохраняем обработанную строку в базу данных
-       const insertOptionsSql = `
+    try {
+      // Сохраняем обработанную строку в базу данных
+      const insertOptionsSql = `
         UPDATE student_solutions
         SET student_solution = $3
         WHERE user_id = $1 AND test_id = $2;
       `;
-       // Выполнение запроса на вставку обработанных вариантов ответов
-       await db.query(insertOptionsSql, [userId, testId, student_solution]);
-       const { pdfPath, imgPath } = store.work_with_files(req, res);
-       // Обновление записей в базе данных с путями к файлам
-       const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
-       const updateValues = [pdfPath, imgPath, testId, userId];
-       await db.query(updateQuery, updateValues);
-       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
-     } catch (error) {
-       console.error('Ошибка при выполнении запроса к базе данных:', error);
-       res.status(500).json({ error: 'Ошибка на сервере' });
-     }
+      // Выполнение запроса на вставку обработанных вариантов ответов
+      await db.query(insertOptionsSql, [userId, testId, student_solution]);
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
+      // Обновление записей в базе данных с путями к файлам
+      const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
+      const updateValues = [pdfPath, imgPath, testId, userId];
+      await db.query(updateQuery, updateValues);
+      res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса к базе данных:', error);
+      res.status(500).json({ error: 'Ошибка на сервере' });
+    }
   }
 
-   async getTasksByID(req, res) {
+  async getTasksByID(req, res) {
     const testId = req.params.testID;
     const typeUser = req.type_user;
     const userId = req.user_id;
@@ -491,7 +491,7 @@ class User_controller {
     }
   }
 
-   async updateTestByExpert(req, res) {
+  async updateTestByExpert(req, res) {
     console.log(req.body);
     console.log(req.user_id);
     try {
@@ -541,7 +541,7 @@ class User_controller {
     }
   }
 
-   async updateTestByTeacher(req, res) {
+  async updateTestByTeacher(req, res) {
     try {
       const testId = req.params.testID;
       const student_id = req.params.userID; // ID студента, чье задание оценивается
@@ -558,7 +558,7 @@ class User_controller {
     }
   }
 
-   async getTasksForStudentWithOcenka(req, res) {
+  async getTasksForStudentWithOcenka(req, res) {
     try {
       const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
       // Получаем список test_id и test_level для данного user_id
@@ -603,7 +603,7 @@ class User_controller {
     }
   }
 
-   async likeToDeskriotion(req, res) {
+  async likeToDeskriotion(req, res) {
     try {
       const test_id = req.params.testID;
       console.log(test_id);
@@ -636,7 +636,7 @@ class User_controller {
     }
   }
 
-   async getTasksForTeacher(req, res) {
+  async getTasksForTeacher(req, res) {
     try {
       const user_id = req.user_id;
       // Запрос для level_1_tests
@@ -678,7 +678,7 @@ class User_controller {
     }
   }
 
-   async getTasksForTeacherByStudent(req, res) {
+  async getTasksForTeacherByStudent(req, res) {
     try {
       const user_ID = req.user_id;
       // Запрос для получения test_id и user_id, где test_level = 2 или 3
@@ -721,7 +721,7 @@ class User_controller {
     }
   }
 
-   async getTasksForTeacherByStudentByID(req, res) {
+  async getTasksForTeacherByStudentByID(req, res) {
     const testId = req.params.testID;
     const userID = req.params.userID;
     try {
@@ -777,7 +777,7 @@ class User_controller {
       res.status(500).json({ error: 'Server error' });
     }
   }
-   async addTestAndUpload(req, res) {
+  async addTestAndUpload(req, res) {
     try {
       const { task_test_coded, task_description_coded, classes, options, subject } = req.params;
       const task_test = decodeURIComponent(task_test_coded)
@@ -817,7 +817,7 @@ class User_controller {
     }
   }
 
-   async addTest2AndUpload(req, res) {
+  async addTest2AndUpload(req, res) {
     try {
       const { task_test_coded, task_description_coded, task_hint, task_answer, classes, subject } = req.params;
       const task_test = decodeURIComponent(task_test_coded)
@@ -844,8 +844,8 @@ class User_controller {
     }
   }
 
-   //TODO: реализовать логику добавления аватара
-   async addAvatar(req, res) {
+  //TODO: реализовать логику добавления аватара
+  async addAvatar(req, res) {
     try {
       let { imgPath } = store.work_with_files(req, res);
       for (const file of req.files) {
@@ -864,7 +864,7 @@ class User_controller {
     }
   }
 
-   async addTest3AndUpload(req, res) {
+  async addTest3AndUpload(req, res) {
     try {
       const { task_test_coded, task_description_coded, classes, subject } = req.params;
       const task_test = decodeURIComponent(task_test_coded);
@@ -887,14 +887,21 @@ class User_controller {
     }
   }
 
-   //res.fs.unlinkSync(filePath); // Удаление файла
+  //res.fs.unlinkSync(filePath); // Удаление файла
    downloadImage(req, res) {
     try {
       const key = req.headers['custom-uuid'];
-      const fileNames = req.params.file_names;
+      let fileNames = req.params.file_names;
+
+      // Ensure fileNames is an array
+      if (!Array.isArray(fileNames)) {
+        fileNames = [fileNames];
+      }
+
       console.log(fileNames);
+
       const mathPath = path.join('./uploads', `${key}/`);
-      console.log(mathPath);
+                                 console.log(mathPath);
 
       if (!existsSync(mathPath)) {
         return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы не найден' });
@@ -915,6 +922,7 @@ class User_controller {
       for (const file of userFiles) {
         const filePath = join(mathPath, file);
         const fileType = mime.lookup(filePath);
+
         // Send each image as a separate response
         const fileData = fs.readFileSync(filePath);
         const mimeType = 'image/png';
@@ -930,7 +938,7 @@ class User_controller {
       return res.status(500).send({ message: 'Ошибка сервера' });
     }
   }
-   downloadFile(req, res) {
+  downloadFile(req, res) {
     try {
       const key = req.headers['custom-uuid'];
       const fileNames = req.params.file_names.split(',');
@@ -952,14 +960,13 @@ class User_controller {
       if (userFiles.length === 0) {
         return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' });
       }
-      const archive = archiver('zip');
-      res.attachment('files.zip'); // это задает имя файла для скачивания
-      userFiles.forEach((file) => {
-        archive.file(join(mathPath, file), { name: file });
-      });
-      archive.finalize();
-      archive.pipe(res);
-      return res.send('Выбран файл PDF.');
+          const archive = archiver('zip');
+          res.attachment('files.zip'); // это задает имя файла для скачивания
+          userFiles.forEach((file) => {
+            archive.file(join(mathPath, file), { name: file });
+          });
+          archive.finalize();
+          archive.pipe(res);
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: 'Ошибка сервера' });

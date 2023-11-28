@@ -495,7 +495,7 @@ export default {
         let nameImage = this.addIMG.split(',')
 
         for (let i = 0; i < nameImage.length; i++) {
-          axios.get(`/api/download/${nameImage[i]}`, {
+          axios.get(`/api/download_image/${nameImage[i]}`, {
             headers: {
               Authorization: `Bearer ${this.token.token}`,
               'Custom-UUID': this.teachrID,

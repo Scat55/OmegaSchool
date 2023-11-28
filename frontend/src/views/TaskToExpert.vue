@@ -24,9 +24,9 @@
         id="gallery"
         v-if="info.add_img"
       >
-        <div v-for="img in splitFiles">
+        <div v-for="img in images">
           <img
-            :src="require('../../../newBack/uploads/' + info.user_id + '/' + img)"
+            :src="img"
             class="image"
             alt="Image"
             data-fancybox="gallery"
@@ -131,12 +131,14 @@ export default {
       message: '',
       userID: '',
       addIMG: '',
-      files: []
+      files: [],
+      image: '',
+      images: []
     };
   },
   computed: {
     splitFiles() {
-      return this.addIMG.split(',')
+      return this.image.split(',')
     }
   },
   methods: {
@@ -207,6 +209,10 @@ export default {
   created() {
     // Получение информации о задаче по id
     this.token = JSON.parse(localStorage.getItem('local'));
+
+  },
+
+  mounted() {
     axios
       .get(`/api/getTasksForExpertbyID/${this.id}`, {
         headers: { Authorization: `Bearer ${this.token.token}` },
@@ -216,11 +222,23 @@ export default {
         this.info = response.data;
         this.addIMG = response.data.add_img;
         this.userID = response.data.user_id;
+        this.teachrID = response.data.user_id;
 
+        let nameImage = this.addIMG.split(',')
+
+        for (let i = 0; i < nameImage.length; i++) {
+          axios.get(`/api/download_image/${nameImage[i]}`, {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Custom-UUID': this.teachrID,
+            },
+          }).then(res => {
+            this.image = `data:${res.data.contentType};base64,${res.data.data}`
+            this.images.push(this.image)
+          })
+        }
       });
-  },
 
-  mounted() {
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
       groupAttr: false,
