@@ -19,9 +19,9 @@
         id="gallery"
         v-if="infoTask.add_img"
       >
-        <div v-for="img in splitFiles">
+        <div v-for="img in images">
           <img
-            :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
+            :src="img"
             class="image"
             alt="Image"
             data-fancybox="gallery"
@@ -116,22 +116,24 @@ export default {
       url: '',
       addIMG: '',
       mass: '',
-    };
+      images: [],
+      image: '',
+      teachrID: ''
+   };
   },
   computed: {
     splitFiles() {
-      this.mass = this.addIMG.split(',');
-      return this.addIMG.split(',')
+      return this.image.split(',')
     }
   },
   methods: {
     // Скачивание файла
     async downloadFiles() {
-      const file = this.infoTask.add_file.split(',')
-      const mass1 = [...this.mass, ...file]
+//      const file = this.infoTask.add_file.split(',')
+//      const mass1 = [...this.mass, ...file]
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios
-        .get(`/api/download/${mass1}`, {
+        .get(`/api/download_file/${this.infoTask.add_file}`, {
           responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,
@@ -157,22 +159,49 @@ export default {
         });
     },
   },
-  mounted() {
+  created() {
+    // this.initializeUserChecks();
+    // this.initializeUserAnswers();
     this.token = JSON.parse(localStorage.getItem('local'));
+
+
+  },
+
+  mounted() {
     axios
-      .get(`/api/getTasksForTeacherByID/${this.id}`, {
+      .get(`/api/getTasksForStudent/${this.id}`, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
+          'Content-Type': 'application/json',
         },
       })
       .then((response) => {
         this.infoTask = response.data;
-        this.userID = response.data.user_id;
-        this.addIMG = response.data.add_img
+        this.teachrID = response.data.user_id;
+        this.testID = response.data.test_id;
+        this.addIMG = response.data.add_img;
+
+        let nameImage = this.addIMG.split(',')
+
+        for (let i = 0; i < nameImage.length; i++) {
+          axios.get(`/api/download_image/${nameImage[i]}`, {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Custom-UUID': this.teachrID,
+            },
+          }).then(res => {
+            this.image = `data:${res.data.contentType};base64,${res.data.data}`
+            this.images.push(this.image)
+
+
+          })
+        }
       });
+
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
     });
+    // console.log(this.addIMG)
   },
 };
 </script>
