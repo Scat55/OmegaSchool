@@ -119,7 +119,7 @@ export default {
       images: [],
       image: '',
       teachrID: ''
-   };
+    };
   },
   computed: {
     splitFiles() {
@@ -129,8 +129,8 @@ export default {
   methods: {
     // Скачивание файла
     async downloadFiles() {
-//      const file = this.infoTask.add_file.split(',')
-//      const mass1 = [...this.mass, ...file]
+      //      const file = this.infoTask.add_file.split(',')
+      //      const mass1 = [...this.mass, ...file]
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios
         .get(`/api/download_file/${this.infoTask.add_file}`, {
@@ -169,7 +169,7 @@ export default {
 
   mounted() {
     axios
-      .get(`/api/getTasksForStudent/${this.id}`, {
+      .get(`/api/getTasksForTeacherByID/${this.id}`, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
           'Content-Type': 'application/json',
