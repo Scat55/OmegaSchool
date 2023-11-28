@@ -430,4 +430,17 @@ button {
 select[disabled] {
   color: black;
 }
+
+
+@media (width <= 1124px) {
+  .firstBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .avatar__info {
+      margin: 0 auto;
+    }
+  }
+}
 </style>

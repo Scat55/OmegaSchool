@@ -3,11 +3,11 @@
     <div class="container">
       <div class="window">
         <!--    Тут верхняя шапка    -->
-        <p>Задания</p>
-        <p>
+        <!-- <p>Задания</p> -->
+        <!-- <p>
           Слева вы сможете выбрать фильтры для заданий. <br />
           По каким предметам, сложность и тд.
-        </p>
+        </p> -->
         <!-- Фильтр -->
         <div>
           <!--            <div class="button_trueFilteredSee filter" v-show="filterSee === false" @click="filterSee = !filterSee">-->
@@ -392,6 +392,11 @@ export default {
   background: white;
 
   &__search-bar {
+
+    &>p {
+      margin: 8px 0;
+    }
+
     &>input {
       width: 80%;
       padding: 0.7rem;

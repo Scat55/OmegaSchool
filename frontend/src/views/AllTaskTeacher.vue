@@ -213,6 +213,8 @@ export default {
   padding: 1.25rem;
   border-radius: 1rem;
   border: 1px solid #000;
+  user-select: none;
+
 
   &__titles {
     display: flex;
