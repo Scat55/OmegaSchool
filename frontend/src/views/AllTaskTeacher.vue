@@ -170,7 +170,7 @@ export default {
 
   mounted() {
     axios
-      .get(`/api/getTasksForTeacherByID/${this.id}`, {
+      .get(`/api/getTasksForStudent/${this.id}`, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ export default {
         this.teachrID = response.data.user_id;
         this.testID = response.data.test_id;
         this.addIMG = response.data.add_img;
-
+        this.userID = response.data.user_id;
         let nameImage = this.addIMG.split(',')
 
         for (let i = 0; i < nameImage.length; i++) {
