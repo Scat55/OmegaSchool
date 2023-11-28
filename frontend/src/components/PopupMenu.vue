@@ -10,7 +10,9 @@
           </div>
   
           <div class="answer" v-if="item.showAnswer">
-            <p v-html="item.answer"></p>
+            <label v-html="item.answer"></label>
+            <a v-show="item.id == '3'" href="mailto:omegalspu@gmail.com" class="email-link">omegalspu@gmail.com</a>
+            <labe>.</labe>
           </div>
         </li>
       </ul>
@@ -27,20 +29,20 @@ export default {
           id: 1,
           showAnswer: false,
           question: 'Не получили код:',
-          answer: '    Проверьте "Спам".\n' + '    Убедитесь в правильности адреса.\n',
+          answer: '    Проверьте "Спам".\n' + '    Убедитесь в правильности адреса',
         },
         {
           id: 2,
           showAnswer: false,
           question: 'Завершение регистрации:',
-          answer: 'Подтвердите почту для доступа к сайту.',
+          answer: 'Подтвердите почту для доступа к сайту',
         },
         {
           id: 3,
           showAnswer: false,
           question: 'Помощь:',
           answer:
-            'Вопросы? Напишите на <a href="mailto:omegalspu@gmail.com" class="email-link">omegalspu@gmail.com</a>.',
+            'Вопросы? Напишите на ',
         },
       ],
     };
@@ -53,7 +55,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
   user-select: none;
   margin: 0 auto;
@@ -103,7 +105,14 @@ export default {
   transition: transform 0.3s ease; /* добавлен переход для анимации стрелки */
 }
 
+
+.email-link {
+  color: white;
+  text-decoration: none;
+}
+
 .down {
   transform: rotate(-135deg);
 }
+
 </style>
