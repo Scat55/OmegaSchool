@@ -7,4 +7,4 @@ const pool = new Pool({
     database: 'omega'
 })
 
-module.exports = pool
+module.exports = pool   
