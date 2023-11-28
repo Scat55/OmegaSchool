@@ -331,7 +331,7 @@ export default {
       }
 
       axios
-        .post(`/ api / getAnswerByStudent1 / ${this.testID} / `, this.data, {
+        .post(`/api/getAnswerByStudent1/${this.testID}/`, this.data, {
           headers: {
             Authorization: `Bearer ${this.token.token}`,
             'Content-Type': 'application/json',
@@ -417,7 +417,7 @@ export default {
     async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios
-        .get(`/api/download/${this.infoTask.add_file}`, {
+        .get(`/api/download_file/${this.infoTask.add_file}`, {
           responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,
