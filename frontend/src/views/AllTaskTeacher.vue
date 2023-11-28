@@ -38,6 +38,7 @@
       <p
         class="infoTask__show"
         @click="isShowAnswer = !isShowAnswer"
+        v-if="isShowAnswer"
       >Показать подсказки</p>
       <div v-if="isShowAnswer">
         <div
