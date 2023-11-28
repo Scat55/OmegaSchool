@@ -11,8 +11,7 @@
   
           <div class="answer" v-if="item.showAnswer">
             <label v-html="item.answer"></label>
-            <a v-show="item.id == '3'" href="mailto:omegalspu@gmail.com" class="email-link">omegalspu@gmail.com</a>
-            <labe>.</labe>
+            <a v-show="item.id == '3'" href="mailto:omegalspu@gmail.com" class="email-link">omegalspu@gmail.com</a>.
           </div>
         </li>
       </ul>
