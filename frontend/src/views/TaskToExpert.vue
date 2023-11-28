@@ -144,7 +144,7 @@ export default {
     async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
       await axios
-        .get(`/api/download/${this.info.add_file}`, {
+        .get(`/api/download_file/${this.info.add_file}`, {
           responseType: 'blob',
           headers: {
             Authorization: `Bearer ${this.token.token}`,

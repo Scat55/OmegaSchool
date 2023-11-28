@@ -46,6 +46,7 @@ router.post('/add_level_1/:task_test_coded/:task_description_coded/:classes/:sub
 router.post('/add_level_2/:task_test_coded/:task_description_coded/:task_hint/:task_answer/:classes/:subject', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest2AndUpload)
 router.post('/add_level_3/:task_test_coded/:task_description_coded/:classes/:subject', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest3AndUpload)
 
-router.get('/download/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.download);
+router.get('/download_file/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.downloadFile);
+router.get('/download_image/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.downloadImage);
 
 module.exports = router;
