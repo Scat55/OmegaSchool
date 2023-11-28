@@ -53,3 +53,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.home {
+  user-select: none;
+}
+</style>
