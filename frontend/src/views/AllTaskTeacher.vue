@@ -14,37 +14,19 @@
         disabled="disabled"
         class="infoTask__descr"
       ></textarea>
-      <div
-        class="images"
-        id="gallery"
-        v-if="infoTask.add_img"
-      >
+      <div class="images" id="gallery" v-if="infoTask.add_img">
         <div v-for="img in images">
-          <img
-            :src="img"
-            class="image"
-            alt="Image"
-            data-fancybox="gallery"
-          />
+          <img :src="img" class="image" alt="Image" data-fancybox="gallery" />
         </div>
       </div>
-      <div
-        v-for="question in infoTask.questions"
-        class="infoTask__options"
-      >
-        <div v-for="option in question.options">{{ option.text }} - {{
-          option.is_correct }}</div>
+      <div v-for="question in infoTask.questions" class="infoTask__options">
+        <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
       </div>
-      <p
-        class="infoTask__show"
-        @click="isShowAnswer = !isShowAnswer"
-        v-if="isShowAnswer"
-      >Показать подсказки</p>
+      <p class="infoTask__show" @click="isShowAnswer = !isShowAnswer" v-if="isShowAnswer">
+        Показать подсказки
+      </p>
       <div v-if="isShowAnswer">
-        <div
-          class="infoTask__answer"
-          v-if="infoTask.task_hint || info.task_answer"
-        >
+        <div class="infoTask__answer" v-if="infoTask.task_hint || infoTask.task_answer">
           <p>Подсказдка - {{ infoTask.task_hint }}</p>
           <p>Ответ - {{ infoTask.task_answer }}</p>
         </div>
@@ -61,34 +43,29 @@
       </div>
       <div v-if="isShow">
         <p>{{ infoTask.add_file }}</p>
-        <a
-          v-if="infoTask.add_file"
-          class="downloadLink"
-        ><button
-            @click="downloadFiles()"
-            class="infoTask__btn"
-            v-if="infoTask.add_file !== null || infoTask.add_file !==
-              ''"
-          >Скачать</button></a>
+        <a v-if="infoTask.add_file" class="downloadLink"
+          ><button @click="downloadFiles()" class="infoTask__btn">Скачать</button></a
+        >
         <p v-else>Файлов нет</p>
       </div>
       <div class="questions">
-        <div v-for="question in infoTask.questions"> {{ question.text
-        }} - <span v-if="question.is_correct === true">Верно</span> <span v-else>Не верно</span>
+        <div v-for="question in infoTask.questions">
+          {{ question.text }} - <span v-if="question.is_correct === true">Верно</span>
+          <span v-else>Не верно</span>
         </div>
       </div>
       <div class="mesageExpert">
         <div class="firstExpert">
           <p>Оценка первого эксперта: {{ infoTask.ver_1 }}</p>
           <div class="flex__mess">
-            <p>Сообщение: </p>
+            <p>Сообщение:</p>
             <span>{{ infoTask.ver_1_masseg }}</span>
           </div>
         </div>
         <div class="secondExpert">
           <p>Оценка второго эксперта: {{ infoTask.ver_2 }}</p>
           <div class="flex__mess">
-            <p>Сообщение: </p>
+            <p>Сообщение:</p>
             <span>{{ infoTask.ver_2_masseg }}</span>
           </div>
         </div>
@@ -119,13 +96,13 @@ export default {
       mass: '',
       images: [],
       image: '',
-      teachrID: ''
+      teachrID: '',
     };
   },
   computed: {
     splitFiles() {
-      return this.image.split(',')
-    }
+      return this.image.split(',');
+    },
   },
   methods: {
     // Скачивание файла
@@ -156,7 +133,6 @@ export default {
             a.href = this.url;
             a.download = this.fileName;
           }
-
         });
     },
   },
@@ -164,8 +140,6 @@ export default {
     // this.initializeUserChecks();
     // this.initializeUserAnswers();
     this.token = JSON.parse(localStorage.getItem('local'));
-
-
   },
 
   mounted() {
@@ -182,20 +156,20 @@ export default {
         this.testID = response.data.test_id;
         this.addIMG = response.data.add_img;
         this.userID = response.data.user_id;
-        let nameImage = this.addIMG.split(',')
+        let nameImage = this.addIMG.split(',');
 
         for (let i = 0; i < nameImage.length; i++) {
-          axios.get(`/api/download_image/${nameImage[i]}`, {
-            headers: {
-              Authorization: `Bearer ${this.token.token}`,
-              'Custom-UUID': this.teachrID,
-            },
-          }).then(res => {
-            this.image = `data:${res.data.contentType};base64,${res.data.data}`
-            this.images.push(this.image)
-
-
-          })
+          axios
+            .get(`/api/download_image/${nameImage[i]}`, {
+              headers: {
+                Authorization: `Bearer ${this.token.token}`,
+                'Custom-UUID': this.teachrID,
+              },
+            })
+            .then((res) => {
+              this.image = `data:${res.data.contentType};base64,${res.data.data}`;
+              this.images.push(this.image);
+            });
         }
       });
 
@@ -215,7 +189,6 @@ export default {
   border-radius: 1rem;
   border: 1px solid #000;
   user-select: none;
-
 
   &__titles {
     display: flex;
@@ -330,7 +303,7 @@ export default {
   gap: 1rem;
   margin-top: 2rem;
 
-  &>span {
+  & > span {
     line-height: 140%;
   }
 }
@@ -338,7 +311,7 @@ export default {
 .firstExpert {
   border: 1px solid #000;
   border-radius: 0.5rem;
-  padding: .625rem;
+  padding: 0.625rem;
 
   p {
     line-height: 140%;
@@ -348,7 +321,7 @@ export default {
 .secondExpert {
   border: 1px solid #000;
   border-radius: 0.5rem;
-  padding: .625rem;
+  padding: 0.625rem;
 
   p {
     line-height: 140%;
