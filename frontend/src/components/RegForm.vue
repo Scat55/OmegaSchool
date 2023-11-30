@@ -43,7 +43,6 @@
             {{ prof.name }}
           </option>
         </select>
-
         <button class="reg__form-btn" type="submit">Зарегистрироваться</button>
         <!-- <div>Укажите актуальную электронную почту, на которую будет выслано электронное письмо после нажатия кнопки "Регистрация"</div> -->
        <span style="font-size: 0.8rem"><span style="color: red">*</span> - обязательные поля</span>
@@ -123,7 +122,11 @@ export default {
         })
 
         .catch(function (error) {
-          console.log(error);
+          //console.log(error);
+          if (error.response && error.response.status === 409) {
+          let errorMessage = error.response.data;
+          alert(errorMessage.message)
+  }
         });
     },
     // Обработка формы
