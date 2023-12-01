@@ -130,33 +130,6 @@ export default {
       //      const file = this.infoTask.add_file.split(',')
       //      const mass1 = [...this.mass, ...file]
       this.token = JSON.parse(localStorage.getItem('local'));
-      // await axios
-      //   .get(`/api/download_file/${this.infoTask.add_file}`, {
-      //     // responseType: 'blob',
-      //     headers: {
-      //       Authorization: `Bearer ${this.token.token}`,
-      //       'Custom-UUID': this.userID,
-      //     },
-      //   })
-      //   .then((response) => {
-      //     console.log(response.blob());
-      //     if (response.data.type == 'application/zip') {
-      //       this.blob = new Blob([response.data], { type: 'application/zip' });
-      //       this.url = URL.createObjectURL(this.blob);
-      //       const a = document.querySelector('.downloadLink');
-      //       a.href = this.url;
-      //       a.download = this.fileName;
-      //     }
-      //     if (response.data.type == 'application/pdf') {
-      //       this.blob = new Blob([response.data], { type: 'application/pdf' });
-      //       this.url = URL.createObjectURL(this.blob);
-      //       const a = document.querySelector('.downloadLink');
-      //       a.href = this.url;
-      //       a.download = this.fileName;
-      //     }
-
-      //   });
-
       await fetch(`/api/download_file/${this.infoTask.add_file}`, {
         method: 'GET',
         headers: {

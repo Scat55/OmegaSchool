@@ -145,32 +145,26 @@ export default {
     // Скачивание файла
     async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
-      await axios
-        .get(`/api/download_file/${this.info.add_file}`, {
-          responseType: 'blob',
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Custom-UUID': this.userID,
+      await fetch(`/api/download_file/${this.infoTask.add_file}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.token.token}`,
+          'Custom-UUID': this.userID,
+        },
+      })
+        .then(res => res.blob())
+        .then(data => {
+          let url = URL.createObjectURL(data) // Создаем ссылку
 
-          },
+          let anchor = document.createElement('a')
+          anchor.href = url;
+          anchor.download = this.fileName
+          document.body.append(anchor)
+          anchor.style = "display:none"
+          anchor.click()
+          anchor.remove()
+          URL.revokeObjectURL(url)
         })
-        .then((response) => {
-          if (response.data.type == 'application/zip') {
-            this.blob = new Blob([response.data], { type: 'application/zip' });
-            this.url = URL.createObjectURL(this.blob);
-            const a = document.querySelector('.downloadLink');
-            a.href = this.url;
-            a.download = this.fileName;
-          }
-          if (response.data.type == 'application/pdf') {
-            this.blob = new Blob([response.data], { type: 'application/pdf' });
-            this.url = URL.createObjectURL(this.blob);
-            const a = document.querySelector('.downloadLink');
-            a.href = this.url;
-            a.download = this.fileName;
-          }
-
-        });
     },
     // Появление файла
     changeStatus() {
