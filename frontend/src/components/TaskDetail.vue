@@ -420,7 +420,7 @@ export default {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${this.token.token}`,
-          'Custom-UUID': this.userID,
+          'Custom-UUID': this.teachrID,
         },
       })
         .then(res => res.blob())
