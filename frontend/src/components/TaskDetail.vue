@@ -211,7 +211,7 @@
       >Показать ответ</button>
     </div> -->
 
-      <div
+      <!-- <div
         class="likes"
         v-if="infoTask.decided === 'Не решено'"
       >
@@ -220,18 +220,16 @@
           src="../assets/images/hert.png"
           alt="Like"
           class="like"
-          @click="changeLike"
+          
         >
-      </div>
-      <div
-        class="likes"
-        v-else
-      >
+      </div> -->
+      <div class="likes">
         {{ this.infoTask.likes }}
         <img
           src="../assets/images/hert.png"
           alt="Like"
           class="like"
+          @click="changeLike"
         >
 
 
@@ -269,7 +267,8 @@ export default {
       addIMG: '',
       like: 0,
       images: [],
-      image: ''
+      image: '',
+      isLiked: false
     };
   },
   computed: {
@@ -291,14 +290,28 @@ export default {
     },
     async changeLike() {
       this.token = JSON.parse(localStorage.getItem('local'));
-      this.like = 1
-      await axios.post(`/api/likeToDeskriotion/${this.id}`, {
-      }, {
-        headers: {
-          Authorization: `Bearer ${this.token.token}`,
-          'Content-Type': 'application/json'
-        },
-      })
+      if (!this.isLiked) {
+        this.infoTask.likes++
+        this.isLiked = !this.isLiked
+        await axios.post(`/api/likeToDeskriotion/${this.id}`, {
+        }, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'application/json'
+          },
+        })
+      } else {
+        this.infoTask.likes--
+        this.isLiked = !this.isLiked
+        await axios.post(`/api/likeToDeskriotion/${this.id}`, {
+        }, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'application/json'
+          },
+        })
+      }
+
     },
     async downloadImages() {
       this.token = JSON.parse(localStorage.getItem('local'));

@@ -16,7 +16,7 @@ router.post('/addition_data', roleMiddleware(['Ученик', 'Эксперт', 
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForExpert)
 router.get('/getTypeOfUser', (req, res) => {
-    userController.getTypeOfUser(req, res);
+  userController.getTypeOfUser(req, res);
 });
 
 //router.post('/CreateComandos', userController.CreateComandos);
@@ -29,10 +29,10 @@ router.get('/getTasksForStudentWithOcenka', roleMiddleware(['Ученик']), us
 
 router.post('/getTasksHintForStudent/:testID', roleMiddleware(['Ученик']), userController.getTasksHintForStudent)
 router.post('/getTasksAnswerForStudent/:testID', roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
-router.post('/likeToDeskriotion/:testID',roleMiddleware(['Ученик']),userController.likeToDeskriotion)
+router.post('/likeToDeskriotion/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.likeToDeskriotion)
 
-router.get('/getTasksForExpertByID/:testID', roleMiddleware(['Ученик','Учитель','Эксперт']), userController.getTasksByID)
-router.post('/updateTestByExpert', roleMiddleware(['Ученик','Учитель','Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
+router.get('/getTasksForExpertByID/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksByID)
+router.post('/updateTestByExpert', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
 
 router.get('/getTasksForTeacherByID/:testID', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksByID)
 router.get('/getTasksForTeacher', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForTeacher)
