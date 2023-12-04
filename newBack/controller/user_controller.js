@@ -604,37 +604,38 @@ class User_controller {
   }
 
   async likeToDeskriotion(req, res) {
+
     try {
       const test_id = req.params.testID;
-      console.log(test_id);
-      // SQL для определения уровня теста
-      const testLevelSql = `
-      SELECT 'level_1' as level FROM level_1_tests WHERE test_id = $1
-      UNION ALL
-      SELECT 'level_2' as level FROM level_2_tests WHERE test_id = $1
-      UNION ALL
-      SELECT 'level_3' as level FROM level_3_tests WHERE test_id = $1;
+      const user_id = req.user_id; // Получение user id из токена
+      console.log(user_id, test_id)
+      // Проверка, есть ли уже запись с лайком для данного пользователя и теста
+      const existingLikeCheckSql = `
+      SELECT * FROM student_solutions WHERE test_id = $1 AND user_id = $2 and likes > 0;
     `;
-      // Выполнение запроса для определения уровня теста
-      const testLevelResult = await db.query(testLevelSql, [test_id]);
-      if (testLevelResult.rows.length > 0) {
-        const test_level = testLevelResult.rows[0].level;
+
+      const existingLikeCheckResult = await db.query(existingLikeCheckSql, [test_id, user_id]);
+
+      if (existingLikeCheckResult.rows.length === 0) {
         // SQL для увеличения количества лайков
-        let updateLikesSql;
-        if (test_level === 'level_1') { updateLikesSql = `UPDATE level_1_tests SET likes = likes + 1 WHERE test_id = $1`; }
-        else if (test_level === 'level_2') { updateLikesSql = `UPDATE level_2_tests SET likes = likes + 1 WHERE test_id = $1`; }
-        else if (test_level === 'level_3') { updateLikesSql = `UPDATE level_3_tests SET likes = likes + 1 WHERE test_id = $1`; }
-        if (updateLikesSql) {
-          // Увеличение лайков для теста
-          await db.query(updateLikesSql, [test_id]);
-          res.json({ success: 'Лайк добавлен' });
-        } else { res.status(404).json({ error: 'Уровень теста не найден' }); }
-      } else { res.status(404).json({ error: 'Тест не найден' }); }
+        const updateLikesSql = `
+        UPDATE student_solutions 
+        SET likes = 1 
+        WHERE test_id = $1 AND user_id = $2;
+      `;
+
+        // Увеличение лайков для теста, только если записи не существует
+        await db.query(updateLikesSql, [test_id, user_id]);
+        res.json({ success: 'Лайк добавлен' });
+      } else {
+        res.json({ success: 'Лайк уже добавлен ранее' });
+      }
     } catch (error) {
       console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+
 
   async getTasksForTeacher(req, res) {
     try {

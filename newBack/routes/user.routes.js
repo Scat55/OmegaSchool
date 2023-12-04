@@ -15,7 +15,9 @@ router.get('/user_inf/:user_id', userMiddleware, userController.getUserInformati
 router.post('/addition_data', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.additionalData)
 //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
 router.get('/getTestForExpert', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForExpert)
-router.get('/getTypeOfUser', userController.getTypeOfUser)
+router.get('/getTypeOfUser', (req, res) => {
+    userController.getTypeOfUser(req, res);
+});
 
 //router.post('/CreateComandos', userController.CreateComandos);
 //router.post('/', userController.adduser)
