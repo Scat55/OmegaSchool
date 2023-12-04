@@ -145,7 +145,7 @@ export default {
     // Скачивание файла
     async downloadFiles() {
       this.token = JSON.parse(localStorage.getItem('local'));
-      await fetch(`/api/download_file/${this.infoTask.add_file}`, {
+      await fetch(`/api/download_file/${this.info.add_file}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${this.token.token}`,
