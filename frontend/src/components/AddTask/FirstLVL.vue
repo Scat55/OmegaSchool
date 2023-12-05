@@ -83,7 +83,7 @@ export default {
       alert('Задание успешно загружено');
 
       this.nameTask = this.descriptionTask = this.class = '';
-      this.selectedFiles = ''
+      this.selectedFiles = '';
       for (let i = 0; i < this.checkboxes.length; i++) {
         this.checkboxes[i].text = '';
         this.checkboxes[i].checked = false;
@@ -182,10 +182,7 @@ export default {
         <!--        TODO: Сделать выбор загруженных файлов-->
         <div class="add__file">
           <div>
-            <label
-              for="fileInput"
-              class="custom-file-upload"
-            >
+            <label for="fileInput" class="custom-file-upload">
               <span>{{ buttonText }}</span>
               <input
                 type="file"
@@ -199,16 +196,10 @@ export default {
             <div class="list_task_file">
               <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
               <ul>
-                <li
-                  v-for="(fileName, index) in selectedFiles"
-                  :key="index"
-                >
+                <li v-for="(fileName, index) in selectedFiles" :key="index">
                   <span>{{ index + 1 }}</span>
                   {{ fileName }}
-                  <button
-                    @click.prevent="removeFile(index)"
-                    id="btn_del_file"
-                  >X</button>
+                  <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
                 </li>
               </ul>
             </div>
@@ -224,33 +215,22 @@ export default {
           </div>
         </div>
         <div class="shablonZadaniaFirst__window">
-          <button
-            @click="toggleWindow"
-            type="button"
-          >
+          <button @click="toggleWindow" type="button">
             {{ isWindowOpen === false ? 'Показать инструкцию' : 'Скрыть инструкцию' }}
           </button>
           <div v-if="isWindowOpen">
             <p>
-              Тут будет инструкци как использовать чекбоксы. Нажать на кнопку "добавить чекбокс"
-              добавит один чекбокс в инпут надо будет ввести значение. Те которые правильные
-              варианты ответа нужно будет ответить нажам на чекбокс
+              При нажатии на кнопку "добавить чекбокс" добавляется один чекбокс. В инпут надо будет
+              ввести значение. Те варианты ответов, которое правильные, нужно будет отметить
             </p>
           </div>
         </div>
         <!--  Вот здесь начинается блок с checkbox    -->
         <div class="shablonZadaniaFirst__option_answers">
-          <button
-            @click="addCheckbox"
-            type="button"
-            v-if="checkboxes.length !== 6"
-          >
+          <button @click="addCheckbox" type="button" v-if="checkboxes.length !== 6">
             Добавить чекбокс
           </button>
-          <div
-            v-for="(checkbox, index) in checkboxes"
-            :key="index"
-          >
+          <div v-for="(checkbox, index) in checkboxes" :key="index">
             <div class="shablonZadaniaFirst__checkbox_item">
               <label>{{ index + 1 }}&nbsp;</label>
               <input
@@ -264,24 +244,14 @@ export default {
                 type="text"
                 v-model="checkbox.text"
               />
-              <button
-                @click="removeCheckbox(index)"
-                type="button"
-              >X</button>
+              <button @click="removeCheckbox(index)" type="button">X</button>
             </div>
           </div>
         </div>
         <!--   Конец. Наконец-то сделал адекватный вывод. Я бухать!   -->
         <div class="shablonZadaniaFirst__btn_send">
-          <button
-            class="btn"
-            type="submit"
-          >Отправить задание на проверку эксперту!</button>
-          <button
-            class="btn-reset"
-            type="reset"
-            @click="deleteCheckBox"
-          >Сброс</button>
+          <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
+          <button class="btn-reset" type="reset" @click="deleteCheckBox">Сброс</button>
         </div>
       </div>
     </div>
@@ -299,18 +269,18 @@ export default {
   &__name_task {
     width: 100%;
 
-    &>h3 {
+    & > h3 {
       text-align: center;
     }
   }
 
   &__description_task {
-    &>p {
+    & > p {
       margin: 0 0 10px 0;
       text-align: center;
     }
 
-    &>textarea {
+    & > textarea {
       width: 100%;
       height: 200px;
       resize: none;
@@ -324,14 +294,14 @@ export default {
   &__addFile {
     margin: 0 0 15px 0;
 
-    &>p {
+    & > p {
       margin: 0 0 10px 0;
       text-align: center;
     }
   }
 
   &__window {
-    &>button {
+    & > button {
       width: 100%;
       padding: 5px;
       margin-bottom: 10px;
@@ -339,11 +309,11 @@ export default {
       border: none;
     }
 
-    &>div {
+    & > div {
       margin-bottom: 10px;
     }
 
-    &>div>p {
+    & > div > p {
       background: white;
       padding: 10px;
       border-radius: 1rem;
@@ -351,7 +321,7 @@ export default {
   }
 
   &__option_answers {
-    &>button {
+    & > button {
       width: 100%;
       padding: 5px;
       margin-bottom: 10px;
@@ -382,7 +352,7 @@ export default {
       }
     }
 
-    &>button {
+    & > button {
       padding: 2px;
       background: #ff6e6e;
       color: white;
@@ -456,7 +426,7 @@ export default {
 .list_task_file {
   margin: 10px 0;
 
-  &>ul>li {
+  & > ul > li {
     list-style-type: none;
   }
 }
