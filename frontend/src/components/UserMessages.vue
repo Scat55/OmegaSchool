@@ -3,7 +3,7 @@
     <div class="userMess__mess">
       <div class="userMess__mess-info">
         <div class="userMess__text">
-          <p class="userMess__title">{{ name.length > 0 ? name : 'Пользователь' }}</p>
+          <p class="userMess__title">Пользователь</p>
           <p class="userMess__message">{{ newMessage }}</p>
           <!-- <img
             v-if="gender === 'Мужской'"
@@ -65,7 +65,7 @@ export default {
 
   &__message {
     font-size: 0.7rem;
-    //margin-right: 1rem;
+    // margin-right: 1rem;
   }
 }
 </style>

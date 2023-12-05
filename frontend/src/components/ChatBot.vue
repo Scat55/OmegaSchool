@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="chat"
-    v-if="chat"
-  >
+  <div class="chat" v-if="chat">
     <div class="chat__content">
       <img
         src="../assets/images/robot_chat.png"
@@ -11,15 +8,10 @@
         @click="ChangeIsVisible"
       />
 
-      <form
-        class="chat__form"
-        @submit.prevent
-        v-if="isVisible"
-      >
+      <form class="chat__form" @submit.prevent v-if="isVisible">
         <span class="chat__label">Чат с Умником</span>
         <div class="chat__form-content">
           <div class="chat__form-messages">
-
             <div class="chat__form-user">
               <UserMessagges
                 :name="name"
@@ -29,14 +21,8 @@
               />
             </div>
             <div class="chat__form-robot">
-              <RobotMessage 
-                :message="message"
-                class="robot_sms"
-                v-if="message.length"
-               />
+              <RobotMessage :message="message" class="robot_sms" v-if="message.length" />
             </div>
-
-
           </div>
         </div>
         <div class="send">
@@ -46,12 +32,8 @@
             placeholder="Введите ваше сообщение"
             v-model="myMessage"
           />
-          <button
-            @click="sendMessage"
-            class="chat__push"
-            :disabled="this.myMessage.length === 0"
-          >
-          &#10148;
+          <button @click="sendMessage" class="chat__push" :disabled="this.myMessage.length === 0">
+            &#10148;
           </button>
         </div>
       </form>
@@ -95,9 +77,8 @@ export default {
       this.isVisible = !this.isVisible;
     },
     sendMessage() {
-
       this.newMessage = this.myMessage;
-      const userMessage = this.newMessage
+      const userMessage = this.newMessage;
 
       axios
         .post(
@@ -113,15 +94,16 @@ export default {
         )
         .then((response) => {
           // try {
-            // this.message.push({ message: response.data });
-            // console.log(this.message)
-            this.message = response.data.response
-            // console.log(this.message)
+          // this.message.push({ message: response.data });
+          // console.log(this.message)
+          this.message = response.data.response;
+          // console.log(this.message)
           // } catch {
-            // this.message = 'Оооп... Я сломался'
+          // this.message = 'Оооп... Я сломался'
           // }
-        }).catch(error => {
-          this.message = 'Оооп... Я сломался'
+        })
+        .catch((error) => {
+          this.message = 'Оооп... Я сломался';
         });
       this.myMessage = '';
     },
@@ -214,7 +196,6 @@ export default {
     font-size: 0.5rem;
   }
 }
-
 
 .user_sms {
   background: rgb(26, 193, 248);
