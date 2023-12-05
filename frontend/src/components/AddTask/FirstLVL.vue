@@ -70,24 +70,36 @@ export default {
 
       this.token = JSON.parse(localStorage.getItem('local'));
       console.log(allFiles);
-      await axios.post(
-        `/api/add_level_1/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}/${questions}/`,
-        allFiles,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
+      await axios
+        .post(
+          `/api/add_level_1/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}/${questions}/`,
+          allFiles,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data',
+            },
           },
-        },
-      );
-      alert('Задание успешно загружено');
-
-      this.nameTask = this.descriptionTask = this.class = '';
-      this.selectedFiles = '';
-      for (let i = 0; i < this.checkboxes.length; i++) {
-        this.checkboxes[i].text = '';
-        this.checkboxes[i].checked = false;
-      }
+        )
+        .catch((err) => {
+          if (err.response) {
+            alert('Ошибка');
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
+        .then((res) => {
+          alert(res.data.message);
+          this.nameTask = this.descriptionTask = this.class = '';
+          this.selectedFiles = '';
+          for (let i = 0; i < this.checkboxes.length; i++) {
+            this.checkboxes[i].text = '';
+            this.checkboxes[i].checked = false;
+          }
+        });
     },
 
     deleteCheckBox() {
