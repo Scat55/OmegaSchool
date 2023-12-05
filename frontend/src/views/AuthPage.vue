@@ -54,7 +54,7 @@ export default {
     ...mapActions(['GET_USERS_FROM_API']),
     // Проверка на наличие пользователя и вход
     chekUsers() {
-      const email = this.email;
+      const email = this.email.toLowerCase();
       const password = this.pass;
 
       axios
