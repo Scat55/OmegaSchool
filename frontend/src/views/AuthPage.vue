@@ -1,33 +1,18 @@
 <template>
   <div class="reg">
     <div class="container">
-      <form
-        action="#"
-        class="reg__form"
-        @submit.prevent="handler()"
-      >
+      <form action="#" class="reg__form" @submit.prevent="handler()">
         <p class="reg__form-title">Вход</p>
         <div class="reg__info">
           <span class="reg__info-name">Почта</span>
-          <input
-            type="email"
-            class="reg__input name"
-            v-model="email"
-          />
+          <input type="email" class="reg__input name" v-model="email" @input="toLowercase()" />
         </div>
         <div class="reg__info">
           <span class="reg__info-name">Пароль</span>
-          <input
-            type="password"
-            class="reg__input"
-            v-model="pass"
-          />
+          <input type="password" class="reg__input" v-model="pass" />
         </div>
 
-        <button
-          class="reg__form-btn"
-          type="submit"
-        >Войти</button>
+        <button class="reg__form-btn" type="submit">Войти</button>
       </form>
     </div>
   </div>
@@ -54,7 +39,7 @@ export default {
     ...mapActions(['GET_USERS_FROM_API']),
     // Проверка на наличие пользователя и вход
     chekUsers() {
-      const email = this.email.toLowerCase();
+      const email = this.email;
       const password = this.pass;
 
       axios
@@ -73,7 +58,7 @@ export default {
           }
         })
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data);
           this.token = response.data.token;
           axios(`/api/user_id/${this.email}`, {
             method: 'GET',
@@ -82,7 +67,6 @@ export default {
               'Content-Type': 'application/json',
             },
           }).then((response) => {
-
             this.userID = response.data.user_id;
             store.state.isAuth = true;
             this.$router.push(`/profile/${response.data.user_id}`);
@@ -91,7 +75,7 @@ export default {
               userID: this.userID,
               token: this.token,
               isAuth: store.state.isAuth,
-            }
+            };
             localStorage.setItem('local', JSON.stringify(local));
           });
         });
@@ -100,6 +84,9 @@ export default {
     handler() {
       // console.log(`${this.email}, ${this.pass}`)
       this.chekUsers();
+    },
+    toLowercase() {
+      this.email = this.email.toLowerCase();
     },
   },
   mounted() {
