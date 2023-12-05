@@ -145,7 +145,7 @@ export default {
       this.person.item = response.data.user.item;
       this.person.class = response.data.user.classes;
       this.person.expert = response.data.user.expert === 'Да';
-      this.person.birthday = format(new Date(response.data.user.birthdate), 'dd.MM.yyyy'); // Убрать формат если оставим поле формата текстом
+      this.person.birthday = response.data.user.birthdate; // Убрать формат если оставим поле формата текстом
       // if (response.data.user.expert === "true") {
       //   // this.person.expert = true
       // }
