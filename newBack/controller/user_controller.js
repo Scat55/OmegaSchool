@@ -1,4 +1,4 @@
- const db = require('../db')
+const db = require('../db')
 const fs = require('fs');
 const path = require('path');
 const { resolve, join } = require("path");
@@ -636,7 +636,6 @@ class User_controller {
     }
   }
 
-
   async getTasksForTeacher(req, res) {
     try {
       const user_id = req.user_id;
@@ -889,7 +888,7 @@ class User_controller {
   }
 
   //res.fs.unlinkSync(filePath); // Удаление файла
-   downloadImage(req, res) {
+  downloadImage(req, res) {
     try {
       const key = req.headers['custom-uuid'];
       let fileNames = req.params.file_names;
@@ -902,7 +901,7 @@ class User_controller {
       console.log(fileNames);
 
       const mathPath = path.join('./uploads', `${key}/`);
-                                 console.log(mathPath);
+      console.log(mathPath);
 
       if (!existsSync(mathPath)) {
         return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы не найден' });
@@ -941,9 +940,13 @@ class User_controller {
   }
   downloadFile(req, res) {
     try {
+      // Получение ключа пользователя из заголовков запроса
       const key = req.headers['custom-uuid'];
+      console.error('key', key);
+      // Разбивка строки с именами файлов на массив
       const fileNames = req.params.file_names.split(',');
-      console.log(fileNames);
+      console.error('fileNames', fileNames);
+
       const mathPath = path.join('./uploads', `${key}/`);
       console.log(mathPath);
 
@@ -961,15 +964,22 @@ class User_controller {
       if (userFiles.length === 0) {
         return res.status(404).send({ message: 'Каталог пользователя загрузившего файл/ы существует, но файлы в нем не найдены' });
       }
-          const archive = archiver('zip');
-          res.attachment('files.zip'); // это задает имя файла для скачивания
-          userFiles.forEach((file) => {
-            archive.file(join(mathPath, file), { name: file });
-          });
-          archive.finalize();
-          archive.pipe(res);
+
+      // Создание архива для скачивания файлов
+      const archive = archiver('zip');
+      res.attachment('files.zip');
+
+      // Добавление файлов в архив
+      userFiles.forEach(fileName => {
+        const filePath = path.join(mathPath, fileName);
+        archive.file(filePath, { name: fileName });
+      });
+
+      // Завершение формирования архива и отправка его пользователю
+      archive.finalize();
+      archive.pipe(res);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).send({ message: 'Ошибка сервера' });
     }
   }
