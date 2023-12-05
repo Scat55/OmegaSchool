@@ -27,7 +27,7 @@ export default {
     return {
       positive: [
         {
-          title: 'Не стандартные',
+          title: 'Нестандартные',
           subtitle: 'задачи',
           img: 'comp.png',
         },

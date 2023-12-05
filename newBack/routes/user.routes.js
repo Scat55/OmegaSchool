@@ -30,7 +30,6 @@ router.get('/getTasksForStudentWithOcenka', roleMiddleware(['Ученик']), us
 router.post('/getTasksHintForStudent/:testID', roleMiddleware(['Ученик']), userController.getTasksHintForStudent)
 router.post('/getTasksAnswerForStudent/:testID', roleMiddleware(['Ученик']), userController.getTasksAnswerForStudent)
 router.post('/likeToDeskriotion/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.likeToDeskriotion)
-
 router.get('/getTasksForExpertByID/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksByID)
 router.post('/updateTestByExpert', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.updateTestByExpert)//проставление ver_1 ver_2
 

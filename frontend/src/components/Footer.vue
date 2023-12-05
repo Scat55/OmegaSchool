@@ -12,7 +12,7 @@
 
       <p class="footer__omega-title">Омега класс</p>
     </div>
-    <div class="footer__universitet">
+    <!-- <div class="footer__universitet">
       <img
         src="../assets/images/logo_w.png"
         alt="LogoUniversitet"
@@ -20,10 +20,10 @@
         @click="goToTopPage()"
       />
 
-<!--      <p class="footer__logo-title">-->
-<!--        Липецкий Государственный Педагогический Университет имени П.П. Семенова-Тян-Шанского-->
-<!--      </p>-->
-    </div>
+      <p class="footer__logo-title">
+        Липецкий Государственный Педагогический Университет имени П.П. Семенова-Тян-Шанского
+      </p>
+    </div> -->
   </div>
 </template>
 

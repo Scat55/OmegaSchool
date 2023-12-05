@@ -1,26 +1,20 @@
 <template>
   <div class="robot">
     <div class="container">
-      <h1 class="robot__title">Омега класс</h1>
+      <h1 class="robot__title">Омега-класс</h1>
       <div class="robot__line"></div>
 
       <div class="robot__content">
         <div>
           <p class="robot__subtitle">
-            В эпоху цифровизации и глобализации, качественное образование становится нашим главным
+            В эпоху цифровизации и глобализации качественное образование становится нашим главным
             приоритетом. У нас вы найдете сочетание проверенных временем методов и современных
             технологий, чтобы учиться с удовольствием и эффективностью. Присоединяйтесь к команде
             передовых мыслителей!
           </p>
-          <button
-            class="robot__btn"
-            @click="changeStatusOnTrue()"
-          >Начать заниматься</button>
+          <button class="robot__btn" @click="changeStatusOnTrue()">Начать заниматься</button>
         </div>
-        <img
-          src="../assets/images/robot_text_1.png"
-          alt="Robot"
-        />
+        <img src="../assets/images/robot_text_1.png" alt="Robot" />
       </div>
     </div>
   </div>
@@ -104,4 +98,5 @@ export default {
       box-shadow: 0 0 3px 3px $lightBlueColor;
     }
   }
-}</style>
+}
+</style>
