@@ -1,22 +1,26 @@
 <template>
   <div class="userMess">
-    <div class="userMess__mess">
-      <div class="userMess__mess-info">
-        <div class="userMess__text">
-          <p class="userMess__title">Пользователь</p>
-          <p class="userMess__message">{{ newMessage }}</p>
-          <!-- <img
-            v-if="gender === 'Мужской'"
-            src="../assets/images/Avatar/boy.png"
-            class="userMess__img"
-            alt="Аватарка"
-          />
-          <img
-            v-if="gender === 'Женский'"
-            src="../assets/images/Avatar/girl (3).png"
-            class="userMess__img"
-            alt="Аватарка"
-          /> -->
+    <div v-for="(message, idx) in newMessage" :key="idx">
+      <div class="userMess__mess">
+        <div class="userMess__mess-info">
+          <div class="userMess__text">
+            <p class="userMess__title">Пользователь</p>
+
+            <p class="userMess__message">{{ message.message }}</p>
+
+            <!-- <img
+                v-if="gender === 'Мужской'"
+                src="../assets/images/Avatar/boy.png"
+                class="userMess__img"
+                alt="Аватарка"
+              />
+              <img
+                v-if="gender === 'Женский'"
+                src="../assets/images/Avatar/girl (3).png"
+                class="userMess__img"
+                alt="Аватарка"
+              /> -->
+          </div>
         </div>
       </div>
     </div>
@@ -33,9 +37,9 @@ export default {
       },
     },
     newMessage: {
-      type: String,
+      type: Array,
       default() {
-        return '';
+        return [];
       },
     },
   },
@@ -52,9 +56,9 @@ export default {
 
   &__text {
     display: flex;
+    flex-direction: column;
     align-items: end;
     justify-content: flex-end;
-    flex-direction: column;
   }
 
   &__title {

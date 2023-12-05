@@ -64,7 +64,7 @@ export default {
       isVisible: false,
       message: '',
       myMessage: '',
-      newMessage: '',
+      newMessage: [],
     };
   },
   methods: {
@@ -77,9 +77,9 @@ export default {
       this.isVisible = !this.isVisible;
     },
     sendMessage() {
-      this.newMessage = this.myMessage;
+      this.newMessage.push({ message: this.myMessage });
       const userMessage = this.newMessage;
-
+      
       axios
         .post(
           'https://omega-lspu.ru/bot',
@@ -88,6 +88,7 @@ export default {
           },
           {
             headers: {
+              mode: 'no-cors',
               'Content-Type': 'application/json',
             },
           },
@@ -158,7 +159,8 @@ export default {
 
     &-user {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-end;
       gap: 0.5rem;
       margin-top: 1rem;
       justify-content: flex-end;
