@@ -2,8 +2,12 @@
 import axios from 'axios';
 import Button from '@/UI/Button.vue';
 
+
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+
 export default {
-  components: { Button },
+  components: { Button, DatePicker },
   props: {
     person: {
       type: Object,
@@ -41,6 +45,7 @@ export default {
       const patronymic = this.person.patronymic;
       const item = this.person.item;
       const classes = this.person.class;
+      const birthdate = this.person.birthday;
 
       // Формируем объект для отправки
       let dataToSend = {
@@ -49,19 +54,20 @@ export default {
         patronymic: patronymic,
         classes: classes,
         item: item,
+        birthdate: birthdate,
       };
 
       // Добавляем дату рождения, только если она равна '01.01.1970'
-      if (this.brth === '01.01.1970') {
-        dataToSend.birthdate = this.person.birthday;
-      } else {
-        let dateString = this.brth;
-        let parts = dateString.split('.');
-        let day = parseInt(parts[0], 10) + 1;
-        let month = parseInt(parts[1], 10) - 1;
-        let year = parseInt(parts[2], 10);
-        dataToSend.birthdate = new Date(year, month, day);
-      }
+      // if (this.brth === '01.01.1970') {
+      //   dataToSend.birthdate = this.person.birthday;
+      // } else {
+      //   let dateString = this.brth;
+      //   let parts = dateString.split('.');
+      //   let day = parseInt(parts[0], 10) + 1;
+      //   let month = parseInt(parts[1], 10) - 1;
+      //   let year = parseInt(parts[2], 10);
+      //   dataToSend.birthdate = new Date(day, month, year);
+      // }
 
       // Отправляем данные
       axios.post('/api/addition_data', dataToSend, {
@@ -106,6 +112,8 @@ export default {
       this.edit = false;
       this.person.item = this.oldItem;
       this.person.class = this.oldClass;
+      this.person.birthday = this.brth;
+      location.reload();
     },
   },
 };
@@ -164,11 +172,18 @@ export default {
 
         <div class="date_person_birthday_gender">
           <p>Пол: {{ person.gender }}</p>
-          <div v-if="edit && person.birthday === '01.01.1970'" class="input-container">
+          <div v-if="edit && person.birthday == null" class="input-container">
             <label>Дата рождения:</label>&nbsp;
-            <input type="date" class="styled-input" v-model="person.birthday" />
+            <!-- <input type="date" class="styled-input" v-model="person.birthday" /> -->
+            <date-picker 
+                v-model="person.birthday" 
+                valueType="format"
+                format="DD.MM.YYYY"
+                lang="ru"
+                >
+            </date-picker>
           </div>
-          <p v-if="!edit || person.birthday !== '01.01.1970'">
+          <p v-if="!edit || person.birthday !== null">
             Дата рождения: {{ person.birthday }}
           </p>
         </div>

@@ -4,7 +4,7 @@
   <div class="computer">
     <div class="container">
       <div class="computer__content">
-        <img src="../assets/images/PIC_index/comp.png" alt="Computer" class="computer__img" />
+        <img src="../assets/images/PIC_index/PcNew.png" alt="Computer" class="computer__img" />
         <p class="computer__title">
           Дистанционное обучение открывает перед вами новые горизонты. Благодаря совместной работе
           учителей и экспертов образовательного сообщества, вы можете учиться у лучших специалистов,

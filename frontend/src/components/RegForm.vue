@@ -94,7 +94,7 @@ export default {
     },
     // Проверка и добавление пользователя
     changeUserList() {
-      const email = this.email;
+      const email = this.email.toLowerCase();
       const pass = this.pass;
       const gender = this.gender.name;
       const type_user = this.proffesion.name;
