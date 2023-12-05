@@ -2,8 +2,12 @@
 import axios from 'axios';
 import Button from '@/UI/Button.vue';
 
+
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+
 export default {
-  components: { Button },
+  components: { Button, DatePicker },
   props: {
     person: {
       type: Object,
@@ -166,7 +170,13 @@ export default {
           <p>Пол: {{ person.gender }}</p>
           <div v-if="edit && person.birthday === '01.01.1970'" class="input-container">
             <label>Дата рождения:</label>&nbsp;
-            <input type="date" class="styled-input" v-model="person.birthday" />
+            <!-- <input type="date" class="styled-input" v-model="person.birthday" /> -->
+            <date-picker 
+                v-model="person.birthday" 
+                valueType="format"
+                
+                >
+              </date-picker>
           </div>
           <p v-if="!edit || person.birthday !== '01.01.1970'">
             Дата рождения: {{ person.birthday }}
