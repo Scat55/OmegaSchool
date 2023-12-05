@@ -1,16 +1,16 @@
 <template>
   <div class="robotMess">
-    <div class="RobotMess__mess">
-      <div class="RobotMess__mess-info">
-        <div class="RobotMess__text">
+    <div class="robotMess__mess">
+      <div class="robotMesss__mess-info">
+        <div class="robotMess__text">
           <!-- <img
             src="../assets/images/robot_chat.png"
             class="RobotMess__img"
             alt="Аватарка"
             v-if="message.length"
           /> -->
-          <p class="RobotMess__title">Умник</p>
-          <p class="RobotMess__message">{{ message }}</p>
+          <p class="robotMess__title">Умник</p>
+          <p class="robotMess__message">{{ robMes.message }}</p>
         </div>
       </div>
     </div>
@@ -20,13 +20,19 @@
 <script>
 import axios from 'axios';
 export default {
-  props: ['message'],
-  mounted() { },
+  props: {
+    robMes: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.RobotMess {
+.robotMess {
   &__img {
     width: 15%;
     border-radius: 4rem;
@@ -38,7 +44,6 @@ export default {
     align-items: start;
     flex-direction: column;
     justify-content: flex-start;
-
   }
 
   &__title {

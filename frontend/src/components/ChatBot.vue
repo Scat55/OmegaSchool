@@ -22,7 +22,12 @@
               />
             </div>
             <div class="chat__form-robot">
-              <RobotMessage :message="message" class="robot_sms" v-if="message.length" />
+              <RobotMessage
+                v-for="robMes in message"
+                :robMes="robMes"
+                class="robot_sms"
+                v-if="message.length"
+              />
             </div>
           </div>
         </div>
@@ -63,7 +68,7 @@ export default {
     return {
       chat: false,
       isVisible: false,
-      message: '',
+      message: [],
       myMessage: '',
       newMessage: [],
     };
@@ -80,34 +85,37 @@ export default {
     sendMessage() {
       this.newMessage.push({ message: this.myMessage });
       const userMessage = this.newMessage;
-      console.log(userMessage);
+      let allUserMess = this.newMessage.map((el) => {
+        return el.message;
+      });
+      const send = allUserMess.join(' ');
 
-      // axios
-      //   .post(
-      //     'https://omega-lspu.ru/bot',
-      //     {
-      //       message: userMessage,
-      //     },
-      //     {
-      //       headers: {
-      //         mode: 'no-cors',
-      //         'Content-Type': 'application/json',
-      //       },
-      //     },
-      //   )
-      //   .then((response) => {
-      //     // try {
-      //     // this.message.push({ message: response.data });
-      //     // console.log(this.message)
-      //     this.message = response.data.response;
-      //     // console.log(this.message)
-      //     // } catch {
-      //     // this.message = 'Оооп... Я сломался'
-      //     // }
-      //   })
-      //   .catch((error) => {
-      //     this.message = 'Оооп... Я сломался';
-      //   });
+      axios
+        .post(
+          'https://omega-lspu.ru/bot',
+          {
+            message: send,
+          },
+          {
+            headers: {
+              mode: 'cors',
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((response) => {
+          // try {
+          // this.message.push({ message: response.data });
+          // console.log(this.message)
+          this.message.push({ message: response.data.response });
+          // console.log(this.message)
+          // } catch {
+          // this.message = 'Оооп... Я сломался'
+          // }
+        })
+        .catch((error) => {
+          this.message.push({ message: 'Оооп... Я сломался' });
+        });
       this.myMessage = '';
     },
   },
@@ -154,7 +162,8 @@ export default {
 
     &-robot {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 0.5rem;
       margin-top: 1rem;
     }
