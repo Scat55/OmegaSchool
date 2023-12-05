@@ -1,12 +1,12 @@
 <template>
   <div class="userMess">
-    <div v-for="(message, idx) in newMessage" :key="idx">
+    <div>
       <div class="userMess__mess">
         <div class="userMess__mess-info">
           <div class="userMess__text">
             <p class="userMess__title">Пользователь</p>
 
-            <p class="userMess__message">{{ message.message }}</p>
+            <p class="userMess__message">{{ mes.message }}</p>
 
             <!-- <img
                 v-if="gender === 'Мужской'"
@@ -36,8 +36,8 @@ export default {
         return '';
       },
     },
-    newMessage: {
-      type: Array,
+    mes: {
+      type: Object,
       default() {
         return [];
       },

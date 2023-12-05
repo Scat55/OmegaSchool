@@ -15,7 +15,8 @@
             <div class="chat__form-user">
               <UserMessagges
                 :name="name"
-                :newMessage="newMessage"
+                v-for="mes in newMessage"
+                :mes="mes"
                 v-if="newMessage.length"
                 class="user_sms"
               />
@@ -79,33 +80,34 @@ export default {
     sendMessage() {
       this.newMessage.push({ message: this.myMessage });
       const userMessage = this.newMessage;
-      
-      axios
-        .post(
-          'https://omega-lspu.ru/bot',
-          {
-            message: userMessage,
-          },
-          {
-            headers: {
-              mode: 'no-cors',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-        .then((response) => {
-          // try {
-          // this.message.push({ message: response.data });
-          // console.log(this.message)
-          this.message = response.data.response;
-          // console.log(this.message)
-          // } catch {
-          // this.message = 'Оооп... Я сломался'
-          // }
-        })
-        .catch((error) => {
-          this.message = 'Оооп... Я сломался';
-        });
+      console.log(userMessage);
+
+      // axios
+      //   .post(
+      //     'https://omega-lspu.ru/bot',
+      //     {
+      //       message: userMessage,
+      //     },
+      //     {
+      //       headers: {
+      //         mode: 'no-cors',
+      //         'Content-Type': 'application/json',
+      //       },
+      //     },
+      //   )
+      //   .then((response) => {
+      //     // try {
+      //     // this.message.push({ message: response.data });
+      //     // console.log(this.message)
+      //     this.message = response.data.response;
+      //     // console.log(this.message)
+      //     // } catch {
+      //     // this.message = 'Оооп... Я сломался'
+      //     // }
+      //   })
+      //   .catch((error) => {
+      //     this.message = 'Оооп... Я сломался';
+      //   });
       this.myMessage = '';
     },
   },
@@ -161,9 +163,6 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      justify-content: flex-end;
     }
 
     &-img {
@@ -200,6 +199,8 @@ export default {
 }
 
 .user_sms {
+  margin-top: 1rem;
+  justify-content: flex-end;
   background: rgb(26, 193, 248);
   width: 220px;
   padding: 10px;
@@ -214,6 +215,7 @@ export default {
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
+
 .send {
   display: flex;
   align-items: center;
