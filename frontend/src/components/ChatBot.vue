@@ -36,7 +36,7 @@ export default {
   methods: {
     async sendMessage() {
       if (this.userInput.trim() !== '') {
-        this.messages.push({ user: 'You', text: this.userInput });
+        this.messages.push({ user: 'Пользователь', text: this.userInput });
 
         try {
           const response = await axios.post(
@@ -53,7 +53,7 @@ export default {
           );
 
           const botResponse = response.data.response;
-          this.messages.push({ user: 'Bot', text: botResponse });
+          this.messages.push({ user: 'Умник', text: botResponse });
         } catch (error) {
           console.error('Error sending message:', error);
         }
