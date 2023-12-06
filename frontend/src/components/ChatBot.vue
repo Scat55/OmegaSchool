@@ -1,15 +1,30 @@
 <template>
   <div class="chat">
-    <div class="messages">
-      <div class="message" v-for="message in messages" :key="message.id">
-        <div class="user">{{ message.user }}</div>
-        <div class="text">{{ message.text }}</div>
+    <img
+      src="@/assets/images/robot_chat.png"
+      alt="RobotChat"
+      class="chat-img"
+      @click="isShow = !isShow"
+    />
+    <h3 class="chat-title">Чат с Умником</h3>
+    <transition name="fade">
+      <div v-if="isShow" class="chat-content">
+        <div class="messages" v-if="messages.length">
+          <div class="message" v-for="message in messages" :key="message.id">
+            <div class="user">{{ message.user }}</div>
+            <div class="text">{{ message.text }}</div>
+          </div>
+        </div>
+        <div class="input">
+          <input
+            v-model="userInput"
+            @keyup.enter="sendMessage"
+            placeholder="Введите сообщение..."
+          />
+          <button @click="sendMessage">Отправить</button>
+        </div>
       </div>
-    </div>
-    <div class="input">
-      <input v-model="userInput" @keyup.enter="sendMessage" placeholder="Type a message..." />
-      <button @click="sendMessage">Send</button>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -31,6 +46,7 @@ export default {
     return {
       messages: [],
       userInput: '',
+      isShow: false,
     };
   },
   methods: {
@@ -67,10 +83,39 @@ export default {
 
 <style scoped>
 .chat {
-  max-width: 600px;
-  margin: 20px auto;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 450px;
+  width: 100%;
+  /* background-color: #fff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.chat-img {
+  border: none;
+  width: 20%;
+  cursor: pointer;
+  align-self: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.chat-title {
+  text-align: center;
+  padding: 12px;
+  color: #fff;
+  background-color: #1565c0;
+  border-bottom: 2px solid #ccc;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.chat-content {
   overflow: hidden;
 }
 
@@ -80,6 +125,9 @@ export default {
   padding: 10px;
   background: linear-gradient(to right, #1976d2, #2196f3);
   color: #fff;
+  border-bottom: 2px solid #ccc;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   /* Стилизация скроллбара */
   scrollbar-width: thin;
   scrollbar-color: #1565c0 #fff;
@@ -100,8 +148,8 @@ export default {
 
 .message {
   margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 12px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #000;
@@ -112,36 +160,48 @@ export default {
 }
 
 .input {
-  margin-top: 10px;
   display: flex;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
+  padding: 12px;
+  background-color: #fff;
+  border-top: 2px solid #ccc;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 input {
   flex: 1;
-  padding: 8px;
-  margin-right: 10px;
+  padding: 10px;
+  margin-right: 12px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.3s;
 }
 
 input:focus {
-  background-color: #fff;
+  background-color: #f0f0f0;
 }
 
 button {
-  padding: 8px 15px;
+  padding: 10px 20px;
   background-color: #1565c0;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #0d47a1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
