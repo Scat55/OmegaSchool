@@ -45,9 +45,9 @@
         </select>
         <button class="reg__form-btn" type="submit">Зарегистрироваться</button>
         <!-- <div>Укажите актуальную электронную почту, на которую будет выслано электронное письмо после нажатия кнопки "Регистрация"</div> -->
-       <span style="font-size: 0.8rem"><span style="color: red">*</span> - обязательные поля</span>
-        <span style="font-size: 0.8rem; text-align: center;">После регистрации проверьте почту</span>
-        <p>Есть аккаут? <span class="reg__auth" @click="goToAuth()">Войти</span></p>
+        <span style="font-size: 0.8rem"><span style="color: red">*</span> - обязательные поля</span>
+        <span style="font-size: 0.8rem; text-align: center">После регистрации проверьте почту</span>
+        <p>Есть аккаунт? <span class="reg__auth" @click="goToAuth()">Войти</span></p>
         <p class="reg__auth comand" @click="goToComand">Зарегистрировать команду</p>
       </form>
     </div>
@@ -124,9 +124,9 @@ export default {
         .catch(function (error) {
           //console.log(error);
           if (error.response && error.response.status === 409) {
-          let errorMessage = error.response.data;
-          alert(errorMessage.message)
-  }
+            let errorMessage = error.response.data;
+            alert(errorMessage.message);
+          }
         });
     },
     // Обработка формы
