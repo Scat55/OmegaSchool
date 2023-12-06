@@ -47,7 +47,7 @@
         <!-- <div>Укажите актуальную электронную почту, на которую будет выслано электронное письмо после нажатия кнопки "Регистрация"</div> -->
         <span style="font-size: 0.8rem"><span style="color: red">*</span> - обязательные поля</span>
         <span style="font-size: 0.8rem; text-align: center">После регистрации проверьте почту</span>
-        <p>Есть аккаунт? <span class="reg__auth" @click="goToAuth()">Войти</span></p>
+        <p>Есть аккаунт?<span class="reg__auth" @click="goToAuth()">Войти</span></p>
         <p class="reg__auth comand" @click="goToComand">Зарегистрировать команду</p>
       </form>
     </div>
