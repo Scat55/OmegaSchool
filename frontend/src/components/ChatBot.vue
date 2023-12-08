@@ -65,7 +65,6 @@ export default {
     async sendMessage() {
       if (this.userInput.trim() !== '') {
         this.messages.push({ user: this.name, text: this.userInput });
-        this.userInput = '';
 
         try {
           const response = await axios.post(
@@ -86,6 +85,7 @@ export default {
         } catch (error) {
           console.error('Error sending message:', error);
         }
+        this.userInput = '';
       }
     },
   },
