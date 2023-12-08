@@ -6,7 +6,6 @@
       class="chat-img"
       @click="isShow = !isShow"
     />
-    <h3 class="chat-title">Чат с Умником</h3>
     <transition name="fade">
       <div v-if="isShow" class="chat-content">
         <div class="messages" v-if="messages.length">
@@ -85,9 +84,9 @@ export default {
 .chat {
   display: flex;
   flex-direction: column;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+  position: absolute;
+  bottom: -125px;
+  right: 10px;
   max-width: 450px;
   width: 100%;
   /* background-color: #fff; */
@@ -105,18 +104,8 @@ export default {
   border-top-right-radius: 12px;
 }
 
-.chat-title {
-  text-align: center;
-  padding: 12px;
-  color: #fff;
-  background-color: #1565c0;
-  border-bottom: 2px solid #ccc;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
 .chat-content {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .messages {
