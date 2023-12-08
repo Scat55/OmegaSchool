@@ -9,7 +9,7 @@
       />
       <transition name="fade">
         <div v-if="isShow" class="chat-content">
-          <div class="messages" v-if="messages.length">
+          <div class="messages">
             <div
               class="message"
               v-for="message in messages"
@@ -49,6 +49,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    name: {
+      type: String,
+      default: 'Пользователь',
+    },
   },
   data() {
     return {
@@ -60,7 +64,8 @@ export default {
   methods: {
     async sendMessage() {
       if (this.userInput.trim() !== '') {
-        this.messages.push({ user: 'Пользователь', text: this.userInput });
+        this.messages.push({ user: this.name, text: this.userInput });
+        this.userInput = '';
 
         try {
           const response = await axios.post(
@@ -81,8 +86,6 @@ export default {
         } catch (error) {
           console.error('Error sending message:', error);
         }
-
-        this.userInput = '';
       }
     },
   },
@@ -100,25 +103,29 @@ export default {
 
 .chat-img {
   border: none;
-  width: 20%;
+  width: 25%;
   cursor: pointer;
   align-self: end;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 .chat__container {
+  position: fixed;
+  bottom: 0px;
+  right: 50px;
   display: flex;
   flex-direction: column;
+  width: 350px;
 }
 .messages {
-  max-height: 300px;
+  height: 200px;
   overflow-y: auto;
   padding: 10px;
   background: linear-gradient(to right, #1976d2, #2196f3);
   color: #fff;
   border-bottom: 2px solid #ccc;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   /* Стилизация скроллбара */
   scrollbar-width: thin;
   scrollbar-color: #1565c0 #fff;
@@ -147,6 +154,7 @@ export default {
 }
 
 .user {
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
@@ -199,12 +207,15 @@ button:hover {
 .user-message {
   align-self: flex-end;
   background-color: #1565c0;
+  font-size: 0.875rem;
+
   color: #fff;
 }
 
 .bot-message {
   align-self: flex-start;
   background-color: #fff;
+  font-size: 0.875rem;
   color: #000;
 }
 </style>
