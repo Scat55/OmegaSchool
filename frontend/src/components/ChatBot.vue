@@ -1,31 +1,3 @@
-<!-- <template>
-  <div class="chat">
-    <img
-      src="@/assets/images/robot_chat.png"
-      alt="RobotChat"
-      class="chat-img"
-      @click="isShow = !isShow"
-    />
-    <transition name="fade">
-      <div v-if="isShow" class="chat-content">
-        <div class="messages" v-if="messages.length">
-          <div class="message" v-for="message in messages" :key="message.id">
-            <div class="user">{{ message.user }}</div>
-            <div class="text">{{ message.text }}</div>
-          </div>
-        </div>
-        <div class="input">
-          <input
-            v-model="userInput"
-            @keyup.enter="sendMessage"
-            placeholder="Введите сообщение..."
-          />
-          <button @click="sendMessage">Отправить</button>
-        </div>
-      </div>
-    </transition>
-  </div>
-</template> -->
 <template>
   <div class="chat">
     <div class="chat__container">
@@ -37,7 +9,7 @@
       />
       <transition name="fade">
         <div v-if="isShow" class="chat-content">
-          <div class="messages" v-if="messages.length">
+          <div class="messages">
             <div
               class="message"
               v-for="message in messages"
@@ -77,6 +49,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    name: {
+      type: String,
+      default: 'Пользователь',
+    },
   },
   data() {
     return {
@@ -88,7 +64,7 @@ export default {
   methods: {
     async sendMessage() {
       if (this.userInput.trim() !== '') {
-        this.messages.push({ user: 'Пользователь', text: this.userInput });
+        this.messages.push({ user: this.name, text: this.userInput });
 
         try {
           const response = await axios.post(
@@ -109,7 +85,6 @@ export default {
         } catch (error) {
           console.error('Error sending message:', error);
         }
-
         this.userInput = '';
       }
     },
@@ -120,36 +95,37 @@ export default {
 <style scoped>
 .chat {
   display: flex;
-  /* justify-content: space-between; */
   max-width: 450px;
   width: 100%;
-  /* background-color: #fff; */
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
   border-radius: 12px;
   overflow: hidden;
 }
 
 .chat-img {
   border: none;
-  width: 20%;
+  width: 25%;
   cursor: pointer;
   align-self: end;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 .chat__container {
+  position: fixed;
+  bottom: 0px;
+  right: 50px;
   display: flex;
   flex-direction: column;
+  width: 350px;
 }
 .messages {
-  max-height: 300px;
+  height: 200px;
   overflow-y: auto;
   padding: 10px;
   background: linear-gradient(to right, #1976d2, #2196f3);
   color: #fff;
   border-bottom: 2px solid #ccc;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   /* Стилизация скроллбара */
   scrollbar-width: thin;
   scrollbar-color: #1565c0 #fff;
@@ -178,6 +154,7 @@ export default {
 }
 
 .user {
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
@@ -230,12 +207,15 @@ button:hover {
 .user-message {
   align-self: flex-end;
   background-color: #1565c0;
+  font-size: 0.875rem;
+
   color: #fff;
 }
 
 .bot-message {
   align-self: flex-start;
   background-color: #fff;
+  font-size: 0.875rem;
   color: #000;
 }
 </style>
