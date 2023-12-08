@@ -43,11 +43,12 @@ router.post('/updateTestByTeacher/:testID/:userID', roleMiddleware(['Учите�
 router.post('/getAnswerByStudent2/:testID/:student_solution', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
 router.post('/getAnswerByStudent3/:testID/:student_solution', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent3)
 
-router.post('/add_level_1/:task_test_coded/:task_description_coded/:classes/:subject/:options', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTestAndUpload)
-router.post('/add_level_2/:task_test_coded/:task_description_coded/:task_hint/:task_answer/:classes/:subject', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest2AndUpload)
-router.post('/add_level_3/:task_test_coded/:task_description_coded/:classes/:subject', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest3AndUpload)
+router.post('/add_level_1/:task_test_coded/:task_description_coded/:classes/:subject/:options/:test_id?', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTestAndUpload);
+router.post('/add_level_2/:task_test_coded/:task_description_coded/:task_hint/:task_answer/:classes/:subject/:test_id?', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest2AndUpload)
+router.post('/add_level_3/:task_test_coded/:task_description_coded/:classes/:subject/:test_id?', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest3AndUpload);
 
 router.get('/download_file/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.downloadFile);
 router.get('/download_image/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.downloadImage);
 
 module.exports = router;
+

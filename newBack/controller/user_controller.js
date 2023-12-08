@@ -779,68 +779,142 @@ class User_controller {
   }
   async addTestAndUpload(req, res) {
     try {
-      const { task_test_coded, task_description_coded, classes, options, subject } = req.params;
-      const task_test = decodeURIComponent(task_test_coded)
-      const task_description = decodeURIComponent(task_description_coded)
-      const questions = task_test
-      if (!options) { return res.status(400).json({ error: 'Options are missing' }); }
+      const { task_test_coded, task_description_coded, classes, options, subject, test_id } = req.params;
+
+      const task_test = decodeURIComponent(task_test_coded);
+      const task_description = decodeURIComponent(task_description_coded);
+      const questions = task_test;
+
+      if (!options) {
+        return res.status(400).json({ error: 'Options are missing' });
+      }
+
       const parsedOptions = JSON.parse(options);
       console.log(parsedOptions);
+
       const user_id = req.user_id;
-      // Insert test data into the database
-      const insertTestQuery = `INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes,subject, add_img) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING test_id;`;
-      const testValues = [user_id, task_test, task_description, null, classes, subject, null];
-      const testResult = await db.query(insertTestQuery, testValues);
-      const testId = testResult.rows[0].test_id;
+
+      let testId;
+
+      if (test_id) {
+        // If test_id is provided, update the existing test
+        testId = test_id;
+        // Update test data in the database
+        const updateTestQuery = `
+        UPDATE level_1_tests
+        SET user_id = $1, task_test = $2, task_description = $3, classes = $4, subject = $5
+        WHERE test_id = $6
+        RETURNING test_id;
+      `;
+        const updateTestValues = [user_id, task_test, task_description, classes, subject, testId];
+        const updateTestResult = await db.query(updateTestQuery, updateTestValues);
+        testId = updateTestResult.rows[0].test_id;
+
+        // Delete existing questions and options for the updated test
+        await db.query('DELETE FROM questions WHERE test_id = $1', [testId]);
+        await db.query('DELETE FROM options WHERE question_id IN (SELECT question_id FROM questions WHERE test_id = $1)', [testId]);
+      } else {
+        // If test_id is not provided, insert a new test
+        const insertTestQuery = `
+        INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes, subject, add_img)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING test_id;
+      `;
+        const testValues = [user_id, task_test, task_description, null, classes, subject, null];
+        const testResult = await db.query(insertTestQuery, testValues);
+        testId = testResult.rows[0].test_id;
+      }
+
       // Insert question
-      const insertQuestionQuery = `INSERT INTO questions (text, test_id) VALUES ($1, $2) RETURNING question_id;`;
+      const insertQuestionQuery = `
+      INSERT INTO questions (text, test_id)
+      VALUES ($1, $2)
+      RETURNING question_id;
+    `;
       const questionValues = [questions, testId];
       const questionResult = await db.query(insertQuestionQuery, questionValues);
       const questionId = questionResult.rows[0].question_id;
+
       // Insert options
       for (const option of parsedOptions) {
         const { text: option_text, checked: is_correct } = option;
-        console.log(option_text, is_correct)
-        const insertOptionQuery = `INSERT INTO options (text, is_correct, question_id) VALUES ($1, $2, $3);`;
+        console.log(option_text, is_correct);
+        const insertOptionQuery = `
+        INSERT INTO options (text, is_correct, question_id)
+        VALUES ($1, $2, $3);
+      `;
         const optionValues = [option_text, is_correct, questionId];
         await db.query(insertOptionQuery, optionValues);
       }
+
+      // Update the record in the database with file paths
       const { pdfPath, imgPath } = store.work_with_files(req, res);
-      // Обновить запись в БД
-      const updateQuery = `UPDATE level_1_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
+      const updateQuery = `
+      UPDATE level_1_tests
+      SET add_file = $1, add_img = $2
+      WHERE test_id = $3;
+    `;
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
-      return res.send({ message: 'Тест и файлы успешно добавлены' });
+
+      return res.send({ message: 'Test and files successfully added/updated' });
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
+      res.status(500).json({ error: 'Server error' });
     }
   }
 
+
   async addTest2AndUpload(req, res) {
     try {
-      const { task_test_coded, task_description_coded, task_hint, task_answer, classes, subject } = req.params;
-      const task_test = decodeURIComponent(task_test_coded)
-      const task_description = decodeURIComponent(task_description_coded)
+      const { task_test_coded, task_description_coded, task_hint, task_answer, classes, subject, test_id } = req.params;
+      const task_test = decodeURIComponent(task_test_coded);
+      const task_description = decodeURIComponent(task_description_coded);
       const user_id = req.user_id;
-      const insertTestQuery = `
-            INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-            RETURNING test_id;`;
 
-      const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
-      const testResult = await db.query(insertTestQuery, testValues);
-      const testId = testResult.rows[0].test_id;
-      // Используйте await для работы с файлами
-      const { pdfPath, imgPath } = await store.work_with_files(req, res);
-      // Обновить запись в БД
-      const updateQuery = `UPDATE level_2_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
+      let testId;
+
+      if (test_id) {
+        // If test_id is provided, update the existing test
+        testId = test_id;
+        // Update test data in the database
+        const updateTestQuery = `
+        UPDATE level_2_tests
+        SET user_id = $1, task_test = $2, task_description = $3, task_hint = $4, task_answer = $5, classes = $6, subject = $7
+        WHERE test_id = $8
+        RETURNING test_id;
+      `;
+        const updateTestValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, testId];
+        const updateTestResult = await db.query(updateTestQuery, updateTestValues);
+        testId = updateTestResult.rows[0].test_id;
+      } else {
+        // If test_id is not provided, insert a new test
+        const insertTestQuery = `
+        INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING test_id;
+      `;
+        const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
+        const testResult = await db.query(insertTestQuery, testValues);
+        testId = testResult.rows[0].test_id;
+      }
+
+      // Use await for file operations
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
+
+      // Update the record in the database with file paths
+      const updateQuery = `
+      UPDATE level_2_tests
+      SET add_file = $1, add_img = $2
+      WHERE test_id = $3;
+    `;
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
-      return res.send({ message: 'Тест и файлы успешно добавлены' });
+
+      return res.send({ message: 'Test and files successfully added/updated' });
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
+      res.status(500).json({ error: 'Server error' });
     }
   }
 
@@ -866,26 +940,57 @@ class User_controller {
 
   async addTest3AndUpload(req, res) {
     try {
-      const { task_test_coded, task_description_coded, classes, subject } = req.params;
+      const { task_test_coded, task_description_coded, classes, subject, test_id } = req.params;
       const task_test = decodeURIComponent(task_test_coded);
       const task_description = decodeURIComponent(task_description_coded);
       const user_id = req.user_id;
-      const insertTestQuery = `INSERT INTO level_3_tests (user_id, task_test, task_description, classes, subject) VALUES ($1, $2, $3, $4, $5) RETURNING test_id;`;
-      const testValues = [user_id, task_test, task_description, classes, subject];
-      const testResult = await db.query(insertTestQuery, testValues);
-      const testId = testResult.rows[0].test_id;
-      // Используйте await для работы с файлами
+
+      let testId;
+
+      if (test_id) {
+        // If test_id is provided, update the existing test
+        testId = test_id;
+        // Update test data in the database
+        const updateTestQuery = `
+        UPDATE level_3_tests
+        SET user_id = $1, task_test = $2, task_description = $3, classes = $4, subject = $5
+        WHERE test_id = $6
+        RETURNING test_id;
+      `;
+        const updateTestValues = [user_id, task_test, task_description, classes, subject, testId];
+        const updateTestResult = await db.query(updateTestQuery, updateTestValues);
+        testId = updateTestResult.rows[0].test_id;
+      } else {
+        // If test_id is not provided, insert a new test
+        const insertTestQuery = `
+        INSERT INTO level_3_tests (user_id, task_test, task_description, classes, subject, add_file, add_img)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING test_id;
+      `;
+        const testValues = [user_id, task_test, task_description, classes, subject, null, null];
+        const testResult = await db.query(insertTestQuery, testValues);
+        testId = testResult.rows[0].test_id;
+      }
+
+      // Use await for file operations
       const { pdfPath, imgPath } = await store.work_with_files(req, res);
-      // Обновление записей в базе данных с путями к файлам
-      const updateQuery = 'UPDATE level_3_tests SET add_file = $1, add_img = $2 WHERE test_id = $3';
+
+      // Update the record in the database with file paths
+      const updateQuery = `
+      UPDATE level_3_tests
+      SET add_file = $1, add_img = $2
+      WHERE test_id = $3;
+    `;
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
-      return res.send({ message: 'Тест и файлы успешно добавлены' });
+
+      return res.send({ message: 'Test and files successfully added/updated' });
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ error: 'Ошибка на сервере' });
+      res.status(500).json({ error: 'Server error' });
     }
   }
+
 
   //res.fs.unlinkSync(filePath); // Удаление файла
   downloadImage(req, res) {
