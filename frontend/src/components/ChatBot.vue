@@ -92,11 +92,8 @@ export default {
 <style scoped>
 .chat {
   display: flex;
-  /* justify-content: space-between; */
   max-width: 450px;
   width: 100%;
-  /* background-color: #fff; */
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
   border-radius: 12px;
   overflow: hidden;
 }
