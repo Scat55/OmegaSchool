@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="chat">
     <img
       src="@/assets/images/robot_chat.png"
@@ -25,8 +25,45 @@
       </div>
     </transition>
   </div>
+</template> -->
+<template>
+  <div class="chat">
+    <div class="chat__container">
+      <img
+        src="@/assets/images/robot_chat.png"
+        alt="RobotChat"
+        class="chat-img"
+        @click="isShow = !isShow"
+      />
+      <transition name="fade">
+        <div v-if="isShow" class="chat-content">
+          <div class="messages" v-if="messages.length">
+            <div
+              class="message"
+              v-for="message in messages"
+              :key="message.id"
+              :class="{
+                'user-message': message.user === 'Пользователь',
+                'bot-message': message.user === 'Умник',
+              }"
+            >
+              <div class="user">{{ message.user }}</div>
+              <div class="text">{{ message.text }}</div>
+            </div>
+          </div>
+          <div class="input">
+            <input
+              v-model="userInput"
+              @keyup.enter="sendMessage"
+              placeholder="Введите сообщение..."
+            />
+            <button @click="sendMessage">Отправить</button>
+          </div>
+        </div>
+      </transition>
+    </div>
+  </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -83,10 +120,7 @@ export default {
 <style scoped>
 .chat {
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  bottom: -125px;
-  right: 10px;
+  /* justify-content: space-between; */
   max-width: 450px;
   width: 100%;
   /* background-color: #fff; */
@@ -99,15 +133,14 @@ export default {
   border: none;
   width: 20%;
   cursor: pointer;
-  align-self: center;
+  align-self: end;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
-
-.chat-content {
-  /* overflow: hidden; */
+.chat__container {
+  display: flex;
+  flex-direction: column;
 }
-
 .messages {
   max-height: 300px;
   overflow-y: auto;
@@ -192,5 +225,17 @@ button:hover {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: #1565c0;
+  color: #fff;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #000;
 }
 </style>

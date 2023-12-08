@@ -53,9 +53,14 @@
             v-if="isActiveComponents.RatingTeach === true"
           />
         </div>
+        <ChatBot
+          :name="person.name"
+          :language="language"
+          :randomResponses="randomResponses"
+          class="chat"
+        />
       </div>
     </div>
-    <ChatBot :name="person.name" :language="language" :randomResponses="randomResponses" />
   </div>
 </template>
 
@@ -270,5 +275,8 @@ export default {
 .seeMenu {
   border: 2px solid $lightBlueColor;
   border-radius: 1rem;
+}
+.chat {
+  align-self: flex-end;
 }
 </style>
