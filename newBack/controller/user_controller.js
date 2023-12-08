@@ -473,7 +473,7 @@ class User_controller {
       if (testResult.rowCount > 0) {
         test = testResult.rows[0];
         testLevel = '1';
-        if (typeUser === "Учитель") {
+        if (typeUser === "Учитель" || typeUser === "Эксперт") {
           additionalFields.push('ver_1', 'ver_1_masseg', 'ver_2', 'ver_2_masseg');
         }
       } else {
@@ -544,7 +544,7 @@ class User_controller {
         subject: test.subject,
         add_img: test.add_img,
         questions: flattenedOptions,
-        likes: test.likes,
+        //likes: test.likes,
         decided: (typeUser === "Ученик") ? decidedStatus : "Не решено", // добавьте проверку на тип пользователя
       };
       // Add additional fields to the response
@@ -675,7 +675,8 @@ class User_controller {
     try {
       const test_id = req.params.testID;
       const user_id = req.user_id; // Получение user id из токена
-      console.log(user_id, test_id)
+      const user_type = req.type_user;
+
       // Проверка, есть ли уже запись с лайком для данного пользователя и теста
       const existingLikeCheckSql = `
       SELECT * FROM student_solutions WHERE test_id = $1 AND user_id = $2 and likes > 0;
