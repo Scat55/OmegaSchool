@@ -1,31 +1,3 @@
-<!-- <template>
-  <div class="chat">
-    <img
-      src="@/assets/images/robot_chat.png"
-      alt="RobotChat"
-      class="chat-img"
-      @click="isShow = !isShow"
-    />
-    <transition name="fade">
-      <div v-if="isShow" class="chat-content">
-        <div class="messages" v-if="messages.length">
-          <div class="message" v-for="message in messages" :key="message.id">
-            <div class="user">{{ message.user }}</div>
-            <div class="text">{{ message.text }}</div>
-          </div>
-        </div>
-        <div class="input">
-          <input
-            v-model="userInput"
-            @keyup.enter="sendMessage"
-            placeholder="Введите сообщение..."
-          />
-          <button @click="sendMessage">Отправить</button>
-        </div>
-      </div>
-    </transition>
-  </div>
-</template> -->
 <template>
   <div class="chat">
     <div class="chat__container">
