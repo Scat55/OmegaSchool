@@ -197,54 +197,121 @@ class User_controller {
 
   async getTasksForStudent(req, res) {
     try {
-      const user_id = req.user_id; // Предполагаем, что user_id уже извлечен из токена
-      console.log(user_id)
-      // Получаем список test_id и test_level для данного user_id
-      const studentTestsSql = `
-        SELECT test_id, test_level, decided
-        FROM student_solutions
-        WHERE user_id = $1 ORDER BY test_id desc;
-    `;
-      // Выполнение запроса к базе данных
-      const studentTestsResult = await db.query(studentTestsSql, [user_id]);
-      // Теперь для каждого test_id получим название теста из соответствующей таблицы
-      const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
-        const levelTestSql = `
+      const user_id = req.user_id; // Assuming that user_id has already been extracted from the token
+      const available_level = req.available_level; // Assuming available_level is available in the token
+      const user_type = req.type_user;
+
+      if (user_type === 'Учитель') {
+        const distinctTestIdsSql = `
+        SELECT DISTINCT test_id, test_level
+        FROM student_solutions;
+      `;
+
+        const distinctTestIdsResult = await db.query(distinctTestIdsSql);
+        const distinctTestIds = distinctTestIdsResult.rows;
+
+        console.log(distinctTestIds);
+
+        const testNames = await Promise.all(distinctTestIds.map(async (test) => {
+          if (test.test_level !== undefined) { // Check if test_level is defined
+            const levelTestSql = `
             SELECT task_test, classes, subject, likes
             FROM level_${test.test_level}_tests
             WHERE test_id = $1;
-        `;
-        console.log([test.test_id]); // Убедитесь, что этот console.log нужен для отладки
-        const levelTestResult = await db.query(levelTestSql, [test.test_id]);
-        if (levelTestResult.rows.length > 0) {
-          const testDetails = levelTestResult.rows[0];
-          return {
-            id: test.test_id,
-            complexity: test.test_level,
-            title: testDetails.task_test,
-            class: testDetails.classes,
-            topic: testDetails.subject,
-            status: test.decided,
-            likes: testDetails.likes
-          };
-        } else {
-          return {
-            id: test.test_id,
-            complexity: test.test_level,
-            title: 'Название не найдено',
-            class: 'Класс не найден',
-            topic: 'Предмет не найден',
-            status: 'Предмет не найден'
-          };
-        }
-      }));
-      // Отправляем результат
+          `;
+
+            const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+
+            if (levelTestResult.rows.length > 0) {
+              const testDetails = levelTestResult.rows[0];
+              return {
+                id: test.test_id,
+                complexity: test.test_level,
+                title: testDetails.task_test,
+                class: testDetails.classes,
+                topic: testDetails.subject,
+                likes: testDetails.likes,
+                status: 'Не решено'
+              };
+            } else {
+              return {
+                id: test.test_id,
+                complexity: test.test_level,
+                title: 'Название не найдено',
+                class: 'Класс не найден',
+                topic: 'Предмет не найден',
+                likes: 0
+              };
+            }
+          } else {
+            console.error('test_level is undefined for test_id:', test.test_id);
+            return null; // You can handle this case accordingly
+          }
+        }));
+
+        // Remove potential null entries caused by undefined test_level
+        const filteredTestNames = testNames.filter(test => test !== null);
+
+        // Send the result
+        res.json(filteredTestNames);
+      }else
+      {
+
+
+        // Define the base SQL query
+        const baseSql = `
+      SELECT test_id, test_level, decided
+      FROM student_solutions
+      WHERE user_id = $1 AND test_level <= $2
+      ORDER BY test_id DESC;
+    `;
+
+        // Execute the query
+        const studentTestsResult = await db.query(baseSql, [user_id, available_level]);
+
+        // Fetch details for each test
+        const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
+          const levelTestSql = `
+        SELECT task_test, classes, subject, likes
+        FROM level_${test.test_level}_tests
+        WHERE test_id = $1;
+      `;
+
+          const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+
+          if (levelTestResult.rows.length > 0) {
+            const testDetails = levelTestResult.rows[0];
+            return {
+              id: test.test_id,
+              complexity: test.test_level,
+              title: testDetails.task_test,
+              class: testDetails.classes,
+              topic: testDetails.subject,
+              likes: testDetails.likes,
+              status: test.decided
+            };
+          } else {
+            return {
+              id: test.test_id,
+              complexity: test.test_level,
+              title: 'Название не найдено',
+              class: 'Класс не найден',
+              topic: 'Предмет не найден',
+              status: 'Предмет не найден'
+            };
+          }
+        }));
+
+      // Send the result
       res.json(testNames);
+      }
     } catch (error) {
       console.error('Ошибка при выполнении SQL-запроса:', error.message);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
   }
+
+
 
   //передать предмет класс сложность название и т.д.
   async getTasksHintForStudent(req, res) {

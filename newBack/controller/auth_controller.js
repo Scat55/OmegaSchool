@@ -5,8 +5,8 @@ const {secret} = require('../config')
 const mail = require("../utils/mail");
 const {check} = require("express-validator");
 
-const generateAccesToken = (user_id, type_user, email) =>{
-    const payload = { user_id, type_user, email }
+const generateAccesToken = (user_id, type_user, email, available_level) =>{
+    const payload = { user_id, type_user, email ,available_level }
     return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
 
@@ -82,9 +82,9 @@ class Auth_controller {
             if (passwordMatch) {
                 if (user.verification_code === 'true') {
                     // Генерируем JWT токен
-                    const token = generateAccesToken(user.user_id, user.type_user, user.email);
+                    const token = generateAccesToken(user.user_id, user.type_user, user.email, user.available_level);
                     req.session.token = token;
-                    console.log(req.session)
+
                     return req.session.save(() => { res.json({message: 'Успешная аутентификация', token}); });
                 } else {
                     return res.status(401).json({message: 'Электронная почта не подтверждена. Пожалуйста перейдите по ссылке в электронном письме.'});
