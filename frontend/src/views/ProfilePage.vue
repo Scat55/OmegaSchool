@@ -1,5 +1,5 @@
 <template>
-  <div style="user-select: none;">
+  <div style="user-select: none">
     <div class="container">
       <div class="window">
         <div class="seeMenu" @click="ShowMenu = !ShowMenu" v-show="ShowMenu === false">
@@ -53,9 +53,14 @@
             v-if="isActiveComponents.RatingTeach === true"
           />
         </div>
+        <ChatBot
+          :name="person.name"
+          :language="language"
+          :randomResponses="randomResponses"
+          class="chat"
+        />
       </div>
     </div>
-    <ChatBot :name="person.name" />
   </div>
 </template>
 
@@ -104,6 +109,8 @@ export default {
         achievements: '',
         level: null,
       },
+      language: 'ru', // Добавим опцию для выбора языка
+      randomResponses: true,
       isActiveComponents: {
         Profile: true,
         TaskToCheckStudent: false,
@@ -120,6 +127,12 @@ export default {
     };
   },
   methods: {
+    toggleRandomResponses() {
+      this.randomResponses = !this.randomResponses;
+    },
+    changeLanguage(newLanguage) {
+      this.language = newLanguage;
+    },
     switchTab(nameTab) {
       for (const key in this.isActiveComponents) {
         this.isActiveComponents[key] = key === nameTab;
@@ -262,5 +275,8 @@ export default {
 .seeMenu {
   border: 2px solid $lightBlueColor;
   border-radius: 1rem;
+}
+.chat {
+  align-self: flex-end;
 }
 </style>

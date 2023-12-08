@@ -1,252 +1,241 @@
-<template>
-  <div class="chat" v-if="chat">
-    <div class="chat__content">
-      <img
-        src="../assets/images/robot_chat.png"
-        alt=""
-        class="chat__img"
-        @click="ChangeIsVisible"
-      />
-
-      <form class="chat__form" @submit.prevent v-if="isVisible">
-        <span class="chat__label">Чат с Умником</span>
-        <div class="chat__form-content">
-          <div class="chat__form-messages">
-            <div class="chat__form-user">
-              <UserMessagges
-                :name="name"
-                v-for="mes in newMessage"
-                :mes="mes"
-                v-if="newMessage.length"
-                class="user_sms"
-              />
-            </div>
-            <div class="chat__form-robot">
-              <RobotMessage
-                v-for="robMes in message"
-                :robMes="robMes"
-                class="robot_sms"
-                v-if="message.length"
-              />
-            </div>
+<!-- <template>
+  <div class="chat">
+    <img
+      src="@/assets/images/robot_chat.png"
+      alt="RobotChat"
+      class="chat-img"
+      @click="isShow = !isShow"
+    />
+    <transition name="fade">
+      <div v-if="isShow" class="chat-content">
+        <div class="messages" v-if="messages.length">
+          <div class="message" v-for="message in messages" :key="message.id">
+            <div class="user">{{ message.user }}</div>
+            <div class="text">{{ message.text }}</div>
           </div>
         </div>
-        <div class="send">
+        <div class="input">
           <input
-            type="text"
-            class="chat__input"
-            placeholder="Введите ваше сообщение"
-            v-model="myMessage"
+            v-model="userInput"
+            @keyup.enter="sendMessage"
+            placeholder="Введите сообщение..."
           />
-          <button @click="sendMessage" class="chat__push" :disabled="this.myMessage.length === 0">
-            &#10148;
-          </button>
+          <button @click="sendMessage">Отправить</button>
         </div>
-      </form>
+      </div>
+    </transition>
+  </div>
+</template> -->
+<template>
+  <div class="chat">
+    <div class="chat__container">
+      <img
+        src="@/assets/images/robot_chat.png"
+        alt="RobotChat"
+        class="chat-img"
+        @click="isShow = !isShow"
+      />
+      <transition name="fade">
+        <div v-if="isShow" class="chat-content">
+          <div class="messages" v-if="messages.length">
+            <div
+              class="message"
+              v-for="message in messages"
+              :key="message.id"
+              :class="{
+                'user-message': message.user === 'Пользователь',
+                'bot-message': message.user === 'Умник',
+              }"
+            >
+              <div class="user">{{ message.user }}</div>
+              <div class="text">{{ message.text }}</div>
+            </div>
+          </div>
+          <div class="input">
+            <input
+              v-model="userInput"
+              @keyup.enter="sendMessage"
+              placeholder="Введите сообщение..."
+            />
+            <button @click="sendMessage">Отправить</button>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
-
 <script>
-import UserMessagges from './UserMessages';
-import RobotMessage from './RobotMessage.vue';
 import axios from 'axios';
+
 export default {
-  components: {
-    UserMessagges,
-    RobotMessage,
-  },
   props: {
-    name: {
+    language: {
       type: String,
-      default() {
-        return '';
-      },
+      default: 'ru',
+    },
+    randomResponses: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
     return {
-      chat: false,
-      isVisible: false,
-      message: [],
-      myMessage: '',
-      newMessage: [],
+      messages: [],
+      userInput: '',
+      isShow: false,
     };
   },
   methods: {
-    showChat() {
-      setTimeout(() => {
-        this.chat = true;
-      }, 100);
-    },
-    ChangeIsVisible() {
-      this.isVisible = !this.isVisible;
-    },
-    sendMessage() {
-      this.newMessage.push({ message: this.myMessage });
-      const userMessage = this.newMessage;
-      let allUserMess = this.newMessage.map((el) => {
-        return el.message;
-      });
-      const send = allUserMess.join(' ');
+    async sendMessage() {
+      if (this.userInput.trim() !== '') {
+        this.messages.push({ user: 'Пользователь', text: this.userInput });
 
-      axios
-        .post(
-          'https://omega-lspu.ru/bot',
-          {
-            message: send,
-          },
-          {
-            headers: {
-              mode: 'cors',
-              'Content-Type': 'application/json',
+        try {
+          const response = await axios.post(
+            'https://omega-lspu.ru/bot',
+            {
+              message: this.userInput,
             },
-          },
-        )
-        .then((response) => {
-          // try {
-          // this.message.push({ message: response.data });
-          // console.log(this.message)
-          this.message.push({ message: response.data.response });
-          // console.log(this.message)
-          // } catch {
-          // this.message = 'Оооп... Я сломался'
-          // }
-        })
-        .catch((error) => {
-          this.message.push({ message: 'Оооп... Я сломался' });
-        });
-      this.myMessage = '';
+            {
+              headers: {
+                mode: 'cors',
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+
+          const botResponse = response.data.response;
+          this.messages.push({ user: 'Умник', text: botResponse });
+        } catch (error) {
+          console.error('Error sending message:', error);
+        }
+
+        this.userInput = '';
+      }
     },
-  },
-  mounted() {
-    this.showChat();
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .chat {
-  position: relative;
-
-  &__content {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    bottom: 0rem;
-    right: 0;
-    width: 20rem;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    // flex: 0;
-    height: 20rem;
-    width: 18rem;
-    background-color: #fff;
-    overflow: auto;
-
-    &-content {
-      flex: 1 0 auto;
-    }
-
-    &-messages {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    &-robot {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    &-user {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-
-    &-img {
-      width: 3rem;
-      margin-left: 0.5rem;
-    }
-  }
-
-  &__img {
-    width: 30%;
-    cursor: pointer;
-  }
-
-  &__label {
-    text-align: center;
-    background-color: rgb(26, 193, 248);
-    padding: 0.625rem 1.25rem;
-
-    flex: 0;
-  }
-
-  &__input {
-    width: 80%;
-    padding: 0.625rem;
-    border-radius: 0.5rem;
-    border: 1px solid #000;
-    outline: none;
-    margin-left: 0.3rem;
-  }
-
-  &__push {
-    font-size: 0.5rem;
-  }
-}
-
-.user_sms {
-  margin-top: 1rem;
-  justify-content: flex-end;
-  background: rgb(26, 193, 248);
-  width: 220px;
-  padding: 10px;
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-}
-
-.robot_sms {
-  background: #2a7afc;
-  padding: 10px;
-  width: 220px;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-}
-
-.send {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  /* justify-content: space-between; */
+  max-width: 450px;
+  width: 100%;
+  /* background-color: #fff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+  border-radius: 12px;
+  overflow: hidden;
+}
 
-  button {
-    width: 50px;
-    height: 38px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    border-radius: 0.5rem;
-    border: none;
-    margin-bottom: 5px;
-    margin-left: 2px;
-    color: white;
-    background-color: rgb(26, 193, 248);
-  }
+.chat-img {
+  border: none;
+  width: 20%;
+  cursor: pointer;
+  align-self: end;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.chat__container {
+  display: flex;
+  flex-direction: column;
+}
+.messages {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: linear-gradient(to right, #1976d2, #2196f3);
+  color: #fff;
+  border-bottom: 2px solid #ccc;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  /* Стилизация скроллбара */
+  scrollbar-width: thin;
+  scrollbar-color: #1565c0 #fff;
+}
 
-  input {
-    margin-bottom: 5px;
-    width: 215px;
-  }
+.messages::-webkit-scrollbar {
+  width: 12px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background-color: #1565c0;
+  border-radius: 10px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+.user {
+  font-weight: bold;
+}
+
+.input {
+  display: flex;
+  padding: 12px;
+  background-color: #fff;
+  border-top: 2px solid #ccc;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+input:focus {
+  background-color: #f0f0f0;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #1565c0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0d47a1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: #1565c0;
+  color: #fff;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #000;
 }
 </style>

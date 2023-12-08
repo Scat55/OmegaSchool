@@ -2,9 +2,9 @@
 import axios from 'axios';
 import Button from '@/UI/Button.vue';
 
-
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/ru';
 
 export default {
   components: { Button, DatePicker },
@@ -175,17 +175,10 @@ export default {
           <div v-if="edit && person.birthday == null" class="input-container">
             <label>Дата рождения:</label>&nbsp;
             <!-- <input type="date" class="styled-input" v-model="person.birthday" /> -->
-            <date-picker 
-                v-model="person.birthday" 
-                valueType="format"
-                format="DD.MM.YYYY"
-                lang="ru"
-                >
+            <date-picker v-model="person.birthday" valueType="format" format="DD.MM.YYYY" lang="ru">
             </date-picker>
           </div>
-          <p v-if="!edit || person.birthday !== null">
-            Дата рождения: {{ person.birthday }}
-          </p>
+          <p v-if="!edit || person.birthday !== null">Дата рождения: {{ person.birthday }}</p>
         </div>
 
         <div class="date_person_class">
@@ -445,7 +438,6 @@ button {
 select[disabled] {
   color: black;
 }
-
 
 @media (width <= 1124px) {
   .firstBlock {
