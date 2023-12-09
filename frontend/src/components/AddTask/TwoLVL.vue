@@ -142,6 +142,7 @@ export default {
           placeholder="Введите название задания"
           class="name__task"
           v-model="taskName"
+          maxlength="1000"
         />
         <span class="lenght"
           >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>
@@ -149,7 +150,7 @@ export default {
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription" maxlength="1000"></textarea>
       </div>
       <span class="lenght"
         >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
@@ -201,7 +202,7 @@ export default {
             ли ученик подсказку."</span
           >
         </p>
-        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>
+        <textarea id="textAreaUsl" v-model="taskHelp" maxlength="1000"></textarea>
       </div>
       <span class="lenght"
         >{{ taskHelp.length }}/<span :class="{ error: taskHelp.length >= 1000 }">1000</span>
@@ -215,7 +216,7 @@ export default {
             ответ."</span
           >
         </p>
-        <textarea id="answer" v-model="taskAnswer"></textarea>
+        <textarea id="answer" v-model="taskAnswer" maxlength="1000"></textarea>
       </div>
       <span class="lenght"
         >{{ taskAnswer.length }}/<span :class="{ error: taskAnswer.length >= 1000 }">1000</span>

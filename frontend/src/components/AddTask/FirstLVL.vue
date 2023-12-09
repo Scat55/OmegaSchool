@@ -182,6 +182,7 @@ export default {
           placeholder="Введите название задания"
           v-model="nameTask"
           class="name__task"
+          maxlength="1000"
         />
         <span class="lenght"
           >{{ nameTask.length }}/<span :class="{ error: nameTask.length >= 1000 }">1000</span>
@@ -189,7 +190,7 @@ export default {
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
-        <textarea v-model="descriptionTask"></textarea>
+        <textarea v-model="descriptionTask" maxlength="1000"></textarea>
       </div>
       <span class="lenght"
         >{{ descriptionTask.length }}/<span :class="{ error: descriptionTask.length >= 1000 }"
