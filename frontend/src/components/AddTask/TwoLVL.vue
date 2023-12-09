@@ -85,18 +85,28 @@ export default {
       let allFiles = Object.values(this.files).map((el) => {
         return el;
       });
-      axios.post(
-        `https://omega-lspu.ru/api/add_level_2/${task_test}/${task_description}/${task_help}/${task_answer}/${this.selectedClass}/${this.selectedItems}`,
-        allFiles,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
 
-      alert('Задание успешно загружено');
+      if (
+        this.task_test.lenght >= 1000 ||
+        this.task_description.lenght >= 1000 ||
+        this.task_help.lenght >= 1000 ||
+        this.task_answer.lenght >= 1000
+      ) {
+        alert('Ошибка');
+      } else {
+        axios.post(
+          `https://omega-lspu.ru/api/add_level_2/${task_test}/${task_description}/${task_help}/${task_answer}/${this.selectedClass}/${this.selectedItems}`,
+          allFiles,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        );
+
+        alert('Задание успешно загружено');
+      }
       console.log(
         this.taskName,
         this.taskDescription,

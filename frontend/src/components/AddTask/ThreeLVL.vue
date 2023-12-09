@@ -49,17 +49,21 @@ export default {
         return el;
       });
 
-      axios.post(
-        `https://omega-lspu.ru/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
-        allFiles,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
+      if (this.taskName.length >= 1000 || this.taskDescription >= 1000) {
+        alert('Ошибка');
+      } else {
+        axios.post(
+          `https://omega-lspu.ru/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
+          allFiles,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data',
+            },
           },
-        },
-      );
-      alert('Задание успешно загружено');
+        );
+        alert('Задание успешно загружено');
+      }
       console.log(
         this.taskName,
         this.taskDescription,
