@@ -192,7 +192,9 @@ export default {
         <textarea v-model="descriptionTask"></textarea>
       </div>
       <span class="lenght"
-        >{{ descriptionTask.length }}/<span :class="{ error: nameTask.length >= 1000 }">1000</span>
+        >{{ descriptionTask.length }}/<span :class="{ error: descriptionTask.length >= 1000 }"
+          >1000</span
+        >
       </span>
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>

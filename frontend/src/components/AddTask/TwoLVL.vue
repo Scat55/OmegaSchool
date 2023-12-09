@@ -109,8 +109,7 @@ export default {
         allFiles,
       );
       this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
-      this.selectedFiles = ''
-
+      this.selectedFiles = '';
     },
   },
   computed: {
@@ -134,21 +133,23 @@ export default {
           class="name__task"
           v-model="taskName"
         />
+        <span class="lenght"
+          >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>
+        </span>
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea
-          id="textAreaUsl"
-          v-model="taskDescription"
-        ></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
       </div>
+      <span class="lenght"
+        >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
+          >1000</span
+        >
+      </span>
 
       <div class="add__file">
         <div>
-          <label
-            for="fileInputTwo"
-            class="custom-file-upload"
-          >
+          <label for="fileInputTwo" class="custom-file-upload">
             <span>{{ buttonText }}</span>
             <input
               type="file"
@@ -162,16 +163,10 @@ export default {
           <div class="list_task_file">
             <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
             <ul>
-              <li
-                v-for="(fileName, index) in selectedFiles"
-                :key="index"
-              >
+              <li v-for="(fileName, index) in selectedFiles" :key="index">
                 <span>{{ index + 1 }}</span>
                 {{ fileName }}
-                <button
-                  @click.prevent="removeFile(index)"
-                  id="btn_del_file"
-                >X</button>
+                <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
               </li>
             </ul>
           </div>
@@ -190,36 +185,34 @@ export default {
       <div class="block">
         <p>
           Введите подсказку -
-          <span id="warning">Внимание! Если ученик использует подсказку, он может получить максимум 1 балл. в то
+          <span id="warning"
+            >Внимание! Если ученик использует подсказку, он может получить максимум 1 балл. в то
             время у вас во вкладке "задачи на проверку ( от учеников )" будет помечено использовал
-            ли ученик подсказку."</span>
+            ли ученик подсказку."</span
+          >
         </p>
-        <textarea
-          id="textAreaUsl"
-          v-model="taskHelp"
-        ></textarea>
+        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>
       </div>
+      <span class="lenght"
+        >{{ taskHelp.length }}/<span :class="{ error: taskHelp.length >= 1000 }">1000</span>
+      </span>
       <div class="block">
         <p>
           Ответ -
-          <span id="warning">Внимание! Если ученик использует ответ, он получит 0 баллов. в то время у вас во
+          <span id="warning"
+            >Внимание! Если ученик использует ответ, он получит 0 баллов. в то время у вас во
             вкладке "задачи на проверку ( от учеников )" будет помечено использовал ли ученик
-            ответ."</span>
+            ответ."</span
+          >
         </p>
-        <textarea
-          id="answer"
-          v-model="taskAnswer"
-        ></textarea>
+        <textarea id="answer" v-model="taskAnswer"></textarea>
       </div>
+      <span class="lenght"
+        >{{ taskAnswer.length }}/<span :class="{ error: taskAnswer.length >= 1000 }">1000</span>
+      </span>
       <div class="btn-send">
-        <button
-          class="btn"
-          type="submit"
-        >Отправить задание на проверку эксперту!</button>
-        <button
-          class="btn-reset"
-          type="reset"
-        >Удалить все!</button>
+        <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
+        <button class="btn-reset" type="reset">Удалить все!</button>
       </div>
     </div>
   </form>
@@ -315,6 +308,7 @@ export default {
   display: inline-block;
   padding: 10px 20px;
   background-color: #007bff;
+  margin-top: 1rem;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -338,10 +332,19 @@ export default {
 }
 
 .list_task_file {
-  margin: 10px 0;
+  margin: 0px 0;
 
-  &>ul>li {
+  & > ul > li {
     list-style-type: none;
   }
+}
+
+.lenght {
+  font-size: 0.75rem;
+  margin-top: 0;
+  color: #d2d2d2;
+}
+.error {
+  color: red;
 }
 </style>
