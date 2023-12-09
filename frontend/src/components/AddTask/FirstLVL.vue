@@ -183,11 +183,17 @@ export default {
           v-model="nameTask"
           class="name__task"
         />
+        <span class="lenght"
+          >{{ nameTask.length }}/<span :class="{ error: nameTask.length >= 1000 }">1000</span>
+        </span>
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
         <textarea v-model="descriptionTask"></textarea>
       </div>
+      <span class="lenght"
+        >{{ descriptionTask.length }}/<span :class="{ error: nameTask.length >= 1000 }">1000</span>
+      </span>
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>
         <!--     Загрузка файлов мб удалю нахер   -->
@@ -478,5 +484,13 @@ export default {
   border-radius: 0.5rem;
   outline: none;
   border: none;
+}
+.lenght {
+  font-size: 0.75rem;
+  margin-top: 0;
+  color: #d2d2d2;
+}
+.error {
+  color: red;
 }
 </style>
