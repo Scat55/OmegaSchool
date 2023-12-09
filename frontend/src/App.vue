@@ -16,23 +16,19 @@
 </template>
 
 <script>
-import Header from './components/Header'
-import HeaderCom from './components/HeaderCom.vue'
-import RegForm from './components/RegForm.vue'
-import Footer from "@/components/Footer.vue"
-export
-  default
-  {
-    components:
-    {
-      Footer,
-      Header,
-      RegForm,
-      HeaderCom
-    },
-  }
-</script
-      >
+import Header from './components/Header';
+import HeaderCom from './components/HeaderCom.vue';
+import RegForm from './components/RegForm.vue';
+import Footer from '@/components/Footer.vue';
+export default {
+  components: {
+    Footer,
+    Header,
+    RegForm,
+    HeaderCom,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {

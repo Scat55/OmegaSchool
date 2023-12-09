@@ -258,7 +258,7 @@ export default {
 .name__task {
   width: 100%;
   padding: 0.5rem;
-  margin-top: 10px;
+  margin: 10px 0;
   border-radius: 0.5rem;
   outline: none;
   border: none;
@@ -272,7 +272,8 @@ export default {
 }
 
 .block {
-  padding: 10px;
+  //padding: 10px;
+  padding: 10px 0;
   border-radius: 1.5rem;
   margin: 10px 0;
 }
@@ -357,5 +358,10 @@ export default {
 }
 .error {
   color: red;
+}
+
+textarea,
+input {
+  font-size: 1.2rem;
 }
 </style>
