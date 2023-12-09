@@ -68,8 +68,7 @@ export default {
         this.selectedItems,
       );
       this.taskName = this.taskDescription = '';
-      this.selectedFiles = ''
-
+      this.selectedFiles = '';
     },
     // Для загрузки файлов
     handleFileChange() {
@@ -131,19 +130,21 @@ export default {
           v-model="taskName"
         />
       </div>
+      <span class="lenght"
+        >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>
+      </span>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea
-          id="textAreaUsl"
-          v-model="taskDescription"
-        ></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription"></textarea>
       </div>
+      <span class="lenght"
+        >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
+          >1000</span
+        >
+      </span>
       <div class="add__file">
         <div>
-          <label
-            for="fileInputThree"
-            class="custom-file-upload"
-          >
+          <label for="fileInputThree" class="custom-file-upload">
             <span>{{ buttonText }}</span>
             <input
               type="file"
@@ -157,16 +158,10 @@ export default {
           <div class="list_task_file">
             <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
             <ul>
-              <li
-                v-for="(fileName, index) in selectedFiles"
-                :key="index"
-              >
+              <li v-for="(fileName, index) in selectedFiles" :key="index">
                 <span>{{ index + 1 }}</span>
                 {{ fileName }}
-                <button
-                  @click.prevent="removeFile(index)"
-                  id="btn_del_file"
-                >X</button>
+                <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
               </li>
             </ul>
           </div>
@@ -182,15 +177,8 @@ export default {
         </div>
       </div>
       <div class="btn-send">
-        <button
-          class="btn"
-          type="submit"
-        >Отправить задание на проверку эксперту!</button>
-        <button
-          class="btn-reset"
-          @click="clearForm"
-          type="reset"
-        >Удалить все!</button>
+        <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
+        <button class="btn-reset" @click="clearForm" type="reset">Удалить все!</button>
       </div>
     </div>
   </form>
@@ -293,8 +281,16 @@ export default {
 .list_task_file {
   margin: 10px 0;
 
-  &>ul>li {
+  & > ul > li {
     list-style-type: none;
   }
+}
+.lenght {
+  font-size: 0.75rem;
+  margin-top: 0;
+  color: #d2d2d2;
+}
+.error {
+  color: red;
 }
 </style>
