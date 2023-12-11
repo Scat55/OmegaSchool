@@ -217,7 +217,7 @@ class User_controller {
             const levelTestSql = `
             SELECT task_test, classes, subject, likes
             FROM level_${test.test_level}_tests
-            WHERE test_id = $1;
+            WHERE test_id = $1  ;
           `;
 
             const levelTestResult = await db.query(levelTestSql, [test.test_id]);
@@ -263,7 +263,7 @@ class User_controller {
       SELECT test_id, test_level, decided
       FROM student_solutions
       WHERE user_id = $1 AND test_level <= $2
-      ORDER BY test_id DESC;
+      ORDER BY created_at DESC;
     `;
 
         // Execute the query
@@ -500,7 +500,7 @@ class User_controller {
             }
           } else {
             // Task not found in any table
-            return res.status(404).json({ error: 'Task not found' });
+            return res.status(404).json({ error: 'Задание не найдено' });
           }
         }
       }
@@ -925,7 +925,7 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
 
-      return res.send({ message: 'Test and files successfully added/updated' });
+      return res.send({ message: 'Тест и файл успешно загружены' });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Server error' });
@@ -979,7 +979,7 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
 
-      return res.send({ message: 'Test and files successfully added/updated' });
+      return res.send({ message: 'Тест и файл успешно загружены' });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Server error' });
@@ -1052,7 +1052,7 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
 
-      return res.send({ message: 'Test and files successfully added/updated' });
+      return res.send({ message: 'Тест и файл успешно загружены' });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Server error' });
