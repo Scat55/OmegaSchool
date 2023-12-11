@@ -31,6 +31,26 @@
           <p>Ответ - {{ infoTask.task_answer }}</p>
         </div>
       </div>
+      <!--      <div class="questions">-->
+      <!--        <div v-for="question in infoTask.questions">-->
+      <!--          {{ question.text }} - <span v-if="question.is_correct === true">Верно</span>-->
+      <!--          <span v-else>Не верно</span>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <table>
+        <tr>
+          <th>Вариант ответа</th>
+          <th>-</th>
+          <th>Ключ</th>
+        </tr>
+        <tr v-for="question in infoTask.questions">
+          <td>{{ question.text }}</td>
+          <td>-</td>
+          <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
+        </tr>
+      </table>
+
       <div class="infoTask__dop">
         <p>Дополнительные файлы</p>
         <img
@@ -52,25 +72,7 @@
         </button>
         <p v-else>Файлов нет</p>
       </div>
-      <!--      <div class="questions">-->
-      <!--        <div v-for="question in infoTask.questions">-->
-      <!--          {{ question.text }} - <span v-if="question.is_correct === true">Верно</span>-->
-      <!--          <span v-else>Не верно</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
 
-      <table>
-        <tr>
-          <th>Вариант ответа</th>
-          <th>-</th>
-          <th>Ключ</th>
-        </tr>
-        <tr v-for="question in infoTask.questions">
-          <td>{{ question.text }}</td>
-          <td>-</td>
-          <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
-        </tr>
-      </table>
       <div class="mesageExpert">
         <div class="firstExpert">
           <p>Оценка первого эксперта: {{ infoTask.ver_1 }}</p>
