@@ -16,6 +16,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "file-loader": "^6.2.0",
     "file-saver": "^2.0.5",
+    "latex2vue": "^2.2.2",
     "prettier": "^3.0.3",
     "sqlite3": "^5.1.6",
     "vue": "^2.6.14",

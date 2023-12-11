@@ -49,17 +49,21 @@ export default {
         return el;
       });
 
-      axios.post(
-        `https://omega-lspu.ru/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
-        allFiles,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'multipart/form-data',
+      if (this.taskName.length >= 1000 || this.taskDescription >= 1000) {
+        alert('Ошибка');
+      } else {
+        axios.post(
+          `https://omega-lspu.ru/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
+          allFiles,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data',
+            },
           },
-        },
-      );
-      alert('Задание успешно загружено');
+        );
+        alert('Задание успешно загружено');
+      }
       console.log(
         this.taskName,
         this.taskDescription,
@@ -68,8 +72,7 @@ export default {
         this.selectedItems,
       );
       this.taskName = this.taskDescription = '';
-      this.selectedFiles = ''
-
+      this.selectedFiles = '';
     },
     // Для загрузки файлов
     handleFileChange() {
@@ -129,21 +132,24 @@ export default {
           placeholder="Введите название задания"
           class="name__task"
           v-model="taskName"
+          maxlength="1000"
         />
       </div>
+      <span class="lenght"
+        >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>
+      </span>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea
-          id="textAreaUsl"
-          v-model="taskDescription"
-        ></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription" maxlength="1000"></textarea>
       </div>
+      <span class="lenght"
+        >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
+          >1000</span
+        >
+      </span>
       <div class="add__file">
         <div>
-          <label
-            for="fileInputThree"
-            class="custom-file-upload"
-          >
+          <label for="fileInputThree" class="custom-file-upload">
             <span>{{ buttonText }}</span>
             <input
               type="file"
@@ -157,16 +163,10 @@ export default {
           <div class="list_task_file">
             <p v-show="selectedFiles.length !== 0">Выбранные файлы:</p>
             <ul>
-              <li
-                v-for="(fileName, index) in selectedFiles"
-                :key="index"
-              >
+              <li v-for="(fileName, index) in selectedFiles" :key="index">
                 <span>{{ index + 1 }}</span>
                 {{ fileName }}
-                <button
-                  @click.prevent="removeFile(index)"
-                  id="btn_del_file"
-                >X</button>
+                <button @click.prevent="removeFile(index)" id="btn_del_file">X</button>
               </li>
             </ul>
           </div>
@@ -182,15 +182,8 @@ export default {
         </div>
       </div>
       <div class="btn-send">
-        <button
-          class="btn"
-          type="submit"
-        >Отправить задание на проверку эксперту!</button>
-        <button
-          class="btn-reset"
-          @click="clearForm"
-          type="reset"
-        >Удалить все!</button>
+        <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
+        <button class="btn-reset" @click="clearForm" type="reset">Удалить все!</button>
       </div>
     </div>
   </form>
@@ -205,7 +198,7 @@ export default {
 .name__task {
   width: 100%;
   padding: 0.5rem;
-  margin-top: 10px;
+  margin: 10px 0;
   border-radius: 0.5rem;
   outline: none;
   border: none;
@@ -259,6 +252,7 @@ export default {
 }
 
 .add__file {
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -293,8 +287,21 @@ export default {
 .list_task_file {
   margin: 10px 0;
 
-  &>ul>li {
+  & > ul > li {
     list-style-type: none;
   }
+}
+.lenght {
+  font-size: 0.75rem;
+  margin-top: 0;
+  color: #d2d2d2;
+}
+.error {
+  color: red;
+}
+
+textarea,
+input {
+  font-size: 1.2rem;
 }
 </style>

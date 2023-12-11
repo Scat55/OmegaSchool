@@ -182,12 +182,21 @@ export default {
           placeholder="Введите название задания"
           v-model="nameTask"
           class="name__task"
+          maxlength="1000"
         />
+        <span class="lenght"
+          >{{ nameTask.length }}/<span :class="{ error: nameTask.length >= 1000 }">1000</span>
+        </span>
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
-        <textarea v-model="descriptionTask"></textarea>
+        <textarea v-model="descriptionTask" maxlength="1000"></textarea>
       </div>
+      <span class="lenght"
+        >{{ descriptionTask.length }}/<span :class="{ error: descriptionTask.length >= 1000 }"
+          >1000</span
+        >
+      </span>
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>
         <!--     Загрузка файлов мб удалю нахер   -->
@@ -232,8 +241,10 @@ export default {
           </button>
           <div v-if="isWindowOpen">
             <p>
-              При нажатии на кнопку "добавить чекбокс" добавляется один чекбокс. В инпут надо будет
-              ввести значение. Те варианты ответов, которое правильные, нужно будет отметить
+              При нажатии на кнопку "добавить вариант" добавляется один вариант. В поле надо будет
+              ввести значение. Те варианты ответов, которое правильные, нужно будет отметить.
+              <br /><br />
+              <span style="color: red"> Максимальное число вариантов - 6</span>
             </p>
           </div>
         </div>
@@ -280,9 +291,12 @@ export default {
 
   &__name_task {
     width: 100%;
-
     & > h3 {
       text-align: center;
+    }
+
+    input {
+      font-size: 1.2rem;
     }
   }
 
@@ -300,6 +314,7 @@ export default {
       padding: 8px;
       border-radius: 1rem;
       outline: none;
+      font-size: 1.2rem;
     }
   }
 
@@ -478,5 +493,13 @@ export default {
   border-radius: 0.5rem;
   outline: none;
   border: none;
+}
+.lenght {
+  font-size: 0.75rem;
+  margin-top: 0;
+  color: #d2d2d2;
+}
+.error {
+  color: red;
 }
 </style>

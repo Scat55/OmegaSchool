@@ -9,7 +9,7 @@
       />
       <transition name="fade">
         <div v-if="isShow" class="chat-content">
-          <div class="messages">
+          <div class="messages" ref="messageContainer">
             <div
               class="message"
               v-for="message in messages"
@@ -41,14 +41,6 @@ import axios from 'axios';
 
 export default {
   props: {
-    language: {
-      type: String,
-      default: 'ru',
-    },
-    randomResponses: {
-      type: Boolean,
-      default: true,
-    },
     name: {
       type: String,
       default: 'Пользователь',
@@ -85,8 +77,18 @@ export default {
         } catch (error) {
           console.error('Error sending message:', error);
         }
+
         this.userInput = '';
+
+        // После добавления нового сообщения опускаем скролл к последнему сообщению
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
       }
+    },
+    scrollToBottom() {
+      const container = this.$refs.messageContainer;
+      container.scrollTop = container.scrollHeight;
     },
   },
 };
