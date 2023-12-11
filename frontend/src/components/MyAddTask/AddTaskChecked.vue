@@ -37,6 +37,10 @@ export default {
 
   &__name {
     font-size: 1.1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 50%;
   }
 }
 </style>
