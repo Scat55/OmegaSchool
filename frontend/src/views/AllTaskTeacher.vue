@@ -52,12 +52,25 @@
         </button>
         <p v-else>Файлов нет</p>
       </div>
-      <div class="questions">
-        <div v-for="question in infoTask.questions">
-          {{ question.text }} - <span v-if="question.is_correct === true">Верно</span>
-          <span v-else>Не верно</span>
-        </div>
-      </div>
+      <!--      <div class="questions">-->
+      <!--        <div v-for="question in infoTask.questions">-->
+      <!--          {{ question.text }} - <span v-if="question.is_correct === true">Верно</span>-->
+      <!--          <span v-else>Не верно</span>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <table>
+        <tr>
+          <th>Вариант ответа</th>
+          <th>-</th>
+          <th>Ключ</th>
+        </tr>
+        <tr v-for="question in infoTask.questions">
+          <td>{{ question.text }}</td>
+          <td>-</td>
+          <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
+        </tr>
+      </table>
       <div class="mesageExpert">
         <div class="firstExpert">
           <p>Оценка первого эксперта: {{ infoTask.ver_1 }}</p>
@@ -332,4 +345,37 @@ export default {
     line-height: 140%;
   }
 }
+
+// Таблица
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+// Конец таблицы
 </style>
