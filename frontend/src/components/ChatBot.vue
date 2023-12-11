@@ -40,6 +40,12 @@
 import axios from 'axios';
 
 export default {
+  props: {
+    name: {
+      type: String,
+      default: 'Пользователь',
+    },
+  },
   data() {
     return {
       messages: [],
@@ -50,7 +56,7 @@ export default {
   methods: {
     async sendMessage() {
       if (this.userInput.trim() !== '') {
-        this.messages.push({ user: 'Пользователь', text: this.userInput });
+        this.messages.push({ user: this.name, text: this.userInput });
 
         try {
           const response = await axios.post(
