@@ -16,22 +16,10 @@
         <span>Условие задания:</span>
         <p class="taskDetal__bodyTask-text">{{ infoTask.test_description }}</p>
       </div>
-      <div
-        class="images"
-        id="gallery"
-      >
-        <div
-          v-if="infoTask.add_img"
-          v-for="img in images"
-        >
-
+      <div class="images" id="gallery">
+        <div v-if="infoTask.add_img" v-for="img in images">
           <!-- {{ 'newBack/uploads/' + infoTask.user_id + '/' + img }} -->
-          <img
-            :src="img"
-            class="image"
-            alt="Image"
-            data-fancybox="gallery"
-          />
+          <img :src="img" class="image" alt="Image" data-fancybox="gallery" />
         </div>
       </div>
       <!--  Доп.материалы Start  -->
@@ -45,18 +33,13 @@
           :class="{ rotate: isShow }"
         />
 
-        <div
-          class="taskDetal__infoFile"
-          v-if="isShow"
-        >
+        <div class="taskDetal__infoFile" v-if="isShow">
           <p>{{ this.infoTask.add_file }}</p>
           <a
             v-if="this.infoTask.add_file !== null && this.infoTask.add_file !== ''"
             class="downloadLink"
-          ><button
-              @click="downloadFiles()"
-              class="btn"
-            >Скачать</button></a>
+            ><button @click="downloadFiles()" class="btn">Скачать</button></a
+          >
           <p v-else>Файлов нет</p>
         </div>
       </div>
@@ -100,30 +83,19 @@
           placeholder="Введите ваш ответ"
           v-model="infoArea"
         ></textarea>
-        <input
-          type="file"
-          class="taskDetal__file"
-          ref="file"
-          multiple
-        />
+        <input type="file" class="taskDetal__file" ref="file" multiple />
       </div>
       <!-- Решение конец -->
 
       <!-- Подсказка начало -->
-      <div
-        class="taskDetal__hitn"
-        v-if="hint"
-      >
+      <div class="taskDetal__hitn" v-if="hint">
         <p>{{ this.hint }}</p>
       </div>
       <!-- Подсказка конец -->
 
       <!-- Ответ начало -->
 
-      <div
-        class="taskDetal__answer"
-        v-if="answer"
-      >
+      <div class="taskDetal__answer" v-if="answer">
         <p>{{ this.answer }}</p>
       </div>
       <!-- Ответ конец -->
@@ -133,18 +105,9 @@
         class="taskDetal__buttons"
         v-if="infoTask.level == 2 && infoTask.decided === 'Не решено'"
       >
-        <button
-          class="taskDetal__btn"
-          @click="sendLevelTwoTest"
-        >Отправить</button>
-        <button
-          class="taskDetal__btn"
-          @click="showHint"
-        >Взять подсказку</button>
-        <button
-          class="taskDetal__btn"
-          @click="showAnswer"
-        >Показать ответ</button>
+        <button class="taskDetal__btn" @click="sendLevelTwoTest">Отправить</button>
+        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
+        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
       <button
         class="taskDetal__button"
@@ -154,22 +117,10 @@
         Отправить
       </button>
 
-      <div
-        class="taskDetal__buttons"
-        v-if="infoTask.level == 3"
-      >
-        <button
-          class="taskDetal__btn"
-          @click="sendLevelThreeTest"
-        >Отправить</button>
-        <button
-          class="taskDetal__btn"
-          @click="showHint"
-        >Взять подсказку</button>
-        <button
-          class="taskDetal__btn"
-          @click="showAnswer"
-        >Показать ответ</button>
+      <div class="taskDetal__buttons" v-if="infoTask.level == 3">
+        <button class="taskDetal__btn" @click="sendLevelThreeTest">Отправить</button>
+        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
+        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
       </div>
       <!-- Кнопки конец -->
 
@@ -225,14 +176,7 @@
       </div> -->
       <div class="likes">
         {{ this.infoTask.likes }}
-        <img
-          src="../assets/images/hert.png"
-          alt="Like"
-          class="like"
-          @click="changeLike"
-        >
-
-
+        <img src="../assets/images/hert.png" alt="Like" class="like" @click="changeLike" />
       </div>
     </div>
   </div>
@@ -268,13 +212,13 @@ export default {
       like: 0,
       images: [],
       image: '',
-      isLiked: false
+      isLiked: false,
     };
   },
   computed: {
     splitFiles() {
-      return this.image.split(',')
-    }
+      return this.image.split(',');
+    },
   },
   // computed: {
   //   task() {
@@ -291,31 +235,35 @@ export default {
     async changeLike() {
       this.token = JSON.parse(localStorage.getItem('local'));
       if (!this.isLiked) {
-        this.infoTask.likes++
-        this.isLiked = !this.isLiked
-        await axios.post(`/api/likeToDeskriotion/${this.id}`, {
-        }, {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'application/json'
+        this.infoTask.likes++;
+        this.isLiked = !this.isLiked;
+        await axios.post(
+          `/api/likeToDeskriotion/${this.id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json',
+            },
           },
-        })
+        );
       } else {
-        this.infoTask.likes--
-        this.isLiked = !this.isLiked
-        await axios.post(`/api/likeToDeskriotion/${this.id}`, {
-        }, {
-          headers: {
-            Authorization: `Bearer ${this.token.token}`,
-            'Content-Type': 'application/json'
+        this.infoTask.likes--;
+        this.isLiked = !this.isLiked;
+        await axios.post(
+          `/api/likeToDeskriotion/${this.id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json',
+            },
           },
-        })
+        );
       }
-
     },
     async downloadImages() {
       this.token = JSON.parse(localStorage.getItem('local'));
-
     },
     sendLevelOneTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -436,19 +384,19 @@ export default {
           'Custom-UUID': this.teachrID,
         },
       })
-        .then(res => res.blob())
-        .then(data => {
-          let url = URL.createObjectURL(data) // Создаем ссылку
+        .then((res) => res.blob())
+        .then((data) => {
+          let url = URL.createObjectURL(data); // Создаем ссылку
 
-          let anchor = document.createElement('a')
+          let anchor = document.createElement('a');
           anchor.href = url;
-          anchor.download = this.fileName
-          document.body.append(anchor)
-          anchor.style = "display:none"
-          anchor.click()
-          anchor.remove()
-          URL.revokeObjectURL(url)
-        })
+          anchor.download = this.fileName;
+          document.body.append(anchor);
+          anchor.style = 'display:none';
+          anchor.click();
+          anchor.remove();
+          URL.revokeObjectURL(url);
+        });
     },
     // initializeUserChecks() {
     //   this.userChecks = this.infoTask.checkPoint.map(() => false);
@@ -471,8 +419,8 @@ export default {
     //     alert('Неверно. Вы получили 0 баллов.');
     //   }
     // },
-    helpMe() { },
-    showMeAnswer() { },
+    helpMe() {},
+    showMeAnswer() {},
     showFiles() {
       this.isShow = !this.isShow;
     },
@@ -481,8 +429,6 @@ export default {
     // this.initializeUserChecks();
     // this.initializeUserAnswers();
     this.token = JSON.parse(localStorage.getItem('local'));
-
-
   },
 
   mounted() {
@@ -499,20 +445,20 @@ export default {
         this.testID = response.data.test_id;
         this.addIMG = response.data.add_img;
 
-        let nameImage = this.addIMG.split(',')
+        let nameImage = this.addIMG.split(',');
 
         for (let i = 0; i < nameImage.length; i++) {
-          axios.get(`/api/download_image/${nameImage[i]}`, {
-            headers: {
-              Authorization: `Bearer ${this.token.token}`,
-              'Custom-UUID': this.teachrID,
-            },
-          }).then(res => {
-            this.image = `data:${res.data.contentType};base64,${res.data.data}`
-            this.images.push(this.image)
-
-
-          })
+          axios
+            .get(`/api/download_image/${nameImage[i]}`, {
+              headers: {
+                Authorization: `Bearer ${this.token.token}`,
+                'Custom-UUID': this.teachrID,
+              },
+            })
+            .then((res) => {
+              this.image = `data:${res.data.contentType};base64,${res.data.data}`;
+              this.images.push(this.image);
+            });
         }
       });
 
@@ -521,7 +467,6 @@ export default {
     });
     // console.log(this.addIMG)
   },
-
 };
 </script>
 
@@ -533,7 +478,7 @@ export default {
   background: white;
   // padding-top: .625rem;
   // padding-left: 1rem;
-  padding: 0.625rem 0.625rem 1rem 1rem;
+  padding: 1rem;
   border-radius: 1rem;
   border: 2px solid #487fb8;
 
@@ -543,7 +488,7 @@ export default {
 
   &__infoTask {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap;
     margin: 10px 0;
   }
@@ -555,7 +500,7 @@ export default {
     flex-direction: column;
     line-height: 160%;
 
-    &>span {
+    & > span {
       font-weight: bold;
     }
 
@@ -643,6 +588,44 @@ export default {
     margin-top: 1rem;
   }
 
+  // стили кнопка "Выбрать файл" начало
+
+  .taskDetal__file {
+    display: block;
+    margin-top: 1rem;
+    padding: 0.625rem;
+    border: 1px solid #487fb8;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: #fff;
+    color: #000;
+    //text-align: center;
+    transition: all 0.3s;
+    outline: none;
+    margin-bottom: 1rem;
+
+    &:hover {
+      background-color: rgba(94, 183, 255, 0.9);
+      color: #fff;
+    }
+
+    &::file-selector-button {
+      padding: 0.625rem;
+      border-radius: 0.5rem;
+      border: none;
+      background-color: $lightBlueColor;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($lightBlueColor, 10%); // Темнее на 10% при наведении
+      }
+    }
+  }
+
+  // стили кнопка конец
+
   &__btn {
     padding: 0.625rem;
     background-color: #fff;
@@ -674,14 +657,16 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 1rem;
+    //margin-top: 1rem;
+    margin: 1rem auto 0 auto;
+    width: 100%;
   }
 
   &__infoAnswer {
     padding: 0.625rem;
     resize: none;
     border-radius: 1rem;
-    width: 27rem;
+    width: 100%;
     height: 10rem;
   }
 
@@ -703,7 +688,7 @@ export default {
   display: flex;
   align-items: center;
 
-  &>input {
+  & > input {
     margin-right: 5px;
   }
 }
@@ -723,7 +708,6 @@ export default {
   gap: 1rem;
   max-width: 10rem;
   margin-top: 2rem;
-
 }
 
 .image {
@@ -736,14 +720,14 @@ export default {
 }
 
 .btn {
-  padding: .625rem;
+  padding: 0.625rem;
   margin-top: 0.5rem;
   cursor: pointer;
   background-color: #fff;
   color: #000;
   border-radius: 0.5rem;
   border: 1px solid #000;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     background-color: rgba(94, 183, 255, 0.9);
