@@ -62,16 +62,9 @@
           v-model="userAnswers[index]"
           ref="checkAnswer"
         />
-
-        <!-- Чекбоксы можно убрать если надо, пока используется для проверки -->
-
-        <!-- <ul class="taskDetal__list">
-          <li class="taskDetal__question" v-for="question in options.options">
-            {{ question.text }} -
-            <input type="checkbox" name="question.text" :value="question.text" ref="checkAnswer" />
-          </li>
-        </ul> -->
       </div>
+
+      <!--   Конец чекбоксы   -->
 
       <!-- Решение начало -->
       <div
@@ -126,43 +119,6 @@
 
       <!--  Блок только для 1 лвл заданий START  -->
       <!-- <div
-      class="container_answer"
-      v-if="task.complexity === '1'"
-    >
-      <p>Варианты ответов. Выберите верный ответ(-ы):</p>
-      <div
-        v-for="(chP, index) in task.checkPoint"
-        :key="index"
-      >
-        <div class="itemAnswer">
-          <input
-            type="checkbox"
-            :value="chP.text"
-            v-model="userChecks[index]"
-          /><label>{{
-            chP.text
-          }}</label>
-        </div>
-      </div>
-    </div> -->
-      <!--  END -->
-
-      <!-- <div class="container_button">
-      <button
-        class="container_button-btn"
-        @click="checkAnswer"
-      >Проверить</button>
-      <button
-        class="container_button-btn"
-        @click="helpMe"
-      >Взять подсказку</button>
-      <button
-        class="container_button-btn"
-        @click="showMeAnswer"
-      >Показать ответ</button>
-    </div> -->
-
-      <!-- <div
         class="likes"
         v-if="infoTask.decided === 'Не решено'"
       >
@@ -194,7 +150,6 @@ export default {
     return {
       id: this.$route.params.id,
       userChecks: [],
-      // chPt: this.task.checkPoint,
       isShow: false,
       infoTask: '',
       teachrID: '',
@@ -668,6 +623,7 @@ export default {
     border-radius: 1rem;
     width: 100%;
     height: 10rem;
+    font-size: 1.2rem;
   }
 
   &__hitn {
