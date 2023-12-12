@@ -230,7 +230,7 @@ export default {
         <div class="date_person_email">
           <p>Почта {{ person.email }}</p>
         </div>
-        <div class="level" v-if="person.level !== null">
+        <div class="level" v-if="person.level !== null && person.student === true">
           <p class="level__text">Мне доступны задания уровня</p>
           <span class="level__info"> - {{ person.level }}</span>
         </div>
