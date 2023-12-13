@@ -31,6 +31,8 @@ export default {
       token: '',
       files: '',
       selectedFiles: [],
+      taskId: '',
+      files: '',
     };
   },
   methods: {
@@ -74,52 +76,76 @@ export default {
     clearForm() {
       this.condition = '';
     },
-    handler() {
+    async handler() {
       this.token = JSON.parse(localStorage.getItem('local'));
       const task_test = encodeURIComponent(this.taskName);
       const task_description = encodeURIComponent(this.taskDescription);
       const task_help = encodeURIComponent(this.taskHelp);
       const task_answer = encodeURIComponent(this.taskAnswer);
-
       this.files = this.$refs.fileInputTwo.files;
+
       let allFiles = Object.values(this.files).map((el) => {
         return el;
       });
-
-      if (
-        this.task_test.lenght >= 1000 ||
-        this.task_description.lenght >= 1000 ||
-        this.task_help.lenght >= 1000 ||
-        this.task_answer.lenght >= 1000
-      ) {
-        alert('Ошибка');
-      } else {
-        axios.post(
-          `https://omega-lspu.ru/api/add_level_2/${task_test}/${task_description}/${task_help}/${task_answer}/${this.selectedClass}/${this.selectedItems}`,
-          allFiles,
+      await axios
+        .post(
+          `/api/add_level_2/`,
+          {
+            task_test: task_test,
+            task_description: task_description,
+            task_hint: task_help,
+            task_answer: task_answer,
+            classes: this.selectedClass,
+            subject: this.selectedItems,
+          },
           {
             headers: {
               Authorization: `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data',
             },
           },
-        );
+        )
+        .catch((err) => {
+          if (err.response) {
+            alert('Ошибка');
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
+        .then((res) => {
+          console.log(res.data.testId);
+          this.taskId = res.data.testId;
+        });
 
-        alert('Задание успешно загружено');
+      let formData = new FormData();
+      for (let i = 0; i < allFiles.length; i++) {
+        formData.append('file', allFiles[i]);
       }
-      console.log(
-        this.taskName,
-        this.taskDescription,
-        this.taskHelp,
-        this.taskAnswer,
-        '||',
-        this.selectedClass,
-        this.selectedItems,
-        '||',
-        allFiles,
-      );
-      this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
-      this.selectedFiles = '';
+      await axios
+        .post(`/api/add_file_level_2/${this.taskId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .catch((err) => {
+          alert('Ошибка');
+          if (err.response) {
+            alert(err);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
+        .then(() => {
+          alert('Задание успешно загружено');
+          this.taskName = this.taskDescription = this.taskHelp = this.taskAnswer = '';
+          this.selectedFiles = '';
+        });
     },
   },
   computed: {
@@ -142,21 +168,15 @@ export default {
           placeholder="Введите название задания"
           class="name__task"
           v-model="taskName"
-          maxlength="1000"
+
         />
-        <span class="lenght"
-          >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>
-        </span>
+
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea id="textAreaUsl" v-model="taskDescription" maxlength="1000"></textarea>
+        <textarea id="textAreaUsl" v-model="taskDescription" ></textarea>
       </div>
-      <span class="lenght"
-        >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
-          >1000</span
-        >
-      </span>
+      
 
       <div class="add__file">
         <div>
@@ -202,11 +222,8 @@ export default {
             ли ученик подсказку."</span
           >
         </p>
-        <textarea id="textAreaUsl" v-model="taskHelp" maxlength="1000"></textarea>
+        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>
       </div>
-      <span class="lenght"
-        >{{ taskHelp.length }}/<span :class="{ error: taskHelp.length >= 1000 }">1000</span>
-      </span>
       <div class="block">
         <p>
           Ответ -
@@ -216,11 +233,8 @@ export default {
             ответ."</span
           >
         </p>
-        <textarea id="answer" v-model="taskAnswer" maxlength="1000"></textarea>
+        <textarea id="answer" v-model="taskAnswer" ></textarea>
       </div>
-      <span class="lenght"
-        >{{ taskAnswer.length }}/<span :class="{ error: taskAnswer.length >= 1000 }">1000</span>
-      </span>
       <div class="btn-send">
         <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
         <button class="btn-reset" type="reset">Удалить все!</button>
@@ -349,19 +363,5 @@ export default {
   & > ul > li {
     list-style-type: none;
   }
-}
-
-.lenght {
-  font-size: 0.75rem;
-  margin-top: 0;
-  color: #d2d2d2;
-}
-.error {
-  color: red;
-}
-
-textarea,
-input {
-  font-size: 1.2rem;
 }
 </style>
