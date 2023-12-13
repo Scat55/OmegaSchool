@@ -29,6 +29,7 @@ export default {
       token: '',
       files: '',
       selectedFiles: [],
+      taskId: '',
     };
   },
 
@@ -37,7 +38,7 @@ export default {
       console.log('Форма очищена');
     },
     // Обработка формы
-    handler() {
+    async handler() {
       this.token = JSON.parse(localStorage.getItem('local'));
 
       const task_test = encodeURIComponent(this.taskName);
@@ -49,30 +50,62 @@ export default {
         return el;
       });
 
-      if (this.taskName.length >= 1000 || this.taskDescription >= 1000) {
-        alert('Ошибка');
-      } else {
-        axios.post(
-          `https://omega-lspu.ru/api/add_level_3/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}`,
-          allFiles,
+      await axios
+        .post(
+          `/api/add_level_3/`,
+          {
+            task_test: task_test,
+            task_description: task_description,
+            classes: this.selectedClass,
+            subject: this.selectedItems,
+          },
           {
             headers: {
               Authorization: `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data',
             },
           },
-        );
-        alert('Задание успешно загружено');
+        )
+        .catch((err) => {
+          if (err.response) {
+            alert('Ошибка');
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
+        .then((res) => {
+          console.log(res.data.testId);
+          this.taskId = res.data.testId;
+        });
+      let formData = new FormData();
+      for (let i = 0; i < allFiles.length; i++) {
+        formData.append('file', allFiles[i]);
       }
-      console.log(
-        this.taskName,
-        this.taskDescription,
-        '||',
-        this.selectedClass,
-        this.selectedItems,
-      );
-      this.taskName = this.taskDescription = '';
-      this.selectedFiles = '';
+      await axios
+        .post(`/api/add_file_level_3/${this.taskId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .catch((err) => {
+          alert('Ошибка');
+          if (err.response) {
+            alert(err);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
+        .then(() => {
+          alert('Задание успешно загружено');
+          this.taskName = this.taskDescription = '';
+          this.selectedFiles = '';
+        });
     },
     // Для загрузки файлов
     handleFileChange() {
