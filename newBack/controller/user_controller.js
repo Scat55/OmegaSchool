@@ -847,41 +847,22 @@ class User_controller {
   }
   async addTestAndUpload(req, res) {
     try {
-      const { task_test_coded, task_description_coded, classes, options, subject, test_id } = req.params;
+      const { task_test, task_description, classes, options, subject } = req.body;
 
-      const task_test = decodeURIComponent(task_test_coded);
-      const task_description = decodeURIComponent(task_description_coded);
       const questions = task_test;
 
       if (!options) {
         return res.status(400).json({ error: 'Options are missing' });
       }
 
-      const parsedOptions = JSON.parse(options);
-      console.log(parsedOptions);
+      // const parsedOptions = JSON.parse(options);
+      const parsedOptions = options;
 
       const user_id = req.user_id;
 
       let testId;
 
-      if (test_id) {
-        // If test_id is provided, update the existing test
-        testId = test_id;
-        // Update test data in the database
-        const updateTestQuery = `
-        UPDATE level_1_tests
-        SET user_id = $1, task_test = $2, task_description = $3, classes = $4, subject = $5
-        WHERE test_id = $6
-        RETURNING test_id;
-      `;
-        const updateTestValues = [user_id, task_test, task_description, classes, subject, testId];
-        const updateTestResult = await db.query(updateTestQuery, updateTestValues);
-        testId = updateTestResult.rows[0].test_id;
 
-        // Delete existing questions and options for the updated test
-        await db.query('DELETE FROM questions WHERE test_id = $1', [testId]);
-        await db.query('DELETE FROM options WHERE question_id IN (SELECT question_id FROM questions WHERE test_id = $1)', [testId]);
-      } else {
         // If test_id is not provided, insert a new test
         const insertTestQuery = `
         INSERT INTO level_1_tests (user_id, task_test, task_description, add_file, classes, subject, add_img)
@@ -891,7 +872,7 @@ class User_controller {
         const testValues = [user_id, task_test, task_description, null, classes, subject, null];
         const testResult = await db.query(insertTestQuery, testValues);
         testId = testResult.rows[0].test_id;
-      }
+
 
       // Insert question
       const insertQuestionQuery = `
@@ -905,7 +886,9 @@ class User_controller {
 
       // Insert options
       for (const option of parsedOptions) {
-        const { text: option_text, checked: is_correct } = option;
+        // console.log('option', option)
+        // const { text: option_text, checked: is_correct } = option;
+        const { option_text, is_correct } = option;
         console.log(option_text, is_correct);
         const insertOptionQuery = `
         INSERT INTO options (text, is_correct, question_id)
@@ -915,6 +898,18 @@ class User_controller {
         await db.query(insertOptionQuery, optionValues);
       }
 
+      return res.send({ message: 'Тест успешно загружены', testId });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  async addFileTest1(req,res) {
+
+        try{
+
+          const testId = req.params.test_id;
       // Update the record in the database with file paths
       const { pdfPath, imgPath } = store.work_with_files(req, res);
       const updateQuery = `
@@ -925,52 +920,20 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
 
-      return res.send({ message: 'Тест и файл успешно загружены' });
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).json({ error: 'Server error' });
-    }
+      return res.send({ message: 'Файл успешно загружены' });
+    } catch (error){
+          console.error(error.message);
+          res.status(500).json({ error: 'Server error' });
+        }
   }
 
 
-  async addTest2AndUpload(req, res) {
-    try {
-      const { task_test_coded, task_description_coded, task_hint, task_answer, classes, subject, test_id } = req.params;
-      const task_test = decodeURIComponent(task_test_coded);
-      const task_description = decodeURIComponent(task_description_coded);
-      const user_id = req.user_id;
-
-      let testId;
-
-      if (test_id) {
-        // If test_id is provided, update the existing test
-        testId = test_id;
-        // Update test data in the database
-        const updateTestQuery = `
-        UPDATE level_2_tests
-        SET user_id = $1, task_test = $2, task_description = $3, task_hint = $4, task_answer = $5, classes = $6, subject = $7
-        WHERE test_id = $8
-        RETURNING test_id;
-      `;
-        const updateTestValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, testId];
-        const updateTestResult = await db.query(updateTestQuery, updateTestValues);
-        testId = updateTestResult.rows[0].test_id;
-      } else {
-        // If test_id is not provided, insert a new test
-        const insertTestQuery = `
-        INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        RETURNING test_id;
-      `;
-        const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
-        const testResult = await db.query(insertTestQuery, testValues);
-        testId = testResult.rows[0].test_id;
-      }
-
-      // Use await for file operations
-      const { pdfPath, imgPath } = store.work_with_files(req, res);
-
+  async addFileTest2(req,res) {
+    try{
+      const testId = req.params.test_id;
+      console.log(testId)
       // Update the record in the database with file paths
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
       const updateQuery = `
       UPDATE level_2_tests
       SET add_file = $1, add_img = $2
@@ -979,7 +942,51 @@ class User_controller {
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
 
-      return res.send({ message: 'Тест и файл успешно загружены' });
+      return res.send({ message: 'Файл успешно загружены' });
+    } catch (error){
+      console.error(error.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+  async addFileTest3(req,res) {
+    try{
+      const testId = req.params.test_id;
+      // Update the record in the database with file paths
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
+      const updateQuery = `
+      UPDATE level_3_tests
+      SET add_file = $1, add_img = $2
+      WHERE test_id = $3;
+    `;
+      const updateValues = [pdfPath, imgPath, testId];
+      await db.query(updateQuery, updateValues);
+
+      return res.send({ message: 'Файл успешно загружены' });
+    } catch (error){
+      console.error(error.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+
+  async addTest2AndUpload(req, res) {
+    try {
+      const { task_test, task_description, task_hint, task_answer, classes, subject } = req.body;
+      const user_id = req.user_id;
+
+
+
+        // If test_id is not provided, insert a new test
+        const insertTestQuery = `
+        INSERT INTO level_2_tests (user_id, task_test, task_description, task_hint, task_answer, classes, subject, add_file, add_img)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING test_id;
+      `;
+        const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
+        const testResult = await db.query(insertTestQuery, testValues);
+        const testId = testResult.rows[0].test_id;
+
+      return res.send({ message: 'Тест успешно загружены', testId });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Server error' });
@@ -1008,27 +1015,13 @@ class User_controller {
 
   async addTest3AndUpload(req, res) {
     try {
-      const { task_test_coded, task_description_coded, classes, subject, test_id } = req.params;
-      const task_test = decodeURIComponent(task_test_coded);
-      const task_description = decodeURIComponent(task_description_coded);
+      const { task_test, task_description, classes, subject} = req.body;
+
       const user_id = req.user_id;
 
-      let testId;
 
-      if (test_id) {
-        // If test_id is provided, update the existing test
-        testId = test_id;
-        // Update test data in the database
-        const updateTestQuery = `
-        UPDATE level_3_tests
-        SET user_id = $1, task_test = $2, task_description = $3, classes = $4, subject = $5
-        WHERE test_id = $6
-        RETURNING test_id;
-      `;
-        const updateTestValues = [user_id, task_test, task_description, classes, subject, testId];
-        const updateTestResult = await db.query(updateTestQuery, updateTestValues);
-        testId = updateTestResult.rows[0].test_id;
-      } else {
+
+
         // If test_id is not provided, insert a new test
         const insertTestQuery = `
         INSERT INTO level_3_tests (user_id, task_test, task_description, classes, subject, add_file, add_img)
@@ -1037,22 +1030,10 @@ class User_controller {
       `;
         const testValues = [user_id, task_test, task_description, classes, subject, null, null];
         const testResult = await db.query(insertTestQuery, testValues);
-        testId = testResult.rows[0].test_id;
-      }
+        const testId = testResult.rows[0].test_id;
 
-      // Use await for file operations
-      const { pdfPath, imgPath } = await store.work_with_files(req, res);
 
-      // Update the record in the database with file paths
-      const updateQuery = `
-      UPDATE level_3_tests
-      SET add_file = $1, add_img = $2
-      WHERE test_id = $3;
-    `;
-      const updateValues = [pdfPath, imgPath, testId];
-      await db.query(updateQuery, updateValues);
-
-      return res.send({ message: 'Тест и файл успешно загружены' });
+      return res.send({ message: 'Тест успешно загружены', testId });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: 'Server error' });
