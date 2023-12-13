@@ -25,8 +25,8 @@ export default {
   data() {
     return {
       checkboxes: [
-        { text: '', checked: false },
-        { text: '', checked: false },
+        { option_text: '', is_correct: false },
+        { option_text: '', is_correct: false },
       ],
       // Для загрузки файлов
       selectedFiles: [],
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     addCheckbox() {
-      this.checkboxes.push({ text: '', checked: false });
+      this.checkboxes.push({ option_text: '', is_correct: false });
     },
     toggleWindow() {
       this.isWindowOpen = !this.isWindowOpen;
@@ -134,8 +134,8 @@ export default {
 
     deleteCheckBox() {
       this.checkboxes = [
-        { text: '', checked: false },
-        { text: '', checked: false },
+        { option_text: '', is_coorect: false },
+        { option_text: '', is_coorect: false },
       ];
       this.selectedFiles = [];
     },
@@ -280,13 +280,13 @@ export default {
               <input
                 class="shablonZadaniaFirst__checkbox_item_check"
                 type="checkbox"
-                v-model="checkbox.checked"
+                v-model="checkbox.is_correct"
                 :id="'checkbox-' + index"
               />
               <input
                 class="shablonZadaniaFirst__checkbox_item_input"
                 type="text"
-                v-model="checkbox.text"
+                v-model="checkbox.option_text"
               />
               <button @click="removeCheckbox(index)" type="button">X</button>
             </div>
