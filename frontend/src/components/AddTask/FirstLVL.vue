@@ -60,7 +60,7 @@ export default {
 
       const task_test = encodeURIComponent(this.nameTask);
       const task_description = encodeURIComponent(this.descriptionTask);
-      const questions = encodeURIComponent(JSON.stringify(this.checkboxes));
+      const questions = this.checkboxes;
 
       this.files = this.$refs.fileInput.files;
 
@@ -111,7 +111,7 @@ export default {
           },
         })
         .catch((err) => {
-          console.log(err);
+          alert('Ошибка');
           if (err.response) {
             alert(err);
           } else if (err.request) {
@@ -122,7 +122,7 @@ export default {
           }
         })
         .then((res) => {
-          console.log(res);
+          alert('Задание успешно загружено');
           this.nameTask = this.descriptionTask = this.class = '';
           this.selectedFiles = '';
           for (let i = 0; i < this.checkboxes.length; i++) {
