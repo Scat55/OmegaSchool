@@ -41,6 +41,7 @@ export default {
       token: '',
       newFile: '',
       files: [],
+      taskID: '',
     };
   },
   methods: {
@@ -57,7 +58,6 @@ export default {
     async sendTest(event) {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
 
-      const formData = new FormData();
       const task_test = encodeURIComponent(this.nameTask);
       const task_description = encodeURIComponent(this.descriptionTask);
       const questions = encodeURIComponent(JSON.stringify(this.checkboxes));
@@ -69,15 +69,20 @@ export default {
       });
 
       this.token = JSON.parse(localStorage.getItem('local'));
-      console.log(allFiles);
       await axios
         .post(
-          `/api/add_level_1/${task_test}/${task_description}/${this.selectedClass}/${this.selectedItems}/${questions}/`,
-          allFiles,
+          `/api/add_level_1/`,
+          {
+            task_test: task_test,
+            task_description: task_description,
+            classes: this.selectedClass,
+            subject: this.selectedItems,
+            options: questions,
+          },
+
           {
             headers: {
               Authorization: `Bearer ${this.token.token}`,
-              'Content-Type': 'multipart/form-data',
             },
           },
         )
@@ -92,7 +97,32 @@ export default {
           }
         })
         .then((res) => {
-          alert(res.data.message);
+          this.taskID = res.data.testId;
+        });
+      let formData = new FormData();
+      for (let i = 0; i < allFiles.length; i++) {
+        formData.append('file', allFiles[i]);
+      }
+      axios
+        .post(`/api/add_file_level_1/${this.taskID}`, formData, {
+          headers: {
+            Authorization: `Bearer ${this.token.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response) {
+            alert(err);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
+        .then((res) => {
+          console.log(res);
           this.nameTask = this.descriptionTask = this.class = '';
           this.selectedFiles = '';
           for (let i = 0; i < this.checkboxes.length; i++) {
