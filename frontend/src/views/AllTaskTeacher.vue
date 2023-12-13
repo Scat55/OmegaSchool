@@ -38,7 +38,7 @@
       <!--        </div>-->
       <!--      </div>-->
 
-      <table>
+      <table v-if="infoTask.level == '1'">
         <tr>
           <th>Вариант ответа</th>
           <th>-</th>
