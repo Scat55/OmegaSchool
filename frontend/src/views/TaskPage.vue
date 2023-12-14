@@ -128,22 +128,19 @@ export default {
       let filtered = this.tasks;
 
       if (this.selectedTopic) {
-        return (filtered = filtered.filter((task) => task.topic == this.selectedTopic));
+        filtered = filtered.filter((task) => task.topic == this.selectedTopic);
       }
 
       if (this.selectedLVL) {
-        return (filtered = filtered.filter((task) => task.complexity == this.selectedLVL));
+        filtered = filtered.filter((task) => task.complexity == this.selectedLVL);
       }
+
       if (this.selectedClass) {
-        filtered = filtered.filter((task) => {
-          return task.class == this.selectedClass;
-        });
+        filtered = filtered.filter((task) => task.class == this.selectedClass);
       }
 
       if (this.selectedStatus !== '') {
-        filtered = filtered.filter((task) => {
-          return task.status == this.selectedStatus;
-        });
+        filtered = filtered.filter((task) => task.status == this.selectedStatus);
       }
 
       if (this.searchQuery) {
@@ -151,6 +148,7 @@ export default {
           task.title.toLowerCase().includes(this.searchQuery.toLowerCase()),
         );
       }
+
       return filtered;
     },
 
