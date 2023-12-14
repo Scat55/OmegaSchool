@@ -1,7 +1,14 @@
 <script>
 import axios from 'axios';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 export default {
+  components: {
+    quillEditor,
+  },
   props: {
     selectedValue: {
       type: String,
@@ -78,10 +85,10 @@ export default {
     },
     async handler() {
       this.token = JSON.parse(localStorage.getItem('local'));
-      const task_test = encodeURIComponent(this.taskName);
-      const task_description = encodeURIComponent(this.taskDescription);
-      const task_help = encodeURIComponent(this.taskHelp);
-      const task_answer = encodeURIComponent(this.taskAnswer);
+      const task_test = this.taskName;
+      const task_description = this.taskDescription;
+      const task_help = this.taskHelp;
+      const task_answer = this.taskAnswer;
       this.files = this.$refs.fileInputTwo.files;
 
       let allFiles = Object.values(this.files).map((el) => {
@@ -168,15 +175,20 @@ export default {
           placeholder="Введите название задания"
           class="name__task"
           v-model="taskName"
-
         />
-
       </div>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea id="textAreaUsl" v-model="taskDescription" ></textarea>
+        <!--        <textarea id="textAreaUsl" v-model="taskDescription"></textarea>-->
+        <div class="ObolochaQuilEd">
+          <quill-editor
+            v-model="taskDescription"
+            class="QuilEd"
+            :options="{ placeholder: 'Введите ваш текст здесь...', readOnly: true }"
+            style="height: 200px"
+          />
+        </div>
       </div>
-      
 
       <div class="add__file">
         <div>
@@ -222,7 +234,15 @@ export default {
             ли ученик подсказку."</span
           >
         </p>
-        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>
+        <!--        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>-->
+        <div class="ObolochaQuilEd">
+          <quill-editor
+            v-model="taskHelp"
+            class="QuilEd"
+            :options="{ placeholder: 'Введите ваш текст здесь...', readOnly: true }"
+            style="height: 200px"
+          />
+        </div>
       </div>
       <div class="block">
         <p>
@@ -233,7 +253,15 @@ export default {
             ответ."</span
           >
         </p>
-        <textarea id="answer" v-model="taskAnswer" ></textarea>
+        <!--        <textarea id="answer" v-model="taskAnswer"></textarea>-->
+        <div class="ObolochaQuilEd">
+          <quill-editor
+            v-model="taskAnswer"
+            class="QuilEd"
+            :options="{ placeholder: 'Введите ваш текст здесь...', readOnly: true }"
+            style="height: 200px"
+          />
+        </div>
       </div>
       <div class="btn-send">
         <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
@@ -363,5 +391,17 @@ export default {
   & > ul > li {
     list-style-type: none;
   }
+}
+
+.ObolochaQuilEd {
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.QuilEd {
+  background: white;
+  border-radius: 1rem;
+  font-size: 1rem;
 }
 </style>

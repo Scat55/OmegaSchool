@@ -1,6 +1,13 @@
 <script>
 import axios from 'axios';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 export default {
+  components: {
+    quillEditor,
+  },
   props: {
     selectedValue: {
       type: String,
@@ -41,8 +48,8 @@ export default {
     async handler() {
       this.token = JSON.parse(localStorage.getItem('local'));
 
-      const task_test = encodeURIComponent(this.taskName);
-      const task_description = encodeURIComponent(this.taskDescription);
+      const task_test = this.taskName;
+      const task_description = this.taskDescription;
 
       this.files = this.$refs.fileInputThree.files;
 
@@ -173,7 +180,15 @@ export default {
       </span>
       <div class="block">
         <p>Введите условие задания:</p>
-        <textarea id="textAreaUsl" v-model="taskDescription" maxlength="1000"></textarea>
+        <!--        <textarea id="textAreaUsl" v-model="taskDescription" maxlength="1000"></textarea>-->
+        <div class="ObolochaQuilEd">
+          <quill-editor
+            v-model="taskDescription"
+            class="QuilEd"
+            :options="{ placeholder: 'Введите ваш текст здесь...', readOnly: true }"
+            style="height: 200px"
+          />
+        </div>
       </div>
       <span class="lenght"
         >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
@@ -336,5 +351,17 @@ export default {
 textarea,
 input {
   font-size: 1.2rem;
+}
+
+.ObolochaQuilEd {
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.QuilEd {
+  background: white;
+  border-radius: 1rem;
+  font-size: 1rem;
 }
 </style>

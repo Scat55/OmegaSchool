@@ -3,9 +3,12 @@ import App from './App.vue';
 import './assets/styles/styles.scss';
 import router from './router/';
 import store from './store';
-import VueLaTeX2JS from 'latex2vue';
+
+// import Vue2Editor from 'vue2-editor';
+
 Vue.config.productionTip = false;
-Vue.use(VueLaTeX2JS);
+
+// Vue.use(Vue2Editor);
 
 new Vue({
   store,

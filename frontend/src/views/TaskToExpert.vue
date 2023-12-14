@@ -18,32 +18,21 @@
           disabled="disabled"
           class="task__main-info-descr"
         ></textarea>
+        <quill-editor disabled="disabled" v-model="info.test_description" />
       </div>
-      <div
-        class="images"
-        id="gallery"
-        v-if="info.add_img"
-      >
+      <div class="images" id="gallery" v-if="info.add_img">
         <div v-for="img in images">
-          <img
-            :src="img"
-            class="image"
-            alt="Image"
-            data-fancybox="gallery"
-          />
+          <img :src="img" class="image" alt="Image" data-fancybox="gallery" />
         </div>
       </div>
-      <div
-        v-for="question in info.questions"
-        class="options"
-      >
-        <div>{{ question.text }} - <span v-if="question.is_correct">Верно</span> <span v-else>Не верно</span></div>
+      <div v-for="question in info.questions" class="options">
+        <div>
+          {{ question.text }} - <span v-if="question.is_correct">Верно</span>
+          <span v-else>Не верно</span>
+        </div>
         <!-- <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div> -->
       </div>
-      <div
-        class="answer"
-        v-if="info.task_hint || info.task_answer"
-      >
+      <div class="answer" v-if="info.task_hint || info.task_answer">
         <p>Подсказдка - {{ info.task_hint }}</p>
         <p>Ответ - {{ info.task_answer }}</p>
       </div>
@@ -60,38 +49,21 @@
 
       <div v-if="isShow">
         <p>{{ this.info.add_file }}</p>
-        <a
-          v-if="this.info.add_file"
-          class="downloadLink"
-        ><button
-            @click="downloadFiles()"
-            class="btn"
-          >Скачать</button></a>
+        <a v-if="this.info.add_file" class="downloadLink"
+          ><button @click="downloadFiles()" class="btn">Скачать</button></a
+        >
         <p v-else>Файлов нет</p>
       </div>
 
       <div class="estimation">
         <p>Оцените задание (1-на доработку. 2-отлично):</p>
-        <form
-          class="estimation__form"
-          @submit.prevent="handler()"
-        >
+        <form class="estimation__form" @submit.prevent="handler()">
           <label class="estimation__label">
-            <input
-              type="radio"
-              value="1"
-              name="2"
-              id="1"
-              v-model="valChek"
-            />1</label>
+            <input type="radio" value="1" name="2" id="1" v-model="valChek" />1</label
+          >
           <label class="estimation__label">
-            <input
-              type="radio"
-              value="2"
-              name="2"
-              id="2"
-              v-model="valChek"
-            />2</label>
+            <input type="radio" value="2" name="2" id="2" v-model="valChek" />2</label
+          >
           <textarea
             name="message"
             placeholder="Обратная связь по заданию"
@@ -99,10 +71,7 @@
             v-model="message"
             v-if="this.valChek === '1'"
           ></textarea>
-          <button
-            class="estimation__btn"
-            type="submit"
-          >Отправить</button>
+          <button class="estimation__btn" type="submit">Отправить</button>
         </form>
       </div>
     </div>
@@ -113,7 +82,15 @@
 import axios from 'axios';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+
 export default {
+  components: {
+    quillEditor,
+  },
   props: {
     options: Object,
   },
@@ -133,13 +110,13 @@ export default {
       addIMG: '',
       files: [],
       image: '',
-      images: []
+      images: [],
     };
   },
   computed: {
     splitFiles() {
-      return this.image.split(',')
-    }
+      return this.image.split(',');
+    },
   },
   methods: {
     // Скачивание файла
@@ -152,19 +129,19 @@ export default {
           'Custom-UUID': this.userID,
         },
       })
-        .then(res => res.blob())
-        .then(data => {
-          let url = URL.createObjectURL(data) // Создаем ссылку
+        .then((res) => res.blob())
+        .then((data) => {
+          let url = URL.createObjectURL(data); // Создаем ссылку
 
-          let anchor = document.createElement('a')
+          let anchor = document.createElement('a');
           anchor.href = url;
-          anchor.download = this.fileName
-          document.body.append(anchor)
-          anchor.style = "display:none"
-          anchor.click()
-          anchor.remove()
-          URL.revokeObjectURL(url)
-        })
+          anchor.download = this.fileName;
+          document.body.append(anchor);
+          anchor.style = 'display:none';
+          anchor.click();
+          anchor.remove();
+          URL.revokeObjectURL(url);
+        });
     },
     // Появление файла
     changeStatus() {
@@ -203,7 +180,6 @@ export default {
   created() {
     // Получение информации о задаче по id
     this.token = JSON.parse(localStorage.getItem('local'));
-
   },
 
   mounted() {
@@ -218,18 +194,20 @@ export default {
         this.userID = response.data.user_id;
         this.teachrID = response.data.user_id;
 
-        let nameImage = this.addIMG.split(',')
+        let nameImage = this.addIMG.split(',');
 
         for (let i = 0; i < nameImage.length; i++) {
-          axios.get(`/api/download_image/${nameImage[i]}`, {
-            headers: {
-              Authorization: `Bearer ${this.token.token}`,
-              'Custom-UUID': this.teachrID,
-            },
-          }).then(res => {
-            this.image = `data:${res.data.contentType};base64,${res.data.data}`
-            this.images.push(this.image)
-          })
+          axios
+            .get(`/api/download_image/${nameImage[i]}`, {
+              headers: {
+                Authorization: `Bearer ${this.token.token}`,
+                'Custom-UUID': this.teachrID,
+              },
+            })
+            .then((res) => {
+              this.image = `data:${res.data.contentType};base64,${res.data.data}`;
+              this.images.push(this.image);
+            });
         }
       });
 
@@ -237,7 +215,6 @@ export default {
       ...(this.options || {}),
       groupAttr: false,
     });
-
   },
 };
 </script>
@@ -386,14 +363,14 @@ export default {
 }
 
 .btn {
-  padding: .625rem;
+  padding: 0.625rem;
   margin-top: 0.5rem;
   cursor: pointer;
   background-color: #fff;
   color: #000;
   border-radius: 0.5rem;
   border: 1px solid #000;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     background-color: rgba(94, 183, 255, 0.9);

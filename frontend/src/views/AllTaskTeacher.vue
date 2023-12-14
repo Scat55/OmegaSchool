@@ -6,6 +6,7 @@
         <div class="infoTask__allInfo">
           <p>Класс - {{ infoTask.classes }}</p>
           <p>Предмет - {{ infoTask.subject }}</p>
+          <p>Уровень - {{ infoTask.level }}</p>
         </div>
       </div>
       <!--      <textarea-->
@@ -15,25 +16,45 @@
       <!--        class="infoTask__descr"-->
       <!--      ></textarea>-->
 
-      <div v-html="infoTask.test_description"></div>
+      <!--      <div v-html="infoTask.test_description"></div>-->
+
+      <quill-editor
+        disabled="disabled"
+        v-model="infoTask.test_description"
+        :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+      />
 
       <div class="images" id="gallery" v-if="infoTask.add_img">
         <div v-for="img in images">
           <img :src="img" class="image" alt="Image" data-fancybox="gallery" />
         </div>
       </div>
-      <div v-for="question in infoTask.questions" class="infoTask__options">
-        <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>
+      <!--      <div v-for="question in infoTask.questions" class="infoTask__options">-->
+      <!--        <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div>-->
+      <!--      </div>-->
+
+      <!--   Убрал свертывание подсказок   -->
+
+      <!--      <p class="infoTask__show" @click="isShowAnswer = !isShowAnswer" v-if="infoTask.level === '2'">-->
+      <!--        Показать подсказки-->
+      <!--      </p>-->
+      <!--      <div v-if="isShowAnswer">-->
+      <div class="infoTask__answer" v-if="infoTask.task_hint || infoTask.task_answer">
+        <p>Подсказка:</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="infoTask.task_hint"
+          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+        />
+
+        <p>Ответ:</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="infoTask.task_answer"
+          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+        />
       </div>
-      <p class="infoTask__show" @click="isShowAnswer = !isShowAnswer" v-if="isShowAnswer">
-        Показать подсказки
-      </p>
-      <div v-if="isShowAnswer">
-        <div class="infoTask__answer" v-if="infoTask.task_hint || info.task_answer">
-          <p>Подсказдка - {{ infoTask.task_hint }}</p>
-          <p>Ответ - {{ infoTask.task_answer }}</p>
-        </div>
-      </div>
+      <!--      </div>-->
       <!--      <div class="questions">-->
       <!--        <div v-for="question in infoTask.questions">-->
       <!--          {{ question.text }} - <span v-if="question.is_correct === true">Верно</span>-->
@@ -47,7 +68,7 @@
           <th>-</th>
           <th>Ключ</th>
         </tr>
-        <tr v-for="question in infoTask.questions">
+        <tr :key="question.text" v-for="question in infoTask.questions">
           <td>{{ question.text }}</td>
           <td>-</td>
           <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
@@ -101,8 +122,15 @@ import axios from 'axios';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { info } from 'sass';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 export default {
+  components: {
+    quillEditor,
+  },
   props: {
     options: Object,
   },

@@ -228,7 +228,7 @@ export default {
           <quill-editor
             v-model="descriptionTask"
             class="QuilEd"
-            :options="{ placeholder: 'Введите ваш текст здесь...' }"
+            :options="{ placeholder: 'Введите ваш текст здесь...', readOnly: true }"
             style="height: 200px"
           />
         </div>
