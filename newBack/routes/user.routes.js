@@ -40,7 +40,7 @@ router.get('/getTasksForTeacherByStudentByID/:testID/:userID', roleMiddleware(['
 router.post('/updateTestByTeacher/:testID/:userID', roleMiddleware(['Учитель', 'Эксперт']), userController.updateTestByTeacher)
 
 //Поиск всех файлов, загруженных пользователем, загрузка и выгрузка файлов
-router.post('/getAnswerByStudent2/:testID/:student_solution', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
+router.post('/getAnswerByStudent2/', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent2)
 router.post('/getAnswerByStudent3/:testID/:student_solution', roleMiddleware(['Ученик']), store.upload.any(), userController.getAnswerByStudent3)
 
 router.post('/add_level_1/', roleMiddleware(['Учитель', 'Эксперт']), userController.addTestAndUpload);

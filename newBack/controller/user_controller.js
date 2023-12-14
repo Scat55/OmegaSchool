@@ -201,7 +201,7 @@ class User_controller {
       const available_level = req.available_level; // Assuming available_level is available in the token
       const user_type = req.type_user;
 
-      if (user_type === 'Учитель') {
+      if (user_type === 'Учитель' || user_type === 'Эксперт') {
         const distinctTestIdsSql = `
         SELECT DISTINCT test_id, test_level
         FROM student_solutions;
