@@ -44,7 +44,10 @@
         <quill-editor
           disabled="disabled"
           v-model="infoTask.task_hint"
-          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+          :options="{
+            modules: { toolbar: false },
+            theme: 'bubble',
+          }"
         />
 
         <p>Ответ:</p>
