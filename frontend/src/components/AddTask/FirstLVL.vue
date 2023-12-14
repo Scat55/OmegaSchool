@@ -1,7 +1,14 @@
 <script>
 import axios from 'axios';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 export default {
+  components: {
+    quillEditor,
+  },
   props: {
     selectedValue: {
       type: String,
@@ -58,8 +65,8 @@ export default {
     async sendTest(event) {
       // console.log(this.nameTask, this.descriptionTask, this.checkboxes,  this.file)
 
-      const task_test = encodeURIComponent(this.nameTask);
-      const task_description = encodeURIComponent(this.descriptionTask);
+      const task_test = this.nameTask;
+      const task_description = this.descriptionTask;
       const questions = this.checkboxes;
 
       this.files = this.$refs.fileInput.files;
@@ -216,7 +223,15 @@ export default {
       </div>
       <div class="shablonZadaniaFirst__description_task">
         <p>Описании задачи / Условие</p>
-        <textarea v-model="descriptionTask"></textarea>
+        <!--        <textarea v-model="descriptionTask"></textarea>-->
+        <div class="ObolochaQuilEd">
+          <quill-editor
+            v-model="descriptionTask"
+            class="QuilEd"
+            :options="{ placeholder: 'Введите ваш текст здесь...' }"
+            style="height: 200px"
+          />
+        </div>
       </div>
       <div class="shablonZadaniaFirst__addFile">
         <p class="shablonZadaniaFirst__addFile">Дополнительные материалы</p>
@@ -514,5 +529,17 @@ export default {
   border-radius: 0.5rem;
   outline: none;
   border: none;
+}
+
+.ObolochaQuilEd {
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.QuilEd {
+  background: white;
+  border-radius: 1rem;
+  font-size: 1rem;
 }
 </style>
