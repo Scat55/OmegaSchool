@@ -404,9 +404,10 @@ class User_controller {
   }
 
   async getAnswerByStudent2(req, res) {
+
+
     const userId = req.user_id;
-    const testId = req.params.testID;
-    const student_solution = req.params.student_solution; // Предполагается, что userId и testId также отправляются в теле запроса
+    const {testId, student_solution} = req.body;
     console.log('student_solution', student_solution)
     try {
       // Сохраняем обработанную строку в базу данных
@@ -427,6 +428,24 @@ class User_controller {
       console.error('Ошибка при выполнении запроса к базе данных:', error);
       res.status(500).json({ error: 'Ошибка на сервере' });
     }
+  }
+
+  async getAnswerByStudentText2_3(req, res){
+      const userId = req.user_id;
+      const {testId, student_solution} = req.body;
+      const insertOptionsSql = `UPDATE student_solutions SET student_solution = $3 WHERE user_id = $1 AND test_id = $2;`;
+      await db.query(insertOptionsSql, [userId, testId, student_solution]);
+      res.status(200).json({ message: 'Ответы успешно сохранены' },);
+  }
+  async getAnswerByStudentFile2_3(req,res){
+      const userId = req.user_id;
+      const testId= req.params.testId;
+      const { pdfPath, imgPath } = store.work_with_files(req, res);
+      console.log(testId)
+      const updateQuery = `UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4`;
+      const updateValues = [pdfPath, imgPath, testId, userId];
+      await db.query(updateQuery, updateValues);
+      res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
   }
 
 
@@ -906,25 +925,12 @@ class User_controller {
   }
 
   async addFileTest1(req,res) {
-
-        try{
-
-          const testId = req.params.test_id;
-      // Update the record in the database with file paths
+      const testId = req.params.test_id;
       const { pdfPath, imgPath } = store.work_with_files(req, res);
-      const updateQuery = `
-      UPDATE level_1_tests
-      SET add_file = $1, add_img = $2
-      WHERE test_id = $3;
-    `;
+      const updateQuery = `UPDATE level_1_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
       const updateValues = [pdfPath, imgPath, testId];
       await db.query(updateQuery, updateValues);
-
       return res.send({ message: 'Файл успешно загружены' });
-    } catch (error){
-          console.error(error.message);
-          res.status(500).json({ error: 'Server error' });
-        }
   }
 
 
