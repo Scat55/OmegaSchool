@@ -8,12 +8,15 @@
           <p>Предмет - {{ infoTask.subject }}</p>
         </div>
       </div>
-      <textarea
-        type="text"
-        :value="infoTask.test_description"
-        disabled="disabled"
-        class="infoTask__descr"
-      ></textarea>
+      <!--      <textarea-->
+      <!--        type="text"-->
+      <!--        :value="infoTask.test_description"-->
+      <!--        disabled="disabled"-->
+      <!--        class="infoTask__descr"-->
+      <!--      ></textarea>-->
+
+      <div v-html="infoTask.test_description"></div>
+
       <div class="images" id="gallery" v-if="infoTask.add_img">
         <div v-for="img in images">
           <img :src="img" class="image" alt="Image" data-fancybox="gallery" />
@@ -97,6 +100,8 @@
 import axios from 'axios';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { info } from 'sass';
+
 export default {
   props: {
     options: Object,
@@ -124,6 +129,9 @@ export default {
     },
   },
   methods: {
+    info() {
+      return info;
+    },
     // Скачивание файла
     async downloadFiles() {
       //      const file = this.infoTask.add_file.split(',')
@@ -197,6 +205,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
+
 .infoTask {
   margin-top: 1rem;
   background-color: #fff;
