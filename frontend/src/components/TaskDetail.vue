@@ -14,7 +14,11 @@
       </div>
       <div class="taskDetal__bodyTask">
         <span>Условие задания:</span>
-        <p class="taskDetal__bodyTask-text">{{ infoTask.test_description }}</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="infoTask.test_description"
+          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+        />
       </div>
       <div class="images" id="gallery">
         <div v-if="infoTask.add_img" v-for="img in images">
@@ -142,7 +146,14 @@
 import axios from 'axios';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 export default {
+  components: {
+    quillEditor,
+  },
   props: {
     options: Object,
   },
