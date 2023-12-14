@@ -255,9 +255,9 @@ export default {
       })
       .then((response) => {
         this.tasks = response.data;
-        setTimeout(() => {
-          this.getFiltersFromLocalStorage();
-        }, 500);
+        // setTimeout(() => {
+        this.getFiltersFromLocalStorage();
+        // }, 500);
       });
   },
 };
