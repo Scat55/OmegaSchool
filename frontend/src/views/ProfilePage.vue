@@ -251,7 +251,7 @@ export default {
 
 .right_div {
   background: $lightBlueColor;
-  overflow-y: auto;
+  //overflow-y: auto;
   padding: 25px;
 
   &::-webkit-scrollbar {

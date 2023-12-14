@@ -175,9 +175,9 @@ export default {
           maxlength="1000"
         />
       </div>
-      <span class="lenght"
-        >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>
-      </span>
+      <!--      <span class="lenght"-->
+      <!--        >{{ taskName.length }}/<span :class="{ error: taskName.length >= 1000 }">1000</span>-->
+      <!--      </span>-->
       <div class="block">
         <p>Введите условие задания:</p>
         <!--        <textarea id="textAreaUsl" v-model="taskDescription" maxlength="1000"></textarea>-->
@@ -209,11 +209,11 @@ export default {
           />
         </div>
       </div>
-      <span class="lenght"
-        >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"
-          >1000</span
-        >
-      </span>
+      <!--      <span class="lenght"-->
+      <!--        >{{ taskDescription.length }}/<span :class="{ error: taskDescription.length >= 1000 }"-->
+      <!--          >1000</span-->
+      <!--        >-->
+      <!--      </span>-->
       <div class="add__file">
         <div>
           <label for="fileInputThree" class="custom-file-upload">
@@ -373,14 +373,12 @@ input {
 }
 
 .ObolochaQuilEd {
-  border-radius: 1rem;
-  overflow: hidden;
   margin: 20px 0;
 }
 
 .QuilEd {
   background: white;
-  border-radius: 1rem;
-  font-size: 1rem;
+  //border-radius: 1rem;
+  //font-size: 1rem;
 }
 </style>

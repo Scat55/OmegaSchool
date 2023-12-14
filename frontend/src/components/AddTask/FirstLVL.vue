@@ -551,14 +551,12 @@ export default {
 }
 
 .ObolochaQuilEd {
-  border-radius: 1rem;
-  overflow: hidden;
   margin: 20px 0;
 }
 
 .QuilEd {
   background: white;
-  border-radius: 1rem;
-  font-size: 1rem;
+  //border-radius: 1rem;
+  //font-size: 1rem;
 }
 </style>
