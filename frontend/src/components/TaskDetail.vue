@@ -86,14 +86,24 @@
 
       <!-- Подсказка начало -->
       <div class="taskDetal__hitn" v-if="hint">
-        <p>{{ this.hint }}</p>
+        <p>Подсказка:</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="this.hint"
+          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+        />
       </div>
       <!-- Подсказка конец -->
 
       <!-- Ответ начало -->
 
       <div class="taskDetal__answer" v-if="answer">
-        <p>{{ this.answer }}</p>
+        <p>Ответ:</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="this.answer"
+          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+        />
       </div>
       <!-- Ответ конец -->
 
