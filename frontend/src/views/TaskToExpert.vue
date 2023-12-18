@@ -12,29 +12,64 @@
         </div>
       </div>
       <div>
-        <textarea
-          type="text"
-          :value="info.test_description"
+        <!--        <textarea-->
+        <!--          type="text"-->
+        <!--          :value="info.test_description"-->
+        <!--          disabled="disabled"-->
+        <!--          class="task__main-info-descr"-->
+        <!--        ></textarea>-->
+        <quill-editor
           disabled="disabled"
-          class="task__main-info-descr"
-        ></textarea>
-        <quill-editor disabled="disabled" v-model="info.test_description" />
+          v-model="info.test_description"
+          :options="{
+            modules: { toolbar: false },
+            theme: 'bubble',
+          }"
+        />
       </div>
       <div class="images" id="gallery" v-if="info.add_img">
         <div v-for="img in images">
           <img :src="img" class="image" alt="Image" data-fancybox="gallery" />
         </div>
       </div>
-      <div v-for="question in info.questions" class="options">
-        <div>
-          {{ question.text }} - <span v-if="question.is_correct">Верно</span>
-          <span v-else>Не верно</span>
-        </div>
-        <!-- <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div> -->
-      </div>
+      <!--      <div v-for="question in info.questions" class="options">-->
+      <!--        <div>-->
+      <!--          {{ question.text }} - <span v-if="question.is_correct">Верно</span>-->
+      <!--          <span v-else>Не верно</span>-->
+      <!--        </div>-->
+      <!--        &lt;!&ndash; <div v-for="option in question.options">{{ option.text }} - {{ option.is_correct }}</div> &ndash;&gt;-->
+      <!--      </div>-->
+      <table>
+        <tr>
+          <th>Вариант ответа</th>
+          <th>-</th>
+          <th>Ключ</th>
+        </tr>
+        <tr :key="question.text" v-for="question in info.questions">
+          <td>{{ question.text }}</td>
+          <td>-</td>
+          <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
+        </tr>
+      </table>
       <div class="answer" v-if="info.task_hint || info.task_answer">
-        <p>Подсказдка - {{ info.task_hint }}</p>
-        <p>Ответ - {{ info.task_answer }}</p>
+        <p>Подсказдка:</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="info.task_hint"
+          :options="{
+            modules: { toolbar: false },
+            theme: 'bubble',
+          }"
+        />
+        <p>Ответ:</p>
+        <quill-editor
+          disabled="disabled"
+          v-model="info.task_answer"
+          :options="{
+            modules: { toolbar: false },
+            theme: 'bubble',
+          }"
+        />
       </div>
       <div class="dop">
         <p>Дополнительные файлы</p>
@@ -378,4 +413,37 @@ export default {
     border: none;
   }
 }
+
+// Таблица
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+// Конец таблицы
 </style>
