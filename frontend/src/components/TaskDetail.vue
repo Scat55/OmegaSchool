@@ -279,7 +279,7 @@ export default {
         return el;
       });
 
-      axios.post(`/ api / getAnswerByStudent2 / ${this.testID} / ${this.infoArea}`, allFiles, {
+      axios.post(`/api/getAnswerByStudent2/${this.testID}/${this.infoArea}`, allFiles, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
           'Content-Type': 'multipart/form-data',
@@ -296,7 +296,7 @@ export default {
         return el;
       });
 
-      axios.post(`/ api / getAnswerByStudent3 / ${this.testID} / ${this.infoArea}`, allFiles, {
+      axios.post(`/api/getAnswerByStudent3/${this.testID}/${this.infoArea}`, allFiles, {
         headers: {
           Authorization: `Bearer ${this.token.token}`,
           'Content-Type': 'multipart/form-data',
@@ -310,7 +310,7 @@ export default {
       this.token = JSON.parse(localStorage.getItem('local'));
       axios
         .post(
-          `/ api / getTasksAnswerForStudent / ${this.testID}`,
+          `/api/getTasksAnswerForStudent/${this.testID}`,
           {},
           {
             headers: {
@@ -327,7 +327,7 @@ export default {
       this.token = JSON.parse(localStorage.getItem('local'));
       axios
         .post(
-          `/ api / getTasksHintForStudent / ${this.testID}`,
+          `/api/getTasksHintForStudent/${this.testID}`,
           {},
           {
             headers: {
