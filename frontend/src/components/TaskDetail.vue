@@ -289,15 +289,37 @@ export default {
         return el;
       });
 
-      axios.post(`/api/getAnswerByStudent2/${this.testID}/${this.infoArea}`, allFiles, {
-        headers: {
-          Authorization: `Bearer ${this.token.token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      alert('Задание отпралено на проверку');
-      this.infoArea = '';
-      this.$router.push('/task');
+      axios
+        .post(
+          `/api/getAnswerByStudentText2_3/`,
+          {
+            testId: this.testID,
+            student_solution: this.infoArea,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+        .then(() => {
+          axios.post(
+            `/api/getAnswerByStudentFile2_3/${this.testID}`,
+            { file: allFiles },
+            {
+              headers: {
+                Authorization: `Bearer ${this.token.token}`,
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          );
+        })
+        .then(() => {
+          alert('Задание отпралено на проверку');
+          this.infoArea = '';
+          this.$router.push('/task');
+        });
     },
     sendLevelThreeTest() {
       this.token = JSON.parse(localStorage.getItem('local'));
@@ -306,15 +328,37 @@ export default {
         return el;
       });
 
-      axios.post(`/api/getAnswerByStudent3/${this.testID}/${this.infoArea}`, allFiles, {
-        headers: {
-          Authorization: `Bearer ${this.token.token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      alert('Задание отпралено на проверку');
-      this.infoArea = '';
-      this.$router.push('/task');
+      axios
+        .post(
+          `/api/getAnswerByStudentText2_3/`,
+          {
+            testId: this.testID,
+            student_solution: this.infoArea,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+        .then(() => {
+          axios.post(
+            `/api/getAnswerByStudentFile2_3/${this.testID}`,
+            { file: allFiles },
+            {
+              headers: {
+                Authorization: `Bearer ${this.token.token}`,
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          );
+        })
+        .then(() => {
+          alert('Задание отпралено на проверку');
+          this.infoArea = '';
+          this.$router.push('/task');
+        });
     },
     showAnswer() {
       this.token = JSON.parse(localStorage.getItem('local'));
