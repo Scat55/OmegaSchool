@@ -244,7 +244,7 @@ export default {
         </div>
       </div>
 
-      <div class="block">
+      <!-- <div class="block">
         <p>
           Введите подсказку -
           <span id="warning"
@@ -252,9 +252,9 @@ export default {
             время у вас во вкладке "задачи на проверку ( от учеников )" будет помечено использовал
             ли ученик подсказку."</span
           >
-        </p>
+        </p> -->
         <!--        <textarea id="textAreaUsl" v-model="taskHelp"></textarea>-->
-        <div class="ObolochaQuilEd">
+        <!-- <div class="ObolochaQuilEd">
           <quill-editor
             v-model="taskHelp"
             class="QuilEd"
@@ -280,9 +280,9 @@ export default {
               },
             }"
           />
-        </div>
+        </div> -->
       </div>
-      <div class="block">
+      <!-- <div class="block">
         <p>
           Ответ -
           <span id="warning"
@@ -290,9 +290,9 @@ export default {
             вкладке "задачи на проверку ( от учеников )" будет помечено использовал ли ученик
             ответ."</span
           >
-        </p>
+        </p> -->
         <!--        <textarea id="answer" v-model="taskAnswer"></textarea>-->
-        <div class="ObolochaQuilEd">
+        <!-- <div class="ObolochaQuilEd">
           <quill-editor
             v-model="taskAnswer"
             class="QuilEd"
@@ -318,8 +318,8 @@ export default {
               },
             }"
           />
-        </div>
-      </div>
+        </div> -->
+      <!-- </div>  -->
       <div class="btn-send">
         <button class="btn" type="submit">Отправить задание на проверку эксперту!</button>
         <button class="btn-reset" type="reset">Удалить все!</button>
