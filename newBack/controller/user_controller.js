@@ -439,7 +439,7 @@ class User_controller {
   }
   async getAnswerByStudentFile2_3(req,res){
       const userId = req.user_id;
-      const testId= req.params.testId;
+      const testId= req.params.testID;
       const { pdfPath, imgPath } = store.work_with_files(req, res);
       console.log(testId)
       const updateQuery = `UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4`;
