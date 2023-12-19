@@ -39,7 +39,7 @@
       <!--        Показать подсказки-->
       <!--      </p>-->
       <!--      <div v-if="isShowAnswer">-->
-      <div class="infoTask__answer" v-if="infoTask.task_hint || infoTask.task_answer">
+      <!-- <div class="infoTask__answer" v-if="infoTask.task_hint || infoTask.task_answer">
         <p>Подсказка:</p>
         <quill-editor
           disabled="disabled"
@@ -56,7 +56,7 @@
           v-model="infoTask.task_answer"
           :options="{ modules: { toolbar: false }, theme: 'bubble' }"
         />
-      </div>
+      </div> -->
       <!--      </div>-->
       <!--      <div class="questions">-->
       <!--        <div v-for="question in infoTask.questions">-->

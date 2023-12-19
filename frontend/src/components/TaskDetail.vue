@@ -85,26 +85,26 @@
       <!-- Решение конец -->
 
       <!-- Подсказка начало -->
-      <div class="taskDetal__hitn" v-if="hint">
+      <!-- <div class="taskDetal__hitn" v-if="hint">
         <p>Подсказка:</p>
         <quill-editor
           disabled="disabled"
           v-model="this.hint"
           :options="{ modules: { toolbar: false }, theme: 'bubble' }"
         />
-      </div>
+      </div> -->
       <!-- Подсказка конец -->
 
       <!-- Ответ начало -->
 
-      <div class="taskDetal__answer" v-if="answer">
+      <!-- <div class="taskDetal__answer" v-if="answer">
         <p>Ответ:</p>
         <quill-editor
           disabled="disabled"
           v-model="this.answer"
           :options="{ modules: { toolbar: false }, theme: 'bubble' }"
         />
-      </div>
+      </div> -->
       <!-- Ответ конец -->
 
       <!-- Кнопки  начало -->
@@ -113,8 +113,8 @@
         v-if="infoTask.level == 2 && infoTask.decided === 'Не решено'"
       >
         <button class="taskDetal__btn" @click="sendLevelTwoTest">Отправить</button>
-        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
-        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
+        <!-- <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
+        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button> -->
       </div>
       <button
         class="taskDetal__button"
@@ -126,8 +126,8 @@
 
       <div class="taskDetal__buttons" v-if="infoTask.level == 3">
         <button class="taskDetal__btn" @click="sendLevelThreeTest">Отправить</button>
-        <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
-        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button>
+        <!-- <button class="taskDetal__btn" @click="showHint">Взять подсказку</button>
+        <button class="taskDetal__btn" @click="showAnswer">Показать ответ</button> -->
       </div>
       <!-- Кнопки конец -->
 

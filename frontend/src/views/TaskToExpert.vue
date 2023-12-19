@@ -51,7 +51,7 @@
           <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
         </tr>
       </table>
-      <div class="answer" v-if="info.task_hint || info.task_answer">
+      <!-- <div class="answer" v-if="info.task_hint || info.task_answer">
         <p>Подсказдка:</p>
         <quill-editor
           disabled="disabled"
@@ -70,7 +70,7 @@
             theme: 'bubble',
           }"
         />
-      </div>
+      </div> -->
       <div class="dop">
         <p>Дополнительные файлы</p>
         <img
