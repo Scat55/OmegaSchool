@@ -20,14 +20,8 @@
           class="task__main-info-descr"
         ></textarea>
       </div>
-      <div
-        class="images"
-        id="gallery"
-      >
-        <div
-          v-if="infoTask.add_img"
-          v-for="img in splitFiles"
-        >
+      <div class="images" id="gallery">
+        <div v-if="infoTask.add_img" v-for="img in splitFiles">
           <img
             :src="require('../../../newBack/uploads/' + infoTask.user_id + '/' + img)"
             class="image"
@@ -37,17 +31,14 @@
         </div>
       </div>
 
-      <div
-        class="answer"
-        v-if="info.task_hint || info.task_answer"
-      >
+      <!-- <div class="answer" v-if="info.task_hint || info.task_answer">
         <p>
           Смотрел подсказку- <span>{{ info.check_answer }}</span>
         </p>
         <p>
           Смотрел ответ - <span>{{ info.check_hint }}</span>
         </p>
-      </div>
+      </div> -->
       <div class="dop">
         <p>Дополнительные файлы</p>
         <img
@@ -61,56 +52,31 @@
 
       <div v-if="isShow">
         <p>{{ this.info.add_file_by_student }}</p>
-        <a
-          v-if="this.info.add_file_by_student"
-          class="downloadLink"
-        ><button
-            @click="downloadFiles()"
-            class="btn"
-          >Скачать</button></a>
+        <a v-if="this.info.add_file_by_student" class="downloadLink"
+          ><button @click="downloadFiles()" class="btn">Скачать</button></a
+        >
         <p v-else>Файлов нет</p>
       </div>
 
       <div class="estimation">
-        <p>Оцените задание (0-смотрел ответ. 1-смотрел подсказку. 2-решил сам):</p>
-        <form
-          class="estimation__form"
-          @submit.prevent="handler()"
-        >
+        <p>Оцените задание:</p>
+        <form class="estimation__form" @submit.prevent="handler()">
           <label class="estimation__label">
-            <input
-              type="radio"
-              value="0"
-              name="2"
-              id="0"
-              v-model="valChek"
-            />0</label>
+            <input type="radio" value="0" name="2" id="0" v-model="valChek" />0</label
+          >
           <label class="estimation__label">
-            <input
-              type="radio"
-              value="1"
-              name="2"
-              id="1"
-              v-model="valChek"
-            />1</label>
+            <input type="radio" value="1" name="2" id="1" v-model="valChek" />1</label
+          >
           <label class="estimation__label">
-            <input
-              type="radio"
-              value="2"
-              name="2"
-              id="2"
-              v-model="valChek"
-            />2</label>
+            <input type="radio" value="2" name="2" id="2" v-model="valChek" />2</label
+          >
           <textarea
             name="message"
             placeholder="Обратная связь по заданию"
             class="estimation__message"
             v-model="message"
           ></textarea>
-          <button
-            class="estimation__btn"
-            type="submit"
-          >Отправить</button>
+          <button class="estimation__btn" type="submit">Отправить</button>
         </form>
       </div>
     </div>
@@ -135,7 +101,7 @@ export default {
       url: '',
       blob: '',
       file: '',
-      addIMG: ''
+      addIMG: '',
     };
   },
 
@@ -166,7 +132,6 @@ export default {
             a.href = this.url;
             a.download = this.fileName;
           }
-
         });
     },
     // Появление файла
@@ -189,8 +154,8 @@ export default {
           },
         },
       );
-      alert('Спасибо за оценку')
-      this.$router.push(`/profile/${this.token.userID}`)
+      alert('Спасибо за оценку');
+      this.$router.push(`/profile/${this.token.userID}`);
     },
   },
 
@@ -354,14 +319,14 @@ export default {
 }
 
 .btn {
-  padding: .625rem;
+  padding: 0.625rem;
   margin-top: 0.5rem;
   cursor: pointer;
   background-color: #fff;
   color: #000;
   border-radius: 0.5rem;
   border: 1px solid #000;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     background-color: rgba(94, 183, 255, 0.9);
