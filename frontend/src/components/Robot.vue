@@ -14,7 +14,7 @@
           </p>
           <button class="robot__btn" @click="changeStatusOnTrue()">Начать заниматься</button>
         </div>
-        <img src="../assets/images/umnik.png" alt="Robot" />
+        <img src="../assets/images/umnik (2).png" alt="Robot" />
       </div>
     </div>
   </div>
