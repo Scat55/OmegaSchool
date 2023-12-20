@@ -153,27 +153,36 @@ class User_controller {
 SELECT *
 FROM level_1_tests
 WHERE
-(ver_1_id IS NULL
-or (ver_2_id IS NULL or ver_1_id != $1))
-AND user_id != $1;
+  (
+    (ver_1_id IS NULL AND ver_2_id IS NULL) OR
+    (ver_1_id IS NULL AND ver_2_id != $1) OR 
+    (ver_1_id != $1 AND ver_2_id IS NULL)
+  )
+  AND user_id != $1
         `;
       // Запрос для level_2_tests
       const level2TestsSql = `
 SELECT *
-FROM level_1_tests
+FROM level_2_tests
 WHERE
-(ver_1_id IS NULL
-or (ver_2_id IS NULL or ver_1_id != $1))
-AND user_id != $1;
+  (
+    (ver_1_id IS NULL AND ver_2_id IS NULL) OR
+    (ver_1_id IS NULL AND ver_2_id != $1) OR 
+    (ver_1_id != $1 AND ver_2_id IS NULL)
+  )
+  AND user_id != $1
         `;
       // Запрос для level_3_tests
       const level3TestsSql = `
 SELECT *
-FROM level_1_tests
+FROM level_3_tests
 WHERE
-(ver_1_id IS NULL
-or (ver_2_id IS NULL or ver_1_id != $1))
-AND user_id != $1;
+  (
+    (ver_1_id IS NULL AND ver_2_id IS NULL) OR
+    (ver_1_id IS NULL AND ver_2_id != $1) OR 
+    (ver_1_id != $1 AND ver_2_id IS NULL)
+  )
+  AND user_id != $1
         `;
       // Выполнение запросов для каждого уровня
       const level1OptionsResult = await db.query(level1TestsSql, [user_id]);
