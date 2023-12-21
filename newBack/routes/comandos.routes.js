@@ -13,7 +13,7 @@ router.post('/create', commandosController.CreateComandos)
 
 router.post('/login', commandosController.LoginComandos) //тут получаешь токен
 
-router.post('/createUsers',commandosController.createUsers)
+router.put('/changeuser', commandosController.updateUsersByCommand);
 
 router.get('/info', commandosMiddleware, commandosController.InfoComandos) //тут нужен токен
 //
