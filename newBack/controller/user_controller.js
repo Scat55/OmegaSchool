@@ -1,4 +1,4 @@
-const db = require('../db')
+const pool = require('../db')
 const fs = require('fs');
 const path = require('path');
 const { resolve, join } = require("path");
@@ -12,7 +12,7 @@ class User_controller {
     try {
       const query = 'SELECT * FROM users';
       // Выполняем асинхронный SQL-запрос для получения пользователей
-      const users = await db.query(query);
+      const users = await pool.query(query);
       // Отправляем список пользователей в ответе
       res.json(users.rows);
     } catch (error) {
@@ -32,7 +32,7 @@ class User_controller {
                    SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
                    WHERE user_id = $7`;
       // Используем асинхронный метод для выполнения SQL-запроса
-      await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
+      await pool.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
       console.log('Дополнительные данные успешно обновлены');
       res.status(200).json({ message: 'Дополнительные данные успешно обновлены' });
     } catch (error) {
@@ -47,10 +47,10 @@ class User_controller {
     try {
       // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
       const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
-        db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
-        db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
-        db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
-        db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
+        pool.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
+        pool.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
+        pool.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
+        pool.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
       ]);
 
       // Извлекаем результаты из объектов результата
@@ -80,7 +80,7 @@ class User_controller {
   async getTypeOfUser(req, res) {
     const sql = 'SELECT DISTINCT type_user FROM users'; // Запрос на получение уникальных типов пользователей
     try {
-      const result = await db.query(sql); // Выполнение запроса без параметров
+      const result = await pool.query(sql); // Выполнение запроса без параметров
       const typesUser = result.rows.map(row => row.type_user);
       res.json({ typesUser });
     } catch (error) {
@@ -97,7 +97,7 @@ class User_controller {
     console.log(email)
     try {
       // Выполняем SQL-запрос и ожидаем результат с использованием async/await
-      const { rows } = await db.query(sql, [email]);
+      const { rows } = await pool.query(sql, [email]);
       if (rows.length > 0) {
         // Если есть результаты запроса, извлекаем user_id
         const user_id = rows[0].user_id;
@@ -120,10 +120,10 @@ class User_controller {
     const email = req.params.email; // Получите email из параметров запроса.
     try {
       const [userResult, achievementsResult, gradesResult, achievements_teacherResult] = await Promise.all([
-        db.query('SELECT * FROM users WHERE email = $1', [email]),
-        db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
-        db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
-        db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
+        pool.query('SELECT * FROM users WHERE email = $1', [email]),
+        pool.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+        pool.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+        pool.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
       ]);
       // Извлекаем результаты из объектов результата
       const user = userResult.rows[0];
@@ -185,9 +185,9 @@ WHERE
   AND user_id != $1
         `;
       // Выполнение запросов для каждого уровня
-      const level1OptionsResult = await db.query(level1TestsSql, [user_id]);
-      const level2OptionsResult = await db.query(level2TestsSql, [user_id]);
-      const level3OptionsResult = await db.query(level3TestsSql, [user_id]);
+      const level1OptionsResult = await pool.query(level1TestsSql, [user_id]);
+      const level2OptionsResult = await pool.query(level2TestsSql, [user_id]);
+      const level3OptionsResult = await pool.query(level3TestsSql, [user_id]);
       // Формирование ответа
       const formattedResponse = [
         ...level1OptionsResult.rows.map(test => ({
@@ -225,7 +225,7 @@ WHERE
         FROM student_solutions;
       `;
 
-        const distinctTestIdsResult = await db.query(distinctTestIdsSql);
+        const distinctTestIdsResult = await pool.query(distinctTestIdsSql);
         const distinctTestIds = distinctTestIdsResult.rows;
 
         console.log(distinctTestIds);
@@ -238,7 +238,7 @@ WHERE
             WHERE test_id = $1  ;
           `;
 
-            const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+            const levelTestResult = await pool.query(levelTestSql, [test.test_id]);
 
             if (levelTestResult.rows.length > 0) {
               const testDetails = levelTestResult.rows[0];
@@ -285,7 +285,7 @@ WHERE
     `;
 
         // Execute the query
-        const studentTestsResult = await db.query(baseSql, [user_id, available_level]);
+        const studentTestsResult = await pool.query(baseSql, [user_id, available_level]);
 
         // Fetch details for each test
         const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
@@ -295,7 +295,7 @@ WHERE
         WHERE test_id = $1;
       `;
 
-          const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+          const levelTestResult = await pool.query(levelTestSql, [test.test_id]);
 
           if (levelTestResult.rows.length > 0) {
             const testDetails = levelTestResult.rows[0];
@@ -350,10 +350,10 @@ WHERE
             WHERE user_id = $1 AND test_id = $2;
         `;
       // Execute the query to get the hint
-      const studentTestsHintResult = await db.query(studentTestsHintSql, [test_id]);
+      const studentTestsHintResult = await pool.query(studentTestsHintSql, [test_id]);
       // If a hint exists, update the check status
       if (studentTestsHintResult.rows.length > 0) {
-        await db.query(studentTestsHintCheckSql, [user_id, test_id]);
+        await pool.query(studentTestsHintCheckSql, [user_id, test_id]);
         // Send the hint back to the client
         res.json(studentTestsHintResult.rows[0]);
       } else {
@@ -383,10 +383,10 @@ WHERE
             WHERE user_id = $1 AND test_id = $2;
         `;
       // Execute the query to get the hint
-      const studentTestsHintResult = await db.query(studentTestsHintSql, [test_id]);
+      const studentTestsHintResult = await pool.query(studentTestsHintSql, [test_id]);
       // If a hint exists, update the check status
       if (studentTestsHintResult.rows.length > 0) {
-        await db.query(studentTestsHintCheckSql, [user_id, test_id]);
+        await pool.query(studentTestsHintCheckSql, [user_id, test_id]);
         // Send the hint back to the client
         res.json(studentTestsHintResult.rows[0]);
       } else {
@@ -413,7 +413,7 @@ WHERE
         WHERE user_id = $1 AND test_id = $2;
       `;
       // Выполнение запроса на вставку обработанных вариантов ответов
-      await db.query(insertOptionsSql, [userId, testId, options.options]);
+      await pool.query(insertOptionsSql, [userId, testId, options.options]);
       res.status(200).json({ message: 'Ответы успешно сохранены' });
     } catch (error) {
       console.error('Ошибка при выполнении запроса к базе данных:', error);
@@ -435,12 +435,12 @@ WHERE
         WHERE user_id = $1 AND test_id = $2;
       `;
       // Выполнение запроса на вставку обработанных вариантов ответов
-      await db.query(insertOptionsSql, [userId, testId, student_solution]);
+      await pool.query(insertOptionsSql, [userId, testId, student_solution]);
       const { pdfPath, imgPath } = store.work_with_files(req, res);
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
       const updateValues = [pdfPath, imgPath, testId, userId];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
     } catch (error) {
       console.error('Ошибка при выполнении запроса к базе данных:', error);
@@ -452,7 +452,7 @@ WHERE
       const userId = req.user_id;
       const {testId, student_solution} = req.body;
       const insertOptionsSql = `UPDATE student_solutions SET student_solution = $3 WHERE user_id = $1 AND test_id = $2;`;
-      await db.query(insertOptionsSql, [userId, testId, student_solution]);
+      await pool.query(insertOptionsSql, [userId, testId, student_solution]);
       res.status(200).json({ message: 'Ответы успешно сохранены' },);
   }
   async getAnswerByStudentFile2_3(req,res){
@@ -462,7 +462,7 @@ WHERE
       console.log(testId)
       const updateQuery = `UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4`;
       const updateValues = [pdfPath, imgPath, testId, userId];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
   }
 
@@ -479,12 +479,12 @@ WHERE
         WHERE user_id = $1 AND test_id = $2;
       `;
       // Выполнение запроса на вставку обработанных вариантов ответов
-      await db.query(insertOptionsSql, [userId, testId, student_solution]);
+      await pool.query(insertOptionsSql, [userId, testId, student_solution]);
       const { pdfPath, imgPath } = store.work_with_files(req, res);
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4';
       const updateValues = [pdfPath, imgPath, testId, userId];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
       res.status(200).json({ message: 'Ответы и файлы успешно сохранены' });
     } catch (error) {
       console.error('Ошибка при выполнении запроса к базе данных:', error);
@@ -503,10 +503,10 @@ WHERE
       let testQuery;
       let additionalFields = [];
       const questionsQuery = 'SELECT * FROM questions WHERE test_id = $1';
-      const questionsResult = await db.query(questionsQuery, [testId]);
+      const questionsResult = await pool.query(questionsQuery, [testId]);
       // Check test level in level_1_tests
       testQuery = 'SELECT * FROM level_1_tests WHERE test_id = $1';
-      let testResult = await db.query(testQuery, [testId]);
+      let testResult = await pool.query(testQuery, [testId]);
       if (testResult.rowCount > 0) {
         test = testResult.rows[0];
         testLevel = '1';
@@ -516,7 +516,7 @@ WHERE
       } else {
         // Check test level in level_2_tests
         testQuery = 'SELECT * FROM level_2_tests WHERE test_id = $1';
-        testResult = await db.query(testQuery, [testId]);
+        testResult = await pool.query(testQuery, [testId]);
 
         if (testResult.rowCount > 0) {
           test = testResult.rows[0];
@@ -527,7 +527,7 @@ WHERE
         } else {
           // Check test level in level_3_tests
           testQuery = 'SELECT * FROM level_3_tests WHERE test_id = $1';
-          testResult = await db.query(testQuery, [testId]);
+          testResult = await pool.query(testQuery, [testId]);
 
           if (testResult.rowCount > 0) {
             test = testResult.rows[0];
@@ -544,7 +544,7 @@ WHERE
       // Additional query logic for teacher fields can be added here if needed
       const questionsWithOptions = await Promise.all(questionsResult.rows.map(async (question) => {
         const optionsQuery = 'SELECT text, is_correct FROM options WHERE question_id = $1';
-        const optionsResult = await db.query(optionsQuery, [question.question_id]);
+        const optionsResult = await pool.query(optionsQuery, [question.question_id]);
         // Map the options and conditionally include 'is_correct' and 'decided'
         const options = optionsResult.rows.map(option => {
           const optionObj = { text: option.text };
@@ -559,7 +559,7 @@ WHERE
       }));
       const flattenedOptions = questionsWithOptions.flat();
       const decidedQuery = 'SELECT decided FROM student_solutions WHERE user_id = $1 AND test_id = $2';
-      const decidedResult = await db.query(decidedQuery, [userId, testId]);
+      const decidedResult = await pool.query(decidedQuery, [userId, testId]);
       if (decidedResult.rowCount > 0) {
         // If the record is found, use its status
         decidedStatus = decidedResult.rows[0].decided;
@@ -603,7 +603,7 @@ WHERE
       const user_id = req.user_id;
       let testLevel;
       const testLevels = ['level_1_tests', 'level_2_tests', 'level_3_tests'];
-      const client = await db.connect();
+      const client = await pool.connect();
       // Определяем уровень теста
       for (let i = 0; i < testLevels.length; i++) {
         const testQuery = `SELECT * FROM ${testLevels[i]} WHERE test_id = $1`;
@@ -653,7 +653,7 @@ WHERE
       const { opt_score, text_solution } = req.body; // Исправлено на деструктуризацию объекта
       // Обновляем оценку задания в таблице student_solutions
       const updateSolutionQuery = ` UPDATE student_solutions SET opt_score = $1, user_id_ver = $2, correct_solution = $3 WHERE user_id = $4 AND test_id = $5 RETURNING test_id;`;
-      const result = await db.query(updateSolutionQuery, [opt_score, user_id, text_solution, student_id, testId]);
+      const result = await pool.query(updateSolutionQuery, [opt_score, user_id, text_solution, student_id, testId]);
       if (result.rowCount === 0) { return res.status(404).json({ error: 'Задание не найдено или уже оценено' }); }
       res.json({ success: true, test_id: result.rows[0].test_id, message: "Задание успешно оценено" });
     } catch (error) {
@@ -669,12 +669,12 @@ WHERE
       const studentTestsSql = `SELECT test_id, test_level, decided, decided, correct_solution,opt_score FROM student_solutions
         WHERE user_id = $1 and decided = 'Решено';`;
       // Выполнение запроса к базе данных
-      const studentTestsResult = await db.query(studentTestsSql, [user_id]);
+      const studentTestsResult = await pool.query(studentTestsSql, [user_id]);
       // Теперь для каждого test_id получим название теста из соответствующей таблицы
       const testNames = await Promise.all(studentTestsResult.rows.map(async (test) => {
         const levelTestSql = `SELECT task_test, classes, subject FROM level_${test.test_level}_tests WHERE test_id = $1;`;
         console.log([test.test_id]); // Убедитесь, что этот console.log нужен для отладки
-        const levelTestResult = await db.query(levelTestSql, [test.test_id]);
+        const levelTestResult = await pool.query(levelTestSql, [test.test_id]);
         if (levelTestResult.rows.length > 0) {
           const testDetails = levelTestResult.rows[0];
           return {
@@ -719,7 +719,7 @@ WHERE
       SELECT * FROM student_solutions WHERE test_id = $1 AND user_id = $2 and likes > 0;
     `;
 
-      const existingLikeCheckResult = await db.query(existingLikeCheckSql, [test_id, user_id]);
+      const existingLikeCheckResult = await pool.query(existingLikeCheckSql, [test_id, user_id]);
 
       if (existingLikeCheckResult.rows.length === 0) {
         // SQL для увеличения количества лайков
@@ -730,7 +730,7 @@ WHERE
       `;
 
         // Увеличение лайков для теста, только если записи не существует
-        await db.query(updateLikesSql, [test_id, user_id]);
+        await pool.query(updateLikesSql, [test_id, user_id]);
         res.json({ success: 'Лайк добавлен' });
       } else {
         res.json({ success: 'Лайк уже добавлен ранее' });
@@ -755,9 +755,9 @@ WHERE
       // Запрос для level_3_tests
       const level3TestsSql = `SELECT * FROM level_3_tests WHERE user_id = $1;`;
       // Выполнение запросов для каждого уровня
-      const level1OptionsResult = await db.query(level1TestsSql, [user_id]);
-      const level2OptionsResult = await db.query(level2TestsSql, [user_id]);
-      const level3OptionsResult = await db.query(level3TestsSql, [user_id]);
+      const level1OptionsResult = await pool.query(level1TestsSql, [user_id]);
+      const level2OptionsResult = await pool.query(level2TestsSql, [user_id]);
+      const level3OptionsResult = await pool.query(level3TestsSql, [user_id]);
       // Формирование ответа
       const formattedResponse = [
         ...level1OptionsResult.rows.map(test => ({
@@ -790,7 +790,7 @@ WHERE
       const TestsSql = `SELECT test_id, user_id FROM student_solutions
             WHERE (student_solution IS NOT NULL) AND (test_level = 2 OR test_level = 3) and (opt_score IS NULL);`;
       // Получаем список test_id и user_id для уровней 2 и 3
-      const testIdsResult = await db.query(TestsSql);
+      const testIdsResult = await pool.query(TestsSql);
       // Формируем ответ, используя полученные test_id и user_id
       const tasks = [];
       for (let row of testIdsResult.rows) {
@@ -798,7 +798,7 @@ WHERE
         const user_id = row.user_id; // Записываем user_id из результатов запроса
         // Получаем данные для уровня 2
         const level2TestsSql = `SELECT * FROM level_2_tests WHERE test_id = $1 and user_id = $2;`;
-        const level2OptionsResult = await db.query(level2TestsSql, [test_id, user_ID]);
+        const level2OptionsResult = await pool.query(level2TestsSql, [test_id, user_ID]);
         if (level2OptionsResult.rows.length > 0) {
           tasks.push(...level2OptionsResult.rows.map(test => ({
             task_id: test.test_id,
@@ -809,7 +809,7 @@ WHERE
         }
         // Получаем данные для уровня 3
         const level3TestsSql = `SELECT * FROM level_3_tests WHERE test_id = $1 and user_id = $2;`;
-        const level3OptionsResult = await db.query(level3TestsSql, [test_id, user_ID]);
+        const level3OptionsResult = await pool.query(level3TestsSql, [test_id, user_ID]);
         if (level3OptionsResult.rows.length > 0) {
           tasks.push(...level3OptionsResult.rows.map(test => ({
             task_id: test.test_id,
@@ -835,20 +835,20 @@ WHERE
       let testResult;
       let studentSolution;
       // Try to fetch from level_2_tests first
-      testResult = await db.query('SELECT * FROM level_2_tests WHERE test_id = $1', [testId]);
+      testResult = await pool.query('SELECT * FROM level_2_tests WHERE test_id = $1', [testId]);
       if (testResult.rowCount > 0) {
         test = testResult.rows[0];
         testLevel = '2';
       } else {
         // If not found, try to fetch from level_3_tests
-        testResult = await db.query('SELECT * FROM level_3_tests WHERE test_id = $1', [testId]);
+        testResult = await pool.query('SELECT * FROM level_3_tests WHERE test_id = $1', [testId]);
         if (testResult.rowCount > 0) {
           test = testResult.rows[0];
           testLevel = '3';
         } else { return res.status(404).json({ error: 'Task not found' }); }
       }
       // Fetch the student's solution
-      const studentSolutionsResult = await db.query('SELECT * FROM student_solutions WHERE test_id = $1 AND user_id = $2', [testId, userID]);
+      const studentSolutionsResult = await pool.query('SELECT * FROM student_solutions WHERE test_id = $1 AND user_id = $2', [testId, userID]);
       if (studentSolutionsResult.rowCount > 0) {
         studentSolution = studentSolutionsResult.rows[0];
       } else {
@@ -907,7 +907,7 @@ WHERE
         RETURNING test_id;
       `;
         const testValues = [user_id, task_test, task_description, null, classes, subject, null];
-        const testResult = await db.query(insertTestQuery, testValues);
+        const testResult = await pool.query(insertTestQuery, testValues);
         testId = testResult.rows[0].test_id;
 
 
@@ -918,7 +918,7 @@ WHERE
       RETURNING question_id;
     `;
       const questionValues = [questions, testId];
-      const questionResult = await db.query(insertQuestionQuery, questionValues);
+      const questionResult = await pool.query(insertQuestionQuery, questionValues);
       const questionId = questionResult.rows[0].question_id;
 
       // Insert options
@@ -932,7 +932,7 @@ WHERE
         VALUES ($1, $2, $3);
       `;
         const optionValues = [option_text, is_correct, questionId];
-        await db.query(insertOptionQuery, optionValues);
+        await pool.query(insertOptionQuery, optionValues);
       }
 
       return res.send({ message: 'Тест успешно загружены', testId });
@@ -947,7 +947,7 @@ WHERE
       const { pdfPath, imgPath } = store.work_with_files(req, res);
       const updateQuery = `UPDATE level_1_tests SET add_file = $1, add_img = $2 WHERE test_id = $3`;
       const updateValues = [pdfPath, imgPath, testId];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
       return res.send({ message: 'Файл успешно загружены' });
   }
 
@@ -964,7 +964,7 @@ WHERE
       WHERE test_id = $3;
     `;
       const updateValues = [pdfPath, imgPath, testId];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
 
       return res.send({ message: 'Файл успешно загружены' });
     } catch (error){
@@ -983,7 +983,7 @@ WHERE
       WHERE test_id = $3;
     `;
       const updateValues = [pdfPath, imgPath, testId];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
 
       return res.send({ message: 'Файл успешно загружены' });
     } catch (error){
@@ -1007,7 +1007,7 @@ WHERE
         RETURNING test_id;
       `;
         const testValues = [user_id, task_test, task_description, task_hint, task_answer, classes, subject, null, null];
-        const testResult = await db.query(insertTestQuery, testValues);
+        const testResult = await pool.query(insertTestQuery, testValues);
         const testId = testResult.rows[0].test_id;
 
       return res.send({ message: 'Тест успешно загружены', testId });
@@ -1029,7 +1029,7 @@ WHERE
       // Обновление записей в базе данных с путями к файлам
       const updateQuery = 'UPDATE users SET avatar = $1';
       const updateValues = [imgPath];
-      await db.query(updateQuery, updateValues);
+      await pool.query(updateQuery, updateValues);
       return res.send({ message: 'Аватар успешно добавлены' });
     } catch (error) {
       console.error(error.message);
@@ -1053,7 +1053,7 @@ WHERE
         RETURNING test_id;
       `;
         const testValues = [user_id, task_test, task_description, classes, subject, null, null];
-        const testResult = await db.query(insertTestQuery, testValues);
+        const testResult = await pool.query(insertTestQuery, testValues);
         const testId = testResult.rows[0].test_id;
 
 

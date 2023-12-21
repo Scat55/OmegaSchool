@@ -10,11 +10,9 @@ const session = require('express-session');
 const {v4: uuidv4} = require("uuid");
 const validator = require('validator');
 
-const generateAccesToken = (user_id, type_user, email) =>{
+const generateAccesToken = (comand_id) =>{
     const payload = {
-        user_id,
-        type_user,
-        email
+        comand_id
     }
     return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
@@ -71,7 +69,7 @@ class Commands_controller{
             const passwordMatch = await bcrypt.compare(password, loginComandoResult.rows[0].password);
 
             if (passwordMatch) {
-                const token = generateAccesToken(loginComandoResult.rows[0].comand_id, "Команда", loginComandoResult.rows[0].email);
+                const token = generateAccesToken(loginComandoResult.rows[0].comand_id);
 
                 req.session.token = token;
                 req.session.save(() => {
@@ -88,11 +86,11 @@ class Commands_controller{
     }
 
     async InfoComandos(req, res){
-        const command_id = req.user_id; // или как вы получаете command_id
+        const command_id = req.user_id;
 
         try {
             // Получение списка user_id из user_command
-            const userCommandsResult = await poolComandos.query("SELECT user_id, email FROM user_command WHERE comand_id = $1", [command_id]);
+            const userCommandsResult = await poolComandos.query("SELECT user_id, first_name,last_name FROM user_command WHERE comand_id = $1", [command_id]);
             const comandNameResult = await poolComandos.query("SELECT comand_name FROM comandos WHERE comand_id = $1", [command_id]);
 
             const comandName = comandNameResult.rows[0]
@@ -131,6 +129,29 @@ class Commands_controller{
         } catch (error) {
             console.error("Error in InfoComandos:", error);
             res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+    async createUsers(req, res) {
+        try {
+            const { users } = req.body;
+            const commandId = req.user.command_id
+            if (!Array.isArray(users) || users.length !== 6) {
+                return res.status(400).json({ message: 'Неверный формат данных. Ожидалось 6 пользователей.' });
+            }
+
+            const insertQuery = 'INSERT INTO user_command (comand_id, first_name, last_name) VALUES ($3, $1, $2) RETURNING *';
+            const createdUsers = [];
+
+            for (const user of users) {
+                const { first_name, last_name } = user;
+                const result = await poolComandos.query(insertQuery, [first_name, last_name, commandId]);
+                createdUsers.push(result.rows[0]);
+            }
+
+            res.status(201).json(createdUsers);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Ошибка на сервере' });
         }
     }
 }

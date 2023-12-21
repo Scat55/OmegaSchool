@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../db')
+const pool = require('../db')
 const {secret} = require('../config')
 const mail = require("../utils/mail");
 const {check} = require("express-validator");
@@ -15,13 +15,13 @@ class Auth_controller {
         try {
             const { email, password, gender, type_user } = req.body;
             // Проверяем, что email не занят
-            const queryResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+            const queryResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
             if (queryResult.rows.length > 0) { return res.status(409).json({ message: 'Пользователь с таким email уже существует' }); }
             // Хешируем пароль
             const hashedPassword = await bcrypt.hash(password, 10);
             // Добавляем пользователя в базу данных
             const insertQuery = `INSERT INTO users (email, password, gender, type_user) VALUES ($1, $2, $3, $4) RETURNING user_id;`;
-            const insertResult = await db.query(insertQuery, [email, hashedPassword, gender, type_user]);
+            const insertResult = await pool.query(insertQuery, [email, hashedPassword, gender, type_user]);
             // Генерируем код подтверждения
             const verificationCode = await mail.generateVerificationCode(email);
             console.log('verificationCode', verificationCode)
@@ -47,7 +47,7 @@ class Auth_controller {
             const verificationCode = req.params.verificationCode;
             const email_from_params = req.params.email;
 
-            const queryResult = await db.query('SELECT * FROM users WHERE email = $1', [email_from_params]);
+            const queryResult = await pool.query('SELECT * FROM users WHERE email = $1', [email_from_params]);
             if (queryResult.rows.length === 0) {
                 return res.status(401).json({message: 'Пользователь с таким email не существует'});
             }
@@ -56,7 +56,7 @@ class Auth_controller {
 
             if (user.verification_code === verificationCode) {
                 // Код подтверждения совпадает, устанавливаем поле verification_code в значение 'true'
-                await db.query('UPDATE users SET verification_code = $1 WHERE email = $2', ['true', email_from_params]);
+                await pool.query('UPDATE users SET verification_code = $1 WHERE email = $2', ['true', email_from_params]);
                 return res.status(402).json({message: 'Электронная почта подтверждена. Вы можете войти в личный кабинет'});
             } else {
                 // Код подтверждения не совпадает, возвращаем сообщение об ошибке
@@ -73,7 +73,7 @@ class Auth_controller {
         try {
             const {email, password} = req.body;
             // Получаем данные пользователя
-            const queryResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+            const queryResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
             if (queryResult.rows.length === 0) { return res.status(401).json({message: 'Неправильная электронная почта'}); }
             const user = queryResult.rows[0];
             // Проверяем совпадение пароля с хешированным паролем
