@@ -49,8 +49,39 @@ class Commands_controller{
 
             const comandId = comandoResult.rows[0].comand_id;
 
+            // Создание 6 пользователей
+            const insertUserText = 'INSERT INTO user_command (first_name, last_name, patronymic, comand_id) VALUES ($1, $2, $3, $4) RETURNING *';
+            const createdUsers = [];
 
-            res.status(201).json({ comandId: comandId });
+            for (let i = 1; i <= 6; i++) {
+                const result = await poolComandos.query(insertUserText, [``, ``, ``, comandId]);
+                createdUsers.push(result.rows[0]);
+            }
+
+            res.status(201).json({ comandId: comandId, users: createdUsers  });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+    async updateUsersByCommand(req, res) {
+        try {
+            const { commandId } = req.comand_id;
+            const { users } = req.body;
+
+            const updateQuery = 'UPDATE users SET first_name = $1, last_name = $2, patronymic = $3 WHERE user_id = $4 AND command_id = $5 RETURNING *';
+            const updatedUsers = [];
+
+            for (const user of users) {
+                const { first_name, last_name, patronymic, user_id } = user;
+                const result = await poolComandos.query(updateQuery, [first_name, last_name,patronymic, user_id, commandId]);
+                if (result.rowCount > 0) {
+                    updatedUsers.push(result.rows[0]);
+                }
+            }
+
+            res.status(200).json(updatedUsers);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Ошибка на сервере' });
@@ -131,29 +162,8 @@ class Commands_controller{
             res.status(500).json({ message: "Internal Server Error" });
         }
     }
-    async createUsers(req, res) {
-        try {
-            const { users } = req.body;
-            const commandId = req.user.command_id
-            if (!Array.isArray(users) || users.length !== 6) {
-                return res.status(400).json({ message: 'Неверный формат данных. Ожидалось 6 пользователей.' });
-            }
 
-            const insertQuery = 'INSERT INTO user_command (comand_id, first_name, last_name) VALUES ($3, $1, $2) RETURNING *';
-            const createdUsers = [];
 
-            for (const user of users) {
-                const { first_name, last_name } = user;
-                const result = await poolComandos.query(insertQuery, [first_name, last_name, commandId]);
-                createdUsers.push(result.rows[0]);
-            }
-
-            res.status(201).json(createdUsers);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Ошибка на сервере' });
-        }
-    }
 }
 
 

@@ -16,10 +16,9 @@ module.exports = function (req, res, next){
             //Проверяем, совпадают ли токены
             if (tokenFromHeaders !== tokenFromSession) { return res.status(403).json({ message: 'Пользователь не авторизован2' }); }
             // Проверяем токен и извлекаем роль пользователя
-            const { type_user, user_id, email } = jwt.verify(tokenFromHeaders, secret);
-            req.user_id = user_id
-            req.type_user = type_user
-            req.email = email
+            const { comand_id  } = jwt.verify(tokenFromHeaders, secret);
+            req.comand_id = comand_id
+
 
             next();
         } catch (e) { console.log(e); return res.status(403).json({ message: 'Пользователь не авторизован3' }); }
