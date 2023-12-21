@@ -1,20 +1,20 @@
 <template>
   <div class="myTasks">
     <div class="myTasks__info">
-      <div class="myTasks__text">
+      <div class="myTasks__text wda">
         <p>{{ info.title }}</p>
         <p>Предмет - {{ info.topic }}</p>
         <p>Класс - {{ info.class }}</p>
+        <div class="comment">
+          <p v-if="info.opt_score">Комментарий:</p>
+          <span class="comment__text">{{ info.ocenka }}</span>
+        </div>
       </div>
       <div class="myTasks__text">
         <p info.complexity>Уровень - {{ info.complexity }}</p>
 
         <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
         <p v-else>На проверке...</p>
-        <div class="comment">
-          <p v-if="info.opt_score">Комментарий:</p>
-          <span class="comment__text">{{ info.ocenka }}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -24,9 +24,7 @@
 export default {
   props: ['info'],
   data() {
-    return {
-
-    }
+    return {};
   },
 };
 </script>
@@ -56,7 +54,11 @@ export default {
   gap: 0.7rem;
 
   &__text {
-    width: 12.5rem;
+    word-break: break-all;
   }
+}
+
+.wda {
+  width: 70%;
 }
 </style>
