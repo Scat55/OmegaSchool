@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const pool = require('../db')
+const {pool} = require('../db')
 const {secret} = require('../config')
 const mail = require("../utils/mail");
 const {check} = require("express-validator");
