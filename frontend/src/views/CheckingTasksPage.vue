@@ -58,18 +58,71 @@
         <p v-else>Файлов нет</p>
       </div>
 
+      <details class="intrukcia">
+        <summary>Инструкция оценивания задания</summary>
+        <p>
+          1. Первое задание оценивается от 0 до 1 балла. <br />
+          &nbsp;- 0 баллов ставится, если задание не выполнено или выполнено неверно. <br />
+          &nbsp;- 1 балл ставится, если задание выполнено верно и полностью. <br />
+          <br />
+          2. Второе задание оценивается от 0 до 2 баллов. <br />
+          &nbsp;- 1 балл ставится за частично правильное выполнение задания. <br />
+          &nbsp;- 2 балла ставится за полностью верное выполнение задания.<br />
+          <br />
+          3. Третье задание оценивается от 0 до 3 баллов. <br />
+          &nbsp;- 0 баллов ставится, если задание не выполнено. <br />
+          &nbsp;- 1 балл ставится за выполнение первой части задания. <br />
+          &nbsp;- 2 балла ставится за выполнение первой и второй частей задания. <br />
+          &nbsp;- 3 балла ставится за полностью правильное выполнение всех частей задания. <br />
+          <br />
+          4. Максимальный балл за все 3 задания - 6. При оценке каждого задания необходимо четко
+          следовать приведенным выше критериям.<br />
+          Общий балл вычисляется как сумма баллов, выставленных за каждое задание.<br />
+        </p>
+      </details>
+
       <div class="estimation">
         <p>Оцените задание:</p>
         <form class="estimation__form" @submit.prevent="handler()">
-          <label class="estimation__label">
-            <input type="radio" value="0" name="2" id="0" v-model="valChek" />0</label
-          >
-          <label class="estimation__label">
-            <input type="radio" value="1" name="2" id="1" v-model="valChek" />1</label
-          >
-          <label class="estimation__label">
-            <input type="radio" value="2" name="2" id="2" v-model="valChek" />2</label
-          >
+          <div class="block_ocenka">
+            <div>
+              <p>Задание 1:</p>
+              <label class="estimation__label">
+                <input type="radio" value="0" name="task1" id="0" v-model="firstCheck" />0</label
+              >
+              <label class="estimation__label">
+                <input type="radio" value="1" name="task1" id="1" v-model="firstCheck" />1</label
+              >
+            </div>
+            <div>
+              <p>Задание 2:</p>
+              <label class="estimation__label">
+                <input type="radio" value="0" name="task2" id="0" v-model="secondCheck" />0</label
+              >
+              <label class="estimation__label">
+                <input type="radio" value="1" name="task2" id="1" v-model="secondCheck" />1</label
+              >
+              <label class="estimation__label">
+                <input type="radio" value="2" name="task2" id="2" v-model="secondCheck" />2</label
+              >
+            </div>
+            <div>
+              <p>Задание 3:</p>
+              <label class="estimation__label">
+                <input type="radio" value="0" name="task3" id="0" v-model="threeCheck" />0</label
+              >
+              <label class="estimation__label">
+                <input type="radio" value="1" name="task3" id="1" v-model="threeCheck" />1</label
+              >
+              <label class="estimation__label">
+                <input type="radio" value="2" name="task3" id="2" v-model="threeCheck" />2</label
+              >
+              <label class="estimation__label">
+                <input type="radio" value="3" name="task3" id="3" v-model="threeCheck" />3</label
+              >
+            </div>
+          </div>
+
           <textarea
             name="message"
             placeholder="Обратная связь по заданию"
@@ -95,7 +148,9 @@ export default {
       token: '',
       info: '',
       isShow: false,
-      valChek: '',
+      firstCheck: '',
+      secondCheck: '',
+      threeCheck: '',
       message: '',
       fileName: '',
       url: '',
@@ -137,7 +192,8 @@ export default {
     },
     // Обработка формы
     handler() {
-      const opt_score = this.valChek;
+      const opt_score =
+        parseInt(this.firstCheck) + parseInt(this.secondCheck) + parseInt(this.threeCheck);
       const text_solution = this.message;
       axios.post(
         `/api/updateTestByTeacher/${this.id}/${this.userID}`,
@@ -329,6 +385,26 @@ export default {
     background-color: rgba(94, 183, 255, 0.9);
     color: #fff;
     border: none;
+  }
+}
+
+.block_ocenka {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  & > div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+.intrukcia {
+  cursor: pointer;
+
+  & > p {
+    padding: 15px 0 15px 15px;
   }
 }
 </style>
