@@ -13,6 +13,8 @@ router.post('/create', commandosController.CreateComandos)
 
 router.post('/login', commandosController.LoginComandos) //тут получаешь токен
 
+
+
 router.get('/info', commandosMiddleware, commandosController.InfoComandos) //тут нужен токен
 //
 // router.post('/listTask', commandosController.InfoComandos)

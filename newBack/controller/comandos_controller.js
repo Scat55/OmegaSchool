@@ -28,6 +28,11 @@ class Commands_controller{
     async CreateComandos(req, res) {
         try {
             const { comandName, password, school } = req.body;
+            const registrationDeadline = new Date('2023-12-22T00:00:00'); // Установите срок регистрации
+            const currentTime = new Date();
+            if (currentTime > registrationDeadline) {
+                return res.status(400).json({ message: 'Регистрация команд закрыта' });
+            }
 
             const queryResult = await poolComandos.query('SELECT * FROM comandos WHERE comand_name = $1', [comandName]);
 
