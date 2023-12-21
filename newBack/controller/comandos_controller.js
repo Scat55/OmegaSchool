@@ -59,7 +59,7 @@ class Commands_controller{
 
         // Проверка наличия команды по email и паролю
         const loginComandoText = 'SELECT * FROM comandos WHERE comand_name = $1';
-        const loginComandoResult = await db.query(loginComandoText, [comandName]);
+        const loginComandoResult = await poolComandos.query(loginComandoText, [comandName]);
 
         if (loginComandoResult.rowCount > 0) {
             // Команда найдена, возвращаем её идентификатор
