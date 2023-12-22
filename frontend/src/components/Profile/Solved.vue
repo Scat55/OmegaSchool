@@ -22,7 +22,7 @@
         <div v-else-if="info.complexity === 2">
           <p>Уровень - {{ info.complexity }}</p>
           <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
-          <p v-else>На проверке...</p>
+          <p v-else>На проверке</p>
         </div>
 
         <div v-else-if="info.complexity === 3">
