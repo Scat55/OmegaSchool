@@ -8,30 +8,15 @@
         v-on:click="goToHomePage()"
       />
 
-      <div
-        class="header__logo-lists"
-        v-if="this.$route.path != '/auth'"
-      >
+      <div class="header__logo-lists" v-if="this.$route.path != '/auth'">
         <ul class="header__logo-list">
-          <router-link
-            to="/task"
-            class="router"
-          >
-            <li
-              v-if="this.$store.state.isAuth"
-              class="header__logo-item"
-            >Задания Команды</li>
+          <router-link to="/task" class="router">
+            <li v-if="this.$store.state.isAuth" class="header__logo-item">Задания Команды</li>
           </router-link>
 
           <div class="header__logout">
-            <li
-              class="header__logo-item login"
-              @click="changeStatusMenu()"
-            >Мой кабинет</li>
-            <div
-              v-if="statusMenu"
-              class="header__logout-list"
-            >
+            <li class="header__logo-item login" @click="changeStatusMenu()">Мой кабинет</li>
+            <div v-if="statusMenu" class="header__logout-list">
               <li @click="goToPersonPage()">Кабинет</li>
               <li @click="logout()">Выйти</li>
             </div>
@@ -62,7 +47,7 @@ export default {
       // const body = document.querySelector('body');
       // store.state.status = true;
       // body.style.overflow = 'hidden';
-      this.$router.push('/comand/')
+      this.$router.push('/comand/');
     },
     // Выход из личного кабинета
     logout() {
@@ -96,9 +81,9 @@ export default {
     },
     // Переход в личный кабинет
     goToPersonPage() {
-      let local = localStorage.getItem('local');
+      let local = localStorage.getItem('comandID');
       local = JSON.parse(local);
-      if (this.$route.fullPath === `/profile/${local.userID}`) {
+      if (this.$route.fullPath === `/profile/${local.comandID}`) {
         this.statusMenu = false;
         return;
       } else {

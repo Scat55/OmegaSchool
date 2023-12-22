@@ -46,12 +46,27 @@ export default {
             },
           },
         )
+        .catch((err) => {
+          if (err.response) {
+            alert(err.response.data.message);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
         .then((res) => {
           console.log(res.data);
           store.state.isComandAuth = true;
           this.userID = localStorage.getItem('comandID');
           this.$router.push(`/comandPage/${this.userID}`);
-          localStorage.setItem('comadToken', res.data.token);
+          const comand = {
+            comandID: this.userID,
+            token: res.data.token,
+            isComandAuth: store.state.isComandAuth,
+          };
+          localStorage.setItem('comand', JSON.stringify(comand));
         });
     },
   },
