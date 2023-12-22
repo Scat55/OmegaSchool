@@ -32,7 +32,7 @@
               alt=""
               class="log"
             />
-            Войти
+            Регистрация
           </li>
           <div
             v-else
