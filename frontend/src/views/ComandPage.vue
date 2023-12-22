@@ -22,6 +22,9 @@
           class="comandPage__avatar"
         />
       </div>
+      <div class="btn-content">
+        <button class="btn" @click="goToTasks">Начать испытание</button>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +38,11 @@ export default {
       infoComand: '',
       tokenComand: '',
     };
+  },
+  methods: {
+    goToTasks() {
+      this.$router.push('/comandTask');
+    },
   },
 
   mounted() {
@@ -97,5 +105,23 @@ export default {
   &__users {
     margin-bottom: 1rem;
   }
+}
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn {
+  font-family: 'Visitor';
+  margin-top: 1rem;
+  padding: 0.625rem;
+  background-color: $accentColor;
+  color: #fff;
+  text-align: center;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
 </style>
