@@ -8,8 +8,10 @@
           <div>
             <p v-if="!infoComand.users">Участники не найдены</p>
             <div class="comandInfo" v-else>
+              <h2 class="comandInfo__users">Участники:</h2>
+
               <div v-for="comand in infoComand.users">
-                <p class="comandEmail">{{ comand.email }}</p>
+                <p class="comandEmail">Имя: {{ comand.first_name }}</p>
               </div>
             </div>
           </div>
@@ -91,5 +93,9 @@ export default {
   border: 1px solid #000;
   padding: 0.625rem;
   border-radius: 0.5rem;
+
+  &__users {
+    margin-bottom: 1rem;
+  }
 }
 </style>
