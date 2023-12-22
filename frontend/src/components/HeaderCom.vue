@@ -10,10 +10,6 @@
 
       <div class="header__logo-lists" v-if="this.$route.path != '/auth'">
         <ul class="header__logo-list">
-          <router-link to="/taskComand" class="router">
-            <li v-if="this.$store.state.isComandAuth" class="header__logo-item">Задания Команды</li>
-          </router-link>
-
           <div class="header__logout">
             <li class="header__logo-item login" @click="changeStatusMenu()">Мой кабинет</li>
             <div v-if="statusMenu" class="header__logout-list">
