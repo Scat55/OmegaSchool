@@ -17,15 +17,6 @@
           <span class="comand__info-name">Школа</span>
           <input type="text" class="comand__input" v-model="school" />
         </div>
-        <span class="comand__people-name">Участники</span>
-        <div class="comand__people" v-for="user in users">
-          <div>
-            <input type="email" class="comand__input name" v-model="user.name" />
-          </div>
-        </div>
-        <p class="comand__add" @click="addUsers" v-if="lenghtUsers !== 5">
-          Добавить участника <span>+</span>
-        </p>
 
         <button class="comand__form-btn" type="submit">Регистрация</button>
         <router-link to="/authCom" class="router">
@@ -68,7 +59,6 @@ export default {
           {
             comandName: this.comandName,
             password: this.pass,
-            userLogins: users,
             school: this.school,
           },
           {
