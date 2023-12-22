@@ -86,6 +86,26 @@ class Commands_controller{
             console.error(error);
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
+
+    if (loginComandoResult.rowCount > 0) {
+      // Команда найдена, возвращаем её идентификатор
+      const passwordMatch = await bcrypt.compare(password, loginComandoResult.rows[0].password);
+
+      if (passwordMatch) {
+        const token = generateAccesToken(loginComandoResult.rows[0].comand_id);
+        
+          
+        req.session.token = token;
+        req.session.save(() => {
+          res.json({ message: 'Успешная аутентификация', id : loginComandoResult.rows[0].comand_id,  token });
+        });
+      } else {
+        // Если пароль неверен, отправляем сообщение о неправильном пароле
+        res.status(401).json({ message: 'Неправильный пароль' });
+      }
+    } else {
+      // Команда не найдена
+      res.status(401).json({ error: 'Неверный email или пароль' });
     }
 
     async LoginComandos(req,res){
