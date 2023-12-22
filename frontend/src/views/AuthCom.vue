@@ -59,10 +59,9 @@ export default {
         .then((res) => {
           console.log(res.data);
           store.state.isComandAuth = true;
-          this.userID = localStorage.getItem('comandID');
-          this.$router.push(`/comandPage/${this.userID}`);
+          this.$router.push(`/comandPage/${res.data.id}`);
           const comand = {
-            comandID: this.userID,
+            comandID: res.data.id,
             token: res.data.token,
             isComandAuth: store.state.isComandAuth,
           };
