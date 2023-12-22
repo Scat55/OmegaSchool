@@ -83,7 +83,8 @@ export default {
   &__avatar {
     border: 2px solid white;
     border-radius: 1rem;
-    width: 20%;
+    width: 10rem;
+    height: 10rem;
   }
 
   &__people {
