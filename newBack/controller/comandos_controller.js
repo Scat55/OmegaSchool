@@ -107,6 +107,7 @@ class Commands_controller{
       // Команда не найдена
       res.status(401).json({ error: 'Неверный email или пароль' });
     }
+    }
 
     async LoginComandos(req,res){
         const { comandName, password } = req.body;
