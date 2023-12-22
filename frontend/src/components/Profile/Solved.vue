@@ -6,15 +6,30 @@
         <p>Предмет - {{ info.topic }}</p>
         <p>Класс - {{ info.class }}</p>
         <div class="comment">
-          <p v-if="info.opt_score">Комментарий:</p>
+          <details v-if="info.complexity === 2 || info.complexity === 3" class="comDetail">
+          <summary >Комментарий:</summary>
+          <!-- <span class="comment__text">{{ info.ocenka.length > 0 ? info.ocenka : 'Комментарий не был написан' }}</span> -->
           <span class="comment__text">{{ info.ocenka }}</span>
+        </details>
         </div>
       </div>
       <div class="myTasks__text">
-        <p info.complexity>Уровень - {{ info.complexity }}</p>
+        <div v-if="info.complexity === 1">
+          <p>Уровень - {{ info.complexity }}</p>
+          <p>Оценка: {{ info.opt_score }}</p>
+        </div>
 
-        <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
-        <p v-else>На проверке...</p>
+        <div v-else-if="info.complexity === 2">
+          <p>Уровень - {{ info.complexity }}</p>
+          <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
+          <p v-else>На проверке...</p>
+        </div>
+
+        <div v-else-if="info.complexity === 3">
+          <p>Уровень - {{ info.complexity }}</p>
+          <p v-if="info.opt_score">Оценка: {{ info.opt_score }}</p>
+          <p v-else>На проверке...</p>
+        </div>
       </div>
     </div>
   </div>
@@ -60,5 +75,13 @@ export default {
 
 .wda {
   width: 70%;
+}
+
+.comDetail {
+  display: flex;
+  align-items: center;
+  &>span {
+    margin: 10px 0;
+  }
 }
 </style>
