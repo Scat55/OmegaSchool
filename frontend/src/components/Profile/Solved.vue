@@ -5,8 +5,8 @@
         <p>{{ info.title }}</p>
         <p>Предмет - {{ info.topic }}</p>
         <p>Класс - {{ info.class }}</p>
-        <div class="comment">
-          <details v-if="info.complexity === 2 || info.complexity === 3" class="comDetail">
+        <div class="comment" v-if="(info.complexity === 2 || info.complexity === 3) && info.opt_score !== null">
+          <details class="comDetail">
           <summary >Комментарий:</summary>
           <!-- <span class="comment__text">{{ info.ocenka.length > 0 ? info.ocenka : 'Комментарий не был написан' }}</span> -->
           <span class="comment__text">{{ info.ocenka }}</span>
