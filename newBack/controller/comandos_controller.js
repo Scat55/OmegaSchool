@@ -67,10 +67,10 @@ class Commands_controller{
 
     async updateUsersByCommand(req, res) {
         try {
-            const { commandId } = req.comand_id;
+            const commandId  = req.comand_id;
             const { users } = req.body;
-
-            const updateQuery = 'UPDATE users SET first_name = $1, last_name = $2, patronymic = $3 WHERE user_id = $4 AND command_id = $5 RETURNING *';
+            console.log(commandId)
+            const updateQuery = 'UPDATE user_command SET first_name = $1, last_name = $2, patronymic = $3 WHERE user_id = $4 AND comand_id = $5 RETURNING *';
             const updatedUsers = [];
 
             for (const user of users) {
