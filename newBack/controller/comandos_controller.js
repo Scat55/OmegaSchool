@@ -163,7 +163,27 @@ class Commands_controller{
         }
     }
 
+    async createTestAndTasks(req, res){
+        try {
+            const { test_name, tasks } = req.body;
 
+            // Создаем запись в таблице comand_tests
+            const createTestQuery = 'INSERT INTO comand_tests (test_name) VALUES ($1) RETURNING test_id';
+            const testResult = await poolComandos.query(createTestQuery, [test_name]);
+            const testId = testResult.rows[0].test_id;
+
+            // Создаем записи в таблице comand_task и связываем их с созданным тестом
+            const createTaskQuery = 'INSERT INTO comand_task (task_name, task_description, test_id) VALUES ($1, $2, $3)';
+            for (const task of tasks) {
+                await poolComandos.query(createTaskQuery, [task.task_name, task.task_description, testId]);
+            }
+
+            res.status(200).json( {testId, message: 'Тест и задания успешно созданы.' });
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error:'Ошибка при создании теста и заданий.'});
+        }
+    }
 }
 
 
