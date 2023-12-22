@@ -101,10 +101,11 @@ class Commands_controller {
 
       if (passwordMatch) {
         const token = generateAccesToken(loginComandoResult.rows[0].comand_id);
-
+        
+          
         req.session.token = token;
         req.session.save(() => {
-          res.json({ message: 'Успешная аутентификация', token });
+          res.json({ message: 'Успешная аутентификация', id : loginComandoResult.rows[0].comand_id,  token });
         });
       } else {
         // Если пароль неверен, отправляем сообщение о неправильном пароле
