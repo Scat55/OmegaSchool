@@ -1,11 +1,11 @@
 const {pool} = require('../db')
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
 const { resolve, join } = require("path");
 const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../utils/store");
-const { statSync, existsSync, createReadStream, readdirSync } = require('fs');
+const { statSync, existsSync, createReadStream, readdirSync, fs } = require('fs');
 const mime = require('mime-types');
 class User_controller {
   async getUserList(req, res) {
@@ -456,10 +456,13 @@ WHERE
       res.status(200).json({ message: 'Ответы успешно сохранены' },);
   }
   async getAnswerByStudentFile2_3(req,res){
+    console.log("1 ", req.files)
       const userId = req.user_id;
       const testId= req.params.testID;
+    console.log("user", userId, "testId", testId)
       const { pdfPath, imgPath } = store.work_with_files(req, res);
-      console.log(testId)
+    console.log("1 ", req.files)
+    console.log("pdfPath", pdfPath, "imgPath", imgPath)
       const updateQuery = `UPDATE student_solutions SET add_file_by_student = $1, add_img_by_student = $2 WHERE test_id = $3 and user_id = $4`;
       const updateValues = [pdfPath, imgPath, testId, userId];
       await pool.query(updateQuery, updateValues);

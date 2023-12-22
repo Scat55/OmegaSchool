@@ -26,7 +26,7 @@ class Commands_controller{
     async CreateComandos(req, res) {
         try {
             const { comandName, password, school } = req.body;
-            const registrationDeadline = new Date('2023-12-22T00:00:00'); // Установите срок регистрации
+            const registrationDeadline = new Date('2023-12-27T14:00:00'); // Установите срок регистрации
             const currentTime = new Date();
             if (currentTime > registrationDeadline) {
                 return res.status(400).json({ message: 'Регистрация команд закрыта' });
@@ -184,6 +184,10 @@ class Commands_controller{
             res.status(500).json({error:'Ошибка при создании теста и заданий.'});
         }
     }
+
+
+
+
 }
 
 
