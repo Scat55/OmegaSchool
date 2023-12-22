@@ -1,5 +1,5 @@
 <template>
-  <div class="reg">
+  <div class="reg" @click="handleDocumentClick($event)">
     <div class="container">
       <form action="#" class="reg__form no-scroll" @submit.prevent="handler()">
         <p class="reg__form-title">Регистрация</p>
@@ -74,6 +74,11 @@ export default {
   },
 
   methods: {
+    handleDocumentClick(e) {
+      if (!this.$el.querySelector('.reg__form').contains(e.target)) {
+        this.changeStatusOnFalse();
+      }
+    },
     // Переход на страницу входа
     goToAuth() {
       const body = document.querySelector('body');
