@@ -10,11 +10,22 @@
             <div class="comandInfo" v-else>
               <h2 class="comandInfo__users">Участники:</h2>
 
-              <div v-for="comand in infoComand.users">
-                <p class="comandEmail">Имя: {{ comand.first_name }}</p>
+              <div class="comandContent" v-for="comand in infoComand.users">
+                <p class="comandEmail">
+                  Имя: <span v-if="!change">{{ comand.first_name }}</span>
+                  <input type="text" class="changeInfo" v-if="change" v-model="comand.first_name" />
+                </p>
+                <p class="comandEmail">
+                  Фамилия: <span v-if="!change">{{ comand.last_name }}</span>
+                  <input type="text" class="changeInfo" v-if="change" v-model="comand.last_name" />
+                </p>
               </div>
             </div>
           </div>
+          <button class="comandInfo__btn" @click="changeInfo" v-if="!change">
+            Изменить участников
+          </button>
+          <button class="comandInfo__btn" @click="updateUsers" v-else>Подтвердить</button>
         </div>
         <img
           src="../assets/images/positive/grup.png"
@@ -37,17 +48,33 @@ export default {
       id: this.$route.params.id,
       infoComand: '',
       tokenComand: '',
+      change: false,
+      name: '',
+      lastName: '',
+      users: [],
     };
   },
   methods: {
     goToTasks() {
       this.$router.push('/comandTask');
     },
+    changeInfo() {
+      this.change = true;
+    },
+    updateUsers() {
+      this.tokenComand = JSON.parse(localStorage.getItem('comand'));
+
+      axios.put(`/commands/changer`, this.users, {
+        headers: {
+          Authorization: `Bearer ${this.tokenComand.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    },
   },
 
   mounted() {
     this.tokenComand = JSON.parse(localStorage.getItem('comand'));
-    console.log(this.tokenComand);
     axios
       .get(`/commands/info/`, {
         headers: {
@@ -57,7 +84,8 @@ export default {
       })
       .then((res) => {
         this.infoComand = res.data;
-        console.log(res.data);
+        console.log(res.data.users);
+        this.users = res.data.users;
       });
   },
 };
@@ -93,19 +121,43 @@ export default {
     gap: 1rem;
   }
 }
-
+.comandContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid #000;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+}
 .comandInfo {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
-  border: 1px solid #000;
-  padding: 0.625rem;
-  border-radius: 0.5rem;
 
   &__users {
     margin-bottom: 1rem;
   }
+  &__btn {
+    font-family: 'Visitor';
+    margin-top: 1rem;
+    padding: 0.625rem;
+    background-color: #5d6dfe;
+    color: #fff;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+}
+.changeInfo {
+  font-family: 'Visitor';
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
 }
 .btn-content {
   display: flex;
