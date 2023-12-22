@@ -53,8 +53,8 @@ export default {
     logout() {
       const body = document.querySelector('body');
       body.style.overflow = '';
-      localStorage.removeItem('local');
-      store.state.isAuth = false;
+      localStorage.removeItem('comand');
+      store.state.isComandAuth = false;
       store.state.status = false;
       this.statusMenu = false;
       if (this.$route.name === 'home') {
@@ -81,14 +81,14 @@ export default {
     },
     // Переход в личный кабинет
     goToPersonPage() {
-      let local = localStorage.getItem('comandID');
-      local = JSON.parse(local);
-      if (this.$route.fullPath === `/profile/${local.comandID}`) {
+      let comand = localStorage.getItem('comand');
+      comand = JSON.parse(comand);
+      if (this.$route.fullPath === `/comandPage/${comand.comandID}`) {
         this.statusMenu = false;
         return;
       } else {
         this.$nextTick(() => {
-          this.$router.push(`/profile/${local.userID}`);
+          this.$router.push(`/comandPage/${comand.comandID}`);
         });
         this.statusMenu = false;
       }

@@ -7,10 +7,7 @@
           <p v-else>{{ infoComand.comandName }}</p>
           <div>
             <p v-if="!infoComand.users">Участники не найдены</p>
-            <div
-              class="comandInfo"
-              v-else
-            >
+            <div class="comandInfo" v-else>
               <div v-for="comand in infoComand.users">
                 <p class="comandEmail">{{ comand.email }}</p>
               </div>
@@ -28,27 +25,30 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 export default {
   data() {
     return {
       id: this.$route.params.id,
       infoComand: '',
-      tokenComand: ''
-    }
+      tokenComand: '',
+    };
   },
 
   mounted() {
-    this.tokenComand = localStorage.getItem('comadToken')
-
-    axios.get(`/commands/info`, {
-      headers: {
-        Authorization: `Bearer ${this.tokenComand}`,
-        'Content-Type': 'app;ication/json'
-      }
-    }).then(res => {
-      this.infoComand = res.data
-    })
+    this.tokenComand = JSON.parse(localStorage.getItem('comand'));
+    console.log(this.tokenComand);
+    axios
+      .get(`/commands/info/`, {
+        headers: {
+          Authorization: `Bearer ${this.tokenComand.token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        this.infoComand = res.data;
+        console.log(res.data);
+      });
   },
 };
 </script>
@@ -57,7 +57,6 @@ export default {
 @import '../assets/styles/vars.scss';
 
 .comandPage {
-
   // display: flex;
   // align-items: center;
   // height: 100%;
@@ -90,7 +89,7 @@ export default {
   gap: 1rem;
   margin-top: 1rem;
   border: 1px solid #000;
-  padding: .625rem;
+  padding: 0.625rem;
   border-radius: 0.5rem;
 }
 </style>
