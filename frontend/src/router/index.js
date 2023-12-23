@@ -13,7 +13,7 @@ import ComandAuth from '@/views/ComandAuth.vue';
 import ComandPage from '@/views/ComandPage.vue';
 import AuthCom from '../views/AuthCom.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
-import taskComand from '@/views/taskComand';
+import taskComand from '@/views/allTaskForComand';
 import Manual from '@/views/manualComand';
 
 import store from '../store/index';
