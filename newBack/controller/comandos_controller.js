@@ -50,11 +50,11 @@ class Commands_controller{
             const comandId = comandoResult.rows[0].comand_id;
 
             // Создание 6 пользователей
-            const insertUserText = 'INSERT INTO user_command (first_name, last_name, patronymic, comand_id) VALUES ($1, $2, $3, $4) RETURNING *';
+            const insertUserText = 'INSERT INTO user_command (first_name, last_name, patronymic, email, comand_id) VALUES ($1, $2, $3, $4, $5) RETURNING *';
             const createdUsers = [];
 
             for (let i = 1; i <= 6; i++) {
-                const result = await poolComandos.query(insertUserText, [``, ``, ``, comandId]);
+                const result = await poolComandos.query(insertUserText, [``, ``, ``, ``, comandId]);
                 createdUsers.push(result.rows[0]);
             }
 
@@ -122,7 +122,7 @@ class Commands_controller{
         try {
             // Получение списка user_id из user_command
             const userCommandsResult = await poolComandos.query("SELECT user_id, first_name,last_name FROM user_command WHERE comand_id = $1", [command_id]);
-            const comandNameResult = await poolComandos.query("SELECT comand_name FROM comandos WHERE comand_id = $1", [command_id]);
+            const comandNameResult = await poolComandos.query("SELECT comand_name, email FROM comandos WHERE comand_id = $1", [command_id]);
 
             const comandName = comandNameResult.rows[0]
 
@@ -143,7 +143,8 @@ class Commands_controller{
                         email: userCommand.email,
                         first_name: userData.first_name,
                         last_name: userData.last_name,
-                        patronymic: userData.patronymic
+                        patronymic: userData.patronymic,
+
                     });
                 }else {
                     users.push({
@@ -151,12 +152,13 @@ class Commands_controller{
                         email: userCommand.email,
                         first_name: 'NULL',
                         last_name: 'NULL',
-                        patronymic: 'NULL'
+                        patronymic: 'NULL',
+
                     });
                 }
             }
 
-            res.status(200).json({ comandName : comandName.comand_name,users: users });
+            res.status(200).json({ comandName : comandName.comand_name, email: comandName.email ,users: users });
         } catch (error) {
             console.error("Error in InfoComandos:", error);
             res.status(500).json({ message: "Internal Server Error" });
@@ -184,6 +186,7 @@ class Commands_controller{
             res.status(500).json({error:'Ошибка при создании теста и заданий.'});
         }
     }
+
 
 }
 
