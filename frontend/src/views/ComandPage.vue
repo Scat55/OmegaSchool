@@ -20,6 +20,10 @@
                   Фамилия: <span v-if="!change">{{ comand.last_name }}</span>
                   <input type="text" class="changeInfo" v-if="change" v-model="comand.last_name" />
                 </p>
+                <p class="comandEmail">
+                  Отчество: <span v-if="!change">{{ comand.patronymic }}</span>
+                  <input type="text" class="changeInfo" v-if="change" v-model="comand.patronymic" />
+                </p>
               </div>
             </div>
           </div>
