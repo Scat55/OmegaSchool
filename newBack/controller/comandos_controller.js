@@ -9,14 +9,18 @@ const {secret} = require('../config')
 const session = require('express-session');
 const {v4: uuidv4} = require("uuid");
 const validator = require('validator');
-
+const moment = require('moment-timezone');
+moment.tz.setDefault('Europe/Moscow');
 const generateAccesToken = (comand_id) =>{
     const payload = {
         comand_id
     }
     return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
-
+const currentTime = moment().format();
+const registrationDeadline = moment('2023-12-27T14:00:00') // Установите срок регистрации
+const startTest = moment('2023-12-23T13:00:00');
+const endTest = moment('2023-12-23T13:00:00');
 
 
 class Commands_controller{
@@ -26,8 +30,9 @@ class Commands_controller{
     async CreateComandos(req, res) {
         try {
             const { comandName, password, school, email } = req.body;
-            const registrationDeadline = new Date('2023-12-27T00:00:00'); // Установите срок регистрации
-            const currentTime = new Date();
+
+
+            console.log(currentTime)
             if (currentTime > registrationDeadline) {
                 return res.status(400).json({ message: 'Регистрация команд закрыта' });
             }
@@ -192,6 +197,11 @@ class Commands_controller{
         try {
             const command_id = req.comand_id;
 
+            console.log(currentTime)
+
+            if (moment() < startTest) {
+                return res.status(400).json({ message: 'Тест еще не начался' });
+            }
             // Получение test_id из таблицы user_tests
             const userTestResult = await poolComandos.query(`
             SELECT test_id
@@ -229,9 +239,9 @@ class Commands_controller{
             // Обновление start_time и вставка данных о задании при взятии теста
             await poolComandos.query(`
             UPDATE user_tests
-            SET start_time = CURRENT_TIMESTAMP
+            SET start_time = $2
             WHERE comand_id = $1
-        `, [command_id, ]);
+        `, [command_id, currentTime ]);
 
             res.json({
                 message: 'Тест успешно взят',
@@ -244,6 +254,25 @@ class Commands_controller{
         }
     }
 
+    async SubmitAnswer(req,res){
+        try {
+            const requestData = req.body;
+            const command_id = req.comand_id;
+            console.log(requestData);
+            console.log(command_id);
+            if (moment() > endTest) {
+                return res.status(400).json({ message: 'Тест уже закончился' });
+            }
+
+            res.status(200).json({massage:'Данные успешно получены!'})
+
+        }catch (error){
+            console.log('error: ',error);
+            res.status(500).json({error: error})
+        }
+
+
+    }
 }
 
 
