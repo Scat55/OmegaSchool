@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     goToTasks() {
-      this.$router.push('/comandTask');
+      this.$router.push('/manual');
     },
     changeInfo() {
       this.change = true;
@@ -75,7 +75,6 @@ export default {
         },
       );
       this.change = false;
-
     },
   },
 
