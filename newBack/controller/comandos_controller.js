@@ -20,15 +20,13 @@ const generateAccesToken = (comand_id) =>{
 
 
 class Commands_controller{
-
-
     async getinfo(req,res){
         res.status(200).json({ error: '' });
     }
     async CreateComandos(req, res) {
         try {
             const { comandName, password, school } = req.body;
-            const registrationDeadline = new Date('2023-12-27T14:00:00'); // Установите срок регистрации
+            const registrationDeadline = new Date('2023-12-27T00:00:00'); // Установите срок регистрации
             const currentTime = new Date();
             if (currentTime > registrationDeadline) {
                 return res.status(400).json({ message: 'Регистрация команд закрыта' });
@@ -88,27 +86,6 @@ class Commands_controller{
             console.error(error);
             res.status(500).json({ error: 'Ошибка на сервере' });
         }
-
-    if (loginComandoResult.rowCount > 0) {
-      // Команда найдена, возвращаем её идентификатор
-      const passwordMatch = await bcrypt.compare(password, loginComandoResult.rows[0].password);
-
-      if (passwordMatch) {
-        const token = generateAccesToken(loginComandoResult.rows[0].comand_id);
-        
-          
-        req.session.token = token;
-        req.session.save(() => {
-          res.json({ message: 'Успешная аутентификация', id : loginComandoResult.rows[0].comand_id,  token });
-        });
-      } else {
-        // Если пароль неверен, отправляем сообщение о неправильном пароле
-        res.status(401).json({ message: 'Неправильный пароль' });
-      }
-    } else {
-      // Команда не найдена
-      res.status(401).json({ error: 'Неверный email или пароль' });
-    }
     }
 
     async LoginComandos(req,res){
@@ -127,7 +104,7 @@ class Commands_controller{
 
                 req.session.token = token;
                 req.session.save(() => {
-                    res.json({ message: 'Успешная аутентификация',id : loginComandoResult.rows[0].comand_id,  token });
+                    res.json({ message: 'Успешная аутентификация', token });
                 });
             } else {
                 // Если пароль неверен, отправляем сообщение о неправильном пароле
@@ -140,8 +117,8 @@ class Commands_controller{
     }
 
     async InfoComandos(req, res){
-        const command_id = req.comand_id;
-        console.log(command_id)
+        const command_id = req.user_id;
+
         try {
             // Получение списка user_id из user_command
             const userCommandsResult = await poolComandos.query("SELECT user_id, first_name,last_name FROM user_command WHERE comand_id = $1", [command_id]);
@@ -150,11 +127,11 @@ class Commands_controller{
             const comandName = comandNameResult.rows[0]
 
             const userCommands = userCommandsResult.rows;
-
+            console.log(comandName);
             let users = []; // Renamed to 'users' for clarity
             for (const userCommand of userCommands) {
                 // Получение информации о пользователе из таблицы user
-                const userResult = await poolComandos.query("SELECT first_name, last_name, patronymic FROM user_command WHERE user_id = $1", [userCommand.user_id]);
+                const userResult = await poolComandos.query("SELECT first_name, last_name, patronymic FROM users WHERE user_id = $1", [userCommand.user_id]);
 
                 const userData = userResult.rows[0]; // Renamed to 'userData' for clarity
                 console.log('пользователь', userCommand);
@@ -179,7 +156,7 @@ class Commands_controller{
                 }
             }
 
-            res.status(200).json({ comandName : comandName.comand_name ,users: users });
+            res.status(200).json({ comandName : comandName.comand_name,users: users });
         } catch (error) {
             console.error("Error in InfoComandos:", error);
             res.status(500).json({ message: "Internal Server Error" });
