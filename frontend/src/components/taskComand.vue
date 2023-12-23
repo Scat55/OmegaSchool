@@ -54,11 +54,10 @@ export default {
       }
     },
     nextTask() {
-      // Здесь вы можете перейти к следующей задаче, отправить ответ и т. д.
       this.stopTimer();
       this.saveTimerState();
       console.log(`Answer: ${this.answer}`);
-      // Вам нужно реализовать логику перехода к следующей задаче
+      this.$emit('nextTask'); // Отправляем событие в родительский компонент
     },
     startTimer() {
       this.timerRunning = true;
