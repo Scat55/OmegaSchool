@@ -188,6 +188,60 @@ class Commands_controller{
         }
     }
 
+    async GetTasks(req, res) {
+        try {
+            const command_id = req.comand_id;
+
+            // Получение test_id из таблицы user_tests
+            const userTestResult = await poolComandos.query(`
+            SELECT test_id
+            FROM user_tests
+            WHERE comand_id = $1
+        `, [command_id]);
+
+            if (userTestResult.rows.length === 0) {
+                return res.status(404).json({ message: 'Тест не найден' });
+            }
+
+            const test_id = userTestResult.rows[0].test_id;
+
+            // Получение информации о задании из comand_task по test_id
+            const taskInfo = await poolComandos.query(`
+            SELECT task_name, task_description
+            FROM comand_task
+            WHERE test_id = $1
+            LIMIT 1;
+        `, [test_id]);
+
+            // Получение информации о тесте и задании из comand_task по test_id
+            const testInfo = await poolComandos.query(`
+            SELECT task_name, task_description
+            FROM comand_task task
+            WHERE test_id = $1 
+            ORDER BY task_name;            
+        `, [test_id]);
+
+            if (taskInfo.rows.length === 0) {
+                return res.status(404).json({ message: 'Задание не найдено' });
+            }
+
+
+            // Обновление start_time и вставка данных о задании при взятии теста
+            await poolComandos.query(`
+            UPDATE user_tests
+            SET start_time = CURRENT_TIMESTAMP
+            WHERE comand_id = $1
+        `, [command_id, ]);
+
+            res.json({
+                message: 'Тест успешно взят',
+                task: testInfo.rows
+            });
+        } catch (error) {
+            console.log("Error in InfoComandos:", error);
+            res.status(500).json({ massage: "Internal Server Error" });
+        }
+    }
 
 }
 

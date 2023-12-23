@@ -19,7 +19,7 @@ router.get('/info', commandosMiddleware, commandosController.InfoComandos) //Ñ‚Ñ
 
 router.post('/createTest',commandosController.createTestAndTasks)
 // router.post('/listTask', commandosController.InfoComandos)
-
+router.get('/getTasks', commandosMiddleware, commandosController.GetTasks)
 // router.post('/task/:taskID',commandosController.InfoComandos)
 
 module.exports = router;
