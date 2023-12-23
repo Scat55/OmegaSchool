@@ -33,8 +33,8 @@ class Commands_controller{
             const { comandName, password, school, email } = req.body;
 
 
-            console.log(currentTime)
-            if (currentTime > registrationDeadline) {
+            console.log(moment().format())
+            if (moment() > registrationDeadline) {
                 return res.status(400).json({ message: 'Регистрация команд закрыта' });
             }
 
