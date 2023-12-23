@@ -6,11 +6,8 @@
       :taskDescription="currentTask.task_description"
       :taskId="currentTask.task_description"
       @nextTask="nextTask"
+      @saveResult="saveResult"
     />
-    <!-- <button v-if="currentTask" @click="nextTask">Далее</button>
-    <div v-else>
-      <p>Все задания выполнены</p>
-    </div> -->
   </div>
 </template>
 
@@ -24,6 +21,7 @@ export default {
     return {
       tasks: [],
       currentTaskIndex: 0,
+      results: [],
     };
   },
   computed: {
@@ -37,8 +35,30 @@ export default {
         this.currentTaskIndex++;
       } else {
         // Все задания выполнены, можно выполнить какое-то действие
-        console.log('Все задания выполнены');
+        alert('Все задания выполнены');
+        this.sendResults();
+        // this.$router.push('comandPage');
       }
+    },
+    saveResult(result) {
+      this.results.push(result);
+    },
+    sendResults() {
+      axios.post(
+        '/commands/SubmitAnswer',
+        {
+          test_id: this.tasks.test_id,
+          data: this.results,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.tokenComand.token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      // Здесь отправьте массив результатов на сервер
+      // Например, используя axios.post('/api/saveResults', this.results)
     },
     fetchTasks() {
       this.tokenComand = JSON.parse(localStorage.getItem('comand'));

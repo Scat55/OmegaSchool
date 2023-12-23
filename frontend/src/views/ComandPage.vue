@@ -94,7 +94,6 @@ export default {
       })
       .then((res) => {
         this.infoComand = res.data;
-        console.log(res.data.users);
         this.users = res.data.users;
       });
   },

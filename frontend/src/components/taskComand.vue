@@ -53,6 +53,23 @@ export default {
         this.startOrResumeTimer();
       }
     },
+    startTimer() {
+      this.timerRunning = true;
+      const updateTimer = () => {
+        if (this.minutes === 0 && this.seconds === 0) {
+          this.stopTimer();
+        } else {
+          if (this.seconds === 0) {
+            this.minutes--;
+            this.seconds = 59;
+          } else {
+            this.seconds--;
+          }
+          this.saveTimerState();
+        }
+      };
+      this.timer = setInterval(updateTimer, 1000);
+    },
     startOrResumeTimer() {
       if (!this.timerRunning) {
         this.timerRunning = true;
@@ -66,22 +83,29 @@ export default {
             } else {
               this.seconds--;
             }
+            this.saveTimerState();
           }
-          this.saveTimerState();
         }, 1000);
       }
     },
     nextTask() {
-      // this.stopTimer(); // Останавливаем таймер
       this.resetTimer(); // Сбрасываем таймер до 1 минуты
-      this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
+      // this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
+      this.saveResult();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
-      console.log(this.answer);
-      this.answer = '';
+      this.answer = ''
     },
     resetTimer() {
       this.minutes = 1;
       this.seconds = 0;
+    },
+    saveResult() {
+      const time2 = JSON.parse(localStorage.getItem(`timerState-${this.taskId}`));
+      const result = {
+        answer: this.answer,
+        time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
+      };
+      this.$emit('saveResult', result);
     },
     stopTimer() {
       this.timerRunning = false;
@@ -118,12 +142,12 @@ export default {
   mounted() {
     this.loadTimerState();
     if (!this.timerRunning) {
-      this.startOrResumeTimer();
+      this.startTimer();
     }
   },
-
   beforeDestroy() {
     this.stopTimer();
+    this.saveTimerState(); // Добавим сохранение состояния перед уничтожением компонента
   },
 };
 </script>
