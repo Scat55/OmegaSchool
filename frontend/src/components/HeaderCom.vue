@@ -50,6 +50,7 @@ export default {
       const body = document.querySelector('body');
       body.style.overflow = '';
       localStorage.removeItem('comand');
+      localStorage.removeItem('timerState-undefined');
       store.state.isComandAuth = false;
       store.state.status = false;
       this.statusMenu = false;
@@ -63,6 +64,8 @@ export default {
     },
     // Переход на главную и проверка нахождения на главной или нет
     goToHomePage() {
+      localStorage.removeItem('timerState-undefined');
+
       if (this.$route.name === 'home') {
         return;
       } else {
