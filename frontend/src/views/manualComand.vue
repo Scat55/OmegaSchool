@@ -54,14 +54,20 @@
             </p>
           </li>
         </ul>
-        <button class="taskComand__content-btn">Приступить к заданию</button>
+        <button class="taskComand__content-btn" @click="goToTasks">Приступить к заданию</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goToTasks() {
+      this.$router.push('/comandTask');
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
