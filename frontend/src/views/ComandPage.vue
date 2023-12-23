@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     goToTasks() {
-      this.$router.push('/comandTask');
+      this.$router.push('/manual');
     },
     changeInfo() {
       this.change = true;
@@ -64,12 +64,17 @@ export default {
     updateUsers() {
       this.tokenComand = JSON.parse(localStorage.getItem('comand'));
 
-      axios.put(`/commands/changer`, this.users, {
-        headers: {
-          Authorization: `Bearer ${this.tokenComand.token}`,
-          'Content-Type': 'application/json',
+      axios.put(
+        `/commands/changer`,
+        { users: this.users },
+        {
+          headers: {
+            Authorization: `Bearer ${this.tokenComand.token}`,
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
+      this.change = false;
     },
   },
 
