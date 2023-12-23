@@ -3,17 +3,17 @@
     <div class="container">
       <div class="task__content">
         <div class="task__content-title">
-          <h1>Название задания</h1>
+          <h1>{{ taskTitle }}</h1>
           <p class="task__content-timer">
             {{ minutes }}:{{ seconds < 10 ? '0' : '' }}{{ seconds }}
           </p>
         </div>
-        <div class="task__content-description">Описание</div>
+        <div class="task__content-description">{{ taskDescription }}</div>
         <div class="task__content-answer">
-          <textarea class="textarea"></textarea>
+          <textarea class="textarea" v-model="answer"></textarea>
         </div>
         <div class="task__content-btn">
-          <button class="btn">Далее</button>
+          <button class="btn" @click="nextTask">Далее</button>
         </div>
       </div>
     </div>
@@ -22,6 +22,20 @@
 
 <script>
 export default {
+  props: {
+    taskId: {
+      type: String,
+      required: true,
+    },
+    taskTitle: {
+      type: String,
+      required: true,
+    },
+    taskDescription: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       minutes: 1,
@@ -38,6 +52,13 @@ export default {
       } else {
         this.startTimer();
       }
+    },
+    nextTask() {
+      // Здесь вы можете перейти к следующей задаче, отправить ответ и т. д.
+      this.stopTimer();
+      this.saveTimerState();
+      console.log(`Answer: ${this.answer}`);
+      // Вам нужно реализовать логику перехода к следующей задаче
     },
     startTimer() {
       this.timerRunning = true;
@@ -62,7 +83,7 @@ export default {
     },
     saveTimerState() {
       localStorage.setItem(
-        'timerState',
+        `timerState-${this.taskId}`,
         JSON.stringify({
           minutes: this.minutes,
           seconds: this.seconds,
@@ -71,7 +92,7 @@ export default {
       );
     },
     loadTimerState() {
-      const timerState = localStorage.getItem('timerState');
+      const timerState = localStorage.getItem(`timerState-${this.taskId}`);
       if (timerState) {
         const parsedState = JSON.parse(timerState);
         this.minutes = parsedState.minutes;
@@ -82,7 +103,12 @@ export default {
   },
   mounted() {
     this.loadTimerState();
-    this.startTimer();
+    if (!this.timerRunning) {
+      this.startTimer();
+    }
+  },
+  beforeDestroy() {
+    this.stopTimer();
   },
 };
 </script>

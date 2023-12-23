@@ -10,6 +10,10 @@
           <input type="text" class="comand__input name" v-model="comandName" />
         </div>
         <div class="comand__info">
+          <span class="comand__info-name">Почта</span>
+          <input type="email" class="comand__input" v-model="email" />
+        </div>
+        <div class="comand__info">
           <span class="comand__info-name">Пароль</span>
           <input type="password" class="comand__input" v-model="pass" />
         </div>
@@ -36,6 +40,7 @@ export default {
       comandName: '',
       pass: '',
       token: '',
+      email: '',
       userID: '',
       lenghtUsers: 0,
       userName: '',
@@ -60,6 +65,7 @@ export default {
             comandName: this.comandName,
             password: this.pass,
             school: this.school,
+            email: this.email,
           },
           {
             header: {
