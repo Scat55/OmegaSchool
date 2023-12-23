@@ -1,9 +1,136 @@
 <template>
-  <div>Задания</div>
+  <div class="task">
+    <div class="container">
+      <div class="task__content">
+        <div class="task__content-title">
+          <h1>Название задания</h1>
+          <p class="task__content-timer">
+            {{ minutes }}:{{ seconds < 10 ? '0' : '' }}{{ seconds }}
+          </p>
+        </div>
+        <div class="task__content-description">Описание</div>
+        <div class="task__content-answer">
+          <textarea class="textarea"></textarea>
+        </div>
+        <div class="task__content-btn">
+          <button class="btn">Далее</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      minutes: 1,
+      seconds: 0,
+      timerRunning: false,
+      timer: null,
+      answer: '',
+    };
+  },
+  methods: {
+    toggleTimer() {
+      if (this.timerRunning) {
+        this.stopTimer();
+      } else {
+        this.startTimer();
+      }
+    },
+    startTimer() {
+      this.timerRunning = true;
+      this.timer = setInterval(() => {
+        if (this.minutes === 0 && this.seconds === 0) {
+          this.stopTimer();
+        } else {
+          if (this.seconds === 0) {
+            this.minutes--;
+            this.seconds = 59;
+          } else {
+            this.seconds--;
+          }
+        }
+        this.saveTimerState();
+      }, 1000);
+    },
+    stopTimer() {
+      this.timerRunning = false;
+      clearInterval(this.timer);
+      this.saveTimerState();
+    },
+    saveTimerState() {
+      localStorage.setItem(
+        'timerState',
+        JSON.stringify({
+          minutes: this.minutes,
+          seconds: this.seconds,
+          timerRunning: this.timerRunning,
+        }),
+      );
+    },
+    loadTimerState() {
+      const timerState = localStorage.getItem('timerState');
+      if (timerState) {
+        const parsedState = JSON.parse(timerState);
+        this.minutes = parsedState.minutes;
+        this.seconds = parsedState.seconds;
+        this.timerRunning = parsedState.timerRunning;
+      }
+    },
+  },
+  mounted() {
+    this.loadTimerState();
+    this.startTimer();
+  },
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.task {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #fff;
+    padding: 0.9375rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #000;
+    &-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &-btn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+}
+.btn {
+  font-family: 'Visitor';
+  margin-top: 1rem;
+  padding: 0.625rem;
+  background-color: rgb(5, 224, 5);
+  color: #fff;
+  text-align: center;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.textarea {
+  font-family: 'Visitor';
+  width: 100%;
+  height: 100px;
+  resize: none;
+  outline: none;
+  border-radius: 0.3rem;
+  padding: 0.625rem;
+  font-size: 1.3rem;
+}
+</style>
