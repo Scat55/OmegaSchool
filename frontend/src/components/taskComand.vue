@@ -50,30 +50,38 @@ export default {
       if (this.timerRunning) {
         this.stopTimer();
       } else {
-        this.startTimer();
+        this.startOrResumeTimer();
+      }
+    },
+    startOrResumeTimer() {
+      if (!this.timerRunning) {
+        this.timerRunning = true;
+        this.timer = setInterval(() => {
+          if (this.minutes === 0 && this.seconds === 0) {
+            this.stopTimer();
+          } else {
+            if (this.seconds === 0) {
+              this.minutes--;
+              this.seconds = 59;
+            } else {
+              this.seconds--;
+            }
+          }
+          this.saveTimerState();
+        }, 1000);
       }
     },
     nextTask() {
-      this.stopTimer();
-      this.saveTimerState();
-      console.log(`Answer: ${this.answer}`);
-      this.$emit('nextTask'); // Отправляем событие в родительский компонент
+      // this.stopTimer(); // Останавливаем таймер
+      this.resetTimer(); // Сбрасываем таймер до 1 минуты
+      this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
+      this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
+      console.log(this.answer);
+      this.answer = '';
     },
-    startTimer() {
-      this.timerRunning = true;
-      this.timer = setInterval(() => {
-        if (this.minutes === 0 && this.seconds === 0) {
-          this.stopTimer();
-        } else {
-          if (this.seconds === 0) {
-            this.minutes--;
-            this.seconds = 59;
-          } else {
-            this.seconds--;
-          }
-        }
-        this.saveTimerState();
-      }, 1000);
+    resetTimer() {
+      this.minutes = 1;
+      this.seconds = 0;
     },
     stopTimer() {
       this.timerRunning = false;
@@ -97,15 +105,23 @@ export default {
         this.minutes = parsedState.minutes;
         this.seconds = parsedState.seconds;
         this.timerRunning = parsedState.timerRunning;
+        // Убедимся, что таймер не начинается с отсчета до запуска
+        if (this.timerRunning && (this.minutes > 0 || this.seconds >= 0)) {
+          this.startOrResumeTimer();
+        }
       }
     },
+  },
+  watch: {
+    taskId: 'loadTimerState',
   },
   mounted() {
     this.loadTimerState();
     if (!this.timerRunning) {
-      this.startTimer();
+      this.startOrResumeTimer();
     }
   },
+
   beforeDestroy() {
     this.stopTimer();
   },
