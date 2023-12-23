@@ -37,7 +37,7 @@ export default {
         // Все задания выполнены, можно выполнить какое-то действие
         alert('Все задания выполнены');
         this.sendResults();
-        // this.$router.push('comandPage');
+        this.$router.push('comandPage');
       }
     },
     saveResult(result) {
