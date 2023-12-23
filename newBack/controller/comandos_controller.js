@@ -117,7 +117,7 @@ class Commands_controller{
     }
 
     async InfoComandos(req, res){
-        const command_id = req.user_id;
+        const command_id = req.comand_id;
 
         try {
             // Получение списка user_id из user_command
@@ -131,7 +131,7 @@ class Commands_controller{
             let users = []; // Renamed to 'users' for clarity
             for (const userCommand of userCommands) {
                 // Получение информации о пользователе из таблицы user
-                const userResult = await poolComandos.query("SELECT first_name, last_name, patronymic FROM users WHERE user_id = $1", [userCommand.user_id]);
+                const userResult = await poolComandos.query("SELECT first_name, last_name, patronymic FROM user_command WHERE user_id = $1", [userCommand.user_id]);
 
                 const userData = userResult.rows[0]; // Renamed to 'userData' for clarity
                 console.log('пользователь', userCommand);
@@ -184,9 +184,6 @@ class Commands_controller{
             res.status(500).json({error:'Ошибка при создании теста и заданий.'});
         }
     }
-
-
-
 
 }
 
