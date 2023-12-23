@@ -17,10 +17,11 @@ const generateAccesToken = (comand_id) =>{
     }
     return jwt.sign(payload, secret,  { expiresIn: '24H' })
 }
-const currentTime = moment().format();
+
+
 const registrationDeadline = moment('2023-12-27T14:00:00') // Установите срок регистрации
 const startTest = moment('2023-12-23T13:00:00');
-const endTest = moment('2023-12-23T13:00:00');
+const endTest = moment('2023-12-23T15:00:00');
 
 
 class Commands_controller{
@@ -259,13 +260,24 @@ class Commands_controller{
             const requestData = req.body;
             const command_id = req.comand_id;
             console.log(requestData);
-            console.log(command_id);
+            console.log(moment().format());
+
             if (moment() > endTest) {
                 return res.status(400).json({ message: 'Тест уже закончился' });
             }
 
-            res.status(200).json({massage:'Данные успешно получены!'})
+            // Обновление start_time и вставка данных о задании при взятии теста
+            await poolComandos.query(`
+            UPDATE user_tests
+            SET end_time = $2
+            WHERE comand_id = $1
+        `, [command_id, moment().format() ]);
 
+
+
+
+
+            res.status(200).json({massage:'Данные успешно получены!'})
         }catch (error){
             console.log('error: ',error);
             res.status(500).json({error: error})
