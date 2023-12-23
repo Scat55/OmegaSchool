@@ -25,7 +25,7 @@ class Commands_controller{
     }
     async CreateComandos(req, res) {
         try {
-            const { comandName, password, school } = req.body;
+            const { comandName, password, school, email } = req.body;
             const registrationDeadline = new Date('2023-12-27T00:00:00'); // Установите срок регистрации
             const currentTime = new Date();
             if (currentTime > registrationDeadline) {
@@ -36,7 +36,7 @@ class Commands_controller{
 
             // Если результат запроса не пустой, отправляем сообщение о наличии команды
             if (queryResult.rows.length > 0) {
-                return res.status(400).json({ message: 'Команда с таким названием уже существует' });
+                return res.status(400).json({ message: 'Команда с таким названием или уже существует' });
             }
 
             // Хэшируем пароль перед сохранением в базу данных
@@ -44,21 +44,21 @@ class Commands_controller{
             const hashedPassword = await bcrypt.hash(password, saltRounds);
 
             // Вставка команды
-            const insertComandoText = 'INSERT INTO comandos (comand_name, password,school) VALUES ($1, $2, $3) RETURNING comand_id;';
-            const comandoResult = await poolComandos.query(insertComandoText, [comandName, hashedPassword,school]);
+            const insertComandoText = 'INSERT INTO comandos (comand_name, password,school, email) VALUES ($1, $2, $3, $4) RETURNING comand_id;';
+            const comandoResult = await poolComandos.query(insertComandoText, [comandName, hashedPassword,school, email]);
 
             const comandId = comandoResult.rows[0].comand_id;
 
             // Создание 6 пользователей
-            const insertUserText = 'INSERT INTO user_command (first_name, last_name, patronymic, email, comand_id) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+            const insertUserText = 'INSERT INTO user_command (first_name, last_name, patronymic, comand_id) VALUES ($1, $2, $3, $4) RETURNING *';
             const createdUsers = [];
 
             for (let i = 1; i <= 6; i++) {
-                const result = await poolComandos.query(insertUserText, [``, ``, ``, ``, comandId]);
+                const result = await poolComandos.query(insertUserText, [``, ``, ``, comandId]);
                 createdUsers.push(result.rows[0]);
             }
 
-            res.status(201).json({ comandId: comandId, users: createdUsers  });
+            res.status(201).json({ comandId: comandId, email:email, users: createdUsers  });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Ошибка на сервере' });
@@ -164,6 +164,7 @@ class Commands_controller{
             res.status(500).json({ message: "Internal Server Error" });
         }
     }
+
 
     async createTestAndTasks(req, res){
         try {
