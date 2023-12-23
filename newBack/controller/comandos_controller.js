@@ -235,6 +235,7 @@ class Commands_controller{
 
             res.json({
                 message: 'Тест успешно взят',
+                test_id:test_id,
                 task: testInfo.rows
             });
         } catch (error) {
