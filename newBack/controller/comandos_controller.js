@@ -1,6 +1,6 @@
 const { validationResult, check } = require('express-validator')
 const { addUser } = require('./user_controller')
-
+const ExcelJS = require('exceljs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { json } = require("express");
@@ -21,6 +21,8 @@ const currentTime = moment().format();
 const registrationDeadline = moment('2023-12-27T14:00:00') // Установите срок регистрации
 const startTest = moment('2023-12-23T13:00:00');
 const endTest = moment('2023-12-25T13:00:00');
+
+
 
 
 class Commands_controller {
@@ -213,7 +215,7 @@ class Commands_controller {
       // }
 
       const test_id = userTestResult.rows[0].test_id;
-     
+
       // Получение информации о задании из comand_task по test_id
       const taskInfo = await poolComandos.query(`
             SELECT task_name, task_description
@@ -234,7 +236,7 @@ class Commands_controller {
             SELECT test_name
             FROM comand_tests
             WHERE test_id = $1
-      `,[test_id])
+      `, [test_id])
 
       if (taskInfo.rows.length === 0) {
         return res.status(404).json({ message: 'Задание не найдено' });
@@ -270,21 +272,21 @@ class Commands_controller {
 
       requestData.data.forEach(async element => {
         try {
-            const result = await poolComandos.query('SELECT task_id, test_id FROM comand_task WHERE task_name = $1', [element.task_name]);
-    
-            await poolComandos.query(`
+          const result = await poolComandos.query('SELECT task_id, test_id FROM comand_task WHERE task_name = $1', [element.task_name]);
+
+          await poolComandos.query(`
                 UPDATE user_answers
                 SET user_response = $4, answer_time = $5
                 WHERE comand_id = $1
                   AND test_id = $2
                   AND task_id = $3;
             `, [command_id, result.rows[0].test_id, result.rows[0].task_id, element.answer, element.time]);
-    
+
         } catch (error) {
-            console.error(`Error processing element: ${error.message}`);
+          console.error(`Error processing element: ${error.message}`);
         }
-    });
-      
+      });
+
       res.status(200).json({ massage: 'Данные успешно получены!' })
     } catch (error) {
       console.log('error: ', error);
@@ -293,6 +295,102 @@ class Commands_controller {
 
 
   }
+
+  async getResult(req, res) {
+    try {
+      const commands = await poolComandos.query(`
+      
+      SELECT
+      c.school AS school_name,
+      c.comand_name AS team_name
+      FROM
+      user_answers ua
+      JOIN
+      comandos c ON ua.comand_id = c.comand_id
+      JOIN
+      comand_task ct ON ua.task_id = ct.task_id
+      GROUP BY
+          c.comand_name,
+      c.school;
+    `);
+
+      const tests = await poolComandos.query(`
+SELECT
+  c.school AS school_name,
+  c.comand_name AS team_name,
+  t.test_name
+FROM
+  user_answers ua
+JOIN
+  comandos c ON ua.comand_id = c.comand_id
+JOIN
+  comand_task ct ON ua.task_id = ct.task_id
+JOIN
+  public.comand_tests t on t.test_id = ua.test_id
+GROUP BY
+  c.school,
+  c.comand_name,
+  ct.test_id, t.test_name;
+    `);
+  
+      const answers = await poolComandos.query(`
+      SELECT
+        c.school AS school_name,
+        c.comand_name AS team_name,
+        t.task_name as task_name,
+        t.task_answer as true_answer,
+        ua.user_response AS answer,
+        ua.answer_time AS time
+      FROM
+        user_answers ua
+      JOIN
+        comandos c ON ua.comand_id = c.comand_id
+      JOIN
+        comand_task ct ON ua.task_id = ct.task_id
+      join
+        public.comand_task t on t.task_id = ua.task_id
+        ORDER BY
+        t.task_name;
+    `);
+    // console.log(answers.rows)
+
+      const data = [];
+      
+      commands.rows.forEach((command) => {
+        const { school_name, team_name } = command;
+        const testInfo = tests.rows.find((test) => test.school_name === school_name && test.team_name === team_name);
+        const answerInfo = answers.rows.filter((answer) => answer.school_name === school_name && answer.team_name === team_name);
+
+        const entry = {
+            school_name,
+            team_name,
+            test_name: testInfo.test_name,
+        };
+        
+        // Dynamically add answer and time properties based on the number of questions
+        answerInfo.forEach((answer, index, ) => {
+            entry[`task_name_${index + 1}`] =answer.task_name;
+            entry[`true_answer_${index + 1}`] = answer.true_answer;
+            entry[`answer_comand_${index + 1}`] = answer.answer;
+            entry[`time_${index + 1}`] = answer.time;
+            
+        });
+
+        data.push(entry);
+    });
+
+    res.json(data);
+
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async putResult(req,res){
+
+  }
+  
 }
 
 
