@@ -6,9 +6,6 @@ const commandosController = require('../controller/comandos_controller')
 
 const commandosMiddleware = require('../middlewaree/commandosMiddlewaer');
 
-
-router.get('/',commandosController.getinfo)
-
 router.post('/create', commandosController.CreateComandos)
 
 router.post('/login', commandosController.LoginComandos) //тут получаешь токен

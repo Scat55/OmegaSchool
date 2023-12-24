@@ -24,9 +24,7 @@ const endTest = moment('2023-12-25T13:00:00');
 
 
 class Commands_controller {
-  async getinfo(req, res) {
-    res.status(200).json({ error: '' });
-  }
+
   async CreateComandos(req, res) {
     try {
       const { comandName, password, school, email } = req.body;
@@ -170,7 +168,6 @@ class Commands_controller {
     }
   }
 
-
   async createTestAndTasks(req, res) {
     try {
       const { test_name, tasks } = req.body;
@@ -197,14 +194,12 @@ class Commands_controller {
     try {
       const command_id = req.comand_id;
 
-      console.log(currentTime)
-
       if (moment() < startTest) {
         return res.status(400).json({ message: 'Тест еще не начался' });
       }
       // Получение test_id из таблицы user_tests
       const userTestResult = await poolComandos.query(`
-            SELECT test_id
+            SELECT test_id, start_time
             FROM user_tests
             WHERE comand_id = $1
         `, [command_id]);
@@ -212,9 +207,13 @@ class Commands_controller {
       if (userTestResult.rows.length === 0) {
         return res.status(404).json({ message: 'Тест не найден' });
       }
+      //запрет наповторное отправление теста
+      // if (userTestResult.rows[0].start_time !== 'null'){
+      //   return res.status(200).json({ message: 'Тест уже всят' });
+      // }
 
       const test_id = userTestResult.rows[0].test_id;
-
+     
       // Получение информации о задании из comand_task по test_id
       const taskInfo = await poolComandos.query(`
             SELECT task_name, task_description
