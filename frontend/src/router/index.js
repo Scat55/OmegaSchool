@@ -18,6 +18,7 @@ import Manual from '@/views/manualComand';
 import Admin from '@/views/Admin';
 
 import store from '../store/index';
+import Feedback from '@/views/Feedback.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -90,20 +91,24 @@ const routes = [
   },
   {
     path: '*',
-    component: ErrorPage
+    component: ErrorPage,
   },
   {
     path: '/comandTask',
-    component: taskComand
+    component: taskComand,
   },
   {
     path: '/manual',
-    component: Manual
+    component: Manual,
   },
   {
     path: '/admin',
-    component: Admin
-  }
+    component: Admin,
+  },
+  {
+    path: '/feedback',
+    component: Feedback,
+  },
 ];
 
 const router = new VueRouter({
