@@ -358,22 +358,26 @@ GROUP BY
       commands.rows.forEach((command) => {
         const { school_name, team_name, task_name } = command;
         const testInfo = tests.rows.find((test) => test.school_name === school_name && test.team_name === team_name);
-        console.log(task_name)
-        const answerInfo = answers.rows.find((answer, time, true_answer) => answer.school_name === school_name && answer.team_name === team_name);
-         
-        const entry = {
-          school_name,
-          team_name,
-          test_name: testInfo.test_name,
-          task_name,
-          true_answer: answerInfo.true_answer,
-          answer: answerInfo.answer,
-          time: answerInfo.time,
-        };
-        data.push(entry); 
-      });
+        const answerInfo = answers.rows.filter((answer) => answer.school_name === school_name && answer.team_name === team_name);
 
-       res.json(data);
+        const entry = {
+            school_name,
+            team_name,
+            test_name: testInfo.test_name,
+            task_name,
+        };
+
+        // Dynamically add answer and time properties based on the number of questions
+        answerInfo.forEach((answer, index) => {
+            entry[`answer_${index + 1}`] = answer.answer;
+            entry[`time_${index + 1}`] = answer.time;
+            entry[`true_answer_${index + 1}`] = answer.true_answer;
+        });
+
+        data.push(entry);
+    });
+
+    res.json(data);
     } catch (error) {
       console.error('Error retrieving data:', error);
       res.status(500).json({ error: 'Internal Server Error' });
