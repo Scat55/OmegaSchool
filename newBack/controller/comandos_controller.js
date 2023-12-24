@@ -1,6 +1,6 @@
 const { validationResult, check } = require('express-validator')
 const { addUser } = require('./user_controller')
-
+const ExcelJS = require('exceljs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { json } = require("express");
@@ -300,20 +300,18 @@ class Commands_controller {
     try {
       const commands = await poolComandos.query(`
       
-SELECT
-c.school AS school_name,
-c.comand_name AS team_name,
-ct.task_name
-FROM
-user_answers ua
-JOIN
-comandos c ON ua.comand_id = c.comand_id
-JOIN
-comand_task ct ON ua.task_id = ct.task_id
-GROUP BY
-c.school,
-c.comand_name,
-ct.test_id, ct.task_name;
+      SELECT
+      c.school AS school_name,
+      c.comand_name AS team_name
+      FROM
+      user_answers ua
+      JOIN
+      comandos c ON ua.comand_id = c.comand_id
+      JOIN
+      comand_task ct ON ua.task_id = ct.task_id
+      GROUP BY
+          c.comand_name,
+      c.school;
     `);
 
       const tests = await poolComandos.query(`
@@ -339,6 +337,7 @@ GROUP BY
       SELECT
         c.school AS school_name,
         c.comand_name AS team_name,
+        t.task_name as task_name,
         t.task_answer as true_answer,
         ua.user_response AS answer,
         ua.answer_time AS time
@@ -349,14 +348,16 @@ GROUP BY
       JOIN
         comand_task ct ON ua.task_id = ct.task_id
       join
-        public.comand_task t on t.task_id = ua.task_id;
+        public.comand_task t on t.task_id = ua.task_id
+        ORDER BY
+        t.task_name;
     `);
     // console.log(answers.rows)
 
       const data = [];
       
       commands.rows.forEach((command) => {
-        const { school_name, team_name, task_name } = command;
+        const { school_name, team_name } = command;
         const testInfo = tests.rows.find((test) => test.school_name === school_name && test.team_name === team_name);
         const answerInfo = answers.rows.filter((answer) => answer.school_name === school_name && answer.team_name === team_name);
 
@@ -364,25 +365,32 @@ GROUP BY
             school_name,
             team_name,
             test_name: testInfo.test_name,
-            task_name,
         };
-
+        
         // Dynamically add answer and time properties based on the number of questions
-        answerInfo.forEach((answer, index) => {
-            entry[`answer_${index + 1}`] = answer.answer;
-            entry[`time_${index + 1}`] = answer.time;
+        answerInfo.forEach((answer, index, ) => {
+            entry[`task_name_${index + 1}`] =answer.task_name;
             entry[`true_answer_${index + 1}`] = answer.true_answer;
+            entry[`answer_comand_${index + 1}`] = answer.answer;
+            entry[`time_${index + 1}`] = answer.time;
+            
         });
 
         data.push(entry);
     });
 
     res.json(data);
+
     } catch (error) {
       console.error('Error retrieving data:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+  async putResult(req,res){
+
+  }
+  
 }
 
 
