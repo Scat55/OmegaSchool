@@ -114,6 +114,10 @@ export default {
   width: 40%;
   gap: 20px;
 
+  &__title {
+    text-align: center;
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -226,11 +230,17 @@ export default {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 835px) {
   .container {
     flex-direction: column;
-    gap: 0;
+    gap: 40px;
     padding: 20px;
+    align-items: center;
+    margin: 80px 20px 0 20px;
+  }
+
+  .introductios {
+    width: 90%;
   }
 }
 </style>
