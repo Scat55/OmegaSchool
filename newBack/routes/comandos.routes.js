@@ -20,5 +20,6 @@ router.get('/getTasks', commandosMiddleware, commandosController.GetTasks)
 
 router.post('/SubmitAnswer',commandosMiddleware, commandosController.SubmitAnswer)
 // router.post('/task/:taskID',commandosController.InfoComandos)
+router.get('/getResult', commandosController.getResult)
 
 module.exports = router;
