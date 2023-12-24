@@ -10,6 +10,9 @@ export default {
   methods: {
     sendFeedBack() {
       alert('Спасибо за ваше сообщение!');
+      this.name = '';
+      this.email = '';
+      this.message = '';
     },
   },
 };
