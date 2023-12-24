@@ -1,5 +1,12 @@
 <script>
 export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      message: '',
+    };
+  },
   methods: {
     sendFeedBack() {
       alert('Спасибо за ваше сообщение!');
@@ -61,15 +68,15 @@ export default {
         <form @submit.prevent="sendFeedBack">
           <div class="feedback__container__form__name">
             <label for="name">Имя</label>
-            <input type="text" id="name" />
+            <input type="text" id="name" v-model="name" />
           </div>
           <div class="feedback__container__form__email">
             <label for="email">Email</label>
-            <input type="email" id="email" />
+            <input type="email" id="email" v-model="email" />
           </div>
           <div class="feedback__container__form__message">
             <label for="message">Сообщение</label>
-            <textarea name="" id="message" cols="30" rows="10"></textarea>
+            <textarea name="" id="message" v-model="message"></textarea>
           </div>
           <div class="feedback__container__form__button">
             <button type="submit">Отправить</button>
