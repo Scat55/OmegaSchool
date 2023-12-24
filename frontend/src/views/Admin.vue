@@ -1,40 +1,53 @@
 <template>
   <div class="admin">
-    <div class="admin__content">
-      <div class="admin__header">
-        <div class="container">
-          <div class="admin__header-tabs">
-            <button
-              class="admin__header-tab"
-              :class="{ 'admin__header-tab--active': table }"
-              @click="showTable"
-            >
-              Проверка заданий
-            </button>
-            <button
-              class="admin__header-tab"
-              :class="{ 'admin__header-tab--active': checkTask }"
-              @click="showTasks"
-            >
-              Добавить задание
-            </button>
-          </div>
+    <div class="admin__header">
+      <div class="container">
+        <div class="admin__header-tabs">
+          <button
+            class="admin__header-tab"
+            :class="{ 'admin__header-tab--active': table }"
+            @click="showTable"
+          >
+            Результаты тестов
+          </button>
+          <button
+            class="admin__header-tab"
+            :class="{ 'admin__header-tab--active': checkTask }"
+            @click="showTasks"
+          >
+            Задания
+          </button>
         </div>
       </div>
+    </div>
+    <div class="admin__content">
       <div class="container">
         <div class="admin__content-table" v-if="table">
           <div class="admin__content-items">
-            <div v-for="(team, index) in teams" :key="index" class="admin__content-item">
+            <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">
               <h1>Школа: {{ team.school_name }}</h1>
               <Table
                 :teamName="team.team_name"
                 :tasks="team.task_names"
+                :question="team.task_names"
                 :correctAnswers="team.true_answer"
                 :time="team.time.map((t) => formatTime(t))"
                 :userAnswers="team.answer_comand"
-                :team="teams"
               />
             </div>
+          </div>
+          <div class="admin__pagination">
+            <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage === 1">
+              ‹ Назад
+            </button>
+            <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>
+            <button
+              class="admin__pagination-btn"
+              @click="nextPage"
+              :disabled="currentPage === pageCount"
+            >
+              Вперед ›
+            </button>
           </div>
         </div>
         <div class="admin__content-tasks" v-if="checkTask">Задания</div>
@@ -64,6 +77,9 @@ export default {
       const endIndex = startIndex + this.teamsPerPage;
       return this.teams.slice(startIndex, endIndex);
     },
+    pageCount() {
+      return Math.ceil(this.teams.length / this.teamsPerPage);
+    },
   },
   methods: {
     formatTime(time) {
@@ -88,6 +104,16 @@ export default {
     },
     handlePageClick(page) {
       this.currentPage = page;
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.currentPage++;
+      }
     },
   },
   mounted() {
@@ -150,22 +176,26 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    button {
-      cursor: pointer;
-      color: #065dfe;
-      border: 1px solid #ddd;
+    .admin__pagination-btn {
+      margin: 0 5px;
       padding: 5px 10px;
+      cursor: pointer;
+      background-color: #065dfe;
+      color: #fff;
+      border: none;
       border-radius: 4px;
-      transition: background-color 0.3s;
       &:hover {
-        background-color: #f0f0f0;
+        background-color: #0e74ff;
       }
       &:disabled {
+        background-color: #ddd;
+        color: #777;
         cursor: not-allowed;
       }
     }
-    span {
+    .admin__pagination-info {
       margin: 0 10px;
+      font-size: 14px;
     }
   }
 }

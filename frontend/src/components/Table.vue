@@ -1,23 +1,22 @@
 <template>
   <div class="quiz-container">
-    <h2>{{ schoolName }}</h2>
     <h3>Команда: {{ teamName }}</h3>
 
     <div v-for="(task, index) in tasks" :key="index" class="task-container">
       <h4>{{ task }}</h4>
-      <p class="question">Вопрос: {{ task.question }}</p>
-      <p class="answer">Правильный ответ: {{ task.correctAnswer }}</p>
+      <p class="question">Вопрос: {{ question[index] }}</p>
+      <p class="answer">Правильный ответ: {{ correctAnswers[index] }}</p>
 
       <p class="user-answer">Ответ пользователя: {{ userAnswers[index] || 'Нет ответа' }}</p>
+      <p class="time">Время: {{ time[index] }}</p>
     </div>
-
-    <p class="time">Время: {{ time }}</p>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    question: Array,
     schoolName: String,
     teamName: String,
     tasks: Array,
