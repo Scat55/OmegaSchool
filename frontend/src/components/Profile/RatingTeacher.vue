@@ -2,33 +2,37 @@
 import ProgressBar from '@/UI/ProgressBar.vue';
 export default {
   components: {
-    ProgressBar
+    ProgressBar,
   },
   props: {
     grades: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       sum: 0,
-    }
+    };
   },
 
-  computed: {
-
-  },
+  computed: {},
 
   mounted() {
-    this.sum = this.grades[0].informatics + this.grades[0].mathematics + this.grades[0].physics + this.grades[0].chemistry + this.grades[0].biology + this.grades[0].geography + this.grades[0].technology;
-  }
-
-}
+    this.sum =
+      this.grades[0].informatics +
+      this.grades[0].mathematics +
+      this.grades[0].physics +
+      this.grades[0].chemistry +
+      this.grades[0].biology +
+      this.grades[0].geography +
+      this.grades[0].technology;
+  },
+};
 </script>
 
 <template>
-<div class="main_rait">
+  <div class="main_rait">
     <h2 class="title_my_rating">Мой рейтинг</h2>
     <div class="grades_teacher informatics">
       <h3>Мой балл по информатике: {{ grades[0].informatics }}</h3>
@@ -66,39 +70,84 @@ export default {
       <progress-bar :score="grades[0].technology"></progress-bar>
     </div>
 
+    <div class="grades_teacher">
+      <h3>Сколько было одобрено всего заданий: {{ sum }}</h3>
+      <p>
+        Для того чтобы получить звание "Эксперт" нужно заполнить шкалу до 100% по любому предмету.
+      </p>
+      <p>один процент = одному одобренному заданию по этому предмету.</p>
+      <p>
+        После получения звания "Эксперт" вы сможете приступить к проверке добавленных, но еще не
+        одобренных заданий учителей.
+      </p>
+      <p>
+        После того как вы заполните шкалу до 100% вы все равно сможете продолжить добавлять задания
+        по этому предмету, у вас будет прибавляться балл, но шкала двигаться перестанет.
+      </p>
+    </div>
 
     <h2 class="title_my_rating">Мои достижения</h2>
     <div class="grades_teacher countExercise">
       <p>Количество добавленных заданий: {{ sum }}</p>
     </div>
     <div class="my_achivment">
-      <div :class="['achievement-card', sum >= 1 ? '' : 'inactive' ]">
-        <img src="@/assets/images/prizes/prizes (1).png" alt="achievement.title" class="achievement-image">
+      <div :class="['achievement-card', sum >= 1 ? '' : 'inactive']">
+        <img
+          src="@/assets/images/prizes/prizes (1).png"
+          alt="achievement.title"
+          class="achievement-image"
+        />
         <h4 class="achievement-title">Первое задание создано!</h4>
-        <p class="achievement-text">Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!</p>
+        <p class="achievement-text">
+          Ваш первый вклад в обучение неоценим. Продолжайте вдохновлять учеников!
+        </p>
       </div>
-      <div :class="['achievement-card', sum >= 25 ? '' : 'inactive' ]">
-        <img src="@/assets/images/prizes/prizes (18).png" alt="achievement.title" class="achievement-image">
+      <div :class="['achievement-card', sum >= 25 ? '' : 'inactive']">
+        <img
+          src="@/assets/images/prizes/prizes (18).png"
+          alt="achievement.title"
+          class="achievement-image"
+        />
         <h4 class="achievement-title">25 заданий в арсенале!</h4>
-        <p class="achievement-text">Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!</p>
+        <p class="achievement-text">
+          Вы создали 25 уникальных заданий. Ваше мастерство формирует будущее образования!
+        </p>
       </div>
-      <div :class="['achievement-card', sum >= 50 ? '' : 'inactive' ]">
-        <img src="@/assets/images/prizes/prizes (5).png" alt="achievement.title" class="achievement-image">
+      <div :class="['achievement-card', sum >= 50 ? '' : 'inactive']">
+        <img
+          src="@/assets/images/prizes/prizes (5).png"
+          alt="achievement.title"
+          class="achievement-image"
+        />
         <h4 class="achievement-title">50 заданий для жаждущих знаний!</h4>
-        <p class="achievement-text">50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.</p>
+        <p class="achievement-text">
+          50 заданий добавлено! Ваше стремление к обучению укрепляет основы знаний.
+        </p>
       </div>
-      <div :class="['achievement-card', sum >= 75 ? '' : 'inactive' ]">
-        <img src="@/assets/images/prizes/prizes (4).png" alt="achievement.title" class="achievement-image">
+      <div :class="['achievement-card', sum >= 75 ? '' : 'inactive']">
+        <img
+          src="@/assets/images/prizes/prizes (4).png"
+          alt="achievement.title"
+          class="achievement-image"
+        />
         <h4 class="achievement-title">75 шедевров педагогики!</h4>
-        <p class="achievement-text">Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.</p>
+        <p class="achievement-text">
+          Вы достигли великолепной отметки в 75 заданий! Ваш опыт и творчество ценятся выше всего.
+        </p>
       </div>
-      <div :class="['achievement-card', sum >= 100 ? '' : 'inactive' ]">
-        <img src="@/assets/images/prizes/prizes (6).png" alt="achievement.title" class="achievement-image">
+      <div :class="['achievement-card', sum >= 100 ? '' : 'inactive']">
+        <img
+          src="@/assets/images/prizes/prizes (6).png"
+          alt="achievement.title"
+          class="achievement-image"
+        />
         <h4 class="achievement-title">100 заданий - вековой юбилей!</h4>
-        <p class="achievement-text">Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!</p>
+        <p class="achievement-text">
+          Ваши 100 заданий стали вехой в образовании. Вы истинная легенда учения!
+        </p>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -145,7 +194,6 @@ export default {
   gap: 20px;
 
   .achievement-card {
-
     flex: 1 1 calc(33.333% - 20px);
     max-width: calc(33.333% - 20px);
     min-width: 160px;
@@ -201,5 +249,4 @@ export default {
 .countExercise p {
   margin-bottom: 0;
 }
-
 </style>

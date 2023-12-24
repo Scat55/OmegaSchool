@@ -360,21 +360,32 @@ GROUP BY
         const { school_name, team_name } = command;
         const testInfo = tests.rows.find((test) => test.school_name === school_name && test.team_name === team_name);
         const answerInfo = answers.rows.filter((answer) => answer.school_name === school_name && answer.team_name === team_name);
-
         const entry = {
             school_name,
             team_name,
             test_name: testInfo.test_name,
+            task_names: [],
+            is_correct:[],
+            answer_comand:[],
+            true_answer:[],
+            time:[]
         };
         // Dynamically add answer and time properties based on the number of questions
-        answerInfo.forEach((answer, index, ) => {
-            entry[`task_name_${index + 1}`] =answer.task_name;
-            entry[`is_correct`] = answer.is_correct;
-            entry[`true_answer_${index + 1}`] = answer.true_answer;
-            entry[`answer_comand_${index + 1}`] = answer.answer;
-            entry[`time_${index + 1}`] = answer.time;
-            
-        });
+        answerInfo.forEach((answer, index) => {
+          entry.task_names[index] = answer.task_name;
+      });
+        answerInfo.forEach((answer, index) => {
+          entry.is_correct[index] = answer.is_correct;
+      });
+        answerInfo.forEach((answer, index) => {
+          entry.true_answer[index] = answer.true_answer;
+      });
+        answerInfo.forEach((answer, index) => {
+          entry.answer_comand[index] = answer.answer;
+      });
+        answerInfo.forEach((answer, index) => {
+          entry.time[index] = answer.time;
+      });
 
         data.push(entry);
     });
