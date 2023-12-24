@@ -230,10 +230,15 @@ class Commands_controller {
             ORDER BY task_name;            
         `, [test_id]);
 
+      const testName = await poolComandos.query(`
+            SELECT test_name
+            FROM comand_tests
+            WHERE test_id = $1
+      `,[test_id])
+
       if (taskInfo.rows.length === 0) {
         return res.status(404).json({ message: 'Задание не найдено' });
       }
-
 
       // Обновление start_time и вставка данных о задании при взятии теста
       await poolComandos.query(`
@@ -245,6 +250,7 @@ class Commands_controller {
       res.json({
         message: 'Тест успешно взят',
         test_id: test_id,
+        test_name: testName.rows[0].test_name,
         task: testInfo.rows
       });
     } catch (error) {
@@ -262,9 +268,6 @@ class Commands_controller {
         return res.status(400).json({ message: 'Тест уже закончился' });
       }
 
-
-
-
       requestData.data.forEach(async element => {
         try {
             const result = await poolComandos.query('SELECT task_id, test_id FROM comand_task WHERE task_name = $1', [element.task_name]);
@@ -281,11 +284,6 @@ class Commands_controller {
             console.error(`Error processing element: ${error.message}`);
         }
     });
-
-
-
-
-
       
       res.status(200).json({ massage: 'Данные успешно получены!' })
     } catch (error) {
