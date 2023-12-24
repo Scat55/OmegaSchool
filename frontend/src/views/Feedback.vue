@@ -9,6 +9,20 @@ export default {
   },
   methods: {
     sendFeedBack() {
+      const telegramToken = '6888942230:AAHXfg_I9mhRylxFcVtFMKO_RSBfoCFqR04';
+      const chatId = '-1001708135921';
+
+      const apiUrl = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&parse_mode=HTML&text=Имя: ${this.name}%0A%0AEmail: ${this.email}%0A%0AСообщение: ${this.message}`;
+
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.ok) {
+            alert('Сообщение успешно отправлено!');
+          } else {
+            alert('Ошибка при отправке сообщения!');
+          }
+        });
       alert('Спасибо за ваше сообщение!');
       this.name = '';
       this.email = '';
