@@ -1,6 +1,5 @@
 const { validationResult, check } = require('express-validator')
 const { addUser } = require('./user_controller')
-const ExcelJS = require('exceljs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { json } = require("express");
@@ -340,6 +339,7 @@ GROUP BY
         t.task_name as task_name,
         t.task_answer as true_answer,
         ua.user_response AS answer,
+        ua.is_correct as is_correct,
         ua.answer_time AS time
       FROM
         user_answers ua
@@ -366,10 +366,10 @@ GROUP BY
             team_name,
             test_name: testInfo.test_name,
         };
-        
         // Dynamically add answer and time properties based on the number of questions
         answerInfo.forEach((answer, index, ) => {
             entry[`task_name_${index + 1}`] =answer.task_name;
+            entry[`is_correct`] = answer.is_correct;
             entry[`true_answer_${index + 1}`] = answer.true_answer;
             entry[`answer_comand_${index + 1}`] = answer.answer;
             entry[`time_${index + 1}`] = answer.time;
@@ -392,7 +392,5 @@ GROUP BY
   }
   
 }
-
-
 
 module.exports = new Commands_controller()
