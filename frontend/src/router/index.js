@@ -15,6 +15,7 @@ import AuthCom from '../views/AuthCom.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 import taskComand from '@/views/allTaskForComand';
 import Manual from '@/views/manualComand';
+import Admin from '@/views/Admin';
 
 import store from '../store/index';
 Vue.use(VueRouter);
@@ -98,6 +99,10 @@ const routes = [
   {
     path: '/manual',
     component: Manual
+  },
+  {
+    path: '/admin',
+    component: Admin
   }
 ];
 
