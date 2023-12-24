@@ -257,14 +257,37 @@ class Commands_controller {
     try {
       const requestData = req.body;
       const command_id = req.comand_id;
-      console.log(requestData);
-      console.log(command_id);
+
       if (moment() > endTest) {
         return res.status(400).json({ message: 'Тест уже закончился' });
       }
 
-      res.status(200).json({ massage: 'Данные успешно получены!' })
 
+
+
+      requestData.data.forEach(async element => {
+        try {
+            const result = await poolComandos.query('SELECT task_id, test_id FROM comand_task WHERE task_name = $1', [element.task_name]);
+    
+            await poolComandos.query(`
+                UPDATE user_answers
+                SET user_response = $4, answer_time = $5
+                WHERE comand_id = $1
+                  AND test_id = $2
+                  AND task_id = $3;
+            `, [command_id, result.rows[0].test_id, result.rows[0].task_id, element.answer, element.time]);
+    
+        } catch (error) {
+            console.error(`Error processing element: ${error.message}`);
+        }
+    });
+
+
+
+
+
+      
+      res.status(200).json({ massage: 'Данные успешно получены!' })
     } catch (error) {
       console.log('error: ', error);
       res.status(500).json({ error: error })
