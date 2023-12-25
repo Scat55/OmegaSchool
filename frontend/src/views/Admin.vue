@@ -113,11 +113,13 @@ export default {
       if (this.currentPage !== 1) {
         this.currentPage--;
       }
+      window.scrollTo(0, 0);
     },
     nextPage() {
       if (this.currentPage < this.pageCount) {
         this.currentPage++;
       }
+      window.scrollTo(0, 0);
     },
   },
   mounted() {
