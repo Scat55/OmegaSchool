@@ -21,6 +21,14 @@
   </div>
 </template>
 
+<script setup>
+setTimeout(()=>{
+  document.getElementById('myImage').addEventListener('click', function() {
+  this.classList.toggle('enlarged');
+});
+},2000)
+</script>
+
 <script>
 export default {
   props: {
