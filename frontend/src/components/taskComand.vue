@@ -22,11 +22,11 @@
 </template>
 
 <script setup>
-setTimeout(()=>{
-  document.getElementById('myImage').addEventListener('click', function() {
-  this.classList.toggle('enlarged');
-});
-},2000)
+setTimeout(() => {
+  document.getElementById('myImage').addEventListener('click', function () {
+    this.classList.toggle('enlarged');
+  });
+}, 2000);
 </script>
 
 <script>
@@ -67,6 +67,7 @@ export default {
       const updateTimer = () => {
         if (this.minutes === 0 && this.seconds === 0) {
           this.stopTimer();
+          this.nextTask(); // Вызываем метод для переключения на следующую задачу
         } else {
           if (this.seconds === 0) {
             this.minutes--;
@@ -118,8 +119,8 @@ export default {
       this.$emit('saveResult', result);
     },
     stopTimer() {
-      this.timerRunning = false;
-      clearInterval(this.timer);
+      // this.timerRunning = false;
+      // clearInterval(this.timer);
       this.saveTimerState();
     },
     saveTimerState() {
