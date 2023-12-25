@@ -14,7 +14,7 @@
           <textarea class="textarea" v-model="answer"></textarea>
         </div>
         <div class="task__content-btn">
-          <button class="btn" @click="nextTask">Далее</button>
+          <button class="btn" @click="nextTask" @keypress.enter.shift="nextTask">Далее</button>
         </div>
       </div>
     </div>
@@ -114,6 +114,7 @@ export default {
       const time2 = JSON.parse(localStorage.getItem(`timerState-${this.taskId}`));
       const result = {
         // TODO: Добавить
+        task_name: this.taskTitle,
         answer: this.answer,
         time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
       };
