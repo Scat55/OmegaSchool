@@ -25,19 +25,21 @@
         <div class="admin__content-table" v-if="table">
           <div class="admin__content-items">
             <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">
-              <h1>Школа: {{ team.school_name }}</h1>
+              <div class="admin__content-item-header">
+                <h1>Школа: {{ team.school_name }}</h1>
+              </div>
               <Table
                 :teamName="team.team_name"
                 :tasks="team.task_names"
                 :question="team.task_names"
                 :correctAnswers="team.true_answer"
-                :time="team.time.map((t) => formatTime(t))"
+                :time="team.time"
                 :userAnswers="team.answer_comand"
               />
             </div>
           </div>
           <div class="admin__pagination">
-            <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage === 1">
+            <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">
               ‹ Назад
             </button>
             <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>
@@ -82,10 +84,12 @@ export default {
     },
   },
   methods: {
-    formatTime(time) {
-      const [minutes, seconds] = time.split(':');
-      return `${parseInt(minutes, 10)} мин ${parseInt(seconds, 10)} сек`;
-    },
+    // formatTime(times) {
+    //   return times.map((time) => {
+    //     const [minutes, seconds] = time.split(':');
+    //     return `${parseInt(minutes, 10)} мин ${parseInt(seconds, 10)} сек`;
+    //   });
+    // },
     async fetchData() {
       try {
         const response = await axios.get('/commands/getResult/');
@@ -106,7 +110,7 @@ export default {
       this.currentPage = page;
     },
     prevPage() {
-      if (this.currentPage > 1) {
+      if (this.currentPage !== 1) {
         this.currentPage--;
       }
     },
@@ -171,6 +175,14 @@ export default {
   &__content-item {
     width: calc(33.33% - 20px);
     margin-bottom: 20px;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 6.25rem;
+      text-align: center;
+    }
   }
   &__pagination {
     display: flex;
