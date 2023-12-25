@@ -102,6 +102,7 @@ export default {
       this.resetTimer(); // Сбрасываем таймер до 1 минуты
       // this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
       this.saveResult();
+      // this.startTimer();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
       this.answer = '';
     },
