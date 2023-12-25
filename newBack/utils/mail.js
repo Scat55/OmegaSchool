@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const db = require('../db')
+const {pool} = require('../db')
 const bcrypt = require("bcryptjs");
 class Mail {
     constructor() {
@@ -15,14 +15,14 @@ class Mail {
         this.saveVerificationCode = async (email, verificationCode) => {
             // Здесь вам нужно будет использовать вашего клиента базы данных для сохранения кода
             const query = 'UPDATE users SET verification_code = $1 WHERE email = $2';
-            await db.query(query, [verificationCode, email]);
+            await pool.query(query, [verificationCode, email]);
         }
 
         // Функция для проверки кода подтверждения
         this.checkVerificationCode = async (email, verificationCode) => {
             // Получение кода из базы данных и его проверка
             const query = 'SELECT verification_code FROM users WHERE email = $1';
-            const result = await db.query(query, [email]);
+            const result = await pool.query(query, [email]);
             if (result.rows.length > 0) { return result.rows[0].verification_code === verificationCode; }
 
             return false;
@@ -31,7 +31,7 @@ class Mail {
         // Функция для установки статуса email на "подтвержденный"
         this.setUserEmailVerified = async (email) => {
             const query = 'UPDATE users SET verification_code = TRUE WHERE email = $1';
-            await db.query(query, [email]);
+            await pool.query(query, [email]);
         }
     }
 
