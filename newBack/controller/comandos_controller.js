@@ -1,5 +1,6 @@
 const { validationResult, check } = require('express-validator')
 const { addUser } = require('./user_controller')
+const ExcelJS = require('exceljs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { json } = require("express");
@@ -311,24 +312,24 @@ class Commands_controller {
     `);
 
       const tests = await poolComandos.query(`
-SELECT
-  c.school AS school_name,
-  c.comand_name AS team_name,
-  t.test_name
-FROM
-  user_answers ua
-JOIN
-  comandos c ON ua.comand_id = c.comand_id
-JOIN
-  comand_task ct ON ua.task_id = ct.task_id
-JOIN
-  public.comand_tests t on t.test_id = ua.test_id
-GROUP BY
-  c.school,
-  c.comand_name,
-  ct.test_id, t.test_name;
+      SELECT
+        c.school AS school_name,
+        c.comand_name AS team_name,
+        t.test_name
+      FROM
+        user_answers ua
+      JOIN
+        comandos c ON ua.comand_id = c.comand_id
+      JOIN
+        comand_task ct ON ua.task_id = ct.task_id
+      JOIN
+        public.comand_tests t on t.test_id = ua.test_id
+      GROUP BY
+        c.school,
+        c.comand_name,
+        ct.test_id, t.test_name;
     `);
-  
+
       const answers = await poolComandos.query(`
       SELECT
         c.school AS school_name,
@@ -395,10 +396,121 @@ GROUP BY
     }
   }
 
-  async putResult(req,res){
+  async getResultToExcel(req,res){
+    try {
+      const commands = await poolComandos.query(`
+      
+      SELECT
+      c.school AS school_name,
+      c.comand_name AS team_name
+      FROM
+      user_answers ua
+      JOIN
+      comandos c ON ua.comand_id = c.comand_id
+      JOIN
+      comand_task ct ON ua.task_id = ct.task_id
+      GROUP BY
+          c.comand_name,
+      c.school;
+    `);
 
+      const tests = await poolComandos.query(`
+      SELECT
+        c.school AS school_name,
+        c.comand_name AS team_name,
+        t.test_name
+      FROM
+        user_answers ua
+      JOIN
+        comandos c ON ua.comand_id = c.comand_id
+      JOIN
+        comand_task ct ON ua.task_id = ct.task_id
+      JOIN
+        public.comand_tests t on t.test_id = ua.test_id
+      GROUP BY
+        c.school,
+        c.comand_name,
+        ct.test_id, t.test_name;
+    `);
+
+      const answers = await poolComandos.query(`
+      SELECT
+        c.school AS school_name,
+        c.comand_name AS team_name,
+        t.task_name as task_name,
+        t.task_answer as true_answer,
+        ua.user_response AS answer,
+        ua.is_correct as is_correct,
+        ua.answer_time AS time
+      FROM
+        user_answers ua
+      JOIN
+        comandos c ON ua.comand_id = c.comand_id
+      JOIN
+        comand_task ct ON ua.task_id = ct.task_id
+      join
+        public.comand_task t on t.task_id = ua.task_id
+        ORDER BY
+        t.task_name;
+    `);
+      // console.log(answers.rows)
+
+      const data = [];
+
+      commands.rows.forEach((command) => {
+        const {school_name, team_name} = command;
+        const testInfo = tests.rows.find((test) => test.school_name === school_name && test.team_name === team_name);
+        const answerInfo = answers.rows.filter((answer) => answer.school_name === school_name && answer.team_name === team_name);
+        const entry = {
+          school_name,
+          team_name,
+          test_name: testInfo.test_name
+        };
+
+        answerInfo.forEach((answer, index,) => {
+          entry[`task_name_${index + 1}`] = answer.task_name;
+          entry[`is_correct_${index + 1}`] = answer.is_correct;
+          entry[`true_answer_${index + 1}`] = answer.true_answer;
+          entry[`answer_comand_${index + 1}`] = answer.answer;
+          entry[`time_${index + 1}`] = answer.time;
+        });
+
+        data.push(entry);
+      });
+
+      // Create a new workbook and add a worksheet
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Results');
+
+      // Define the header row dynamically based on data structure
+      const headers = Object.keys(data[0]);
+      worksheet.addRow(headers);
+
+      // Populate the worksheet with data
+      data.forEach((entry) => {
+        const rowValues = headers.map((header) => entry[header]);
+        worksheet.addRow(rowValues);
+      });
+
+      const sumFormula = `SUM(${String.fromCharCode(65 + headers.indexOf('is_correct_'))}2:${String.fromCharCode(65 + headers.indexOf('is_correct_'))}${data.length + 1})`;
+      worksheet.addRow([{ formula: sumFormula, result: 'Sum' }]);
+      // Set up the response headers to send an Excel file
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', 'attachment; filename=results.xlsx');
+
+      // Write the workbook to the response
+      await workbook.xlsx.write(res);
+
+      // End the response
+      res.end();
+
+
+
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
-  
 }
 
 module.exports = new Commands_controller()
