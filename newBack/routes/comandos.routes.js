@@ -22,6 +22,6 @@ router.post('/SubmitAnswer',commandosMiddleware, commandosController.SubmitAnswe
 // router.post('/task/:taskID',commandosController.InfoComandos)
 router.get('/getResult', commandosController.getResult)
 
-router.put('/putResult', commandosController.putResult)
+router.get('/getResultToExcel', commandosController.getResultToExcel)
 
 module.exports = router;
