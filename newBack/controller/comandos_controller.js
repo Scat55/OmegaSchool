@@ -225,7 +225,7 @@ class Commands_controller {
 
       // Получение информации о тесте и задании из comand_task по test_id
       const testInfo = await poolComandos.query(`
-            SELECT *
+            SELECT task_name, task_description, numkol
             FROM comand_task task
             WHERE test_id = $1 
             ORDER BY numkol;            
