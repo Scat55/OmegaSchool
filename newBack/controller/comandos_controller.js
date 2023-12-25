@@ -18,9 +18,9 @@ const generateAccesToken = (comand_id) => {
   return jwt.sign(payload, secret, { expiresIn: '24H' })
 }
 const currentTime = moment().format();
-const registrationDeadline = moment('2023-12-27T14:00:00') // Установите срок регистрации
-const startTest = moment('2023-12-23T13:00:00');
-const endTest = moment('2023-12-25T13:00:00');
+const registrationDeadline = moment('2023-12-23T14:00:00') // Установите срок регистрации
+const startTest = moment('2023-12-27T14:00:00');
+const endTest = moment('2023-12-27T13:00:00');
 
 
 
@@ -192,8 +192,9 @@ class Commands_controller {
   async GetTasks(req, res) {
     try {
       const command_id = req.comand_id;
-
-      if (moment() < startTest) {
+      console.log('+',moment())
+      console.log(startTest)
+      if (moment() > startTest) {
         return res.status(400).json({ message: 'Тест еще не начался' });
       }
       // Получение test_id из таблицы user_tests
@@ -206,10 +207,11 @@ class Commands_controller {
       if (userTestResult.rows.length === 0) {
         return res.status(404).json({ message: 'Тест не найден' });
       }
-      //запрет наповторное отправление теста
-      // if (userTestResult.rows[0].start_time !== 'null'){
-      //   return res.status(200).json({ message: 'Тест уже всят' });
-      // }
+      console.log(userTestResult.rows[0].start_time)
+      // запрет наповторное отправление теста
+      if (userTestResult.rows[0].start_time ){
+        return res.status(200).json({ message: 'Тест уже всят' });
+      }
 
       const test_id = userTestResult.rows[0].test_id;
 
@@ -223,10 +225,10 @@ class Commands_controller {
 
       // Получение информации о тесте и задании из comand_task по test_id
       const testInfo = await poolComandos.query(`
-            SELECT task_name, task_description
+            SELECT *
             FROM comand_task task
             WHERE test_id = $1 
-            ORDER BY task_name;            
+            ORDER BY numkol;            
         `, [test_id]);
 
       const testName = await poolComandos.query(`
@@ -262,15 +264,11 @@ class Commands_controller {
     try {
       const requestData = req.body;
       const command_id = req.comand_id;
-
       if (moment() > endTest) {
         return res.status(400).json({ message: 'Тест уже закончился' });
       }
-
       requestData.data.forEach(async element => {
-        try {
           const result = await poolComandos.query('SELECT task_id, test_id FROM comand_task WHERE task_name = $1', [element.task_name]);
-
           await poolComandos.query(`
                 UPDATE user_answers
                 SET user_response = $4, answer_time = $5
@@ -278,19 +276,12 @@ class Commands_controller {
                   AND test_id = $2
                   AND task_id = $3;
             `, [command_id, result.rows[0].test_id, result.rows[0].task_id, element.answer, element.time]);
-
-        } catch (error) {
-          console.error(`Error processing element: ${error.message}`);
-        }
       });
-
       res.status(200).json({ massage: 'Данные успешно получены!' })
     } catch (error) {
       console.log('error: ', error);
       res.status(500).json({ error: error })
     }
-
-
   }
 
   async getResult(req, res) {
