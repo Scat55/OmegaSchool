@@ -8,7 +8,8 @@
             {{ minutes }}:{{ seconds < 10 ? '0' : '' }}{{ seconds }}
           </p>
         </div>
-        <div class="task__content-description">{{ taskDescription }}</div>
+        <!-- <div class="task__content-description">{{ taskDescription }}</div> -->
+        <div v-html="taskDescription"></div>
         <div class="task__content-answer">
           <textarea class="textarea" v-model="answer"></textarea>
         </div>
@@ -19,6 +20,14 @@
     </div>
   </div>
 </template>
+
+<script setup>
+setTimeout(()=>{
+  document.getElementById('myImage').addEventListener('click', function() {
+  this.classList.toggle('enlarged');
+});
+},2000)
+</script>
 
 <script>
 export default {
@@ -93,7 +102,7 @@ export default {
       // this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
       this.saveResult();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
-      this.answer = ''
+      this.answer = '';
     },
     resetTimer() {
       this.minutes = 1;
@@ -105,6 +114,7 @@ export default {
         answer: this.answer,
         time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
       };
+      localStorage.removeItem(`timerState-${this.taskId}`);
       this.$emit('saveResult', result);
     },
     stopTimer() {

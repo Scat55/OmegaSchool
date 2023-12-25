@@ -6,6 +6,7 @@
           <p v-if="!this.infoComand.comandName">Название не найдено</p>
           <p v-else>{{ infoComand.comandName }}</p>
           <p>Почта: {{ infoComand.email }}</p>
+          <p>Школа: {{ infoComand.school }}</p>
           <div>
             <p v-if="!infoComand.users">Участники не найдены</p>
             <div class="comandInfo" v-else>
