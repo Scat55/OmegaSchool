@@ -92,6 +92,7 @@ export default {
     &-item {
       font-weight: bold;
       list-style: none;
+      color: black;
       p {
         font-weight: normal;
         letter-spacing: 0.1rem;

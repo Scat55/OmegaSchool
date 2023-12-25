@@ -67,6 +67,8 @@ export default {
       const updateTimer = () => {
         if (this.minutes === 0 && this.seconds === 0) {
           this.stopTimer();
+          this.nextTask();
+
         } else {
           if (this.seconds === 0) {
             this.minutes--;
@@ -101,6 +103,7 @@ export default {
       this.resetTimer(); // Сбрасываем таймер до 1 минуты
       // this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
       this.saveResult();
+      // this.startTimer();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
       this.answer = '';
     },
