@@ -102,7 +102,7 @@ export default {
       // this.saveTimerState(); // Сохраняем состояние таймера (если нужно)
       this.saveResult();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
-      this.answer = ''
+      this.answer = '';
     },
     resetTimer() {
       this.minutes = 1;
@@ -114,6 +114,7 @@ export default {
         answer: this.answer,
         time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
       };
+      localStorage.removeItem(`timerState-${this.taskId}`);
       this.$emit('saveResult', result);
     },
     stopTimer() {
