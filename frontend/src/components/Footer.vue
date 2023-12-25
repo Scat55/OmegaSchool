@@ -14,7 +14,7 @@
     </div>
     <div class="list_item">
       <router-link to="/feedback" class="router">
-        <li v-if="this.$store.state.isAuth" class="footer__item">
+        <li v-if="this.$store.state.isAuth || this.$store.state.isComandAuth" class="footer__item">
           Написать нам: <span>Обратная связь</span>
         </li>
       </router-link>
