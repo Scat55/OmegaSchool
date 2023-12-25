@@ -22,10 +22,22 @@
 </template>
 
 <script setup>
-setTimeout(() => {
-  document.getElementById('myImage').addEventListener('click', function () {
+  setTimeout(() => {
+  try{
+    document.getElementById('myImage').addEventListener('click', function () {
     this.classList.toggle('enlarged');
   });
+} catch(error) {
+}
+}, 2000);
+
+setTimeout(() => {
+  try{
+    document.getElementById('myImage1').addEventListener('click', function () {
+    this.classList.toggle('enlarged');
+  });
+} catch(error) {
+}
 }, 2000);
 </script>
 
@@ -105,6 +117,23 @@ export default {
       // this.startTimer();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
       this.answer = '';
+      setTimeout(() => {
+  try{
+    document.getElementById('myImage').addEventListener('click', function () {
+    this.classList.toggle('enlarged');
+  });
+} catch(error) {
+}
+}, 2000);
+
+setTimeout(() => {
+  try{
+    document.getElementById('myImage1').addEventListener('click', function () {
+    this.classList.toggle('enlarged');
+  });
+} catch(error) {
+}
+}, 2000);
     },
     resetTimer() {
       this.minutes = 1;
