@@ -8,7 +8,8 @@
             {{ minutes }}:{{ seconds < 10 ? '0' : '' }}{{ seconds }}
           </p>
         </div>
-        <div class="task__content-description">{{ taskDescription }}</div>
+        <!-- <div class="task__content-description">{{ taskDescription }}</div> -->
+        <div v-html="taskDescription"></div>
         <div class="task__content-answer">
           <textarea class="textarea" v-model="answer"></textarea>
         </div>
