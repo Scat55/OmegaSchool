@@ -22,22 +22,10 @@
 </template>
 
 <script setup>
-  setTimeout(() => {
-  try{
-    document.getElementById('myImage').addEventListener('click', function () {
-    this.classList.toggle('enlarged');
-  });
-} catch(error) {
-}
-}, 2000);
-
 setTimeout(() => {
-  try{
-    document.getElementById('myImage1').addEventListener('click', function () {
+  document.getElementById('myImage').addEventListener('click', function () {
     this.classList.toggle('enlarged');
   });
-} catch(error) {
-}
 }, 2000);
 </script>
 
@@ -117,23 +105,6 @@ export default {
       // this.startTimer();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
       this.answer = '';
-      setTimeout(() => {
-  try{
-    document.getElementById('myImage').addEventListener('click', function () {
-    this.classList.toggle('enlarged');
-  });
-} catch(error) {
-}
-}, 2000);
-
-setTimeout(() => {
-  try{
-    document.getElementById('myImage1').addEventListener('click', function () {
-    this.classList.toggle('enlarged');
-  });
-} catch(error) {
-}
-}, 2000);
     },
     resetTimer() {
       this.minutes = 1;
@@ -142,7 +113,7 @@ setTimeout(() => {
     saveResult() {
       const time2 = JSON.parse(localStorage.getItem(`timerState-${this.taskId}`));
       const result = {
-        // TODO: Добавить task_name
+        // TODO: Добавить
         answer: this.answer,
         time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
       };
