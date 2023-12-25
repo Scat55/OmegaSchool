@@ -126,20 +126,17 @@ class Commands_controller {
     try {
       // Получение списка user_id из user_command
       const userCommandsResult = await poolComandos.query("SELECT user_id, first_name,last_name FROM user_command WHERE comand_id = $1", [command_id]);
-      const comandNameResult = await poolComandos.query("SELECT comand_name, email FROM comandos WHERE comand_id = $1", [command_id]);
+      const comandNameResult = await poolComandos.query("SELECT comand_name, email, school FROM comandos WHERE comand_id = $1", [command_id]);
 
       const comandName = comandNameResult.rows[0]
 
       const userCommands = userCommandsResult.rows;
-      console.log(comandName);
       let users = []; // Renamed to 'users' for clarity
       for (const userCommand of userCommands) {
         // Получение информации о пользователе из таблицы user
         const userResult = await poolComandos.query("SELECT first_name, last_name, patronymic FROM user_command WHERE user_id = $1", [userCommand.user_id]);
 
         const userData = userResult.rows[0]; // Renamed to 'userData' for clarity
-        console.log('пользователь', userCommand);
-
         if (userData) { // Checking if userData is not empty
           // Сборка данных пользователя
           users.push({
@@ -162,7 +159,7 @@ class Commands_controller {
         }
       }
 
-      res.status(200).json({ comandName: comandName.comand_name, email: comandName.email, users: users });
+      res.status(200).json({ comandName: comandName.comand_name, email: comandName.email, school : comandName.school, users: users });
     } catch (error) {
       console.error("Error in InfoComandos:", error);
       res.status(500).json({ message: "Internal Server Error" });
