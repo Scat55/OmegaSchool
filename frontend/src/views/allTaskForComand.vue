@@ -31,13 +31,14 @@ export default {
   },
   methods: {
     nextTask() {
+      const comand = JSON.parse(localStorage.getItem('comand'));
       if (this.currentTaskIndex < this.tasks.length - 1) {
         this.currentTaskIndex++;
       } else {
         // Все задания выполнены, можно выполнить какое-то действие
         alert('Все задания выполнены');
         this.sendResults();
-        this.$router.push('comandPage');
+        this.$router.push(`/comandPage/${comand.comandID}`);
       }
     },
     saveResult(result) {

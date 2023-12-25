@@ -113,10 +113,11 @@ export default {
     saveResult() {
       const time2 = JSON.parse(localStorage.getItem(`timerState-${this.taskId}`));
       const result = {
+        // TODO: Добавить task_name
         answer: this.answer,
         time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
       };
-      localStorage.removeItem(`timerState-${this.taskId}`);
+      // localStorage.removeItem(`timerState-${this.taskId}`);
       this.$emit('saveResult', result);
     },
     stopTimer() {
