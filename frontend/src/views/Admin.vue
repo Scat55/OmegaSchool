@@ -184,6 +184,7 @@ export default {
       justify-content: center;
       height: 6.25rem;
       text-align: center;
+      font-size: 9px;
     }
   }
   &__pagination {
