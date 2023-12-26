@@ -18,9 +18,9 @@ const generateAccesToken = (comand_id) => {
   return jwt.sign(payload, secret, { expiresIn: '24H' })
 }
 const currentTime = moment().format();
-const registrationDeadline = moment('2023-12-23T14:00:00') // Установите срок регистрации
+const registrationDeadline = moment('2023-12-27T14:00:00') // Установите срок регистрации
 const startTest = moment('2023-12-27T14:00:00');
-const endTest = moment('2023-12-27T13:00:00');
+const endTest = moment('2023-12-27T15:00:00');
 
 
 
@@ -32,8 +32,8 @@ class Commands_controller {
       const { comandName, password, school, email } = req.body;
 
 
-      console.log(currentTime)
-      if (currentTime > registrationDeadline) {
+      console.log(moment())
+      if (moment() > registrationDeadline) {
         return res.status(400).json({ message: 'Регистрация команд закрыта' });
       }
 
@@ -194,8 +194,11 @@ class Commands_controller {
       const command_id = req.comand_id;
       console.log('+',moment())
       console.log(startTest)
-      if (moment() > startTest) {
+      if (moment() < startTest) {
         return res.status(400).json({ message: 'Тест еще не начался' });
+      }
+      if (moment() > endTest) {
+        return res.status(400).json({ message: 'Тест уже закончился' });
       }
       // Получение test_id из таблицы user_tests
       const userTestResult = await poolComandos.query(`
