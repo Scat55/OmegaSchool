@@ -72,7 +72,13 @@
           <th>Ключ</th>
         </tr>
         <tr :key="question.text" v-for="question in infoTask.questions">
-          <td>{{ question.text }}</td>
+          <td>
+            <quill-editor
+              disabled="disabled"
+              v-model="question.text"
+              :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+            />
+          </td>
           <td>-</td>
           <td>{{ question.is_correct === true ? 'Верно' : 'Не верно' }}</td>
         </tr>
