@@ -71,7 +71,23 @@ export default {
           },
         })
         .then((res) => {
-          this.tasks = res.data.task;
+          if (res.data.message == 'Тест уже всят') {
+            alert(res.data.message);
+            const comand = JSON.parse(localStorage.getItem('comand'));
+            this.$router.push(`/comandPage/${comand.comandID}`);
+          }
+          if (res.data.message == 'Тест еще не начался') {
+            alert(res.data.message);
+            const comand = JSON.parse(localStorage.getItem('comand'));
+            this.$router.push(`/comandPage/${comand.comandID}`);
+          }
+          if (res.data.message == 'Тест уже закончился') {
+            alert(res.data.message);
+            const comand = JSON.parse(localStorage.getItem('comand'));
+            this.$router.push(`/comandPage/${comand.comandID}`);
+          } else {
+            this.tasks = res.data.task;
+          }
         });
     },
   },
