@@ -111,7 +111,7 @@ export default {
       this.seconds = 0;
     },
     saveResult() {
-      const time2 = JSON.parse(localStorage.getItem(`timerState-${this.taskId}`));
+      const time2 = JSON.parse(sessionStorage.getItem(`timerState-${this.taskId}`));
       const result = {
         // TODO: Добавить
         task_name: this.taskTitle,
@@ -127,7 +127,7 @@ export default {
       this.saveTimerState();
     },
     saveTimerState() {
-      localStorage.setItem(
+      sessionStorage.setItem(
         `timerState-${this.taskId}`,
         JSON.stringify({
           minutes: this.minutes,
@@ -137,7 +137,7 @@ export default {
       );
     },
     loadTimerState() {
-      const timerState = localStorage.getItem(`timerState-${this.taskId}`);
+      const timerState = sessionStorage.getItem(`timerState-${this.taskId}`);
       if (timerState) {
         const parsedState = JSON.parse(timerState);
         this.minutes = parsedState.minutes;

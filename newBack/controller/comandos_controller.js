@@ -273,7 +273,7 @@ class Commands_controller {
 			}
 			// запрет наповторное отправление теста
 			if (userTestResult.rows[0].start_time) {
-				return res.status(200).json({ message: 'Тест уже всят' });
+				return res.status(200).json({ message: 'Тест уже взят' });
 			}
 
 			const test_id = userTestResult.rows[0].test_id;

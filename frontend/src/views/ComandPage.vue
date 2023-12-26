@@ -63,6 +63,7 @@ export default {
   methods: {
     goToTasks() {
       this.$router.push('/manual');
+      window.scrollTo(0, 0);
     },
     changeInfo() {
       this.change = true;

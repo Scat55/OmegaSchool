@@ -53,6 +53,14 @@
               распределять время между заданиями, чтобы закончить все успешно.
             </p>
           </li>
+          <li class="taskComand__content-item">
+            <p>
+              <span class="warning">Внимание!</span> Для контроля команды нужно подключиться к
+              трансляции
+              <a href="https://my.mts-link.ru/lspu/1424665696" target="_blank">по этой ссылке.</a>
+              Без трансляции результаты не будут засчитываться
+            </p>
+          </li>
         </ul>
         <button class="taskComand__content-btn" @click="goToTasks">Приступить к заданию</button>
       </div>
@@ -114,5 +122,13 @@ export default {
       cursor: pointer;
     }
   }
+}
+.warning {
+  font-weight: bold;
+  color: red;
+}
+a {
+  text-decoration: none;
+  color: red;
 }
 </style>
