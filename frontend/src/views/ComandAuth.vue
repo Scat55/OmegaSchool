@@ -137,6 +137,16 @@ export default {
             },
           },
         )
+        .catch((err) => {
+          if (err.response) {
+            alert(err.response.data.message);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
         .then((res) => {
           console.log(res.data);
           localStorage.setItem('comandID', res.data.comandId);
