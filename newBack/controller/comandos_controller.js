@@ -19,7 +19,7 @@ const generateAccesToken = comand_id => {
 };
 const currentTime = moment().format();
 const registrationDeadline = moment('2023-12-27T14:00:00'); // Установите срок регистрации
-const startTest = moment('2023-12-27T14:00:00');
+const startTest = moment('2023-12-25T14:00:00');
 const endTest = moment('2023-12-27T15:00:00');
 
 class Commands_controller {

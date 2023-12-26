@@ -11,7 +11,7 @@
         <!-- <div class="task__content-description">{{ taskDescription }}</div> -->
         <div v-html="taskDescription"></div>
         <div class="task__content-answer">
-          <textarea class="textarea" v-model="answer" @keydown.shift.enter="nextTask"></textarea>
+          <textarea class="textarea" v-model="answer" @keydown.enter="nextTask"></textarea>
         </div>
         <div class="task__content-btn">
           <button class="btn" @click="nextTask">Далее</button>
