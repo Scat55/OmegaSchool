@@ -19,8 +19,8 @@ const generateAccesToken = comand_id => {
 };
 const currentTime = moment().format();
 const registrationDeadline = moment('2023-12-27T14:00:00'); // Установите срок регистрации
-const startTest = moment('2023-12-25T14:00:00');
-const endTest = moment('2023-12-27T15:00:00');
+const startTest = moment('2023-12-27T14:00:00');
+const endTest = moment('2023-12-27T15:30:00');
 
 class Commands_controller {
 	async CreateComandos(req, res) {
@@ -243,11 +243,18 @@ class Commands_controller {
 	async GetTasks(req, res) {
 		try {
 			const command_id = req.comand_id;
-			console.log('+', moment());
-			console.log(startTest);
-			if (moment() < startTest) {
-				return res.status(400).json({ message: 'Тест еще не начался' });
+
+			if (command_id != 'bcc9701d-b4c7-47d5-afec-72b80015ce1a') {
+				console.log(moment() < startTest)
+				if (moment() < startTest) {
+					return res.status(400).json({ message: 'Тест еще не начался' });
+				}
 			}
+
+			console.log(moment().format())
+			// if (moment() < startTest) {
+			// 	return res.status(400).json({ message: 'Тест еще не начался' });
+			// }
 			if (moment() > endTest) {
 				return res.status(400).json({ message: 'Тест уже закончился' });
 			}
@@ -264,7 +271,6 @@ class Commands_controller {
 			if (userTestResult.rows.length === 0) {
 				return res.status(404).json({ message: 'Тест не найден' });
 			}
-			console.log(userTestResult.rows[0].start_time);
 			// запрет наповторное отправление теста
 			if (userTestResult.rows[0].start_time) {
 				return res.status(200).json({ message: 'Тест уже всят' });
@@ -314,7 +320,7 @@ class Commands_controller {
             SET start_time = $2
             WHERE comand_id = $1
         `,
-				[command_id, moment()]
+				[command_id, moment().format()]
 			);
 
 			res.json({
@@ -366,7 +372,7 @@ class Commands_controller {
             SET end_time = $2
             WHERE comand_id = $1
         `,
-				[command_id, moment()]
+				[command_id, moment().format()]
 			);
 			res.status(200).json({ massage: 'Данные успешно получены!' });
 		} catch (error) {
