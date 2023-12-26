@@ -57,8 +57,14 @@
         v-if="infoTask.level == 1 && infoTask.decided === 'Не решено'"
         :key="index"
       >
-        <label>{{ index + 1 }}) {{ options.text }}</label>
-        -
+        <!--        <label>{{ index + 1 }}) {{ options.text }}</label>-->
+        {{ index + 1 }}
+        <quill-editor
+          disabled="disabled"
+          v-model="options.text"
+          :options="{ modules: { toolbar: false }, theme: 'bubble' }"
+        />
+        &nbsp;-&nbsp;
         <input
           type="checkbox"
           :name="`question-${index}`"
@@ -589,6 +595,8 @@ export default {
 
   &__questions {
     margin-top: 1rem;
+    display: flex;
+    align-items: center;
   }
 
   &__list {
