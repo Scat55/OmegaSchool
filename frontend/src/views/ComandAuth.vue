@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import store from '../store/index';
 import axios from 'axios';
 export default {
   data() {
@@ -122,15 +121,7 @@ export default {
     };
   },
   methods: {
-    addUsers() {
-      this.lenghtUsers += 1;
-      this.users.push({ name: this.userName });
-      // this.userName = '';
-    },
     handler() {
-      const users = this.users.map((el) => {
-        return el.name;
-      });
       axios
         .post(
           `/commands/create`,
@@ -142,7 +133,7 @@ export default {
           },
           {
             header: {
-              'Content-Type': 'app;ication/json',
+              'Content-Type': 'application/json',
             },
           },
         )
