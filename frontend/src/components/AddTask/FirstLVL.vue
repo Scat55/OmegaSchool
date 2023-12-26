@@ -1,9 +1,9 @@
 <script>
 import axios from 'axios';
-import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.bubble.css';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
+import { quillEditor } from 'vue-quill-editor';
 
 export default {
   components: {
@@ -222,7 +222,7 @@ export default {
         />
       </div>
       <div class="shablonZadaniaFirst__description_task">
-        <p>Описании задачи / Условие</p>
+        <p>Описание задачи / Условие</p>
         <!--        <textarea v-model="descriptionTask"></textarea>-->
         <div class="ObolochaQuilEd">
           <quill-editor
