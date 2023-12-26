@@ -84,7 +84,7 @@
       <div class="estimation">
         <p>Оцените задание:</p>
         <form class="estimation__form" @submit.prevent="handler()">
-          <div class="block_ocenka">
+          <div class="block_ocenka2" v-if="info.level == '2'">
             <div>
               <p>Задание 1:</p>
               <label class="estimation__label">
@@ -123,6 +123,37 @@
             </div>
           </div>
 
+          <div class="block_ocenka3" v-if="info.level == '3'">
+            <p>Оценка:</p>
+            <label class="estimation__label">
+              <input type="radio" value="0" name="level3" id="0" v-model="threeCheck" />0</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="1" name="level3" id="1" v-model="threeCheck" />1</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="2" name="level3" id="2" v-model="threeCheck" />2</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />3</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />4</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />5</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="6" name="level3" id="6" v-model="threeCheck" />6</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="7" name="level3" id="7" v-model="threeCheck" />7</label
+            >
+            <label class="estimation__label">
+              <input type="radio" value="8" name="level3" id="8" v-model="threeCheck" />8</label
+            >
+          </div>
+
           <textarea
             name="message"
             placeholder="Обратная связь по заданию"
@@ -148,9 +179,9 @@ export default {
       token: '',
       info: '',
       isShow: false,
-      firstCheck: '',
-      secondCheck: '',
-      threeCheck: '',
+      firstCheck: 0,
+      secondCheck: 0,
+      threeCheck: 0,
       message: '',
       fileName: '',
       url: '',
@@ -225,7 +256,7 @@ export default {
         this.info = response.data;
         this.addIMG = response.data.add_img;
 
-        console.log(response.data);
+        // console.log(response.data);
       });
     Fancybox.bind(this.$refs.container, '[data-fancybox]', {
       ...(this.options || {}),
@@ -388,7 +419,7 @@ export default {
   }
 }
 
-.block_ocenka {
+.block_ocenka2 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -398,6 +429,12 @@ export default {
     gap: 1rem;
     align-items: center;
   }
+}
+
+.block_ocenka3 {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .intrukcia {
