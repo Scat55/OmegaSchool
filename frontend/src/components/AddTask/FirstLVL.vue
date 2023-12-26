@@ -308,6 +308,23 @@ export default {
           <button @click="addCheckbox" type="button" v-if="checkboxes.length !== 6">
             Добавить чекбокс
           </button>
+          <!--          <div v-for="(checkbox, index) in checkboxes" :key="index">-->
+          <!--            <div class="shablonZadaniaFirst__checkbox_item">-->
+          <!--              <label>{{ index + 1 }}&nbsp;</label>-->
+          <!--              <input-->
+          <!--                class="shablonZadaniaFirst__checkbox_item_check"-->
+          <!--                type="checkbox"-->
+          <!--                v-model="checkbox.is_correct"-->
+          <!--                :id="'checkbox-' + index"-->
+          <!--              />-->
+          <!--              <input-->
+          <!--                class="shablonZadaniaFirst__checkbox_item_input"-->
+          <!--                type="text"-->
+          <!--                v-model="checkbox.option_text"-->
+          <!--              />-->
+          <!--              <button @click="removeCheckbox(index)" type="button">X</button>-->
+          <!--            </div>-->
+          <!--          </div>-->
           <div v-for="(checkbox, index) in checkboxes" :key="index">
             <div class="shablonZadaniaFirst__checkbox_item">
               <label>{{ index + 1 }}&nbsp;</label>
@@ -317,10 +334,35 @@ export default {
                 v-model="checkbox.is_correct"
                 :id="'checkbox-' + index"
               />
-              <input
-                class="shablonZadaniaFirst__checkbox_item_input"
-                type="text"
+              <!--              <input-->
+              <!--                class="shablonZadaniaFirst__checkbox_item_input"-->
+              <!--                type="text"-->
+              <!--                v-model="checkbox.option_text"-->
+              <!--              />-->
+              <quill-editor
                 v-model="checkbox.option_text"
+                class="QuilEd"
+                :options="{
+                  placeholder: 'Введите вариант ответа...',
+                  modules: {
+                    toolbar: [
+                      ['bold', 'italic', 'underline', 'strike'],
+                      ['blockquote', 'code-block'],
+                      // [{ header: 1 }, { header: 2 }],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      [{ script: 'sub' }, { script: 'super' }],
+                      [{ indent: '-1' }, { indent: '+1' }],
+                      [{ direction: 'rtl' }],
+                      // [{ size: ['small', !1, 'large', 'huge'] }],
+                      [{ header: [1, 2, 3, 4, 5, 6, !1] }],
+                      [{ color: [] }, { background: [] }],
+                      [{ font: [] }],
+                      [{ align: [] }],
+                      ['clean'],
+                      // ['link', 'video'],
+                    ],
+                  },
+                }"
               />
               <button @click="removeCheckbox(index)" type="button">X</button>
             </div>
@@ -440,6 +482,8 @@ export default {
       color: white;
       border-radius: 4px;
       border: none;
+      font-size: 25px;
+      margin-left: 15px;
     }
   }
 
