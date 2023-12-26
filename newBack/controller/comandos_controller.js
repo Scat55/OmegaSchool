@@ -15,7 +15,7 @@ const generateAccesToken = comand_id => {
 	const payload = {
 		comand_id,
 	};
-	return jwt.sign(payload, secret, { expiresIn: '24H' });
+	return jwt.sign(payload, secret, { expiresIn: '365d' });
 };
 const currentTime = moment().format();
 const registrationDeadline = moment('2023-12-27T14:00:00'); // Установите срок регистрации
@@ -314,7 +314,7 @@ class Commands_controller {
             SET start_time = $2
             WHERE comand_id = $1
         `,
-				[command_id, currentTime]
+				[command_id, moment()]
 			);
 
 			res.json({
@@ -336,6 +336,7 @@ class Commands_controller {
 			if (moment() > endTest) {
 				return res.status(400).json({ message: 'Тест уже закончился' });
 			}
+
 			requestData.data.forEach(async element => {
 				const result = await poolComandos.query(
 					'SELECT task_id, test_id FROM comand_task WHERE task_name = $1',
@@ -358,6 +359,15 @@ class Commands_controller {
 					]
 				);
 			});
+			// Обновление start_time и вставка данных о задании при взятии теста
+			await poolComandos.query(
+				`
+            UPDATE user_tests
+            SET end_time = $2
+            WHERE comand_id = $1
+        `,
+				[command_id, moment()]
+			);
 			res.status(200).json({ massage: 'Данные успешно получены!' });
 		} catch (error) {
 			console.log('error: ', error);
