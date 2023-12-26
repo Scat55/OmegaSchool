@@ -70,24 +70,20 @@ export default {
             'Content-Type': 'application/json',
           },
         })
+        .catch((err) => {
+          if (err.response) {
+            const comand = JSON.parse(localStorage.getItem('comand'));
+            alert(err.response.data.message);
+            this.$router.push(`/comandPage/${comand.comandID}`);
+          } else if (err.request) {
+            // Запрос был сделан, но ответ не получен
+            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+            // http.ClientRequest в node.js
+            console.log(err.request);
+          }
+        })
         .then((res) => {
-          if (res.data.message == 'Тест уже всят') {
-            alert(res.data.message);
-            const comand = JSON.parse(localStorage.getItem('comand'));
-            this.$router.push(`/comandPage/${comand.comandID}`);
-          }
-          if (res.data.message == 'Тест еще не начался') {
-            alert(res.data.message);
-            const comand = JSON.parse(localStorage.getItem('comand'));
-            this.$router.push(`/comandPage/${comand.comandID}`);
-          }
-          if (res.data.message == 'Тест уже закончился') {
-            alert(res.data.message);
-            const comand = JSON.parse(localStorage.getItem('comand'));
-            this.$router.push(`/comandPage/${comand.comandID}`);
-          } else {
-            this.tasks = res.data.task;
-          }
+          this.tasks = res.data.task;
         });
     },
   },
