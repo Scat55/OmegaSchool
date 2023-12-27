@@ -134,7 +134,7 @@ setTimeout(() => {
         // TODO: Добавить
         task_name: this.taskTitle,
         answer: this.answer,
-        time: `${time2.minutes}:${time2.seconds < 10 ? '0' : ''}${time2.seconds}`,
+        time: `${60 - time2.seconds}`,
       };
       // localStorage.removeItem(`timerState-${this.taskId}`);
       this.$emit('saveResult', result);
