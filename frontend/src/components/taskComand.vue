@@ -105,6 +105,24 @@ export default {
       // this.startTimer();
       this.$emit('nextTask'); // Сигнализируем родителю о переходе к следующей задаче
       this.answer = '';
+
+      setTimeout(() => {
+  try{
+    document.getElementById('myImage').addEventListener('click', function () {
+    this.classList.toggle('enlarged');
+  });
+} catch(error) {
+}
+}, 500);
+
+setTimeout(() => {
+  try{
+    document.getElementById('myImage1').addEventListener('click', function () {
+    this.classList.toggle('enlarged');
+  });
+} catch(error) {
+}
+}, 500);
     },
     resetTimer() {
       this.minutes = 1;
