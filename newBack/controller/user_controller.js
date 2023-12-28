@@ -1020,6 +1020,22 @@ WHERE
     }
   }
 
+  async deleteTest(req, res) {
+    try {
+        const test_id = req.params.testID;
+
+        const queryToDeleteFromLevel1 = await pool.query('DELETE FROM level_1_tests WHERE test_id = $1', [test_id]);        // const queryTuDeleteFromLevel2 = pool.query(`delete from level_2_tests where test_id='$0';`,[test_id])
+        const queryToDeleteFromLevel2 = await pool.query('DELETE FROM level_2_tests WHERE test_id = $1', [test_id]);        // const queryTuDeleteFromLevel2 = pool.query(`delete from level_2_tests where test_id='$0';`,[test_id])
+        const queryToDeleteFromLevel3 = await pool.query('DELETE FROM level_3_tests WHERE test_id = $1', [test_id]);        // const queryTuDeleteFromLevel2 = pool.query(`delete from level_2_tests where test_id='$0';`,[test_id])
+        const queryToDeleteStSol = await pool.query('DELETE FROM student_solutions WHERE test_id = $1', [test_id]);        // const queryTuDeleteFromLevel2 = pool.query(`delete from level_2_tests where test_id='$0';`,[test_id])
+
+        res.status(200).json({ message: 'Тест удален' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
   //TODO: реализовать логику добавления аватара
   async addAvatar(req, res) {
     try {

@@ -49,9 +49,12 @@ router.post('/add_level_2/', roleMiddleware(['Учитель', 'Эксперт']
 router.post('/add_file_level_2/:test_id', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addFileTest2);
 router.post('/add_level_3/', roleMiddleware(['Учитель', 'Эксперт']), userController.addTest3AndUpload);
 router.post('/add_file_level_3/:test_id', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addFileTest3);
+router.post('/delete_test/:testID', userController.deleteTest);
 
 router.get('/download_file/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.downloadFile);
 router.get('/download_image/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.downloadImage);
+
+
 
 module.exports = router;
 
