@@ -122,6 +122,7 @@
           </div>
         </div>
       </div>
+      <button class="deleteTask" @click="deleteTask">Удалить задание</button>
     </div>
   </div>
 </template>
@@ -135,7 +136,7 @@ import { quillEditor } from 'vue-quill-editor';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
-
+import router from '@/router';
 export default {
   components: {
     quillEditor,
@@ -194,6 +195,34 @@ export default {
           anchor.remove();
           URL.revokeObjectURL(url);
         });
+    },
+
+    async deleteTask() {
+      try {
+        // Показать всплывающее окно с вопросом перед удалением
+        const userConfirmed = window.confirm('Вы уверены, что хотите удалить этот тест?');
+
+        // Если пользователь подтвердил, выполняем удаление
+        if (userConfirmed) {
+          this.token = JSON.parse(localStorage.getItem('local'));
+          this.local = JSON.parse(localStorage.getItem('local'));
+          await axios.post(`/api/delete_test/${this.infoTask.test_id}`, {
+            headers: {
+              Authorization: `Bearer ${this.token.token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          // Опционально: Показать уведомление об успешном удалении
+          alert('Тест успешно удален');
+          router.push(`/profile/${this.local.userID}`);
+        } else {
+          // Пользователь отменил удаление
+          console.log('Удаление отменено');
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   created() {
@@ -427,4 +456,19 @@ tr:hover {
 }
 
 // Конец таблицы
+
+.deleteTask {
+  padding: 0.625rem;
+  background-color: #e53636;
+  border-radius: 0.5rem;
+  border: 1px solid #e53636;
+  margin-top: 1rem;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(0.9);
+  }
+}
 </style>

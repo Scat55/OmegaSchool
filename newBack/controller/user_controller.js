@@ -1023,6 +1023,7 @@ WHERE
   async deleteTest(req, res) {
     try {
         const test_id = req.params.testID;
+        console.log('Удаляется тест с ID:', test_id);
 
         const queryToDeleteFromLevel1 = await pool.query('DELETE FROM level_1_tests WHERE test_id = $1', [test_id]);        // const queryTuDeleteFromLevel2 = pool.query(`delete from level_2_tests where test_id='$0';`,[test_id])
         const queryToDeleteFromLevel2 = await pool.query('DELETE FROM level_2_tests WHERE test_id = $1', [test_id]);        // const queryTuDeleteFromLevel2 = pool.query(`delete from level_2_tests where test_id='$0';`,[test_id])
