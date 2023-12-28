@@ -888,11 +888,11 @@ WHERE
   async addTestAndUpload(req, res) {
     try {
       const { task_test, task_description, classes, options, subject } = req.body;
-
+      
       const questions = task_test;
-
-      if (!options) {
-        return res.status(400).json({ error: 'Options are missing' });
+      
+      if (!options || !task_test || !task_description || !classes|| !options || !subject) {
+        return res.status(400).json({ error: 'Не все параметры выбраны' });
       }
 
       // const parsedOptions = JSON.parse(options);
@@ -1001,6 +1001,9 @@ WHERE
       const { task_test, task_description, task_hint, task_answer, classes, subject } = req.body;
       const user_id = req.user_id;
 
+      if (!task_test || !task_description || !classes || !subject) {
+        return res.status(400).json({ error: 'Не все параметры выбраны' });
+      }
 
 
         // If test_id is not provided, insert a new test
@@ -1061,6 +1064,11 @@ WHERE
     try {
       const { task_test, task_description, classes, subject} = req.body;
 
+
+      if (!task_test || !task_description || !classes || !subject) {
+        return res.status(400).json({ error: 'Не все параметры выбраны' });
+      }
+      
       const user_id = req.user_id;
 
 
