@@ -897,6 +897,13 @@ WHERE
 
       // const parsedOptions = JSON.parse(options);
       const parsedOptions = options;
+      
+      const allOptionsFalse = options.every(option => option.is_correct === false);
+
+      // Если все параметры is_correct равны false, возвращаем ошибку
+      if (allOptionsFalse) {
+        return res.status(400).json({ error: 'Не все параметры выбраны' });
+      }
 
       const user_id = req.user_id;
 
@@ -926,7 +933,7 @@ WHERE
 
       // Insert options
       for (const option of parsedOptions) {
-        // console.log('option', option)
+         console.log('option', option)
         // const { text: option_text, checked: is_correct } = option;
         const { option_text, is_correct } = option;
         console.log(option_text, is_correct);
