@@ -306,7 +306,7 @@ export default {
         <!--  Вот здесь начинается блок с checkbox    -->
         <div class="shablonZadaniaFirst__option_answers">
           <button @click="addCheckbox" type="button" v-if="checkboxes.length !== 6">
-            Добавить чекбокс
+            Добавить вариант
           </button>
           <!--          <div v-for="(checkbox, index) in checkboxes" :key="index">-->
           <!--            <div class="shablonZadaniaFirst__checkbox_item">-->
