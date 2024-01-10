@@ -5,7 +5,7 @@ const { resolve, join } = require("path");
 const archiver = require('archiver');
 const { v4: uuidv4 } = require('uuid');
 const store = require("../utils/store");
-const { statSync, existsSync, createReadStream, readdirSync, fs } = require('fs');
+const { existsSync, readdirSync, readFileSync } = require('node:fs');
 const mime = require('mime-types');
 class User_controller {
   async getUserList(req, res) {
