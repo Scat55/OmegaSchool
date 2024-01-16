@@ -11,8 +11,10 @@ class User_controller {
 
   // Логика для отправки сообщения в Telegram
   async sendFeedback(req, res) {
+    const user_id = req.user.user_id;
+    const emailAcc = req.user.email;
     const { name, email, message} = req.body;
-    const text = `Имя: ${name}%0A%0AEmail: ${email}%0A%0AСообщение: ${message}`;
+    const text = `Имя: ${name}%0A%0AEmail: ${email}%0A%0AСообщение: ${message} %0A%0AID: ${user_id} %0A%0AEmail пользователя: ${emailAcc}`;
     const apiUrl = `https://api.telegram.org/bot${Telegram.telegramToken}/sendMessage?chat_id=${Telegram.chatId}&parse_mode=HTML&text=${text}`;
 
     try {
@@ -20,6 +22,7 @@ class User_controller {
       const data = await response.json();
       if (data.ok) {
         res.send({ success: true });
+        console.log(user_id)
       } else {
         res.send({ success: false });
       }
