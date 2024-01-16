@@ -1,4 +1,4 @@
-const {pool} = require('../db')
+const {pool, Telegram} = require('../db')
 // const fs = require('fs');
 const path = require('path');
 const { resolve, join } = require("path");
@@ -8,6 +8,26 @@ const store = require("../utils/store");
 const { existsSync, readdirSync, readFileSync } = require('node:fs');
 const mime = require('mime-types');
 class User_controller {
+
+  // Логика для отправки сообщения в Telegram
+  async sendFeedback(req, res) {
+    const { name, email, message} = req.body;
+    const text = `Имя: ${name}%0A%0AEmail: ${email}%0A%0AСообщение: ${message}`;
+    const apiUrl = `https://api.telegram.org/bot${Telegram.telegramToken}/sendMessage?chat_id=${Telegram.chatId}&parse_mode=HTML&text=${text}`;
+
+    try {
+      const response = await fetch(apiUrl, {method: 'POST'});
+      const data = await response.json();
+      if (data.ok) {
+        res.send({ success: true });
+      } else {
+        res.send({ success: false });
+      }
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
+
   async getUserList(req, res) {
     try {
       const query = 'SELECT * FROM users';

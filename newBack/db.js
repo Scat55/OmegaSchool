@@ -16,7 +16,13 @@ const poolComandos = new Pool({
     database: 'comandos'
 });
 
+const Telegram = {
+    telegramToken: '6888942230:AAHXfg_I9mhRylxFcVtFMKO_RSBfoCFqR04',
+    chatId: '-1001708135921'
+}
+
 module.exports = {
     pool,
-    poolComandos
+    poolComandos,
+    Telegram
 };

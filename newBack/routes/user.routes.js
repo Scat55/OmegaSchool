@@ -19,6 +19,11 @@ router.get('/getTypeOfUser', (req, res) => {
   userController.getTypeOfUser(req, res);
 });
 
+// Feedback Telegram
+
+router.post('/sendFeedback', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.sendFeedback);
+
+
 //router.post('/CreateComandos', userController.CreateComandos);
 //router.post('/', userController.adduser)
 
