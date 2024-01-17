@@ -10,42 +10,32 @@
 
       <div
         class="header__logo-lists"
-        v-if="this.$route.path != '/auth' && this.$route.path != '/comand/' && this.$route.path != '/authCom'"
+        v-if="
+          this.$route.path != '/auth' &&
+          this.$route.path != '/comand/' &&
+          this.$route.path != '/authCom'
+        "
       >
         <ul class="header__logo-list">
-          <router-link
-            to="/task"
-            class="router"
-          >
-            <li
-              v-if="this.$store.state.isAuth"
-              class="header__logo-item"
-            >Задания</li>
+          <router-link to="/task" class="router">
+            <li v-if="this.$store.state.isAuth" class="header__logo-item">Задания</li>
           </router-link>
+          <li v-if="isFont" class="header__logo-ease" @click="changeFontSize">
+            Версия для слабовидящих
+          </li>
+          <li v-else @click="comebackFontSize" class="header__logo-ease">Вернуться обратно</li>
+
           <li
             class="header__logo-item login"
             @click="changeStatusOnTrue()"
             v-if="!this.$store.state.isAuth"
           >
-            <img
-              src="../assets/images/userLog.png"
-              alt=""
-              class="log"
-            />
+            <img src="../assets/images/userLog.png" alt="" class="log" />
             Регистрация
           </li>
-          <div
-            v-else
-            class="header__logout"
-          >
-            <li
-              class="header__logo-item login"
-              @click="changeStatusMenu()"
-            >Мой кабинет</li>
-            <div
-              v-if="statusMenu"
-              class="header__logout-list"
-            >
+          <div v-else class="header__logout">
+            <li class="header__logo-item login" @click="changeStatusMenu()">Мой кабинет</li>
+            <div v-if="statusMenu" class="header__logout-list">
               <li @click="goToPersonPage()">Кабинет</li>
               <li @click="logout()">Выйти</li>
             </div>
@@ -67,10 +57,21 @@ export default {
       id: this.$router.currentRoute.params['id'],
       statusMenu: false,
       type: '',
+      isFont: false,
     };
   },
 
   methods: {
+    changeFontSize() {
+      const html = document.querySelector('html');
+      html.style.fontSize = '1.39rem';
+      this.isFont = !this.isFont;
+    },
+    comebackFontSize() {
+      const html = document.querySelector('html');
+      html.style.fontSize = '';
+      this.isFont = !this.isFont;
+    },
     // Функция оотображения формы регистрации
     changeStatusOnTrue() {
       const body = document.querySelector('body');
@@ -148,6 +149,11 @@ export default {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
     box-shadow: 0 0 10px 2px $accentColor;
+
+    &-ease {
+      list-style: none;
+      cursor: pointer;
+    }
 
     &-img {
       width: 5.3rem;
