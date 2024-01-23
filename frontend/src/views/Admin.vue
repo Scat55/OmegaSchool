@@ -52,7 +52,9 @@
             </button>
           </div>
         </div>
-        <div class="admin__content-tasks" v-if="checkTask">Задания</div>
+        <div v-if="checkTask">
+          <AddTaskForCommand />
+        </div>
       </div>
     </div>
   </div>
@@ -60,10 +62,11 @@
 
 <script>
 import Table from '@/components/Table.vue';
+import AddTaskForCommand from '@/components/AddTaskForCommand.vue';
 import axios from 'axios';
 
 export default {
-  components: { Table },
+  components: { Table, AddTaskForCommand },
   data() {
     return {
       table: true,
