@@ -222,12 +222,14 @@ class Commands_controller {
 
 			// Создаем записи в таблице comand_task и связываем их с созданным тестом
 			const createTaskQuery =
-				'INSERT INTO comand_task (task_name, task_description, test_id, task_description, task_answer,numkol ) VALUES ($1, $2, $3)';
+				'INSERT INTO comand_task (task_name, task_description, test_id, task_answer,numkol ) VALUES ($1, $2, $3, &4, &5)';
 			for (const task of tasks) {
 				await poolComandos.query(createTaskQuery, [
 					task.task_name,
 					task.task_description,
 					testId,
+					task.task_answer,
+					task.numkol				
 				]);
 			}
 
