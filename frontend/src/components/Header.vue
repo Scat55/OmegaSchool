@@ -20,10 +20,10 @@
           <router-link to="/task" class="router">
             <li v-if="this.$store.state.isAuth" class="header__logo-item">Задания</li>
           </router-link>
-          <li v-if="isFont" class="header__logo-ease" @click="changeFontSize">
-            Версия для слабовидящих
-          </li>
-          <li v-else @click="comebackFontSize" class="header__logo-ease">Вернуться обратно</li>
+          <!--          <li v-if="isFont" class="header__logo-ease" @click="changeFontSize">-->
+          <!--            Версия для слабовидящих-->
+          <!--          </li>-->
+          <!--          <li v-else @click="comebackFontSize" class="header__logo-ease">Вернуться обратно</li>-->
 
           <li
             class="header__logo-item login"
@@ -48,8 +48,6 @@
 
 <script>
 import store from '../store/index';
-import router from '../router/index';
-import axios from 'axios';
 
 export default {
   data() {
@@ -57,21 +55,22 @@ export default {
       id: this.$router.currentRoute.params['id'],
       statusMenu: false,
       type: '',
-      isFont: false,
+      // isFont: false,
     };
   },
 
   methods: {
-    changeFontSize() {
-      const html = document.querySelector('html');
-      html.style.fontSize = '1.39rem';
-      this.isFont = !this.isFont;
-    },
-    comebackFontSize() {
-      const html = document.querySelector('html');
-      html.style.fontSize = '';
-      this.isFont = !this.isFont;
-    },
+    // Функция увеличения шрифта
+    // changeFontSize() {
+    //   const html = document.querySelector('html');
+    //   html.style.fontSize = '1.39rem';
+    //   this.isFont = !this.isFont;
+    // },
+    // comebackFontSize() {
+    //   const html = document.querySelector('html');
+    //   html.style.fontSize = '';
+    //   this.isFont = !this.isFont;
+    // },
     // Функция оотображения формы регистрации
     changeStatusOnTrue() {
       const body = document.querySelector('body');
