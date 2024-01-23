@@ -4,6 +4,13 @@
 
     <div>
       <form class="addTask__form" @submit.prevent="handler">
+        <input
+          type="text"
+          class="addTask__form-name"
+          placeholder="Название теста"
+          v-model="testName"
+          required
+        />
         <label for="quantity">Добавьте нужное количество заданий</label>
         <span class="addTask__form-quantity">{{ quantityField }}</span>
         <button type="button" class="addTask__form-btn" @click="addTask">
@@ -18,6 +25,7 @@
                 type="text"
                 class="bodyTask__name"
                 v-model="task.name"
+                required
               />
               <button type="button" @click="removeTask(index)" class="bodyTask__remove">
                 <img src="../assets/images/removeTask.png" alt="" class="bodyTask__img" />
@@ -28,7 +36,10 @@
               type="text"
               class="bodyTask__description"
               v-model="task.description"
+              required
             />
+            <label for="time">Время на решение</label>
+            <input type="time" name="time" class="bodyTask__time" v-model="task.time" required />
           </div>
         </div>
         <button type="submit" class="submit" v-if="quantityField > 0">Загрузить тест</button>
@@ -43,6 +54,7 @@ export default {
 
   data() {
     return {
+      testName: '',
       quantityField: 0,
       bodyTasks: [],
     };
@@ -50,7 +62,7 @@ export default {
 
   methods: {
     addTask() {
-      this.bodyTasks.push({ name: '', description: '' });
+      this.bodyTasks.push({ name: '', description: '', time: '' });
       this.quantityField = this.bodyTasks.length;
     },
     removeTask(index) {
@@ -58,7 +70,7 @@ export default {
       this.quantityField = this.bodyTasks.length;
     },
     handler() {
-      console.log(this.bodyTasks);
+      console.log(this.testName, this.bodyTasks);
     },
   },
 };
@@ -78,6 +90,22 @@ export default {
 
   &__form {
     margin-top: 1.25rem;
+
+    &-name {
+      font-family: 'Visitor';
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+    }
 
     &-quantity {
       border: 1px solid #000;
@@ -151,6 +179,10 @@ export default {
       border-color: #007bff;
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
+  }
+  &__time {
+    width: 100px;
+    margin-top: 1rem;
   }
 }
 .submit {
