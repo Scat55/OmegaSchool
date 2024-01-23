@@ -106,6 +106,7 @@ export default {
   border: 1px solid #000;
   border-radius: 0.5rem;
   margin-top: 1rem;
+  padding: 0.5rem;
 
   &__head {
     display: flex;
