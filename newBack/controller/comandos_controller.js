@@ -17,6 +17,7 @@ const generateAccesToken = comand_id => {
 	};
 	return jwt.sign(payload, secret, { expiresIn: '365d' });
 };
+
 const currentTime = moment().format();
 const registrationDeadline = moment('2023-12-27T14:00:00'); // Установите срок регистрации
 const startTest = moment('2023-12-27T14:00:00');
@@ -268,24 +269,32 @@ class Commands_controller {
 
 	async createTestAndTasks(req, res) {
 		try {
-			const { test_name, tasks } = req.body;
-
+			const { test_name, start_time, end_time,  tasks } = req.body;
+			console.log(req.body)
 			// Создаем запись в таблице comand_tests
-			const createTestQuery =
-				'INSERT INTO comand_tests (test_name) VALUES ($1) RETURNING test_id';
-			const testResult = await poolComandos.query(createTestQuery, [test_name]);
+			const createTestQuery = `
+    			INSERT INTO comand_tests (test_name, start_time, end_time)
+    			VALUES ($1, $2, $3)
+    			RETURNING test_id;
+  			`;
+			
+			const testResult = await poolComandos.query(createTestQuery, [test_name,start_time,end_time]);
+			console.log('1231231231232131 ',testResult.rows[0])
 			const testId = testResult.rows[0].test_id;
-
+	
 			// Создаем записи в таблице comand_task и связываем их с созданным тестом
 			const createTaskQuery =
-				'INSERT INTO comand_task (task_name, task_description, test_id) VALUES ($1, $2, $3)';
-			for (const task of tasks) {
-				await poolComandos.query(createTaskQuery, [
-					task.task_name,
-					task.task_description,
-					testId,
-				]);
-			}
+    'INSERT INTO comand_task (task_name, task_description, test_id, task_answer, numkol ) VALUES ($1, $2, $3, $4, $5)';
+for (const task of tasks) {
+    await poolComandos.query(createTaskQuery, [
+        task.task_name,
+        task.task_description,
+        testId,
+        task.task_answer,
+        task.numkol
+    ]);
+}
+
 
 			res
 				.status(200)
