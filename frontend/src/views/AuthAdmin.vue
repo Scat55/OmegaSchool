@@ -5,12 +5,12 @@
       <form action="#" class="authComm__form" @submit.prevent="handler()">
         <p class="authComm__form-title">Вход</p>
         <div class="authComm__info">
-          <span class="authComm__info-name">Название команды</span>
-          <input type="text" class="authComm__input name" v-model="commandName" />
+          <span class="authComm__info-name">Почта</span>
+          <input type="email" class="authComm__input name" required v-model="email" />
         </div>
         <div class="authComm__info">
           <span class="authComm__info-name">Пароль</span>
-          <input type="password" class="authComm__input" v-model="pass" />
+          <input type="password" class="authComm__input" required v-model="pass" />
         </div>
 
         <button class="authComm__form-btn" type="submit">Войти</button>
@@ -25,7 +25,7 @@ import store from '../store/index';
 export default {
   data() {
     return {
-      commandName: '',
+      email: '',
       pass: '',
       token: '',
       userID: '',
@@ -33,12 +33,14 @@ export default {
   },
   methods: {
     handler() {
+      const username = this.email;
+      const password = this.pass;
       axios
         .post(
-          `/commands/login/`,
+          `/commands/login_admin/`,
           {
-            comandName: this.commandName,
-            password: this.pass,
+            username: username,
+            password: password,
           },
           {
             headers: {
@@ -58,14 +60,13 @@ export default {
         })
         .then((res) => {
           console.log(res.data);
-          store.state.isComandAuth = true;
-          this.$router.push(`/comandPage/${res.data.id}`);
-          const comand = {
-            comandID: res.data.id,
+          store.state.isAdminAuth = true;
+          this.$router.push(`/admin`);
+          const admin = {
             token: res.data.token,
-            isComandAuth: store.state.isComandAuth,
+            isAdminAuth: store.state.isAdminAuth,
           };
-          localStorage.setItem('comand', JSON.stringify(comand));
+          localStorage.setItem('admin', JSON.stringify(admin));
         });
     },
   },
