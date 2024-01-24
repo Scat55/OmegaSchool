@@ -2,15 +2,22 @@
   <div id="app">
     <RegForm v-if="this.$store.state.status" />
     <header>
-      <Header v-if="!this.$store.state.isComandAuth && this.$route.path != '/admin'" />
-      <HeaderCom v-if="this.$store.state.isComandAuth && this.$route.path != '/admin'" />
+      <Header
+        v-if="
+          !this.$store.state.isComandAuth &&
+          this.$route.path != '/admin' &&
+          this.$route.path != '/admin' &&
+          this.$route.path != '/AdminRegForm'
+        "
+      />
+      <HeaderCom v-if="this.$store.state.isComandAuth && this.$route.path != '/AdminRegForm'" />
     </header>
     <main>
       <router-view> </router-view>
     </main>
 
     <footer>
-      <Footer v-if="this.$route.path != '/admin'" />
+      <Footer v-if="this.$route.path != '/admin' && this.$route.path != '/AdminRegForm'" />
     </footer>
   </div>
 </template>

@@ -1,59 +1,62 @@
 <template>
-  <div class="admin">
-    <div class="admin__header">
-      <div class="container">
-        <div class="admin__header-tabs">
-          <button
-            class="admin__header-tab"
-            :class="{ 'admin__header-tab--active': table }"
-            @click="showTable"
-          >
-            Результаты тестов
-          </button>
-          <button
-            class="admin__header-tab"
-            :class="{ 'admin__header-tab--active': checkTask }"
-            @click="showTasks"
-          >
-            Задания
-          </button>
+  <div>
+    <!--    TODO: Сделать форму на вход и регеистрацию -->
+    <div class="admin">
+      <div class="admin__header">
+        <div class="container">
+          <div class="admin__header-tabs">
+            <button
+              class="admin__header-tab"
+              :class="{ 'admin__header-tab--active': table }"
+              @click="showTable"
+            >
+              Результаты тестов
+            </button>
+            <button
+              class="admin__header-tab"
+              :class="{ 'admin__header-tab--active': checkTask }"
+              @click="showTasks"
+            >
+              Задания
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="admin__content">
-      <div class="container">
-        <div class="admin__content-table" v-if="table">
-          <div class="admin__content-items">
-            <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">
-              <div class="admin__content-item-header">
-                <h1>Школа: {{ team.school_name }}</h1>
+      <div class="admin__content">
+        <div class="container">
+          <div class="admin__content-table" v-if="table">
+            <div class="admin__content-items">
+              <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">
+                <div class="admin__content-item-header">
+                  <h1>Школа: {{ team.school_name }}</h1>
+                </div>
+                <Table
+                  :teamName="team.team_name"
+                  :tasks="team.task_names"
+                  :question="team.task_names"
+                  :correctAnswers="team.true_answer"
+                  :time="team.time"
+                  :userAnswers="team.answer_comand"
+                />
               </div>
-              <Table
-                :teamName="team.team_name"
-                :tasks="team.task_names"
-                :question="team.task_names"
-                :correctAnswers="team.true_answer"
-                :time="team.time"
-                :userAnswers="team.answer_comand"
-              />
+            </div>
+            <div class="admin__pagination">
+              <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">
+                ‹ Назад
+              </button>
+              <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>
+              <button
+                class="admin__pagination-btn"
+                @click="nextPage"
+                :disabled="currentPage === pageCount"
+              >
+                Вперед ›
+              </button>
             </div>
           </div>
-          <div class="admin__pagination">
-            <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">
-              ‹ Назад
-            </button>
-            <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>
-            <button
-              class="admin__pagination-btn"
-              @click="nextPage"
-              :disabled="currentPage === pageCount"
-            >
-              Вперед ›
-            </button>
+          <div v-if="checkTask">
+            <AddTaskForCommand />
           </div>
-        </div>
-        <div v-if="checkTask">
-          <AddTaskForCommand />
         </div>
       </div>
     </div>

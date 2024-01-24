@@ -10,15 +10,16 @@ let store = new Vuex.Store({
     users: [],
     isAuth: localStorage.getItem('local'),
     isComandAuth: localStorage.getItem('comand'),
+    isAdminAuth: localStorage.getItem('admin'),
   },
   getters: {
     USERS(state) {
       return state.users;
     },
     // Задания которые на проверке
-    filterCheckedTask: (state) => filter => {
-      return state.Temp.addTask.filter(task => task.statusCheck === filter)
-    }
+    filterCheckedTask: (state) => (filter) => {
+      return state.Temp.addTask.filter((task) => task.statusCheck === filter);
+    },
   },
   mutations: {
     // Создаем функцию добавления пользователей в state

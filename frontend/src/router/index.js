@@ -16,6 +16,7 @@ import ErrorPage from '@/views/ErrorPage.vue';
 import taskComand from '@/views/allTaskForComand';
 import Manual from '@/views/manualComand';
 import Admin from '@/views/Admin';
+import AdminRegForm from '@/components/AdminRegForm.vue';
 
 import store from '../store/index';
 import Feedback from '@/views/Feedback.vue';
@@ -104,10 +105,22 @@ const routes = [
   {
     path: '/admin',
     component: Admin,
+    beforeEnter(to, from, next) {
+      if (store.state.isAdminAuth) {
+        next(true);
+      } else {
+        next(false);
+        next({ path: '/AdminRegForm' });
+      }
+    },
   },
   {
     path: '/feedback',
     component: Feedback,
+  },
+  {
+    path: '/AdminRegForm',
+    component: AdminRegForm,
   },
 ];
 
