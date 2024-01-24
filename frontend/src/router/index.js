@@ -17,7 +17,7 @@ import taskComand from '@/views/allTaskForComand';
 import Manual from '@/views/manualComand';
 import Admin from '@/views/Admin';
 import AdminRegForm from '@/components/AdminRegForm.vue';
-
+import AuthAdmin from '@/views/AuthAdmin.vue';
 import store from '../store/index';
 import Feedback from '@/views/Feedback.vue';
 Vue.use(VueRouter);
@@ -121,6 +121,10 @@ const routes = [
   {
     path: '/AdminRegForm',
     component: AdminRegForm,
+  },
+  {
+    path: '/adminAuth',
+    component: AuthAdmin,
   },
 ];
 

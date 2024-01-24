@@ -7,17 +7,30 @@
           !this.$store.state.isComandAuth &&
           this.$route.path != '/admin' &&
           this.$route.path != '/admin' &&
-          this.$route.path != '/AdminRegForm'
+          this.$route.path != '/AdminRegForm' &&
+          this.$route.path != '/adminAuth'
         "
       />
-      <HeaderCom v-if="this.$store.state.isComandAuth && this.$route.path != '/AdminRegForm'" />
+      <HeaderCom
+        v-if="
+          this.$store.state.isComandAuth &&
+          this.$route.path != '/AdminRegForm' &&
+          this.$route.path != '/adminAuth'
+        "
+      />
     </header>
     <main>
       <router-view> </router-view>
     </main>
 
     <footer>
-      <Footer v-if="this.$route.path != '/admin' && this.$route.path != '/AdminRegForm'" />
+      <Footer
+        v-if="
+          this.$route.path != '/admin' &&
+          this.$route.path != '/AdminRegForm' &&
+          this.$route.path != '/adminAuth'
+        "
+      />
     </footer>
   </div>
 </template>

@@ -18,7 +18,7 @@
       <!-- <div>Укажите актуальную электронную почту, на которую будет выслано электронное письмо после нажатия кнопки "Регистрация"</div> -->
       <span style="font-size: 0.8rem"><span style="color: red">*</span> - обязательные поля</span>
 
-      <span class="reg__auth">Войти</span>
+      <span class="reg__auth" @click="goToAuth">Войти</span>
     </form>
   </div>
 </template>
@@ -34,21 +34,28 @@ export default {
     };
   },
   methods: {
+    goToAuth() {
+      this.$router.push('/adminAuth');
+    },
     createAdmin() {
       const username = this.email;
       const password = this.pass;
-      axios.post(
-        `/commands/create_admin`,
-        {
-          username: username,
-          password: password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
+      axios
+        .post(
+          `/commands/create_admin`,
+          {
+            username: username,
+            password: password,
           },
-        },
-      );
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then(() => {
+          this.$router.push('/adminAuth');
+        });
     },
     handler() {
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
