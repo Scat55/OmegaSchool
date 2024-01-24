@@ -11,6 +11,14 @@
           v-model="testName"
           required
         />
+
+        <div class="time__turnir">
+          <label for="begin_time">Время начала турнира:</label>
+          <input type="datetime-local" name="begin_time" v-model="time_begin" required />
+          <label name="end_time">Время окончания турнира:</label>
+          <input type="datetime-local" name="end_time" v-model="time_end" required />
+        </div>
+
         <label for="quantity">Добавьте нужное количество заданий</label>
         <span class="addTask__form-quantity">{{ quantityField }}</span>
         <button type="button" class="addTask__form-btn" @click="addTask">
@@ -57,6 +65,8 @@ export default {
       testName: '',
       quantityField: 0,
       bodyTasks: [],
+      time_begin: '',
+      time_end: '',
     };
   },
 
@@ -70,7 +80,14 @@ export default {
       this.quantityField = this.bodyTasks.length;
     },
     handler() {
+      const pushTest = {
+        testName: this.testName,
+        bodyTasks: this.bodyTasks,
+        time_begin: this.time_begin,
+        time_end: this.time_end,
+      };
       console.log(this.testName, this.bodyTasks);
+      console.log(pushTest);
     },
   },
 };
@@ -85,7 +102,7 @@ export default {
   margin-bottom: 20px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-height: 50rem;
+  //max-height: 50rem;
   overflow: auto;
 
   &__form {
@@ -105,6 +122,13 @@ export default {
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
       }
+    }
+
+    .time__turnir {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 1rem;
     }
 
     &-quantity {
