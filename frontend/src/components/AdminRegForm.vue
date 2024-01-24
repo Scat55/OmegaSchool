@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   name: 'AdminRegForm',
   data() {
@@ -33,12 +34,29 @@ export default {
     };
   },
   methods: {
+    createAdmin() {
+      const username = this.email;
+      const password = this.pass;
+      axios.post(
+        `/commands/create_admin`,
+        {
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+    },
     handler() {
       if (this.pass === '' || this.pass.length < 8 || this.email === '') {
         this.activeClass = true;
         return false;
       } else {
         this.activeClass = false;
+        this.createAdmin();
       }
     },
   },
