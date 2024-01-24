@@ -11,11 +11,16 @@ router.post('/create', commandosController.CreateComandos)
 
 router.post('/login', commandosController.LoginComandos) //тут получаешь токен
 
+router.post('/login_admin', commandosController.loginAdmin)
+
+router.post('/create_admin', commandosController.createAdmin)
+
 router.put('/changer',commandosMiddleware, commandosController.updateUsersByCommand);
 
 router.get('/info', commandosMiddleware, commandosController.InfoComandos) //тут нужен токен
 
 router.post('/createTest',commandosController.createTestAndTasks)
+
 // router.post('/listTask', commandosController.InfoComandos)
 router.get('/getTasks', commandosMiddleware, commandosController.GetTasks)
 

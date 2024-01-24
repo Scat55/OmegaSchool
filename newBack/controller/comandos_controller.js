@@ -7,7 +7,7 @@ const { json } = require('express');
 const { poolComandos } = require('../db');
 const { secret } = require('../config');
 const session = require('express-session');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid'); 
 const validator = require('validator');
 const moment = require('moment-timezone');
 moment.tz.setDefault('Europe/Moscow');
@@ -111,6 +111,62 @@ class Commands_controller {
 		} catch (error) {
 			console.error(error);
 			res.status(500).json({ error: 'Ошибка на сервере' });
+		}
+	}
+
+	async createAdmin(req, res) {
+		const { username, password } = req.body;
+	  
+		try {
+		  // Проверка существования админа с таким же логином
+		  const existingAdmin = await poolComandos.query('SELECT * FROM admin_credentials WHERE username = $1', [username]);
+	  
+		  if (existingAdmin.rows.length > 0) {
+			return res.status(400).json({ error: 'Админ с таким логином уже существует' });
+		  }
+	  
+		  // Хеширование пароля
+		  const hashedPassword = await bcrypt.hash(password, 10);
+	  
+		  // Вставка новой записи в таблицу admin_credentials
+		  await poolComandos.query('INSERT INTO admin_credentials (username, password) VALUES ($1, $2)', [username, hashedPassword]);
+	  
+		  res.status(201).json({ message: 'Админ успешно зарегистрирован' });
+		} catch (error) {
+		  console.error(error);
+		  res.status(500).json({ error: 'Ошибка при регистрации админа' });
+		}
+	}
+
+	async loginAdmin(req, res) {
+		const { username, password } = req.body;
+	  
+		try {
+		  const result = await poolComandos.query('SELECT * FROM admin_credentials WHERE username = $1', [username]);
+	  
+		  if (result.rows.length === 0) {
+			return res.status(401).json({ error: 'Неверный логин или пароль' });
+		  }
+	  
+		  const admin = result.rows[0];
+	  
+		  const passwordMatch = await bcrypt.compare(password, admin.password);
+	  
+		  if (!passwordMatch) {
+			return res.status(401).json({ error: 'Неверный логин или пароль' });
+		  }
+	  
+		  // Создание токена
+		  const token = jwt.sign(
+			{ adminId: admin.admin_id, username: admin.username, isAdmin: true },
+			secret, // Замените на ваш секретный ключ
+			{ expiresIn: '365d' } // Настройте срок действия токена
+		  );
+	  
+		  res.status(200).json({ message: 'Вход выполнен успешно', token });
+		} catch (error) {
+		  console.error(error);
+		  res.status(500).json({ error: 'Ошибка при входе в систему админа' });
 		}
 	}
 
@@ -222,14 +278,12 @@ class Commands_controller {
 
 			// Создаем записи в таблице comand_task и связываем их с созданным тестом
 			const createTaskQuery =
-				'INSERT INTO comand_task (task_name, task_description, test_id, task_answer,numkol ) VALUES ($1, $2, $3, &4, &5)';
+				'INSERT INTO comand_task (task_name, task_description, test_id) VALUES ($1, $2, $3)';
 			for (const task of tasks) {
 				await poolComandos.query(createTaskQuery, [
 					task.task_name,
 					task.task_description,
 					testId,
-					task.task_answer,
-					task.numkol				
 				]);
 			}
 
