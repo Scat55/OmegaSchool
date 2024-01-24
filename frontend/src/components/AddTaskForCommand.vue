@@ -32,7 +32,7 @@
                 placeholder="Название задачи"
                 type="text"
                 class="bodyTask__name"
-                v-model="task.name"
+                v-model="task.task_name"
                 required
               />
               <button type="button" @click="removeTask(index)" class="bodyTask__remove">
@@ -43,11 +43,17 @@
               placeholder="Описание задачи"
               type="text"
               class="bodyTask__description"
-              v-model="task.description"
+              v-model="task.task_description"
               required
             />
             <label for="time">Время на решение</label>
-            <input type="time" name="time" class="bodyTask__time" v-model="task.time" required />
+            <input
+              type="time"
+              name="time"
+              class="bodyTask__time"
+              v-model="task.task_time"
+              required
+            />
           </div>
         </div>
         <button type="submit" class="submit" v-if="quantityField > 0">Загрузить тест</button>
@@ -57,6 +63,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'AddTaskForCommand',
 
@@ -72,7 +79,7 @@ export default {
 
   methods: {
     addTask() {
-      this.bodyTasks.push({ name: '', description: '', time: '' });
+      this.bodyTasks.push({ task_name: '', task_description: '', task_time: '' });
       this.quantityField = this.bodyTasks.length;
     },
     removeTask(index) {
@@ -80,14 +87,26 @@ export default {
       this.quantityField = this.bodyTasks.length;
     },
     handler() {
-      const pushTest = {
-        testName: this.testName,
-        bodyTasks: this.bodyTasks,
-        time_begin: this.time_begin,
-        time_end: this.time_end,
-      };
+      const testName = this.testName;
+      const bodyTasks = this.bodyTasks;
+      const time_begin = this.time_begin;
+      const time_end = this.time_end;
+
+      axios.post(
+        `/commands/createTest`,
+        {
+          test_name: testName,
+          start_time: time_begin,
+          end_time: time_end,
+          tasks: bodyTasks,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
       console.log(this.testName, this.bodyTasks);
-      console.log(pushTest);
     },
   },
 };
