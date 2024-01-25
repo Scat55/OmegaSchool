@@ -32,10 +32,10 @@ export default {
     };
   },
   methods: {
-    handler() {
+    async handler() {
       const username = this.email;
       const password = this.pass;
-      axios
+      await axios
         .post(
           `/commands/login_admin/`,
           {
@@ -59,7 +59,7 @@ export default {
           }
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           store.state.isAdminAuth = true;
           this.$router.push(`/admin`);
           const admin = {
