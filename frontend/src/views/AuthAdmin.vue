@@ -66,7 +66,7 @@ export default {
             token: res.data.token,
             isAdminAuth: store.state.isAdminAuth,
           };
-          localStorage.setItem('admin', JSON.stringify(admin));
+          sessionStorage.setItem('admin', JSON.stringify(admin));
         });
     },
   },

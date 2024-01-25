@@ -10,7 +10,7 @@ let store = new Vuex.Store({
     users: [],
     isAuth: localStorage.getItem('local'),
     isComandAuth: localStorage.getItem('comand'),
-    isAdminAuth: localStorage.getItem('admin'),
+    isAdminAuth: sessionStorage.getItem('admin'),
   },
   getters: {
     USERS(state) {
