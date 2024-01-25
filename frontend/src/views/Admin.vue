@@ -28,12 +28,12 @@
             <div class="admin__content-items">
               <p>Результаты доступны после скачивания</p>
               <a>
-                <button @click="downloadResults" type="button" class="downloadBtn" >Скачать</button>
+                <button @click="downloadResults" type="button" class="downloadBtn">Скачать</button>
               </a>
-<!--              <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">-->
-<!--                <div class="admin__content-item-header">-->
-<!--                  <h1>Школа: {{ team.school_name }}</h1>-->
-<!--                </div>-->
+              <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">
+                <!--                <div class="admin__content-item-header">-->
+                <!--                  <h1>Школа: {{ team.school_name }}</h1>-->
+                <!--                </div>-->
                 <!--                <Table-->
                 <!--                  :teamName="team.team_name"-->
                 <!--                  :tasks="team.task_names"-->
@@ -44,19 +44,19 @@
                 <!--                />-->
               </div>
             </div>
-<!--            <div class="admin__pagination">-->
-<!--              <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">-->
-<!--                ‹ Назад-->
-<!--              </button>-->
-<!--              <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>-->
-<!--              <button-->
-<!--                class="admin__pagination-btn"-->
-<!--                @click="nextPage"-->
-<!--                :disabled="currentPage === pageCount"-->
-<!--              >-->
-<!--                Вперед ›-->
-<!--              </button>-->
-<!--            </div>-->
+            <!--            <div class="admin__pagination">-->
+            <!--              <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">-->
+            <!--                ‹ Назад-->
+            <!--              </button>-->
+            <!--              <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>-->
+            <!--              <button-->
+            <!--                class="admin__pagination-btn"-->
+            <!--                @click="nextPage"-->
+            <!--                :disabled="currentPage === pageCount"-->
+            <!--              >-->
+            <!--                Вперед ›-->
+            <!--              </button>-->
+            <!--            </div>-->
           </div>
           <div v-if="checkTask">
             <AddTaskForCommand />
@@ -108,25 +108,23 @@ export default {
         console.error('Ошибка при получении данных с сервера:', error);
       }
     },
-    async downloadResults(){
+    async downloadResults() {
       await fetch(`/commands/getResultToExcel`, {
         method: 'GET',
-
       })
-          .then((res) => res.blob())
-          .then((data) => {
+        .then((res) => res.blob())
+        .then((data) => {
+          let url = URL.createObjectURL(data); // Создаем ссылку
 
-            let url = URL.createObjectURL(data); // Создаем ссылку
-
-            let anchor = document.createElement('a');
-            anchor.href = url;
-            anchor.download = this.fileName;
-            document.body.append(anchor);
-            anchor.style = 'display:none';
-            anchor.click();
-            anchor.remove();
-            URL.revokeObjectURL(url);
-          });
+          let anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = this.fileName;
+          document.body.append(anchor);
+          anchor.style = 'display:none';
+          anchor.click();
+          anchor.remove();
+          URL.revokeObjectURL(url);
+        });
     },
     showTable() {
       this.table = true;
