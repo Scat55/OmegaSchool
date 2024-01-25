@@ -26,33 +26,37 @@
         <div class="container">
           <div class="admin__content-table" v-if="table">
             <div class="admin__content-items">
-              <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">
-                <div class="admin__content-item-header">
-                  <h1>Школа: {{ team.school_name }}</h1>
-                </div>
-                <Table
-                  :teamName="team.team_name"
-                  :tasks="team.task_names"
-                  :question="team.task_names"
-                  :correctAnswers="team.true_answer"
-                  :time="team.time"
-                  :userAnswers="team.answer_comand"
-                />
+              <p>Результаты доступны после скачивания</p>
+              <a>
+                <button @click="downloadResults" type="button" class="downloadBtn" >Скачать</button>
+              </a>
+<!--              <div v-for="(team, index) in paginatedTeams" :key="index" class="admin__content-item">-->
+<!--                <div class="admin__content-item-header">-->
+<!--                  <h1>Школа: {{ team.school_name }}</h1>-->
+<!--                </div>-->
+                <!--                <Table-->
+                <!--                  :teamName="team.team_name"-->
+                <!--                  :tasks="team.task_names"-->
+                <!--                  :question="team.task_names"-->
+                <!--                  :correctAnswers="team.true_answer"-->
+                <!--                  :time="team.time"-->
+                <!--                  :userAnswers="team.answer_comand"-->
+                <!--                />-->
               </div>
             </div>
-            <div class="admin__pagination">
-              <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">
-                ‹ Назад
-              </button>
-              <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>
-              <button
-                class="admin__pagination-btn"
-                @click="nextPage"
-                :disabled="currentPage === pageCount"
-              >
-                Вперед ›
-              </button>
-            </div>
+<!--            <div class="admin__pagination">-->
+<!--              <button class="admin__pagination-btn" @click="prevPage" :disabled="currentPage == 1">-->
+<!--                ‹ Назад-->
+<!--              </button>-->
+<!--              <span class="admin__pagination-info">{{ currentPage }} / {{ pageCount }}</span>-->
+<!--              <button-->
+<!--                class="admin__pagination-btn"-->
+<!--                @click="nextPage"-->
+<!--                :disabled="currentPage === pageCount"-->
+<!--              >-->
+<!--                Вперед ›-->
+<!--              </button>-->
+<!--            </div>-->
           </div>
           <div v-if="checkTask">
             <AddTaskForCommand />
@@ -103,6 +107,26 @@ export default {
       } catch (error) {
         console.error('Ошибка при получении данных с сервера:', error);
       }
+    },
+    async downloadResults(){
+      await fetch(`/commands/getResultToExcel`, {
+        method: 'GET',
+
+      })
+          .then((res) => res.blob())
+          .then((data) => {
+
+            let url = URL.createObjectURL(data); // Создаем ссылку
+
+            let anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = this.fileName;
+            document.body.append(anchor);
+            anchor.style = 'display:none';
+            anchor.click();
+            anchor.remove();
+            URL.revokeObjectURL(url);
+          });
     },
     showTable() {
       this.table = true;
@@ -218,6 +242,20 @@ export default {
       margin: 0 10px;
       font-size: 14px;
     }
+  }
+}
+.downloadBtn {
+  display: block;
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #065dfe;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #0e74ff;
   }
 }
 </style>
