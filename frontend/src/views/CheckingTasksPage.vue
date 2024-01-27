@@ -127,109 +127,133 @@
             <div class="dirThree">
               <p>Актуальность и значимость темы проекта:</p>
               <label class="estimation__label">
-                <input type="radio" value="0" name="level3" id="0" v-model="threeCheck" />0</label
+                <input type="radio" value="0" name="t1" id="0" v-model="threeCheckAct" />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="1" name="level3" id="1" v-model="threeCheck" />1</label
+                <input type="radio" value="1" name="t1" id="1" v-model="threeCheckAct" />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="2" name="level3" id="2" v-model="threeCheck" />2</label
-              >
-            </div>
-            <div class="dirThree">
-              <p>Постановка проблемы:</p>
-              <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
-              >
-              <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
-              >
-              <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input type="radio" value="2" name="t1" id="2" v-model="threeCheckAct" />2</label
               >
             </div>
             <div class="dirThree">
               <p>Постановка проблемы:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input
+                  type="radio"
+                  value="0"
+                  name="t3"
+                  id="0"
+                  v-model="threeCheckProplem"
+                />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input
+                  type="radio"
+                  value="1"
+                  name="t3"
+                  id="1"
+                  v-model="threeCheckProplem"
+                />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input
+                  type="radio"
+                  value="2"
+                  name="t3"
+                  id="2"
+                  v-model="threeCheckProplem"
+                />2</label
               >
             </div>
             <div class="dirThree">
               <p>Постановка цели и задач проектной деятельности:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input type="radio" value="0" name="t4" id="0" v-model="threeCheckTarget" />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input type="radio" value="1" name="t4" id="1" v-model="threeCheckTarget" />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input type="radio" value="2" name="t4" id="2" v-model="threeCheckTarget" />2</label
               >
             </div>
             <div class="dirThree">
               <p>Самостоятельность выбора стратегии действий в ситуациях затруднения:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input type="radio" value="0" name="t5" id="0" v-model="threeCheckSelect" />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input type="radio" value="1" name="t5" id="1" v-model="threeCheckSelect" />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input type="radio" value="2" name="t5" id="2" v-model="threeCheckSelect" />2</label
               >
             </div>
             <div class="dirThree">
               <p>Качество проектного продукта:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input
+                  type="radio"
+                  value="0"
+                  name="t6"
+                  id="0"
+                  v-model="threeCheckQuility"
+                />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input
+                  type="radio"
+                  value="1"
+                  name="t6"
+                  id="1"
+                  v-model="threeCheckQuility"
+                />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input
+                  type="radio"
+                  value="2"
+                  name="t6"
+                  id="2"
+                  v-model="threeCheckQuility"
+                />2</label
               >
             </div>
             <div class="dirThree">
               <p>Глубина раскрытия темы проекта:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input type="radio" value="0" name="t7" id="0" v-model="threeCheckDeep" />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input type="radio" value="1" name="t7" id="1" v-model="threeCheckDeep" />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input type="radio" value="2" name="t7" id="2" v-model="threeCheckDeep" />2</label
               >
             </div>
             <div class="dirThree">
               <p>Оформление проектной работы:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input type="radio" value="0" name="t8" id="0" v-model="threeCheckDesign" />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input type="radio" value="1" name="t8" id="1" v-model="threeCheckDesign" />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input type="radio" value="2" name="t8" id="2" v-model="threeCheckDesign" />2</label
               >
             </div>
             <div class="dirThree">
               <p>Защита проектной работы:</p>
               <label class="estimation__label">
-                <input type="radio" value="3" name="level3" id="3" v-model="threeCheck" />0</label
+                <input type="radio" value="0" name="t9" id="0" v-model="threeCheckBlock" />0</label
               >
               <label class="estimation__label">
-                <input type="radio" value="4" name="level3" id="4" v-model="threeCheck" />1</label
+                <input type="radio" value="1" name="t9" id="1" v-model="threeCheckBlock" />1</label
               >
               <label class="estimation__label">
-                <input type="radio" value="5" name="level3" id="5" v-model="threeCheck" />2</label
+                <input type="radio" value="2" name="t9" id="2" v-model="threeCheckBlock" />2</label
               >
             </div>
           </div>
@@ -251,6 +275,7 @@
 import axios from 'axios';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { info } from 'sass';
 export default {
   data() {
     return {
@@ -261,6 +286,7 @@ export default {
       isShow: false,
       firstCheck: 0,
       secondCheck: 0,
+      threeCheck: 0,
       threeCheckAct: 0,
       threeCheckProplem: 0,
       threeCheckTarget: 0,
@@ -312,11 +338,20 @@ export default {
     handler() {
       const opt_score =
         parseInt(this.firstCheck) + parseInt(this.secondCheck) + parseInt(this.threeCheck);
+      const opt_score3 =
+        parseInt(this.threeCheckAct) +
+        parseInt(this.threeCheckProplem) +
+        parseInt(this.threeCheckTarget) +
+        parseInt(this.threeCheckSelect) +
+        parseInt(this.threeCheckQuility) +
+        parseInt(this.threeCheckDeep) +
+        parseInt(this.threeCheckDesign) +
+        parseInt(this.threeCheckBlock);
       const text_solution = this.message;
       axios.post(
         `/api/updateTestByTeacher/${this.id}/${this.userID}`,
         {
-          opt_score: opt_score,
+          opt_score: opt_score + opt_score3,
           text_solution: text_solution,
         },
         {
