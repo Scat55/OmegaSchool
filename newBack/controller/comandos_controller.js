@@ -311,6 +311,132 @@ class Commands_controller {
 		}
 	  }
 
+
+	  async startTest(req, res) {
+		try {
+			const commandId = req.comand_id; // Предполагается, что вы получаете comand_id из запроса
+			const { testId } = req.body; // Предполагается, что testId передается через тело запроса
+	
+			// Получаем информацию о времени начала и окончания теста
+			const testInfo = await poolComandos.query(
+				'SELECT * FROM comand_tests WHERE test_id = $1',
+				[testId]
+			);
+	
+			if (testInfo.rows.length > 0) {
+				const { start_time, end_time, answers, ...testData } = testInfo.rows[0];
+	
+				// Проверяем, можно ли взять тест в текущий момент
+				const currentTime = moment();
+				if (currentTime < moment(start_time) || currentTime > moment(end_time)) {
+					return res.status(400).json({ message: 'Тест недоступен в текущее время' });
+				}
+	
+				// Проверяем, начался ли тест
+				const userTestInfo = await poolComandos.query(
+					'SELECT start_time, end_time FROM user_tests WHERE comand_id = $1 AND test_id = $2',
+					[commandId, testId]
+				);
+	
+				if (userTestInfo.rows.length > 0) {
+					const { start_time: userStartTime, end_time: userEndTime } = userTestInfo.rows[0];
+	
+					if (userStartTime) {
+						// Тест уже начат, возвращаем информацию о тесте и заданиях
+						// без обновления времени начала
+						const tasksQuery = 'SELECT * FROM comand_task WHERE test_id = $1 ORDER BY numkol';
+						const tasksResult = await poolComandos.query(tasksQuery, [testId]);
+						const tasksData = tasksResult.rows.map(task => {
+							const { task_answer, ...taskInfo } = task;
+							return taskInfo;
+						});
+	
+						return res.status(200).json({ message: 'Тест уже начат', testData, tasksData });
+					}
+	
+					// Обновляем информацию о начале теста
+					const updateQuery = 'UPDATE user_tests SET start_time = $1 WHERE comand_id = $2 AND test_id = $3';
+					await poolComandos.query(updateQuery, [moment().format(), commandId, testId]);
+	
+					// Получаем задания для теста отсортированные по полю numkol
+					const tasksQuery = 'SELECT * FROM comand_task WHERE test_id = $1 ORDER BY numkol';
+					const tasksResult = await poolComandos.query(tasksQuery, [testId]);
+					const tasksData = tasksResult.rows.map(task => {
+						const { task_answer, ...taskInfo } = task;
+						return taskInfo;
+					});
+	
+					// Возвращаем успешный ответ с информацией о тесте и заданиями (исключая ответы)
+					return res.status(200).json({ message: 'Тест успешно начат', testData, tasksData });
+				} else {
+					// Тест не найден для данной команды
+					return res.status(404).json({ message: 'Тест не найден для данной команды' });
+				}
+			} else {
+				// Тест не найден
+				return res.status(404).json({ message: 'Тест не найден' });
+			}
+		} catch (error) {
+			console.error(error);
+			return res.status(500).json({ error: 'Ошибка на сервере' });
+		}
+	}
+	
+	
+
+
+	async writeTest(req, res) {
+		try {
+		  const comandId = req.comand_id; // Предполагается, что вы получаете comand_id из запроса
+
+		  const { testId } = req.body;
+		  // Проверка, что команда существует
+		  const commandExists = await poolComandos.query(
+			'SELECT * FROM comandos WHERE comand_id = $1',
+			[comandId]
+		  );
+	  
+		  if (commandExists.rows.length === 0) {
+			return res.status(404).json({ message: 'Команда не найдена' });
+		  }
+	  
+		  // Проверка, что тест существует
+		  const testExists = await poolComandos.query(
+			'SELECT * FROM comand_tests WHERE test_id = $1',
+			[testId]
+		  );
+	  
+		  if (testExists.rows.length === 0) {
+			return res.status(404).json({ message: 'Тест не найден' });
+		  }
+	  
+		  // Проверка, что команда еще не записана на тест
+		  const isAlreadyEnrolled = await poolComandos.query(
+			'SELECT * FROM user_tests WHERE comand_id = $1 AND test_id = $2',
+			[comandId, testId]
+		  );
+	  
+		  if (isAlreadyEnrolled.rows.length > 0) {
+			return res.status(400).json({ message: 'Команда уже записана на тест' });
+		  }
+	  
+		  // Запись команды на тест
+		  const enrollResult = await poolComandos.query(
+			'INSERT INTO user_tests (comand_id, test_id) VALUES ($1, $2) RETURNING *',
+			[comandId, testId]
+		  );
+	  
+		  return res.status(200).json({
+			message: 'Команда успешно записана на тест',
+			enrollmentDetails: enrollResult.rows[0],
+		  });
+		} catch (error) {
+		  console.error('Error in startTest:', error);
+		  res.status(500).json({ message: 'Internal Server Error' });
+		}
+	  }
+
+
 	async createTestAndTasks(req, res) {
 		try {
 			const { test_name, start_time, end_time,  tasks } = req.body;

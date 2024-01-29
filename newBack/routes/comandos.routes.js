@@ -21,7 +21,11 @@ router.get('/info', commandosMiddleware, commandosController.InfoComandos) //Ñ‚Ñ
 
 router.get('/tests',commandosMiddleware, commandosController.getTests);
 
-router.post('/createTest',commandosController.createTestAndTasks)
+router.post('/startTest',commandosMiddleware, commandosController.startTest);
+
+router.post('/write-test',commandosMiddleware, commandosController.startTest);
+
+router.post('/createTest',commandosMiddleware, commandosController.createTestAndTasks)
 
 // router.post('/listTask', commandosController.InfoComandos)
 router.get('/getTasks', commandosMiddleware, commandosController.GetTasks)
