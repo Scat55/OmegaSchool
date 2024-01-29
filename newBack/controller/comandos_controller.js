@@ -28,10 +28,6 @@ class Commands_controller {
 		try {
 			const { comandName, password, school, email } = req.body;
 
-			console.log(moment());
-			if (moment() > registrationDeadline) {
-				return res.status(400).json({ message: 'Регистрация команд закрыта' });
-			}
 
 			const queryResult = await poolComandos.query(
 				'SELECT * FROM comandos WHERE comand_name = $1',
