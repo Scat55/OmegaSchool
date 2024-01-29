@@ -267,6 +267,50 @@ class Commands_controller {
 		}
 	}
 
+	async getTests(req, res) {
+		try {
+		  const commandId = req.comand_id;
+	
+		  // Запрос на выбор всех тестов из таблицы comand_tests
+		  const getTestsQuery = `
+			SELECT
+			  ct.test_id,
+			  ct.test_name,
+			  ct.start_time,
+			  ct.end_time,
+			  ut.start_time AS user_start_time,
+			  ut.end_time AS user_end_time
+			FROM
+			  comand_tests ct
+			LEFT JOIN
+			  user_tests ut ON ct.test_id = ut.test_id AND ut.comand_id = $1;
+		  `;
+	
+		  // Выполнение запроса
+		  const testsResult = await poolComandos.query(getTestsQuery, [commandId]);
+	
+		  // Получение результатов
+		  const tests = testsResult.rows.map(test => {
+			// Определение статуса участия для каждого теста
+			if (test.user_start_time) {
+			  // Команда уже участвовала в тесте
+			  test.participation_status = test.user_end_time ? 'участвовал' : 'в процессе участия';
+			} else {
+			  // Команда еще не участвовала в тесте
+			  test.participation_status = 'не участвовал';
+			}
+			return test;
+		  });
+	
+		  // Возвращение результатов в ответе сервера
+		  res.status(200).json(tests);
+		} catch (error) {
+		  // Обработка ошибки
+		  console.error('Error fetching tests:', error);
+		  res.status(500).json({ error: 'Internal Server Error' });
+		}
+	  }
+
 	async createTestAndTasks(req, res) {
 		try {
 			const { test_name, start_time, end_time,  tasks } = req.body;

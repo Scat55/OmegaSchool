@@ -19,6 +19,8 @@ router.put('/changer',commandosMiddleware, commandosController.updateUsersByComm
 
 router.get('/info', commandosMiddleware, commandosController.InfoComandos) //тут нужен токен
 
+router.get('/tests',commandosMiddleware, commandosController.getTests);
+
 router.post('/createTest',commandosController.createTestAndTasks)
 
 // router.post('/listTask', commandosController.InfoComandos)
