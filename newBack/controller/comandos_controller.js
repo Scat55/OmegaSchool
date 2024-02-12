@@ -26,19 +26,19 @@ const endTest = moment('2023-12-27T15:30:00');
 class Commands_controller {
 	async CreateComandos(req, res) {
 		try {
-			const { comandName, password, school, email } = req.body;
+			const { comandName, password, school, email, type } = req.body;
 
 
 			const queryResult = await poolComandos.query(
-				'SELECT * FROM comandos WHERE comand_name = $1',
-				[comandName]
+				'SELECT * FROM comandos WHERE comand_name = $1 and type = $2',
+				[comandName, type]
 			);
 
 			// Если результат запроса не пустой, отправляем сообщение о наличии команды
 			if (queryResult.rows.length > 0) {
 				return res
 					.status(400)
-					.json({ message: 'Команда с таким названием или уже существует' });
+					.json({ message: 'Команда или участки с таким названием уже существует' });
 			}
 
 			// Хэшируем пароль перед сохранением в базу данных
@@ -47,12 +47,13 @@ class Commands_controller {
 
 			// Вставка команды
 			const insertComandoText =
-				'INSERT INTO comandos (comand_name, password,school, email) VALUES ($1, $2, $3, $4) RETURNING comand_id;';
+				'INSERT INTO comandos (comand_name, password,school, email, type) VALUES ($1, $2, $3, $4, $5) RETURNING comand_id;';
 			const comandoResult = await poolComandos.query(insertComandoText, [
 				comandName,
 				hashedPassword,
 				school,
 				email,
+				type
 			]);
 
 			const comandId = comandoResult.rows[0].comand_id;
