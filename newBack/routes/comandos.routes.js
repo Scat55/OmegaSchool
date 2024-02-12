@@ -23,7 +23,7 @@ router.get('/tests',commandosMiddleware, commandosController.getTests);
 
 router.post('/startTest',commandosMiddleware, commandosController.startTest);
 
-router.post('/write-test',commandosMiddleware, commandosController.startTest);
+router.post('/write-test',commandosMiddleware, commandosController.writeTest);
 
 router.post('/createTest',commandosMiddleware, commandosController.createTestAndTasks)
 

@@ -30,8 +30,8 @@ class Commands_controller {
 
 
 			const queryResult = await poolComandos.query(
-				'SELECT * FROM comandos WHERE comand_name = $1 and type = $2',
-				[comandName, type]
+				'SELECT * FROM comandos WHERE comand_name = $1 and type = $2 or email = $3',
+				[comandName, type, email]
 			);
 
 			// Если результат запроса не пустой, отправляем сообщение о наличии команды
@@ -170,13 +170,24 @@ class Commands_controller {
 
 	async LoginComandos(req, res) {
 		const { comandName, password } = req.body;
-
+		const email = comandName;
+		
 		// Проверка наличия команды по email и паролю
-		const loginComandoText = 'SELECT * FROM comandos WHERE comand_name = $1';
-		const loginComandoResult = await poolComandos.query(loginComandoText, [
+		const loginComandoTextCN = 'SELECT * FROM comandos WHERE comand_name = $1';
+		let loginComandoResult = await poolComandos.query(loginComandoTextCN, [
 			comandName,
 		]);
+		const loginComandoTextEM = 'SELECT * FROM comandos WHERE email = $1';
 
+	
+
+		if (loginComandoResult.rowCount <= 0){
+			loginComandoResult = await poolComandos.query(loginComandoTextEM, [
+				email,
+			]);
+			console.log(email)
+		}
+		
 		if (loginComandoResult.rowCount > 0) {
 			// Команда найдена, возвращаем её идентификатор
 			const passwordMatch = await bcrypt.compare(
