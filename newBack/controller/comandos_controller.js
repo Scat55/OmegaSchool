@@ -62,8 +62,14 @@ class Commands_controller {
 			const insertUserText =
 				'INSERT INTO user_command (first_name, last_name, patronymic, comand_id) VALUES ($1, $2, $3, $4) RETURNING *';
 			const createdUsers = [];
+			let num;
+			if (type === 'comand') {
+				num = 6
+			} else {
+				num = 1
+			}
 
-			for (let i = 1; i <= 6; i++) {
+			for (let i = 1; i <= num; i++) {
 				const result = await poolComandos.query(insertUserText, [
 					``,
 					``,
@@ -185,7 +191,6 @@ class Commands_controller {
 			loginComandoResult = await poolComandos.query(loginComandoTextEM, [
 				email,
 			]);
-			console.log(email)
 		}
 		
 		if (loginComandoResult.rowCount > 0) {
@@ -204,6 +209,7 @@ class Commands_controller {
 						message: 'Успешная аутентификация',
 						id: loginComandoResult.rows[0].comand_id,
 						token,
+						type: loginComandoResult.rows[0].type,
 					});
 				});
 			} else {
