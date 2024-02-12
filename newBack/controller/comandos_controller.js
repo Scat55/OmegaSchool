@@ -75,7 +75,7 @@ class Commands_controller {
 
 			res
 				.status(201)
-				.json({ comandId: comandId, email: email, users: createdUsers });
+				.json({ comandId: comandId, email: email, users: createdUsers, type: type });
 		} catch (error) {
 			console.error(error);
 			res.status(500).json({ error: 'Ошибка на сервере' });
