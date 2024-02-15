@@ -3,11 +3,11 @@
   <div class="comand">
     <div class="container">
       <form action="#" class="comand__form" @submit.prevent="handler()">
-        <p class="comand__form-title">Регистрация команды</p>
+        <p class="comand__form-title">Регистрация на олимпиаду</p>
+        <label for="name" class="comand__info-name">Имя или название команды</label>
 
         <div class="comand__info">
-          <span class="comand__info-name">Название команды</span>
-          <input type="text" class="comand__input name" v-model="comandName" />
+          <input type="text" name="name" class="comand__input name" v-model="comandName" />
         </div>
         <div class="comand__info">
           <span class="comand__info-name">Почта</span>
@@ -38,6 +38,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -164,7 +165,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/styles/vars.scss';
+@import '../../assets/styles/vars';
 
 .comand {
   display: flex;
@@ -222,7 +223,7 @@ export default {
 
     &-name {
       color: rgba(17, 17, 17, 0.49);
-      font-size: 0.9rem;
+      font-size: 0.7rem;
     }
   }
 

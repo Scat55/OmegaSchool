@@ -9,17 +9,19 @@ import TaskDetail from '@/components/TaskDetail.vue';
 import taskToExpert from '../views/TaskToExpert';
 import AllTaskTeacher from '../views/AllTaskTeacher';
 import CheckingTasksPage from '../views/CheckingTasksPage';
-import ComandAuth from '@/views/ComandAuth.vue';
+
+import AuthCommandPage from '@/views/Auth.vue';
 import ComandPage from '@/views/ComandPage.vue';
-import AuthCom from '../views/AuthCom.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 import taskComand from '@/views/allTaskForComand';
 import Manual from '@/views/manualComand';
+
 import Admin from '@/views/Admin';
 import AdminRegForm from '@/components/AdminRegForm.vue';
 import AuthAdmin from '@/views/AuthAdmin.vue';
 import store from '../store/index';
 import Feedback from '@/views/Feedback.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -79,16 +81,12 @@ const routes = [
     component: CheckingTasksPage,
   },
   {
-    path: '/comand',
-    component: ComandAuth,
-  },
-  {
     path: '/comandPage/:id?',
     component: ComandPage,
   },
   {
-    path: '/authCom',
-    component: AuthCom,
+    path: '/authCommand',
+    component: AuthCommandPage,
   },
   {
     path: '*',

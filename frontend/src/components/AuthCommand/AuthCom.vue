@@ -21,7 +21,8 @@
 
 <script>
 import axios from 'axios';
-import store from '../store/index';
+import store from '../../store';
+
 export default {
   data() {
     return {
@@ -73,7 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/styles/vars.scss';
+@import '../../assets/styles/vars';
 
 .authComm {
   display: flex;

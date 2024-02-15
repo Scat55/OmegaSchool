@@ -56,6 +56,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -90,7 +91,7 @@ export default {
       const body = document.querySelector('body');
       this.$store.state.status = false;
       body.style.overflow = '';
-      this.$router.push('/comand/');
+      this.$router.push('/authCommand/');
     },
     changeStatusOnFalse() {
       const body = document.querySelector('body');
