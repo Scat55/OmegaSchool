@@ -6,7 +6,7 @@
         v-if="
           !this.$store.state.isComandAuth &&
           this.$route.path != '/admin' &&
-          this.$route.path != '/admin' &&
+          this.$route.path != '/authCommand' &&
           this.$route.path != '/AdminRegForm' &&
           this.$route.path != '/adminAuth'
         "
@@ -15,7 +15,8 @@
         v-if="
           this.$store.state.isComandAuth &&
           this.$route.path != '/AdminRegForm' &&
-          this.$route.path != '/adminAuth'
+          this.$route.path != '/adminAuth' &&
+          this.$route.path != '/authCommand'
         "
       />
     </header>
@@ -28,7 +29,8 @@
         v-if="
           this.$route.path != '/admin' &&
           this.$route.path != '/AdminRegForm' &&
-          this.$route.path != '/adminAuth'
+          this.$route.path != '/adminAuth' &&
+          this.$route.path != '/authCommand'
         "
       />
     </footer>
