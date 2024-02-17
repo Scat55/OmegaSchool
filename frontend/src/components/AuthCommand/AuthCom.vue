@@ -4,9 +4,9 @@
     <div class="container">
       <form action="#" class="authComm__form" @submit.prevent="handler()">
         <p class="authComm__form-title">Вход</p>
+        <label for="name" class="comand__info-name">Имя или название команды</label>
         <div class="authComm__info">
-          <span class="authComm__info-name">Название команды</span>
-          <input type="text" class="authComm__input name" v-model="commandName" />
+          <input type="text" name="name" class="authComm__input name" v-model="commandName" />
         </div>
         <div class="authComm__info">
           <span class="authComm__info-name">Пароль</span>
@@ -129,7 +129,7 @@ export default {
 
     &-name {
       color: rgba(17, 17, 17, 0.49);
-      font-size: 0.9rem;
+      font-size: 0.7rem;
     }
   }
 
@@ -143,5 +143,9 @@ export default {
 
 .name {
   font-family: Visitor;
+}
+.comand__info-name {
+  color: rgba(17, 17, 17, 0.49);
+  font-size: 0.7rem;
 }
 </style>
