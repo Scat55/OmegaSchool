@@ -26,6 +26,17 @@
             </option>
           </select> -->
         </div>
+        <select
+          id="gender"
+          v-model="type.name"
+          class="reg__form-prof"
+          name="gender"
+          :value="type.name"
+        >
+          <option class="reg__form-option" v-for="types in type">
+            {{ types.name }}
+          </option>
+        </select>
 
         <button class="comand__form-btn" type="submit">Регистрация</button>
 
@@ -50,6 +61,10 @@ export default {
       userName: '',
       school: '',
       users: [],
+      type: [
+        { id: 0, name: 'Одиночный' },
+        { id: 1, name: 'Командный' },
+      ],
       // listSchool: [
       //   { schoolName: 'МБОУ «Гимназия №1» г. Липецка' },
       //   { schoolName: 'МБОУ СШ № 2 г. Липецка' },
@@ -131,6 +146,7 @@ export default {
             password: this.pass,
             school: this.school,
             email: this.email,
+            type: this.type,
           },
           {
             header: {
@@ -153,7 +169,7 @@ export default {
           localStorage.setItem('comandID', res.data.comandId);
           this.userID = localStorage.getItem('comandID');
 
-          this.$router.push(`/authCom`);
+          this.$emit('goToAuth');
         });
 
       // console.log(this.comandName, this.pass, users);
@@ -266,5 +282,15 @@ export default {
 
 .auth {
   color: $accentColor;
+}
+
+.reg__form-prof {
+  width: 18rem;
+  border: 1px solid $accentColor;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  font-family: Visitor;
+  font-size: 1rem;
+  outline: none;
 }
 </style>
