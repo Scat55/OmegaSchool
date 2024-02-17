@@ -14,6 +14,8 @@
         </div>
 
         <button class="authComm__form-btn" type="submit">Войти</button>
+
+        <p class="comand__add auth" @click="changeStatusForm">Регистрация</p>
       </form>
     </div>
   </div>
@@ -68,6 +70,9 @@ export default {
           };
           localStorage.setItem('comand', JSON.stringify(comand));
         });
+    },
+    changeStatusForm() {
+      this.$emit('goToReg');
     },
   },
 };
@@ -147,5 +152,10 @@ export default {
 .comand__info-name {
   color: rgba(17, 17, 17, 0.49);
   font-size: 0.7rem;
+}
+.auth {
+  color: $accentColor;
+  font-size: 0.7rem;
+  cursor: pointer;
 }
 </style>

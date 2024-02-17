@@ -8,16 +8,26 @@ export default {
   data() {
     return {
       login: true,
-      auth: true,
+      auth: false,
     };
+  },
+  methods: {
+    changeStatusFormToAuth() {
+      this.login = false;
+      this.auth = true;
+    },
+    changeStatusFormToReg() {
+      this.login = true;
+      this.auth = false;
+    },
   },
 };
 </script>
 
 <template>
   <div>
-    <AuthCom v-if="auth" />
-    <ComandAuth v-if="login" />
+    <AuthCom @goToReg="changeStatusFormToReg" v-if="auth" />
+    <ComandAuth @goToAuth="changeStatusFormToAuth" v-if="login" />
   </div>
 </template>
 

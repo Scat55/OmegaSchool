@@ -28,9 +28,8 @@
         </div>
 
         <button class="comand__form-btn" type="submit">Регистрация</button>
-        <router-link to="/authCom" class="router">
-          <p class="comand__add auth">Уже есть команда? Войти</p>
-        </router-link>
+
+        <p class="comand__add auth" @click="changeStatusForm">Уже есть команда? Войти</p>
       </form>
     </div>
   </div>
@@ -159,6 +158,9 @@ export default {
 
       // console.log(this.comandName, this.pass, users);
       //
+    },
+    changeStatusForm() {
+      this.$emit('goToAuth');
     },
   },
 };
