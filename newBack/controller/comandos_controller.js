@@ -201,8 +201,8 @@ class Commands_controller {
 			);
 
 			if (passwordMatch) {
-				const token = generateAccesToken(loginComandoResult.rows[0].comand_id);
-
+				const token = generateAccesToken(loginComandoResult.rows[0].comand_id, loginComandoResult.rows[0].type);
+				console.log(loginComandoResult.rows[0].comand_id, loginComandoResult.rows[0].type)
 				req.session.token = token;
 				req.session.save(() => {
 					res.json({
@@ -453,7 +453,7 @@ class Commands_controller {
 
 	async createTestAndTasks(req, res) {
 		try {
-			const { test_name, start_time, end_time,  tasks } = req.body;
+			const { test_name, start_time, end_time,  tasks, type } = req.body;
 			console.log(req.body)
 			// Создаем запись в таблице comand_tests
 			const createTestQuery = `

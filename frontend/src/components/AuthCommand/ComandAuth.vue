@@ -28,16 +28,15 @@
         </div>
         <select
           id="gender"
-          v-model="type.name"
+          v-model="selectedType"
           class="reg__form-prof"
           name="gender"
-          :value="type.name"
         >
-          <option class="reg__form-option" v-for="types in type">
-            {{ types.name }}
+          <option class="reg__form-option" v-for="typeOption in type" :key="typeOption.id" :value="typeOption.name" :v-model="selectedType">
+            {{ typeOption.name }}
           </option>
         </select>
-
+        
         <button class="comand__form-btn" type="submit">Регистрация</button>
 
         <p class="comand__add auth" @click="changeStatusForm">Уже есть команда? Войти</p>
@@ -136,6 +135,7 @@ export default {
       // ],
     };
   },
+  
   methods: {
     handler() {
       axios
@@ -146,7 +146,7 @@ export default {
             password: this.pass,
             school: this.school,
             email: this.email,
-            type: this.type,
+            type: this.selectedType,
           },
           {
             header: {
