@@ -54,6 +54,11 @@
               v-model="task.task_time"
               required
             />
+            <label for="typeTask">Тип задания</label>
+            <select v-model="task.taskType">
+              <option value="Одиночный">Одиночный</option>
+              <option value="Командный">Командный</option>
+            </select>
           </div>
         </div>
         <button type="submit" class="submit" v-if="quantityField > 0">Загрузить тест</button>
@@ -79,7 +84,7 @@ export default {
 
   methods: {
     addTask() {
-      this.bodyTasks.push({ task_name: '', task_description: '', task_time: '' });
+      this.bodyTasks.push({ task_name: '', task_description: '', task_time: '', taskType: '' });
       this.quantityField = this.bodyTasks.length;
     },
     removeTask(index) {
