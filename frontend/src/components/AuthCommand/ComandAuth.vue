@@ -4,9 +4,10 @@
     <div class="container">
       <form action="#" class="comand__form" @submit.prevent="handler()">
         <p class="comand__form-title">Регистрация на олимпиаду</p>
-        <label for="name" class="comand__info-name">Имя или название команды</label>
+        <!--        <label for="name" class="comand__info-name">Имя или название команды</label>-->
 
         <div class="comand__info">
+          <span class="comand__info-name">Имя или название команды</span>
           <input type="text" name="name" class="comand__input name" v-model="comandName" />
         </div>
         <div class="comand__info">
@@ -26,17 +27,18 @@
             </option>
           </select> -->
         </div>
-        <select
-          id="gender"
-          v-model="selectedType"
-          class="reg__form-prof"
-          name="gender"
-        >
-          <option class="reg__form-option" v-for="typeOption in type" :key="typeOption.id" :value="typeOption.name" :v-model="selectedType">
+        <select id="gender" v-model="selectedType" class="reg__form-prof" name="gender">
+          <option value="" disabled selected>Тип соревнования</option>
+          <option
+            class="reg__form-option"
+            v-for="typeOption in type"
+            :key="typeOption.id"
+            :value="typeOption.name"
+          >
             {{ typeOption.name }}
           </option>
         </select>
-        
+
         <button class="comand__form-btn" type="submit">Регистрация</button>
 
         <p class="comand__add auth" @click="changeStatusForm">Уже есть команда? Войти</p>
@@ -52,6 +54,7 @@ export default {
   data() {
     return {
       comandName: '',
+      selectedType: '',
       pass: '',
       token: '',
       email: '',
@@ -135,7 +138,7 @@ export default {
       // ],
     };
   },
-  
+
   methods: {
     handler() {
       axios
@@ -206,7 +209,7 @@ export default {
     padding: 5.75rem;
     box-shadow: 0 0 20px 0px $accentColor;
     background-color: #fff;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 
     &-title {
