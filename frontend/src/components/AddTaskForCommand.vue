@@ -13,10 +13,17 @@
         />
 
         <div class="time__turnir">
-          <label for="begin_time">Время начала турнира:</label>
+          <label for="begin_time" class="label">Время начала турнира:</label>
           <input type="datetime-local" name="begin_time" v-model="time_begin" required />
-          <label name="end_time">Время окончания турнира:</label>
+          <label name="end_time" class="label">Время окончания турнира:</label>
           <input type="datetime-local" name="end_time" v-model="time_end" required />
+          <div v-for="(task, index) in bodyTasks" :key="index">
+            <label for="typeTask" class="label">Тип задания: </label>
+            <select v-model="task.taskType">
+              <option value="Одиночный">Одиночный</option>
+              <option value="Командный">Командный</option>
+            </select>
+          </div>
         </div>
 
         <label for="quantity">Добавьте нужное количество заданий</label>
@@ -54,11 +61,6 @@
               v-model="task.task_time"
               required
             />
-            <label for="typeTask">Тип задания</label>
-            <select v-model="task.taskType">
-              <option value="Одиночный">Одиночный</option>
-              <option value="Командный">Командный</option>
-            </select>
           </div>
         </div>
         <button type="submit" class="submit" v-if="quantityField > 0">Загрузить тест</button>
@@ -111,7 +113,7 @@ export default {
           },
         },
       );
-      console.log(this.testName, this.bodyTasks);
+      // console.log(this.testName, this.bodyTasks);
     },
   },
 };
@@ -247,5 +249,10 @@ export default {
   &:hover {
     background-color: #0056b3;
   }
+}
+.label {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 3px;
 }
 </style>
